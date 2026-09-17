@@ -1,0 +1,29 @@
+{
+  "scenario": "B",
+  "objective": "balanced",
+  "train_seeds": [
+    42,
+    43,
+    44
+  ],
+  "holdout_seeds": [
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52
+  ],
+  "accepted": true,
+  "holdout_score_vs_round_robin": 0.5253607845126065,
+  "params": {
+    "w_value": 3.09037936842069,
+    "w_info": 1.4673385241977686,
+    "w_novelty": 1.5253924222715767,
+    "w_deadline": 3.737130689225981,
+    "rho_min": 0.05670582592604245,
+    "coverage_budget": 0.21840603347655613
+  }
+}

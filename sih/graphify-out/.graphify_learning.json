@@ -1,0 +1,70 @@
+{
+  "generated_at": "2026-09-12T16:21:50.376188+00:00",
+  "nodes": {
+    "backend_src_main_java_com_rfscheduler_domain_simulationentity_simulationentity": {
+      "code_fingerprint": "bb3addace87f4862695bb31f93710f0cb5d8aaf42cec9181317d053120202d89",
+      "label": "SimulationEntity",
+      "last": "2026-09-12T16:21:41.721816+00:00",
+      "provenance": [
+        {
+          "date": "2026-09-12T16:21:41.721816+00:00",
+          "outcome": "useful",
+          "q": "What are the most connected architectural hub nodes in this codebase?"
+        }
+      ],
+      "score": 0.999997686,
+      "source_file": "Backend/src/main/java/com/rfscheduler/domain/SimulationEntity.java",
+      "status": "tentative",
+      "uses": 1
+    },
+    "backend_src_main_java_com_rfscheduler_dto_apiresponse_apiresponse": {
+      "code_fingerprint": "9437aaf81a72bda8fcb577d1f406ee48b930410d2f6b9ef39492f930a0dd0a57",
+      "label": "ApiResponse",
+      "last": "2026-09-12T16:21:41.721816+00:00",
+      "provenance": [
+        {
+          "date": "2026-09-12T16:21:41.721816+00:00",
+          "outcome": "useful",
+          "q": "What are the most connected architectural hub nodes in this codebase?"
+        }
+      ],
+      "score": 0.999997686,
+      "source_file": "Backend/src/main/java/com/rfscheduler/dto/ApiResponse.java",
+      "status": "tentative",
+      "uses": 1
+    },
+    "backend_src_main_java_com_rfscheduler_ml_mlschedulerclient_mlschedulerclient": {
+      "code_fingerprint": "d1fbbcbbaaedc6dd1d4b840b116f7973d8c9565774adcddbeda230550ae36aa5",
+      "label": "MlSchedulerClient",
+      "last": "2026-09-12T16:21:41.721816+00:00",
+      "provenance": [
+        {
+          "date": "2026-09-12T16:21:41.721816+00:00",
+          "outcome": "useful",
+          "q": "What are the most connected architectural hub nodes in this codebase?"
+        }
+      ],
+      "score": 0.999997686,
+      "source_file": "Backend/src/main/java/com/rfscheduler/ml/MlSchedulerClient.java",
+      "status": "tentative",
+      "uses": 1
+    },
+    "backend_src_main_java_com_rfscheduler_service_simulationservice_simulationservice": {
+      "code_fingerprint": "6994ca6fad8745c9f6b82611d933c1eaa6a384cd3610bb0d2e13e2563eeffe1a",
+      "label": "SimulationService",
+      "last": "2026-09-12T16:21:41.721816+00:00",
+      "provenance": [
+        {
+          "date": "2026-09-12T16:21:41.721816+00:00",
+          "outcome": "useful",
+          "q": "What are the most connected architectural hub nodes in this codebase?"
+        }
+      ],
+      "score": 0.999997686,
+      "source_file": "Backend/src/main/java/com/rfscheduler/service/SimulationService.java",
+      "status": "tentative",
+      "uses": 1
+    }
+  },
+  "version": 1
+}

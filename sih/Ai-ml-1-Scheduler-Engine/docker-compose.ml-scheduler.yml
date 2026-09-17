@@ -1,0 +1,22 @@
+# Fragment for the root docker-compose.yml. Ports are fixed by API_CONTRACT.md Section 7 --
+# do not change them here without changing the contract in all four folders first.
+services:
+  ml-scheduler:
+    build: ./Ai-ml-1-Scheduler-Engine
+    ports:
+      - "8500:8500"
+    environment:
+      ML_CHECKPOINT_DIR: /app/ml/checkpoints
+      # Optional, and only for the Turing replay scenario (ml/data/turing_replay.py).
+      # The dataset is gated; leave unset for the default synthetic-only run (PRD Section 25).
+      HF_TOKEN: ${HF_TOKEN:-}
+    volumes:
+      - model_artifacts:/app/ml/checkpoints
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8500/internal/health', timeout=2).status == 200 else 1)"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  model_artifacts:

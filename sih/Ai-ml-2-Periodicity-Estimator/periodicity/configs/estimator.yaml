@@ -1,0 +1,20 @@
+# Ai-ml-2 estimator tunables. Every value is documented in periodicity/config.py; the numbers
+# below are the measured defaults, not guesses -- see IMPLEMENTATION.md "Calibration".
+
+# Buffers
+buffer_size: 64
+max_tracked_bands: 4096
+
+# Period search
+min_period: 3.0          # below this, a "period" is scan-schedule aliasing, not an emitter
+max_period: 512.0
+period_resolution: 0.25
+min_cycles_observed: 2.0 # a period longer than half the watched span is one gap, not a cycle
+
+# Confidence (confidence = 1 - p, Rayleigh test corrected for the look-elsewhere effect)
+min_samples: 8           # distinct activations, counted after clustering
+low_confidence_threshold: 0.95   # the ordinary p < 0.05
+
+# Prediction window
+min_window_halfwidth: 1.0
+max_window_halfwidth_fraction: 0.5

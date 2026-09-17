@@ -1,0 +1,19 @@
+algorithm: q_learning
+_comment: Tabular Q-Learning - V1 (Ai-ml-1 Level 7). State is discretised per band;
+  keep the bin counts small or the table stops being visitable.
+learning_rate: 0.15
+discount: 0.9
+reward_scale: 10.0
+optimistic_init: 0.5
+bins:
+  recent_detection_rate_ewma: 3
+  time_since_last_scan: 3
+  periodicity_phase: 3
+  periodicity_confidence: 2
+epsilon:
+  start: 1.0
+  end: 0.05
+  decay: 0.9
+  decay_episodes: 40
+  mode: exponential
+train_episodes: 40

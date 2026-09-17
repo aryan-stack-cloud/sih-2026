@@ -1,0 +1,732 @@
+/*
+ * Design tokens for the demo dashboard.
+ *
+ * DIRECTION. The subject is an electronic-warfare receiver watching a spectrum it cannot hear
+ * all of at once. So the page borrows from the instrument that actually does this job - an SDR
+ * waterfall - rather than from generic dashboard furniture. Deep indigo ground, monospace
+ * readouts, and one hero: the spectrum itself with the receiver's aperture drawn on it.
+ *
+ * COLOR. The four cell states are a *status* palette, not a sequential ramp, so each gets one
+ * reserved hue and never doubles as anything else. The three data hues were snapped into the
+ * OKLCH dark band and checked with the dataviz validator against this exact surface: lightness
+ * band, chroma floor, CVD separation (worst adjacent 8.5 deutan), normal-vision floor (15.4) and
+ * 3:1 contrast all pass. They are never used alone - every state also carries a glyph and a
+ * written label in the legend.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+:root {
+  /* surfaces */
+  --ground: #0b1020;
+  --panel: #141b2e;
+  --panel-raised: #1b2440;
+  --rule: #263054;
+
+  /* ink */
+  --ink: #e6eaf5;
+  --ink-muted: #8a93ad;
+  --ink-faint: #5c6580;
+
+  /* status - reserved, never reused as "series 4" */
+  --intercepted: #0f9e73;
+  --missed: #c87a18;
+  --false-alarm: #d8425f;
+
+  /* structural, deliberately recessive: effort spent, nothing found */
+  --listened: #3a445f;
+  --idle: #161d33;
+
+  /* diverging poles for change-vs-reference; same meaning as above */
+  --better: #0f9e73;
+  --worse: #d8425f;
+
+  /* PUSHPAK brand accent, EW Console direction (17 Sep design decision). Reserved for brand and
+     "confirmed real thing" moments only - the primary action, the team mark, a genuinely
+     noteworthy highlight - never for a data state. The status palette above already owns every
+     data meaning and stays untouched; this never competes with it inside the waterfall. */
+  --brand-gold: #e8b84b;
+  --brand-gold-ink: #241a05;
+
+  --font-display: "Archivo", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+
+  --radius: 4px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* -- shell ------------------------------------------------------------------------------- */
+
+.shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 24px 64px;
+}
+
+.masthead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Nameplate: wide tracking and uppercase, the way an instrument is labelled. */
+.masthead h1 {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.masthead .standfirst {
+  margin: 6px 0 0;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  max-width: 52ch;
+}
+
+.scope-note {
+  margin: 10px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+/* -- brand mark --------------------------------------------------------------------------
+   Team mark. A placeholder wordmark badge until the supplied PUSHPAK emblem is available as
+   a file asset - swap the `.brand-mark` letter for that image then, same slot, same size. */
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--brand-gold);
+  color: var(--brand-gold-ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+
+.brand-name {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* -- service status --------------------------------------------------------------------- */
+
+.services {
+  display: flex;
+  gap: 18px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+
+.service {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+.service .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+}
+
+.service.up .dot {
+  background: var(--intercepted);
+}
+
+.service.down .dot {
+  background: var(--false-alarm);
+}
+
+.service.down {
+  color: var(--false-alarm);
+}
+
+/* -- sections ---------------------------------------------------------------------------- */
+
+.section {
+  margin-top: 34px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 2px;
+}
+
+.section h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.section p.note {
+  margin: 6px 0 0;
+  color: var(--ink-muted);
+  font-size: 0.88rem;
+  max-width: 68ch;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+/* -- controls ----------------------------------------------------------------------------- */
+
+button {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--panel-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 7px 14px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--ink-faint);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--intercepted);
+  outline-offset: 2px;
+}
+
+button.primary {
+  background: var(--brand-gold);
+  border-color: var(--brand-gold);
+  color: var(--brand-gold-ink);
+  font-weight: 600;
+}
+
+select {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: var(--panel-raised);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 6px 8px;
+}
+
+label.field {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* -- legend ------------------------------------------------------------------------------- */
+
+.legend {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend-swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  flex: none;
+}
+
+/* -- stat tiles ---------------------------------------------------------------------------- */
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.tile {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+
+.tile .tile-label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.tile .tile-value {
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1.15;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.tile .tile-sub {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  margin-top: 3px;
+}
+
+/* -- tables --------------------------------------------------------------------------------- */
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+table.data th,
+table.data td {
+  text-align: right;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--rule);
+}
+
+table.data th:first-child,
+table.data td:first-child {
+  text-align: left;
+  color: var(--ink-muted);
+}
+
+table.data th {
+  font-weight: 500;
+  color: var(--ink-faint);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* -- misc ------------------------------------------------------------------------------------ */
+
+.alert {
+  border: 1px solid var(--false-alarm);
+  background: rgba(216, 66, 95, 0.12);
+  color: var(--ink);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+  margin-top: 16px;
+}
+
+.empty {
+  color: var(--ink-faint);
+  font-size: 0.88rem;
+  padding: 20px 0;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-top: 18px;
+}
+
+.tabs button[aria-current="true"] {
+  background: var(--panel-raised);
+  border-color: var(--ink-faint);
+  color: var(--ink);
+}
+
+/* The instant a hit lands on the newest row, it pulses once - a chase-light beat that makes a
+   live detection feel like an event, not a silent cell update. Disabled with every other
+   animation below for reduced-motion. */
+@keyframes hit-pulse {
+  0% { opacity: 0.55; }
+  30% { opacity: 1; }
+  100% { opacity: 0.94; }
+}
+
+.hit-fresh {
+  animation: hit-pulse 0.6s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* -- experiments / models / health (claude pass) -- */
+
+/* Plain text/number inputs never got the treatment `select` already has above, so every episode
+   count and step count on these pages was rendering as an unstyled native box against the dark
+   ground. Scoped by type so it never touches the policy checkboxes. */
+input[type="text"],
+input[type="number"] {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: var(--panel-raised);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 6px 8px;
+}
+
+input:focus-visible {
+  outline: 2px solid var(--intercepted);
+  outline-offset: 2px;
+}
+
+/* Small state dot for a status word - generalises the masthead's .service .dot so a table row
+   or a tile can carry the same idiom. No modifier reads as neutral/in-progress; .good and .bad
+   reuse the existing status hues rather than adding new ones. */
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+}
+
+.status-dot.good {
+  background: var(--intercepted);
+}
+
+.status-dot.bad {
+  background: var(--false-alarm);
+}
+
+/* Thin progress bar for an in-flight experiment run or training job - the same fraction the
+   page already prints as a percentage, just also legible without reading the number. */
+.progress {
+  height: 4px;
+  background: var(--panel-raised);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--intercepted);
+}
+
+/* Real gap between buttons packed into a table cell, replacing the `{" "}` text-node spacing
+   used for this elsewhere in the app. */
+.row-actions {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* -- simulations / live stream (codex pass) -- */
+
+.simulation-form {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.5fr) repeat(4, minmax(90px, 0.75fr)) auto;
+  align-items: end;
+}
+
+.simulation-form .field {
+  display: grid;
+  align-items: start;
+  gap: 6px;
+  min-width: 0;
+}
+
+.simulation-form .field > span {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.simulation-form input {
+  width: 100%;
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: var(--panel-raised);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 6px 8px;
+}
+
+.simulation-form input:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.simulation-form button {
+  min-height: 34px;
+  white-space: nowrap;
+}
+
+.section p.note.simulation-scenario-note {
+  margin-top: 16px;
+  padding-top: 14px;
+  max-width: none;
+  border-top: 1px solid var(--rule);
+}
+
+.simulation-scenario-note strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.simulation-count {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+}
+
+.simulation-table-panel {
+  padding: 0;
+}
+
+.simulation-table-scroll {
+  overflow-x: auto;
+}
+
+table.data.simulation-table {
+  min-width: 1080px;
+}
+
+.simulation-table th,
+.simulation-table td {
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+
+.simulation-table tbody tr:hover {
+  background: var(--panel-raised);
+}
+
+.simulation-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.simulation-table .simulation-name {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-align: left;
+}
+
+.simulation-table th:last-child,
+.simulation-table td:last-child {
+  text-align: left;
+}
+
+.simulation-table .empty {
+  text-align: center;
+}
+
+.simulation-id {
+  display: block;
+  max-width: 120px;
+  overflow: hidden;
+  color: var(--ink-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.simulation-row-actions {
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+
+.simulation-row-actions button {
+  padding: 5px 8px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.simulation-workspace .panel.empty {
+  padding: 24px;
+}
+
+.live-empty-state {
+  display: grid;
+  gap: 4px;
+}
+
+.live-empty-state strong {
+  color: var(--ink);
+}
+
+.live-simulation-id {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.tile .tile-value.live-event-name {
+  font-size: 1rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.live-stream-readout {
+  max-width: 100%;
+  max-height: 32rem;
+  min-height: 12rem;
+  margin: 0;
+  overflow: auto;
+  background: var(--ground);
+  color: var(--ink);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.simulation-workspace .legend code {
+  color: var(--ink);
+  font-family: var(--font-mono);
+}
+
+.live-swatch-hit {
+  background: var(--intercepted);
+}
+
+.live-swatch-missed {
+  background: var(--missed);
+}
+
+.live-swatch-listened {
+  background: var(--listened);
+}
+
+.live-swatch-idle {
+  background: var(--idle);
+  border: 1px solid var(--rule);
+}
+
+.live-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.live-detail-grid .section {
+  min-width: 0;
+}
+
+.live-key-value td {
+  overflow-wrap: anywhere;
+}
+
+.live-key-value tr:last-child th,
+.live-key-value tr:last-child td {
+  border-bottom: 0;
+}
+
+.live-json {
+  max-height: 30rem;
+  min-height: 16rem;
+}
+
+@media (max-width: 940px) {
+  .simulation-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .simulation-form button {
+    grid-column: 1 / -1;
+  }
+
+  .live-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .simulation-form {
+    grid-template-columns: 1fr;
+  }
+
+  .simulation-form button {
+    grid-column: auto;
+  }
+}
