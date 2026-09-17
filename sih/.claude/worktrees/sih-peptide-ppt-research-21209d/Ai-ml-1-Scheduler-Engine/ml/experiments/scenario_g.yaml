@@ -1,0 +1,43 @@
+# PRD Section 13, Scenario G - Rapidly Changing
+scenario_id: G
+name: G - Rapidly Changing
+bands: 24
+emitters: 15
+duration_steps: 3000
+episodes: 20
+seed: 42
+seed_range:
+- 42
+- 62
+emitter_mix:
+  fixed: 0.2
+  periodic: 0.2
+  agile: 0.2
+  random: 0.2
+  intermittent: 0.2
+high_priority_fraction: 0.25
+receiver:
+  bandwidth_k: 2
+  dwell_ms: 4
+  tuning_delay_ms: 3
+  step_ms: 10
+  threshold: 1.5
+  snr_mean: 3.0
+  noise_sigma: 1.0
+reward_weights:
+  w1_detection: 10.0
+  w2_priority: 2.0
+  w3_latency: 3.0
+  w4_false_alarm: 5.0
+  w5_redundant: 3.0
+  w6_missed: 4.0
+expected_outcome: Dynamic behavior-class switching; tests whether the policy re-adapts
+  rather than locking onto stale band estimates.
+emitter_params:
+  agile:
+    hop_rate: 3
+  intermittent:
+    p_on_to_off: 0.4
+    p_off_to_on: 0.12
+  periodic:
+    jitter: 4

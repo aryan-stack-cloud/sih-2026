@@ -1,0 +1,36 @@
+# PRD Section 13, Scenario B - Mostly Periodic
+scenario_id: B
+name: B - Mostly Periodic
+bands: 16
+emitters: 10
+duration_steps: 2000
+episodes: 20
+seed: 42
+seed_range:
+- 42
+- 62
+emitter_mix:
+  fixed: 0.075
+  periodic: 0.7
+  agile: 0.075
+  random: 0.075
+  intermittent: 0.075
+high_priority_fraction: 0.25
+receiver:
+  bandwidth_k: 2
+  dwell_ms: 4
+  tuning_delay_ms: 3
+  step_ms: 10
+  threshold: 1.5
+  snr_mean: 3.0
+  noise_sigma: 1.0
+reward_weights:
+  w1_detection: 10.0
+  w2_priority: 2.0
+  w3_latency: 3.0
+  w4_false_alarm: 5.0
+  w5_redundant: 3.0
+  w6_missed: 4.0
+expected_outcome: The headline scenario. Round-robin systematically polls periodic
+  bands in their OFF phase; periodicity features should cut detection latency (PRD
+  DoD item 8).

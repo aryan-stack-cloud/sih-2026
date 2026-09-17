@@ -1,0 +1,14 @@
+# Fragment for the root docker-compose.yml. Port fixed by API_CONTRACT.md Section 7.
+services:
+  ml-periodicity:
+    build: ./Ai-ml-2-Periodicity-Estimator
+    ports:
+      - "8600:8600"
+    environment:
+      # Optional: point at a mounted YAML to override the estimator tunables.
+      PERIODICITY_CONFIG: ""
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8600/internal/health', timeout=2).status == 200 else 1)"]
+      interval: 15s
+      timeout: 3s
+      retries: 3

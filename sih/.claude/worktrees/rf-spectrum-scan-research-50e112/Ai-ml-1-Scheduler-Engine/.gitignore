@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Model artifacts — mounted as a Docker volume, never committed (Ai-ml-1 README, folder structure)
+ml/checkpoints/*
+!ml/checkpoints/.gitkeep
+
+# Local experiment output
+runs/
+*.h5

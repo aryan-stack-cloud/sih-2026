@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!--
+    Intelligent RF Spectrum Scan Strategy - Backend (system of record + orchestrator).
+    Simulation-only: no real RF hardware, no interception, no jamming, no weapon control.
+
+    STACK NOTE. The PRD specifies Java 21 + Spring Boot 3. The build targets Java 21 as the
+    language level, but runs on Spring Boot 4.x because the installed JDK is 25 and Boot 3.5
+    supports only up to Java 24. Nothing in the code depends on Boot 4 specifics.
+  -->
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.1</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>com.rfscheduler</groupId>
+  <artifactId>rf-scheduler-backend</artifactId>
+  <version>1.0.0</version>
+  <name>rf-scheduler-backend</name>
+  <description>Simulation-only RF spectrum scan scheduling backend</description>
+
+  <properties>
+    <java.version>21</java.version>
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-websocket</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <!--
+      Flyway. Three artifacts are needed, not one:
+        spring-boot-flyway          - Spring Boot 4 split autoconfiguration into per-technology
+                                      modules, so flyway-core alone gives you the library with no
+                                      Spring wiring and migrations silently never run.
+        flyway-core                 - the engine (H2 support lives here; there is no
+                                      flyway-database-h2 module).
+        flyway-database-postgresql  - required from Flyway 10 onwards for the Postgres profile.
+    -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-flyway</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-database-postgresql</artifactId>
+    </dependency>
+
+    <!--
+      H2 in PostgreSQL compatibility mode is the default profile's database, so the stack runs
+      and is testable without Docker. The `docker` profile switches to real Postgres; migrations
+      are written in SQL both accept. See application.yml.
+    -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>

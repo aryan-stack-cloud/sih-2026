@@ -1,0 +1,176 @@
+{
+  "simulation_id": "sim_8f2a1b3c",
+  "state": {
+    "bands": [
+      {
+        "band_id": 0,
+        "time_since_last_scan": 1,
+        "recent_detection_rate_ewma": 0.0,
+        "consecutive_misses": 7,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 1,
+        "time_since_last_scan": 1,
+        "recent_detection_rate_ewma": 0.6059648394584656,
+        "consecutive_misses": 0,
+        "periodicity_phase": 0.09090909361839294,
+        "periodicity_confidence": 0.1118881106376648,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 2,
+        "time_since_last_scan": 6,
+        "recent_detection_rate_ewma": 0.0,
+        "consecutive_misses": 6,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 3,
+        "time_since_last_scan": 0,
+        "recent_detection_rate_ewma": 0.15482880175113678,
+        "consecutive_misses": 3,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 0
+      },
+      {
+        "band_id": 4,
+        "time_since_last_scan": 0,
+        "recent_detection_rate_ewma": 0.0,
+        "consecutive_misses": 7,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 5,
+        "time_since_last_scan": 5,
+        "recent_detection_rate_ewma": 0.08192000538110733,
+        "consecutive_misses": 4,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 6,
+        "time_since_last_scan": 10,
+        "recent_detection_rate_ewma": 0.0,
+        "consecutive_misses": 6,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 7,
+        "time_since_last_scan": 4,
+        "recent_detection_rate_ewma": 0.430400013923645,
+        "consecutive_misses": 0,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 8,
+        "time_since_last_scan": 4,
+        "recent_detection_rate_ewma": 0.0,
+        "consecutive_misses": 6,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 9,
+        "time_since_last_scan": 9,
+        "recent_detection_rate_ewma": 0.0,
+        "consecutive_misses": 6,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 10,
+        "time_since_last_scan": 3,
+        "recent_detection_rate_ewma": 0.0,
+        "consecutive_misses": 6,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 11,
+        "time_since_last_scan": 3,
+        "recent_detection_rate_ewma": 0.34745603799819946,
+        "consecutive_misses": 0,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 12,
+        "time_since_last_scan": 8,
+        "recent_detection_rate_ewma": 0.37785604596138,
+        "consecutive_misses": 2,
+        "periodicity_phase": 0.800000011920929,
+        "periodicity_confidence": 0.07692307978868484,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 13,
+        "time_since_last_scan": 2,
+        "recent_detection_rate_ewma": 0.5378560423851013,
+        "consecutive_misses": 1,
+        "periodicity_phase": 0.625,
+        "periodicity_confidence": 0.09615384787321091,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 14,
+        "time_since_last_scan": 2,
+        "recent_detection_rate_ewma": 0.0,
+        "consecutive_misses": 6,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      },
+      {
+        "band_id": 15,
+        "time_since_last_scan": 7,
+        "recent_detection_rate_ewma": 0.0,
+        "consecutive_misses": 6,
+        "periodicity_phase": 0.0,
+        "periodicity_confidence": 0.0,
+        "band_priority_weight": 1.0,
+        "tuning_cost_to_band": 1
+      }
+    ],
+    "receiver": {
+      "tuned_bands": [
+        3,
+        4
+      ],
+      "dwell_remaining_ms": 0,
+      "tuning_delay_countdown_ms": 3
+    }
+  },
+  "policy": "bandit"
+}

@@ -1,0 +1,19 @@
+algorithm: dqn
+_comment: Deep Q-Network - V2 STRETCH ONLY (Ai-ml-1 Level 9). Gated behind the bandit
+  beating baseline on Scenario A/B; do not enable by default (PRD Section 24 scope-creep
+  risk).
+policy: MlpPolicy
+total_timesteps: 50000
+learning_rate: 0.0005
+buffer_size: 50000
+learning_starts: 1000
+batch_size: 64
+gamma: 0.95
+train_freq: 4
+target_update_interval: 500
+exploration_fraction: 0.3
+exploration_final_eps: 0.05
+net_arch:
+- 128
+- 128
+device: auto
