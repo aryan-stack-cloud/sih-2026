@@ -104,9 +104,9 @@ body {
 
 .scope-note {
   margin: 10px 0 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-size: 0.7rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   color: var(--ink-faint);
   text-transform: uppercase;
 }
@@ -137,9 +137,10 @@ body {
 }
 
 .brand-name {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-faint);
 }
@@ -149,9 +150,9 @@ body {
 .services {
   display: flex;
   gap: 18px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 500;
 }
 
 .service {
@@ -159,7 +160,6 @@ body {
   align-items: center;
   gap: 7px;
   color: var(--ink-muted);
-  text-transform: uppercase;
 }
 
 .service .dot {
@@ -197,9 +197,10 @@ body {
 }
 
 .eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-faint);
   margin: 0 0 2px;
@@ -328,9 +329,10 @@ label.field {
 }
 
 .tile .tile-label {
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.12em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-faint);
 }
@@ -374,10 +376,11 @@ table.data td:first-child {
 }
 
 table.data th {
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 600;
   color: var(--ink-faint);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -515,9 +518,10 @@ input:focus-visible {
 }
 
 .simulation-form .field > span {
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.1em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ink-faint);
 }

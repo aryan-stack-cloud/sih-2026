@@ -275,7 +275,7 @@ function StatusDot({ tone, children }: { tone: "good" | "bad" | "neutral"; child
   return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
       <span className={`status-dot${tone === "neutral" ? "" : ` ${tone}`}`} />
-      <span className="mono" style={{ fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+      <span style={{ fontSize: "0.78rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em" }}>
         {children}
       </span>
     </span>
