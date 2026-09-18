@@ -89,41 +89,6 @@ export function Waterfall({
           </text>
         ))}
 
-        {/* the receiver aperture: what it can hear right now */}
-        {newest.scannedBands.length > 0 &&
-          (() => {
-            const sorted = [...newest.scannedBands].sort((a, z) => a - z);
-            const start = sorted[0];
-            const contiguous = sorted[sorted.length - 1] - start + 1 === sorted.length;
-            const x = start * CELL_W;
-            const w = (contiguous ? sorted.length : 1) * CELL_W;
-            return (
-              <g>
-                <rect
-                  x={x + 1}
-                  y={AXIS_H}
-                  width={w - 2}
-                  height={APERTURE_H - 3}
-                  fill="none"
-                  stroke="var(--ink)"
-                  strokeWidth={1.5}
-                  rx={2}
-                />
-                <text
-                  x={x + w / 2}
-                  y={AXIS_H + APERTURE_H - 6}
-                  textAnchor="middle"
-                  fontFamily="var(--font-mono)"
-                  fontSize={7.5}
-                  letterSpacing="0.08em"
-                  fill="var(--ink)"
-                >
-                  {w > 40 ? "LISTENING" : "▲"}
-                </text>
-              </g>
-            );
-          })()}
-
         {/* the waterfall itself */}
         {rows.map((frame, r) =>
           Array.from({ length: bands }, (_, b) => {
@@ -158,6 +123,52 @@ export function Waterfall({
             );
           }),
         )}
+
+        {/* the receiver aperture: what it can hear right now. Painted last so it sits on top of
+            the scroll - real SDR waterfalls (GQRX, SDR#, Fldigi) all thread the tuned range down
+            through every row already scrolled past, not just the newest one, so it reads as a
+            measured span instead of a floating box you have to project downward by eye. */}
+        {newest.scannedBands.length > 0 &&
+          (() => {
+            const sorted = [...newest.scannedBands].sort((a, z) => a - z);
+            const start = sorted[0];
+            const contiguous = sorted[sorted.length - 1] - start + 1 === sorted.length;
+            const x = start * CELL_W;
+            const w = (contiguous ? sorted.length : 1) * CELL_W;
+            return (
+              <g>
+                <line
+                  x1={x} y1={AXIS_H} x2={x} y2={height}
+                  stroke="var(--ink)" strokeWidth={1} strokeDasharray="1.5 2.5" opacity={0.35}
+                />
+                <line
+                  x1={x + w} y1={AXIS_H} x2={x + w} y2={height}
+                  stroke="var(--ink)" strokeWidth={1} strokeDasharray="1.5 2.5" opacity={0.35}
+                />
+                <rect
+                  x={x + 1}
+                  y={AXIS_H}
+                  width={w - 2}
+                  height={APERTURE_H - 3}
+                  fill="none"
+                  stroke="var(--ink)"
+                  strokeWidth={1.5}
+                  rx={2}
+                />
+                <text
+                  x={x + w / 2}
+                  y={AXIS_H + APERTURE_H - 6}
+                  textAnchor="middle"
+                  fontFamily="var(--font-mono)"
+                  fontSize={7.5}
+                  letterSpacing="0.08em"
+                  fill="var(--ink)"
+                >
+                  {w > 40 ? "LISTENING" : "▲"}
+                </text>
+              </g>
+            );
+          })()}
       </svg>
 
       <figcaption className="legend">
