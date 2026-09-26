@@ -3,17 +3,20 @@ FROM python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
+    AI_ML_2_PATH=/app \
     ML_CHECKPOINT_DIR=/app/ml/checkpoints
 
 WORKDIR /app
 
 # Dependencies first so a source change does not invalidate the pip layer.
-COPY requirements.txt .
+COPY Ai-ml-1-Scheduler-Engine/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ml/ ./ml/
-COPY scripts/ ./scripts/
-COPY API_CONTRACT.md README.md ./
+COPY Ai-ml-1-Scheduler-Engine/ml/ ./ml/
+COPY Ai-ml-1-Scheduler-Engine/scripts/ ./scripts/
+COPY Ai-ml-1-Scheduler-Engine/API_CONTRACT.md Ai-ml-1-Scheduler-Engine/README.md ./
+# Offline training imports the same estimator implementation used by the serving service.
+COPY Ai-ml-2-Periodicity-Estimator/periodicity/ ./periodicity/
 
 # Model artifacts are a named volume shared with the Backend (PRD Section 19.2).
 VOLUME ["/app/ml/checkpoints"]

@@ -32,6 +32,34 @@ from ml.agents.base import Agent
 SUPPORTED = ("dqn", "ppo")
 
 
+def _patch_torch_load_for_zip_members() -> None:
+    """Work around a torch/SB3 incompatibility on this environment.
+
+    SB3's zip loader hands ``torch.load()`` a ``zipfile.ZipExtFile`` (a member stream of the
+    outer .zip), and torch's C++ ``PyTorchFileReader`` fails to read it -- "PytorchStreamReader
+    failed reading file .data/serialization_id" -- even for a checkpoint saved seconds earlier
+    by this same torch build; verified with a vanilla SB3 save/load round trip, so it is not
+    specific to this project's checkpoints. The identical bytes load fine once fully buffered,
+    so this makes torch.load do that itself whenever it's handed a zip member stream.
+    """
+    import torch
+
+    if getattr(torch.load, "_zip_member_patch", False):
+        return
+    original_load = torch.load
+
+    def patched_load(f, *args, **kwargs):
+        import io
+        import zipfile
+
+        if isinstance(f, zipfile.ZipExtFile):
+            f = io.BytesIO(f.read())
+        return original_load(f, *args, **kwargs)
+
+    patched_load._zip_member_patch = True
+    torch.load = patched_load
+
+
 class DeepRLAgent(Agent):
     """Wraps an SB3 DQN or PPO model behind the shared Agent interface."""
 
@@ -119,6 +147,7 @@ class DeepRLAgent(Agent):
     def load(cls, path: str | Path, **kwargs) -> "DeepRLAgent":
         from stable_baselines3 import DQN, PPO
 
+        _patch_torch_load_for_zip_members()
         path = Path(path)
         meta_path = path.with_suffix(".meta.json")
         meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}

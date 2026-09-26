@@ -32,6 +32,24 @@ from ml.utils.logging import get_logger
 
 log = get_logger(__name__)
 
+# Trained offline and served read-only: a freshly built one has no weights and cannot act, so
+# "no compatible model" is an error for these rather than a cue to start a cold online learner.
+OFFLINE_POLICIES = ("dqn", "ppo")
+
+
+class NoCompatibleModelError(LookupError):
+    """No registered model of this algorithm fits the request's band count."""
+
+    def __init__(self, policy: str, num_bands: int, scenario_id: str | None) -> None:
+        self.policy = policy
+        self.num_bands = num_bands
+        self.scenario_id = scenario_id
+        where = f"scenario {scenario_id} ({num_bands} bands)" if scenario_id else f"{num_bands} bands"
+        super().__init__(
+            f"no trained {policy} model is registered for {where}; "
+            f"train one with POST /internal/train for a {num_bands}-band scenario"
+        )
+
 
 class InferenceEngine:
     """Serves scan decisions and applies online learning updates."""
@@ -39,15 +57,25 @@ class InferenceEngine:
     def __init__(self, registry: ModelRegistry | None = None, max_sessions: int = 64) -> None:
         self.registry = registry or ModelRegistry()
         self.max_sessions = max_sessions
-        # (simulation_id, policy) -> (agent, resolved model_id)
-        self._sessions: OrderedDict[tuple[str, str], tuple[Agent, str]] = OrderedDict()
+        # (simulation_id, policy) -> (agent, resolved model_id, what the session was built for)
+        self._sessions: OrderedDict[tuple[str, str], tuple[Agent, str, tuple]] = OrderedDict()
         self._model_cache: dict[str, Agent] = {}
         self._decisions: dict[str, dict[str, Any]] = {}
+        # Decision ids already learned from, so a retried /learn is acknowledged once, not
+        # applied twice. Bounded: only recent retries matter.
+        self._consumed: OrderedDict[str, None] = OrderedDict()
         self._lock = threading.Lock()
 
     # -- session management -----------------------------------------------------------------
 
-    def _session(self, simulation_id: str, policy: str, num_bands: int, model_id: str | None):
+    def _session(
+        self,
+        simulation_id: str,
+        policy: str,
+        num_bands: int,
+        model_id: str | None,
+        scenario_id: str | None = None,
+    ):
         """Get or create the agent serving one simulation under one policy.
 
         The resolved ``model_id`` is stored WITH the session rather than re-resolved per call.
@@ -62,40 +90,83 @@ class InferenceEngine:
           activations correctly apply to new sessions.
         """
         key = (simulation_id, policy)
+        # A session serves exactly the request it was built for. A different band count, pinned
+        # model or scenario under the same simulation id is a different run configuration: reusing
+        # the old agent while reporting the newly requested model id misattributed every decision.
+        built_for = (num_bands, model_id, scenario_id)
         with self._lock:
             entry = self._sessions.get(key)
-            if entry is not None and entry[0].num_bands == num_bands:
+            if entry is not None and entry[2] == built_for:
                 self._sessions.move_to_end(key)
-                agent, resolved = entry
-                return agent, (model_id or resolved)
+                return entry[0], entry[1]
 
-            agent, resolved = self._build(policy, num_bands, model_id)
-            self._sessions[key] = (agent, resolved)
+            agent, resolved = self._build(policy, num_bands, model_id, scenario_id)
+            self._sessions[key] = (agent, resolved, built_for)
             self._sessions.move_to_end(key)
             while len(self._sessions) > self.max_sessions:
                 evicted, _ = self._sessions.popitem(last=False)
                 log.info("evicted inference session", extra={"simulation_id": evicted[0]})
             return agent, resolved
 
-    def _build(self, policy: str, num_bands: int, model_id: str | None) -> tuple[Agent, str]:
-        """Load a registered model if one is named or active, else a fresh online learner."""
-        target = model_id
-        if target is None:
-            active = self.registry.active_model(policy)
-            target = active.model_id if active else None
+    def _load(self, model_id: str) -> Agent:
+        cached = self._model_cache.get(model_id)
+        agent = cached if cached is not None else self.registry.load_agent(model_id)
+        self._model_cache.setdefault(model_id, agent)
+        return agent
 
-        if target is not None:
-            cached = self._model_cache.get(target)
-            agent = cached if cached is not None else self.registry.load_agent(target)
-            self._model_cache.setdefault(target, agent)
+    def _build(
+        self,
+        policy: str,
+        num_bands: int,
+        model_id: str | None,
+        scenario_id: str | None = None,
+    ) -> tuple[Agent, str]:
+        """The agent for a new session: a named model, else the best registered fit, else cold.
+
+        Model choice used to be "the one active model of this algorithm". Activation is per
+        algorithm, but weights are sized to a band count, so one active DQN could serve only the
+        scenarios with its band count: on every other scenario DQN/PPO crashed (HTTP 500), the
+        Backend fell back to round-robin for the whole run, and the result was byte-identical to
+        the baseline -- presented as a real DQN measurement. ``ModelRegistry.resolve`` now picks a
+        band-compatible model per request, preferring one trained on the requested scenario.
+        """
+        import copy
+
+        if model_id is not None:
+            pinned = self.registry.get(model_id)          # KeyError -> 404 at the API
+            if pinned.algorithm != policy:
+                raise ValueError(
+                    f"model {model_id} is a {pinned.algorithm} model; it cannot serve {policy}"
+                )
+            agent = self._load(model_id)
+            if agent.num_bands != num_bands:
+                # An explicit pin is an operator's instruction; quietly serving something else
+                # would misattribute every metric of the run. Fail loudly instead.
+                raise ValueError(
+                    f"model {model_id} was trained for {agent.num_bands} bands, "
+                    f"but this simulation has {num_bands}"
+                )
             # Serve a copy so two simulations sharing a model do not learn into each other.
-            import copy
+            return copy.deepcopy(agent), model_id
 
-            return copy.deepcopy(agent), target
+        chosen = self.registry.resolve(policy, num_bands, scenario_id)
+        if chosen is not None:
+            agent = self._load(chosen.model_id)
+            if agent.num_bands == num_bands:
+                return copy.deepcopy(agent), chosen.model_id
+            log.warning(
+                "registry band count disagrees with the checkpoint; not serving it",
+                extra={"model_id": chosen.model_id, "model_num_bands": agent.num_bands,
+                       "requested_num_bands": num_bands},
+            )
 
-        # No registered model: a cold online learner. This is a legitimate mode, not a
-        # fallback -- the bandit is designed to adapt from scratch within a single simulation.
-        agent = build_agent(policy, num_bands)
+        if policy in OFFLINE_POLICIES:
+            raise NoCompatibleModelError(policy, num_bands, scenario_id)
+
+        # Nothing registered fits: a cold online learner. This is a legitimate mode, not a
+        # fallback -- the bandit is designed to adapt from scratch within a single simulation,
+        # and index/ctmc are fully specified by their derived constants.
+        agent = _cold_agent(policy, num_bands, scenario_id)
         agent.start_episode(0)
         return agent, f"online_{policy}"
 
@@ -118,11 +189,14 @@ class InferenceEngine:
         state: StateVector,
         policy: str,
         model_id: str | None = None,
+        scenario_id: str | None = None,
     ) -> tuple[Action, str, str]:
         """``POST /internal/decide`` -> ``(action, model_id, decision_id)``."""
         contract_state = state.model_dump()
         num_bands = len(contract_state["bands"])
-        agent, resolved_model = self._session(simulation_id, policy, num_bands, model_id)
+        agent, resolved_model = self._session(
+            simulation_id, policy, num_bands, model_id, scenario_id
+        )
 
         vector = StateBuilder.from_contract(contract_state).to_vector()
         # explore=False: a live simulation is not a training run. Exploration during deployment
@@ -155,30 +229,56 @@ class InferenceEngine:
         action: Action,
         reward: float,
         next_state: StateVector | None = None,
+        scanned_bands: list[int] | None = None,
+        detected_bands: list[int] | None = None,
     ) -> bool:
         """``POST /internal/learn``.
 
         The reward arrives pre-computed from the Backend (Equation 10.1); this service consumes
         it and never recomputes it. A no-op for policies that do not learn online.
-        """
-        record = self._decisions.pop(decision_id, None)
-        policy = record["policy"] if record else None
-        if policy is None:
-            # The Backend may call learn for a decision we no longer hold (restart, eviction).
-            # Fall back to the only session for this simulation, if there is exactly one.
-            with self._lock:
-                candidates = [k for k in self._sessions if k[0] == simulation_id]
-            if len(candidates) != 1:
-                log.info("learn for unknown decision", extra={"simulation_id": simulation_id,
-                                                             "decision_id": decision_id})
-                return False
-            policy = candidates[0][1]
 
+        The step's raw outcome goes to ``Agent.observe`` first, exactly as
+        ``ml/evaluation/runner.py`` does it. That call was missing here, and it is the ONLY way the
+        index policy updates its occupancy belief, revisit ages and kernel evidence -- so every
+        Backend-served index run used a permanently cold belief with deadlines that never advanced.
+        """
         with self._lock:
+            if decision_id in self._consumed:
+                # A retry of a learn we already applied (e.g. after an ambiguous HTTP timeout).
+                # Acknowledge it -- the Backend's intent is satisfied -- but never apply it twice.
+                return True
+            record = self._decisions.pop(decision_id, None)
+            if record is not None and record["simulation_id"] != simulation_id:
+                # A decision id from another simulation: applying it would teach one simulation's
+                # learner with another's step. Leave it for its real owner and refuse.
+                self._decisions[decision_id] = record
+                log.warning("learn with a decision id owned by another simulation",
+                            extra={"simulation_id": simulation_id, "decision_id": decision_id})
+                return False
+            if record is not None:
+                policy = record["policy"]
+            else:
+                # The Backend may call learn for a decision we no longer hold (log truncation).
+                # The request itself carries the state, action and reward, so learning from it is
+                # still correct -- provided there is exactly one session it can belong to.
+                candidates = [k for k in self._sessions if k[0] == simulation_id]
+                if len(candidates) != 1:
+                    log.info("learn for unknown decision", extra={"simulation_id": simulation_id,
+                                                                 "decision_id": decision_id})
+                    return False
+                policy = candidates[0][1]
             entry = self._sessions.get((simulation_id, policy))
+            if entry is not None:
+                self._consumed[decision_id] = None
+                while len(self._consumed) > 100 * self.max_sessions:
+                    self._consumed.popitem(last=False)
         if entry is None:
             return False
         agent = entry[0]
+
+        info = _step_outcome(next_state, scanned_bands, detected_bands, agent.num_bands)
+        if info is not None:
+            agent.observe(info)
 
         state_vec = (
             record["state"] if record else StateBuilder.from_contract(state.model_dump()).to_vector()
@@ -205,3 +305,49 @@ class InferenceEngine:
     def describe_session(self, simulation_id: str, policy: str) -> dict | None:
         entry = self._sessions.get((simulation_id, policy))
         return entry[0].describe() if entry else None
+
+
+def _cold_agent(policy: str, num_bands: int, scenario_id: str | None) -> Agent:
+    """A fresh agent for a request no registered model fits.
+
+    The index policy's constants (receiver width K, detector ROC, revisit deadlines) must come
+    from the receiver it drives, exactly as ``IndexAgent.from_scenario`` does for evaluation; a
+    bare constructor assumed K=1 and default detector probabilities against a K=2 receiver. Every
+    scenario A-G shares one receiver, and a custom simulation reuses it too, so a non-synthetic
+    scenario id borrows D's receiver with the request's band count.
+    """
+    if policy == "index":
+        from ml.agents.index_agent import IndexAgent  # noqa: PLC0415
+        from ml.model_registry import SYNTHETIC_SCENARIOS  # noqa: PLC0415
+        from ml.utils.config import load_scenario  # noqa: PLC0415
+
+        cfg = dict(load_scenario(scenario_id if scenario_id in SYNTHETIC_SCENARIOS else "D"))
+        cfg["bands"] = num_bands
+        return IndexAgent.from_scenario(cfg)
+    return build_agent(policy, num_bands)
+
+
+def _step_outcome(
+    next_state: StateVector | None,
+    scanned_bands: list[int] | None,
+    detected_bands: list[int] | None,
+    num_bands: int,
+) -> dict | None:
+    """The ``info`` dict ``Agent.observe`` takes, from the learn request.
+
+    Explicit ``scanned_bands``/``detected_bands`` win. Without them the outcome is recovered from
+    ``next_state``, which the Backend's StateBuilder updates deterministically: a scanned band's
+    ``time_since_last_scan`` is reset to 0 (every other band ages to >= 1), and a scanned band's
+    ``consecutive_misses`` is reset to 0 on a hit and incremented on a miss.
+    """
+    if scanned_bands is not None:
+        scanned = [int(b) for b in scanned_bands if 0 <= int(b) < num_bands]
+        scanned_set = set(scanned)
+        detected = [int(b) for b in (detected_bands or []) if int(b) in scanned_set]
+        return {"scanned_bands": scanned, "detected_bands": detected}
+    if next_state is None:
+        return None
+    bands = next_state.bands
+    scanned = [b.band_id for b in bands if b.time_since_last_scan == 0]
+    detected = [b.band_id for b in bands if b.time_since_last_scan == 0 and b.consecutive_misses == 0]
+    return {"scanned_bands": scanned, "detected_bands": detected}

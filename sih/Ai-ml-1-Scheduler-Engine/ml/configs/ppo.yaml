@@ -1,0 +1,18 @@
+algorithm: ppo
+_comment: Proximal Policy Optimization - V2 STRETCH ONLY (Ai-ml-1 Level 9), same gate as
+  dqn.yaml (PRD Section 24 scope-creep risk). Did not previously exist, so PPO ran on bare
+  SB3 defaults -- notably ent_coef=0.0, i.e. no entropy bonus at all, which is the PPO
+  equivalent of DQN's exploration_fraction and the more likely reason PPO's own policy
+  sharpens onto 1-2 bands even faster than DQN's on 32-band scenarios. total_timesteps and
+  ent_coef below are tuned for reference_bands; ml/training/trainer.py::_scale_for_band_count
+  scales both up for scenarios with more bands.
+policy: MlpPolicy
+reference_bands: 16
+total_timesteps: 50000
+learning_rate: 0.0003
+gamma: 0.95
+ent_coef: 0.01
+net_arch:
+- 128
+- 128
+device: auto

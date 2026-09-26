@@ -142,30 +142,33 @@ def test_the_index_escapes_the_lockout():
     assert metrics.interception_ratio == pytest.approx(1.0)
 
 
-def test_pure_randomness_still_beats_the_index_on_this_scenario():
-    """Clarkson & Pollington, in measurement rather than in a citation.
+def test_once_periodicity_locks_on_the_index_beats_pure_randomness():
+    """Clarkson & Pollington describe the opening of this scenario, not all of it.
 
-    One emitter, one band at a time, and parameters the receiver has no prior knowledge of. This is
-    exactly the regime their theorem covers, and the index does not beat random in it. Its coverage
-    deadlines give its visit pattern a residual regularity that correlates with the emitter period;
-    a uniform random schedule has none to correlate.
+    One emitter, one band at a time, parameters unknown: until a period is fitted that is exactly
+    their regime, and the floor is what keeps the index out of the lockout meanwhile. Once the
+    estimator has fitted the period the parameters are no longer unknown, and a schedule that uses
+    them should beat one that cannot. This one does: Pd 0.28 against the floor's 0.15, at every
+    seed, because the trap is arithmetic.
 
-    The index's advantage lies in spectra with several emitters and exploitable structure, which is
-    what scenarios A through D measure. The honest claim here is narrower: the floor is what keeps
-    the index out of the lockout, and the lockout is what the sweep cannot escape at all.
+    History: this test used to assert the opposite, and it held by a hair -- 0.15 against 0.13.
+    The index fused periodicity through a cosine symmetric about phase 0, so every one-step window
+    was preceded by a look one step early, spent where the emitter was dark. Rating the stretch
+    before a window as quiet, and learning each window's width from its own looks, doubled the
+    index's Pd here. A change that drags it back under the floor has lost that.
     """
     floor = build_agent("ctmc", TRAP["bands"], rng=np.random.default_rng(3))
-    assert _run(floor).pd > _run(IndexAgent.from_scenario(TRAP)).pd
+    assert _run(IndexAgent.from_scenario(TRAP)).pd > _run(floor).pd
 
 
 def test_the_outcome_turns_on_whether_periodicity_locks_on_early():
     """The mechanism behind the spread, traced rather than guessed at.
 
-    Detection on this scenario ranges from 0.08 to 1.00 across deadline settings, and the reason is
+    Detection on this scenario ranges from 0.16 to 1.00 across deadline settings, and the reason is
     not the schedule's own period. It is whether the first handful of detections arrive close
     enough together for the periodicity estimator to fit a period at all. At a 133 ms deadline it
-    locks on by step 43 and then intercepts all 100 activations; at 160 ms it collects thirteen
-    scattered detections in 800 steps and never fits one.
+    locks on by step 44 and then intercepts all 100 activations; at 200 ms it collects sixteen
+    scattered detections in 800 steps and does not reach a confident fit until step 508.
 
     That is a direct, measured argument for the Ai-ml-2 upgrade in solution spec Section 3.2. The
     training stand-in fits a median inter-arrival over detections alone and needs four of them with
@@ -182,13 +185,21 @@ def test_the_outcome_turns_on_whether_periodicity_locks_on_early():
     assert max(scores.values()) > 4 * min(scores.values()), "the bootstrapping threshold is real"
 
 
-def test_dithering_the_trigger_narrows_the_spread_without_closing_it():
-    """The synchronisation guard helps here and is not the whole answer, which is worth recording.
+def test_dithering_the_trigger_does_not_close_the_spread():
+    """The synchronisation guard is not the answer to this scenario, which is worth recording.
 
     A fixed trigger gives the visit pattern a period of its own, so dithering it is right on its own
-    terms and does reduce the spread. It cannot close it, because the dominant factor is the
+    terms -- and it never widens the spread. It cannot close it, because the dominant factor is the
     estimator's bootstrapping threshold rather than the schedule's periodicity. Claiming the guard
     as the fix for this scenario would be claiming the wrong mechanism.
+
+    History: this test used to assert that dithering strictly *narrows* the spread (12.5 -> 8.3).
+    That margin came from a timing bug -- the environment computed the periodicity phase for the
+    step just taken rather than for the decision about to be made, one step behind what the
+    Backend serves. With the phase computed at decision time the spread was 7.69 with and without
+    dither. Since the index fuses periodicity through a learned window rather than a cosine, the
+    dither does narrow it again, from 11.1 to 6.25 (identical at seeds 7 and 11; the trap is
+    arithmetic) -- and 6.25 is still far from closed, which is the claim.
     """
     receiver = TRAP["receiver"]
     cycle = TRAP["bands"] * (receiver["step_ms"] + receiver["tuning_delay_ms"]) / 1000.0
@@ -204,7 +215,7 @@ def test_dithering_the_trigger_narrows_the_spread_without_closing_it():
         ]
         return max(scores) / max(min(scores), 1e-9)
 
-    assert spread(0.25) < spread(0.0)
+    assert spread(0.25) <= spread(0.0)
     assert spread(0.25) > 2.0
 
 

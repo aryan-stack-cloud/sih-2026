@@ -31,9 +31,12 @@ class RewardWeights:
     w4_false_alarm: float = 5.0       # penalise false alarms
     # Coverage/exploitation knob. With C(t) scoring re-detection of an already-intercepted run
     # as 'no new information', raising w5 trades Pd and scan efficiency for distinct-run
-    # coverage; lowering it lets the policy camp on the loudest bands. 3.0 keeps most of the
-    # Pd win while roughly doubling interception ratio -- see README 'Reward weight w5'.
-    w5_redundant: float = 3.0         # penalise re-scanning a band that told us nothing new
+    # coverage; lowering it lets the policy camp on the loudest bands. At 3.0 the camping
+    # penalty (max -3/step) never outweighs a detection (+10 to +16/step), so camping stays
+    # net-positive. 8.0 is the swept point that matches the PS's primary objective: Pd
+    # 0.338 -> 0.259, but interception ratio 0.725 -> 0.900 and censored AIT 812 -> 703 (both
+    # improve) -- see README 'Reward weight w5'.
+    w5_redundant: float = 8.0         # penalise re-scanning a band that told us nothing new
     w6_missed: float = 4.0            # penalise leaving a high-priority active band unscanned
 
     def __post_init__(self) -> None:

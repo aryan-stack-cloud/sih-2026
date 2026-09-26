@@ -2,13 +2,15 @@
 # do not change them here without changing the contract in all four folders first.
 services:
   ml-scheduler:
-    build: ./Ai-ml-1-Scheduler-Engine
+    build:
+      context: ..
+      dockerfile: Ai-ml-1-Scheduler-Engine/Dockerfile
     ports:
       - "8500:8500"
     environment:
       ML_CHECKPOINT_DIR: /app/ml/checkpoints
-      # Optional, and only for the Turing replay scenario (ml/data/turing_replay.py).
-      # The dataset is gated; leave unset for the default synthetic-only run (PRD Section 25).
+      # Required for the Turing replay scenario (ml/data/turing_replay.py): the dataset is
+      # gated on Hugging Face, so this needs a token from an account that accepted its terms.
       HF_TOKEN: ${HF_TOKEN:-}
     volumes:
       - model_artifacts:/app/ml/checkpoints

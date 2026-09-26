@@ -128,3 +128,99 @@ class LocalPeriodicityProvider:
         buf = list(self._timestamps[band])
         gaps = np.diff(np.asarray(buf, dtype=np.float64)).tolist() if len(buf) > 1 else []
         return {"band_id": band, "timestamps": buf, "inter_arrivals": gaps}
+
+
+class ServicePeriodicityProvider:
+    """TRAINING ONLY: Ai-ml-2's own estimator, embedded in-process and fed as the Backend feeds it.
+
+    Why this exists alongside ``LocalPeriodicityProvider``: a model trained offline sees the
+    stand-in's features, but a served one sees Ai-ml-2's -- and the two disagree. The stand-in
+    counts every hit timestamp, trusts four samples and reports a smooth confidence; Ai-ml-2
+    clusters a burst into one activation, folds misses into the fit, and withholds a claim it
+    cannot support (six consecutive hits scored 0.60 here and 0.0 there). DQN/PPO are served
+    read-only, so they cannot adapt to that shift at run time; training them on Ai-ml-2's actual
+    output removes it.
+
+    This does not move estimation into Ai-ml-1's serving path. It is the same code the Backend's
+    HTTP calls reach, run in-process only because standalone training has no Backend in the loop.
+    Nothing on ``ml/api`` constructs it.
+    """
+
+    def __init__(self) -> None:
+        self._service = _ai_ml_2_service_class()()
+        self._simulation_id = "training"
+        self.num_bands = 0
+
+    def reset(self, num_bands: int) -> None:
+        self.num_bands = num_bands
+        self._service.reset(self._simulation_id)
+
+    def observe_detection(self, band: int, t: int) -> None:
+        self._service.update(self._simulation_id, int(band), float(t))
+
+    def observe_miss(self, band: int, t: int) -> None:
+        self._service.observe_miss(self._simulation_id, int(band), float(t))
+
+    def features(self, t: int) -> tuple[np.ndarray, np.ndarray]:
+        phase = np.zeros(self.num_bands, dtype=np.float32)
+        confidence = np.zeros(self.num_bands, dtype=np.float32)
+        for band, prediction, band_phase in self._service.predict_many(
+            self._simulation_id, list(range(self.num_bands)), float(t)
+        ):
+            phase[band] = band_phase
+            confidence[band] = prediction.confidence
+        # The Backend's StateBuilder clamps both into [0, 1] before they reach a model.
+        return np.clip(phase, 0.0, 1.0), np.clip(confidence, 0.0, 1.0)
+
+
+def _ai_ml_2_service_class():
+    """Import Ai-ml-2's ``PeriodicityService`` from the sibling service folder."""
+    try:
+        from periodicity.service import PeriodicityService  # noqa: PLC0415
+    except ImportError:
+        import os
+        import sys
+        from pathlib import Path
+
+        root = os.environ.get("AI_ML_2_PATH") or str(
+            Path(__file__).resolve().parents[3] / "Ai-ml-2-Periodicity-Estimator"
+        )
+        if root not in sys.path:
+            sys.path.append(root)
+        from periodicity.service import PeriodicityService  # noqa: PLC0415
+    return PeriodicityService
+
+
+def serving_periodicity_source() -> str:
+    """``"ai-ml-2"`` when training can use Ai-ml-2's own estimator, else ``"local-standin"``.
+
+    Recorded on every trained model, because a checkpoint trained on the stand-in's features is
+    served Ai-ml-2's -- the skew this module exists to remove -- and that should be visible in the
+    registry rather than only in a warning nobody saw.
+    """
+    try:
+        _ai_ml_2_service_class()
+        return "ai-ml-2"
+    except ImportError:
+        return "local-standin"
+
+
+def serving_periodicity_provider() -> PeriodicityProvider:
+    """The provider whose features match what a served model will see.
+
+    Ai-ml-2's own estimator when its code is importable (the repository layout, or
+    ``AI_ML_2_PATH``); otherwise the stand-in, so training still runs in a container that ships
+    Ai-ml-1 alone.
+    """
+    try:
+        return ServicePeriodicityProvider()
+    except ImportError:
+        import warnings
+
+        warnings.warn(
+            "Ai-ml-2's estimator is not importable; training on LocalPeriodicityProvider, whose "
+            "features differ from what the served model will receive",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+        return LocalPeriodicityProvider()

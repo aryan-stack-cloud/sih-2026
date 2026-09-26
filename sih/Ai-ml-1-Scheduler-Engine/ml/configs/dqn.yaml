@@ -1,8 +1,12 @@
 algorithm: dqn
 _comment: Deep Q-Network - V2 STRETCH ONLY (Ai-ml-1 Level 9). Gated behind the bandit
   beating baseline on Scenario A/B; do not enable by default (PRD Section 24 scope-creep
-  risk).
+  risk). total_timesteps and exploration_fraction below are tuned for reference_bands;
+  ml/training/trainer.py::_scale_for_band_count scales both up for scenarios with more
+  bands, since a fixed exploration budget starves per-action coverage as the action space
+  grows (32-band scenarios were observed collapsing onto 1-2 bands at these base values).
 policy: MlpPolicy
+reference_bands: 16
 total_timesteps: 50000
 learning_rate: 0.0005
 buffer_size: 50000

@@ -269,7 +269,7 @@ after offline training — which is why switching policy needs no Backend change
 
 ---
 
-## Turing replay (optional, off by default)
+## Turing replay
 
 `ml/data/turing_replay.py` binds the Alan Turing Institute's synthetic radar dataset to the
 environment as an alternative ground-truth source.
@@ -289,10 +289,8 @@ HF_TOKEN=... python -c "from ml.data.turing_replay import load_replay_scenario; 
 
 Every agent, metric and endpoint works unchanged — only the ground-truth source is swapped. The
 pure transforms are tested offline with synthetic PDWs; the download test is marked `turing` and
-skips without a token.
-
-PRD Section 25 assumes synthetic-only data, so this stays an explicitly-labelled extension. Nothing
-in the training or evaluation path imports it.
+skips without a token (the dataset is gated, so a real download still needs `HF_TOKEN` from an
+account that has accepted its terms — that is a credentials requirement, not a project policy).
 
 ---
 
@@ -301,6 +299,11 @@ in the training or evaluation path imports it.
 `Dockerfile` and `docker-compose.ml-scheduler.yml` — port 8500 per §7, non-root user, healthcheck
 on `/internal/health`, checkpoints on a named volume shared with the Backend
 (`ML_CHECKPOINT_DIR`).
+
+Build from the `sih` directory with
+`docker compose -f Ai-ml-1-Scheduler-Engine/docker-compose.ml-scheduler.yml build`.
+The image includes Ai-ml-2's estimator package so offline training uses the same periodicity
+features as serving.
 
 ---
 
@@ -406,8 +409,21 @@ floor settles at its 10% minimum after a few hundred steps.
 
 A seventh, smaller one: the index ignored `periodicity_phase` and `periodicity_confidence` entirely,
 which are the features scenario B exists to reward. `effective_belief` now fuses them into the
-occupancy belief, confidence-weighted. Phase is circular, so due-ness is `0.5 (1 + cos 2πφ)` — the
-emitter is on us near phase 0 *and* near phase 1, not only at the top of the cycle.
+occupancy belief, confidence-weighted. Ai-ml-2 anchors phase 0 at the *start* of its fitted
+illuminated window, so the emitter is on for φ in `[0, duty)` and quiet until the cycle wraps; φ
+near 1 means about due, not on. Ai-ml-2 fits the duty but does not send it, so the agent learns it
+per band from its own hits and misses at known phase, through the receiver's ROC.
+
+**An eighth, found by the Backend's DoD item 8 gate (26 Sep 2026).** The first version of that
+fusion was `0.5 (1 + cos 2πφ)`, symmetric about φ = 0. It was written against the training
+stand-in, whose phase counts from the last *detection*, where a symmetric bump is roughly right.
+Served Ai-ml-2's phase, it rated the quiet stretch before every window as due as the window itself:
+on scenario B the index spent more looks at φ 0.8–1.0 (occupied 22% of the time) than at 0–0.2
+(occupied 72%). Periodicity then bought nothing — over 25 seeds of the three-service loop it moved
+censored intercept time by 0.8%, cost 7% of HPDR, and the five-seed gate failed at 434.2 steps
+against 430.9. Even a perfect oracle phase moved censored intercept time by under 1% through the
+cosine, against 7% through a correctly shaped window, so the consumer, not the estimator, was the
+limit.
 
 ## Results
 
@@ -415,6 +431,10 @@ emitter is on us near phase 0 *and* near phase 1, not only at the top of the cyc
 which took no part in choosing any setting. That distinction is not pedantry here. Two claims
 made earlier in this work survived selection seeds and failed hold-out, and both were reported
 before the check rather than after.
+
+The `index` figures in the two scenario tables predate the 25 Sep phase-timing fix and the 26 Sep
+periodicity-fusion fix (the eighth defect above) and have not been re-measured since; the
+synchronisation-trap tables further down have.
 
 Scenario B, 20 evaluation seeds for the bandit column, 6 hold-out seeds for the rest, 2000 steps,
 identical spectrum per seed. `index` runs at the shipped defaults.
@@ -482,27 +502,30 @@ The one scenario where the difference is categorical rather than incremental.
 |---|---|---|---|
 | round-robin sweep | 0.000 | 0.000 | 800.0 |
 | randomised floor | 0.150 | 1.000 | 680.0 |
-| index | 0.080 | 1.000 | 736.0 |
+| index | 0.280 | 1.000 | 576.0 |
 
 An 8-band sweep visits band b when `t mod 8 == b`; an emitter in band 5 illuminating one step in
 eight at phase 3 is visible only when `t mod 8 == 3`. The two never meet. The sweep is not slow
 here, it is blind, and it cannot tell that from an empty band. Both other policies escape.
 
-Pure random beats the index on this scenario, which is Clarkson & Pollington in measurement rather
-than in a citation: one emitter with unknown parameters is exactly the regime their theorem covers.
-The index's claim here is narrow and it is the right one -- the floor is what keeps it out of the
-lockout.
+Until a period is fitted this is Clarkson & Pollington's regime -- one emitter, parameters unknown
+-- and the floor is what keeps the index out of the lockout. Once one is fitted the parameters are
+no longer unknown, and the index uses them: it now beats pure random here. It did not before the
+eighth defect above was fixed (0.13 against the floor's 0.15): the cosine sent a look one step
+before every one-step window, where the emitter was dark.
 
 ### A bootstrapping threshold, and where it points
 
-Detection on the trap ranges from 0.08 to 1.00 across deadline settings. Tracing it:
+Detection on the trap ranges from 0.16 to 1.00 across deadline settings. Tracing it, with "locks
+on" the first step the estimator's confidence on the trap band reaches 0.6 (re-measured 26 Sep
+2026, after the fusion fix):
 
 | Deadline | Periodicity locks on at | Detections in 800 steps | Pd |
 |---|---|---|---|
-| 133 ms | step 43 | 100 | 1.000 |
-| 160 ms | never | 13 | 0.080 |
-| 200 ms | step 435 | 12 | 0.130 |
-| 267 ms | step 635 | 19 | 0.230 |
+| 133 ms | step 44 | 100 | 1.000 |
+| 160 ms | step 508 | 28 | 0.280 |
+| 200 ms | step 508 | 16 | 0.160 |
+| 267 ms | step 484 | 21 | 0.210 |
 
 The outcome turns on whether the first few detections arrive close enough together for the
 periodicity estimator to fit a period at all. Once it locks on, tracking is genuine and catches
@@ -513,9 +536,13 @@ stand-in fits a median inter-arrival over detections alone and needs four with c
 thirteen scattered detections in 800 steps cannot produce that. The specified estimator evaluates a
 likelihood over hits *and misses*, which fits from far sparser evidence -- exactly this regime.
 
-The trigger dither (`ml/scheduling/deadlines.py`) narrows the spread from 12.5x to 8.3x and cannot
-close it, because the dominant factor is the estimator rather than the schedule's own periodicity.
-It is kept because it is correct on its own terms and costs nothing, and the test says plainly that
+The trigger dither (`ml/scheduling/deadlines.py`) cannot close the spread, because the dominant
+factor is the estimator rather than the schedule's own periodicity. An earlier measurement had it
+narrowing the spread from 12.5x to 8.3x; that margin came from the environment computing the
+periodicity phase one step behind the decision (fixed 25 Sep 2026, to match what the Backend
+serves). With the phase computed at decision time the spread was 7.69x with and without dither;
+since the fusion fix, the dither narrows it from 11.1x to 6.25x, which is still far from closed. It
+is kept because it is correct on its own terms and costs nothing, and the test says plainly that
 it is not the mechanism behind this scenario.
 
 ### Tuning

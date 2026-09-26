@@ -26,6 +26,15 @@ import numpy as np
 BEHAVIOR_CLASSES = ("fixed", "periodic", "agile", "random", "intermittent")
 
 
+@dataclass(frozen=True)
+class Regime:
+    start: int
+    end: int
+    behavior_class: str
+    bands: tuple[int, ...]
+    params: dict
+
+
 @dataclass
 class Emitter:
     """One synthetic emitter and the parameters of its behavior class.
@@ -39,6 +48,11 @@ class Emitter:
     bands: tuple[int, ...]
     priority: float = 1.0
     params: dict = field(default_factory=dict)
+    switching: dict | None = None
+    switch_mix: dict[str, float] | None = None
+    params_by_class: dict[str, dict] | None = None
+    num_bands: int | None = None
+    regimes: list[Regime] = field(default_factory=list, init=False, repr=False)
 
     def __post_init__(self) -> None:
         if self.behavior_class not in BEHAVIOR_CLASSES:
@@ -57,6 +71,9 @@ class Emitter:
 
     def activity_track(self, duration: int, rng: np.random.Generator) -> np.ndarray:
         """Band occupied at each step, or -1 when silent. Shape ``(duration,)``, dtype int32."""
+        if self.switching is not None:
+            return self._switching_track(duration, rng)
+
         track = np.full(duration, -1, dtype=np.int32)
         t = np.arange(duration)
 
@@ -115,6 +132,56 @@ class Emitter:
 
         return track
 
+    def _switching_track(self, duration: int, rng: np.random.Generator) -> np.ndarray:
+        config = self.switching or {}
+        mean = int(config["mean_regime_steps"])
+        minimum = int(config["min_regime_steps"])
+        if minimum < 1 or mean < minimum:
+            raise ValueError("switching requires 1 <= min_regime_steps <= mean_regime_steps")
+        if self.switch_mix is None or self.params_by_class is None or self.num_bands is None:
+            raise ValueError("switching emitter needs mix, class params, and num_bands")
+
+        track = np.full(duration, -1, dtype=np.int32)
+        self.regimes.clear()
+        start = 0
+        behavior, bands, params = self.behavior_class, self.bands, self.params
+        while start < duration:
+            length = minimum + int(rng.integers(0, 2 * (mean - minimum) + 1))
+            end = min(duration, start + length)
+            regime = Regime(start, end, behavior, bands, dict(params))
+            self.regimes.append(regime)
+            segment = Emitter(self.emitter_id, behavior, bands, self.priority, params)
+            track[start:end] = segment.activity_track(end - start, rng)
+            start = end
+            if start < duration:
+                behavior = _next_class(behavior, self.switch_mix, rng)
+                params = _randomize_params(
+                    behavior, dict(self.params_by_class.get(behavior, {})), rng
+                )
+                bands = _switch_bands(behavior, self.bands[0], self.num_bands, params, rng)
+        return track
+
+
+def _next_class(current: str, mix: dict[str, float], rng: np.random.Generator) -> str:
+    choices = [name for name in BEHAVIOR_CLASSES if name != current and mix.get(name, 0) > 0]
+    weights = np.array([mix[name] for name in choices], dtype=float)
+    if not choices:
+        raise ValueError("switching requires another class with positive mix weight")
+    return str(rng.choice(choices, p=weights / weights.sum()))
+
+
+def _switch_bands(
+    behavior: str, home: int, num_bands: int, params: dict, rng: np.random.Generator
+) -> tuple[int, ...]:
+    if behavior != "agile":
+        return (home,)
+    if params.get("bands") is not None:
+        pinned = _validate_bands(params["bands"], num_bands)
+        return (home, *(band for band in pinned if band != home))
+    size = max(1, min(max(2, int(params.get("hop_set_size", min(4, num_bands)))), num_bands))
+    others = rng.choice([b for b in range(num_bands) if b != home], size=size - 1, replace=False)
+    return (home, *(int(b) for b in others))
+
 
 def build_emitters(
     num_emitters: int,
@@ -133,6 +200,8 @@ def build_emitters(
     params_by_class = params_by_class or {}
     classes = _allocate_classes(num_emitters, mix)
 
+    switching = params_by_class.get("switching")
+
     emitters: list[Emitter] = []
     for i, behavior in enumerate(classes):
         params = dict(params_by_class.get(behavior, {}))
@@ -145,6 +214,10 @@ def build_emitters(
                 bands=bands,
                 priority=priority,
                 params=_randomize_params(behavior, params, rng),
+                switching=switching,
+                switch_mix=mix if switching is not None else None,
+                params_by_class=params_by_class if switching is not None else None,
+                num_bands=num_bands if switching is not None else None,
             )
         )
     return emitters

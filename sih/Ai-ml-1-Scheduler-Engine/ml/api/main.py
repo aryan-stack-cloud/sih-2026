@@ -31,7 +31,7 @@ from ml.contract import (
     TrainStatusResponse,
     new_request_id,
 )
-from ml.inference.inference import InferenceEngine
+from ml.inference.inference import InferenceEngine, NoCompatibleModelError
 from ml.model_registry import ModelRegistry
 from ml.training.jobs import JobRegistry
 from ml.utils import logging as jlog
@@ -46,7 +46,22 @@ jobs = JobRegistry()
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     jlog.configure()
-    log.info("ml-scheduler ready", extra={"port": 8500, "service": "Ai-ml-1"})
+    # Model resolution matches on band count; records registered before it was stored get it now,
+    # once, rather than by loading checkpoints on the decision path.
+    backfilled = registry.backfill_num_bands()
+    # torch + Stable-Baselines3 take seconds to import. Left lazy, the first dqn/ppo decision
+    # after a restart paid it and blew the Backend's 5 s read timeout, so the opening decisions
+    # of that run silently fell back to the sweep. Pay it here, before /health answers.
+    try:
+        import stable_baselines3  # noqa: F401, PLC0415
+
+        from ml.agents.dqn_agent import _patch_torch_load_for_zip_members  # noqa: PLC0415
+
+        _patch_torch_load_for_zip_members()
+    except ImportError:
+        log.warning("stable-baselines3 unavailable; dqn/ppo cannot be served")
+    log.info("ml-scheduler ready",
+             extra={"port": 8500, "service": "Ai-ml-1", "num_bands_backfilled": backfilled})
     yield
     jobs.shutdown()
 
@@ -93,7 +108,12 @@ async def correlation_and_timing(request: Request, call_next):
     response.headers["X-Response-Time-Ms"] = f"{elapsed_ms:.2f}"
     if request.url.path.endswith("/decide"):
         # NFR-002: < 50 ms per decision for bandit/Q-Learning, < 150 ms for DQN.
-        log.info("decide latency", extra={"latency_ms": round(elapsed_ms, 3)})
+        # Sweeps make hundreds of thousands of decisions; logging every fast request becomes
+        # significant I/O. Keep slow decisions visible and fast ones available at debug level.
+        if elapsed_ms >= 150:
+            log.warning("slow decide", extra={"latency_ms": round(elapsed_ms, 3)})
+        else:
+            log.debug("decide latency", extra={"latency_ms": round(elapsed_ms, 3)})
     return response
 
 
@@ -127,8 +147,14 @@ def decide(body: DecideRequest, x_request_id: str | None = Header(default=None))
     """Return the next band to scan for one simulation step."""
     try:
         action, model_id, decision_id = engine.decide(
-            body.simulation_id, body.state, body.policy, body.model_id
+            body.simulation_id, body.state, body.policy, body.model_id, body.scenario_id
         )
+    except NoCompatibleModelError as exc:
+        # 409, not 500: the request is fine and the service is healthy -- what is missing is a
+        # trained model for this band count, which is an operator action to fix.
+        return fail(409, "NO_COMPATIBLE_MODEL", str(exc),
+                    {"policy": exc.policy, "num_bands": exc.num_bands,
+                     "scenario_id": exc.scenario_id})
     except KeyError:
         return fail(404, "RESOURCE_NOT_FOUND", f"model {body.model_id} is not registered")
     except ValueError as exc:
@@ -145,7 +171,8 @@ def decide(body: DecideRequest, x_request_id: str | None = Header(default=None))
 def learn(body: LearnRequest, x_request_id: str | None = Header(default=None)) -> JSONResponse:
     """Apply one Backend-computed reward. No-op for policies that do not learn online."""
     acknowledged = engine.learn(
-        body.simulation_id, body.decision_id, body.state, body.action, body.reward, body.next_state
+        body.simulation_id, body.decision_id, body.state, body.action, body.reward,
+        body.next_state, body.scanned_bands, body.detected_bands,
     )
     return ok(LearnResponse(acknowledged=acknowledged).model_dump(), x_request_id)
 

@@ -69,6 +69,18 @@ COVERAGE_BUDGET = 0.5
 # never disagree about what is already understood.
 FLOOR_CONFIDENCE_THRESHOLD = 0.6
 
+# How much of its cycle a periodic emitter spends on, as the hypotheses weighed per band. Ai-ml-2
+# fits this "duty" together with period and phase but sends only phase and confidence, so the
+# agent infers it from its own looks -- see ``effective_belief``. Half a cycle is the ceiling for
+# the reason Ai-ml-2 caps its predicted window there: an emitter on for most of its cycle is not
+# usefully periodic, and timing looks against it buys nothing.
+DUTY_HYPOTHESES = (0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5)
+
+# Ai-ml-2's hits-and-misses fit withholds a period claim unless more than half of its posterior
+# supports one, so above this a band's phase is a position in a claimed cycle and below it is a
+# placeholder. Only looks taken under a claim say anything about where that claim's window is.
+PERIODICITY_CLAIM_CONFIDENCE = 0.5
+
 
 class IndexAgent(Agent):
     """Whittle-style index scheduling under hard revisit deadlines."""
@@ -171,6 +183,13 @@ class IndexAgent(Agent):
         self.last_dwell: int = self.dwell_options[0]
         self.last_breakdown: dict[str, float] = {}
         self._previous_start = 0
+
+        # Per-simulation online state, like the belief: the duty posterior per band (log weights
+        # over DUTY_HYPOTHESES, flat to start), and the periodicity each band showed when the
+        # current look was chosen, which observe() scores the look's outcome against.
+        self._duty_log_weights = np.zeros((num_bands, len(DUTY_HYPOTHESES)))
+        self._look_phase = np.zeros(num_bands)
+        self._look_confidence = np.zeros(num_bands)
 
     @classmethod
     def from_scenario(cls, scenario: dict, **overrides) -> "IndexAgent":
@@ -290,26 +309,49 @@ class IndexAgent(Agent):
         self.last_bands = []
         self.last_breakdown = {}
         self._previous_start = 0
+        self._duty_log_weights[:] = 0.0
+        self._look_phase[:] = 0.0
+        self._look_confidence[:] = 0.0
 
     # -- decision ------------------------------------------------------------------------------
 
     def effective_belief(self, observation: np.ndarray) -> np.ndarray:
         """Occupancy belief fused with Ai-ml-2 periodicity prediction, weighted by confidence.
 
-        ``periodicity_phase`` is the fraction of the estimated period elapsed since the last
-        detection, so due-ness is *circular*: the emitter is likely on us near phase 0 and near
-        phase 1, and pointing elsewhere in between. ``0.5 * (1 + cos(2 pi phase))`` is that bump,
-        and it is what a von Mises prior over the illumination window reduces to.
+        ``periodicity_phase`` is the fraction of the fitted period elapsed since the predicted
+        activation *start*: Ai-ml-2's hits-and-misses fit anchors phase 0 where its illuminated
+        window opens, so a periodic emitter is on for phase in ``[0, duty)`` and quiet from there
+        until the cycle wraps. A phase near 1 means the band is about due -- not that it is on.
+
+        Ai-ml-2 fits the duty but does not send it, so :meth:`window_occupancy` marginalises over
+        a per-band posterior this agent learns from its own looks (:meth:`_learn_duty`).
+
+        This replaced a cosine bump symmetric about phase 0, which was written against the
+        training stand-in, whose phase counts from the last *detection*. Against Ai-ml-2's phase
+        it rated the quiet stretch before every window as on as the window itself: on scenario B
+        the index spent more looks at phase 0.8-1.0 (occupied 22% of the time) than at 0-0.2
+        (occupied 72%), and even a perfect oracle phase moved censored intercept time by under 1%.
 
         Confidence does the blending, so a low-confidence estimate changes nothing. The Ai-ml-2
         contract is explicit that a confident-but-wrong periodicity claim is worse than no claim,
         and this is the consumer side of that promise.
         """
-        block = self._band_block(observation)
-        phase = block[:, _PHASE_FEATURE]
-        confidence = np.clip(block[:, _CONFIDENCE_FEATURE], 0.0, 1.0)
-        due = 0.5 * (1.0 + np.cos(2.0 * np.pi * phase))
-        return np.clip((1.0 - confidence) * self.belief.belief + confidence * due, 0.0, 1.0)
+        phase, confidence = self._periodicity(observation)
+        in_window = self.window_occupancy(phase)
+        return np.clip((1.0 - confidence) * self.belief.belief + confidence * in_window, 0.0, 1.0)
+
+    def window_occupancy(self, phase: np.ndarray) -> np.ndarray:
+        """Probability each band is inside its illuminated window at ``phase``.
+
+        Phase is Ai-ml-2's, anchored at the window's start; the window's width is each band's
+        duty posterior. A flat posterior gives a staircase falling from 1 at phase 0 to 0 at half
+        a cycle, and the agent's own hits and misses sharpen it toward the band's real window.
+        """
+        log_weights = self._duty_log_weights
+        weights = np.exp(log_weights - log_weights.max(axis=1, keepdims=True))
+        weights /= weights.sum(axis=1, keepdims=True)
+        inside = np.asarray(phase, dtype=np.float64)[:, None] < np.asarray(DUTY_HYPOTHESES)[None, :]
+        return (weights * inside).sum(axis=1)
 
     def exploration_rate(self, observation: np.ndarray) -> float:
         """Fraction of looks currently drawn from the randomised floor.
@@ -333,6 +375,9 @@ class IndexAgent(Agent):
         return float(min(max(fraction, self.rho_min), self.rho_max))
 
     def select_action(self, observation: np.ndarray, explore: bool = True) -> int:
+        # Where each band sat in its claimed cycle when this look was chosen; observe() scores
+        # the look's outcome against it.
+        self._look_phase, self._look_confidence = self._periodicity(observation)
         threat = self._threat_from(observation)
         dwell = best_dwell(self.detection, self.snr_prior, self.dwell_options)
         p_d = np.full(self.num_bands, self.detect_p_d)
@@ -417,6 +462,7 @@ class IndexAgent(Agent):
             # estimator only needs gaps between looks at the same band, and a step counter gives
             # exactly that.
             self.kernels.observe(self._steps_observed, scanned, outcomes)
+            self._learn_duty(scanned, outcomes)
 
         self._steps_observed += 1
         if (
@@ -425,6 +471,23 @@ class IndexAgent(Agent):
             and self._steps_observed % self.kernel_refresh_steps == 0
         ):
             self._apply_kernels()
+
+    def _learn_duty(self, bands: list[int], detections: list[bool]) -> None:
+        """Score each look against every duty hypothesis, through the receiver's own ROC.
+
+        A hit inside a hypothesised window is explained at P_d and outside it only as a false
+        alarm; a miss the other way round. That is the likelihood Ai-ml-2 fits period, phase and
+        duty with, restricted to the one parameter it does not send. Looks taken without a claim
+        are skipped: their phase is a placeholder zero, not a position in any cycle.
+        """
+        duties = np.asarray(DUTY_HYPOTHESES)
+        for band, detected in zip(bands, detections):
+            if self._look_confidence[band] <= PERIODICITY_CLAIM_CONFIDENCE:
+                continue
+            p_hit = np.where(self._look_phase[band] < duties, self.detect_p_d, self.detect_p_fa)
+            likelihood = p_hit if detected else 1.0 - p_hit
+            log_weights = self._duty_log_weights[band] + np.log(np.maximum(likelihood, 1e-12))
+            self._duty_log_weights[band] = log_weights - log_weights.max()
 
     def _apply_kernels(self) -> None:
         """Hand the learned transition kernels to the occupancy belief.
@@ -479,6 +542,11 @@ class IndexAgent(Agent):
         return observation[: NUM_BAND_FEATURES * self.num_bands].reshape(
             self.num_bands, NUM_BAND_FEATURES
         )
+
+    def _periodicity(self, observation: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+        """Each band's ``(phase, confidence)``, confidence clipped into [0, 1]."""
+        block = self._band_block(observation)
+        return block[:, _PHASE_FEATURE].copy(), np.clip(block[:, _CONFIDENCE_FEATURE], 0.0, 1.0)
 
     def _threat_from(self, observation: np.ndarray) -> np.ndarray:
         return np.clip(self._band_block(observation)[:, _PRIORITY_FEATURE], 0.0, 1.0)

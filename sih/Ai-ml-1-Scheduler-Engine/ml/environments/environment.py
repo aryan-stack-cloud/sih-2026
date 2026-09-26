@@ -146,7 +146,7 @@ class EWEnvironment(gym.Env):
         self._detected_runs: set[tuple[int, int]] = set()
 
         # Seed the receiver block of the state so step 0 sees a coherent receiver.
-        self.state_builder.update([], [], self.receiver.state, self.receiver_config.bandwidth_k)
+        self.state_builder.sync_receiver(self.receiver.state, self.receiver_config.bandwidth_k)
         return self.state_builder.to_vector(), {"scenario_id": self.scenario_id}
 
     def step(self, action) -> tuple[np.ndarray, float, bool, bool, dict]:
@@ -187,8 +187,16 @@ class EWEnvironment(gym.Env):
         )
         reward, terms = self.reward_fn.compute(outcome, context)
 
+        # Every scan outcome, hits and misses alike, exactly as the Backend reports them to Ai-ml-2
+        # (SimulationRunner step 5). A provider that only models hits has no observe_miss.
         for b in outcome.detected_bands:
             self.periodicity.observe_detection(b, t)
+        observe_miss = getattr(self.periodicity, "observe_miss", None)
+        if observe_miss is not None:
+            detected = set(outcome.detected_bands)
+            for b in context.scanned_bands:
+                if b not in detected:
+                    observe_miss(b, t)
 
         self.state_builder.update(
             context.scanned_bands,
@@ -196,7 +204,9 @@ class EWEnvironment(gym.Env):
             self.receiver.state,
             self.receiver_config.bandwidth_k,
         )
-        phase, confidence = self.periodicity.features(t)
+        # Features for the NEXT decision, which is taken at t + 1 -- the time the Backend asks
+        # Ai-ml-2 for them. Evaluating them at t put training's phase one step behind serving's.
+        phase, confidence = self.periodicity.features(t + 1)
         self.state_builder.set_periodicity(phase, confidence)
 
         self.history.append(

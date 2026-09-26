@@ -73,6 +73,12 @@ def build_agent(
 
     from ml.agents.dqn_agent import DeepRLAgent  # noqa: PLC0415 - deliberate lazy import
 
+    # A trainer-level knob (consumed by trainer._scale_for_band_count), not an SB3 constructor
+    # argument. It has to be dropped HERE: this function re-reads the yaml defaults above, so a
+    # caller that already removed it from its own hyperparams gets it back, and SB3 then raised
+    # "unexpected keyword argument 'reference_bands'" for every DQN/PPO training run.
+    cfg.pop("reference_bands", None)
+    cfg.pop("train_episodes", None)
     return DeepRLAgent(num_bands, algorithm=policy, rng=rng, **cfg)
 
 

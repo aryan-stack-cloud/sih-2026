@@ -29,11 +29,14 @@ reward_weights:
   w2_priority: 2.0
   w3_latency: 3.0
   w4_false_alarm: 5.0
-  w5_redundant: 3.0
+  w5_redundant: 8.0
   w6_missed: 4.0
 expected_outcome: Dynamic behavior-class switching; tests whether the policy re-adapts
   rather than locking onto stale band estimates.
 emitter_params:
+  switching:
+    mean_regime_steps: 600
+    min_regime_steps: 200
   agile:
     hop_rate: 3
   intermittent:

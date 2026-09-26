@@ -120,6 +120,15 @@ class StateBuilder:
             else:
                 self.consecutive_misses[b] += 1
 
+        self.sync_receiver(receiver_state, bandwidth_k)
+
+    def sync_receiver(self, receiver_state, bandwidth_k: int) -> None:
+        """Refresh only the receiver block. No step has elapsed, so nothing ages.
+
+        ``EWEnvironment.reset`` used to call ``update([], [])`` for this, which also aged every
+        band by one: training's first observation had every age at 1 where the Backend's
+        StateBuilder, which is what the served model actually sees, starts them at 0.
+        """
         self.tuned_bands = receiver_state.tuned_bands(bandwidth_k, self.num_bands)
         self.dwell_remaining_ms = int(receiver_state.dwell_remaining_ms)
         self.tuning_delay_countdown_ms = int(receiver_state.tuning_delay_countdown_ms)

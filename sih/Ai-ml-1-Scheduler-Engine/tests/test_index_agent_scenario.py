@@ -82,9 +82,13 @@ def test_the_belief_update_uses_the_scenario_false_alarm_rate():
 
 
 # -- periodicity fusion ------------------------------------------------------------------------------
+#
+# Ai-ml-2's hits-and-misses fit anchors phase 0 at the START of the fitted illuminated window, so a
+# periodic emitter is on for phase in [0, duty) and quiet until the cycle wraps. Phase near 1 means
+# about due -- not on.
 
-def test_a_band_that_is_due_is_covered_by_the_chosen_window():
-    """Phase near 1 means about due; phase near 0.5 means the beam is pointing elsewhere.
+def test_a_band_whose_window_has_just_opened_is_covered_by_the_chosen_window():
+    """Phase just past 0 means the window has opened; phase near 0.5 means it is long closed.
 
     Scenario B gives the receiver two bands of instantaneous bandwidth, so the action names a
     window start and the assertion is about what the window covers, not what it starts on.
@@ -92,19 +96,92 @@ def test_a_band_that_is_due_is_covered_by_the_chosen_window():
     a = IndexAgent.from_scenario(load_scenario("B"), deadline_s=10.0)
     a.start_episode()
     phase = np.full(N, 0.5)
-    phase[6] = 0.99
+    phase[6] = 0.01
     confidence = np.full(N, 0.9)
     a.select_action(observation(phase, confidence))
     assert 6 in a.last_bands
 
 
-def test_a_band_just_detected_is_still_considered_active():
-    """Phase is circular. Just after a detection the beam is still on us for the illumination."""
+def test_a_band_whose_window_is_about_to_open_is_not_yet_rated_on():
+    """The stretch just before a window opens is quiet, however due the band is.
+
+    The cosine this replaced was symmetric about phase 0, written for a stand-in whose phase
+    counted from the last detection. Against Ai-ml-2's phase it rated 0.95 exactly as on as 0.05,
+    and on scenario B the index spent more looks before windows opened than inside them.
+    """
+    a = IndexAgent.from_scenario(load_scenario("B"))
+    a.start_episode()
+    a.belief.belief[:] = 0.0
+    phase = np.full(N, 0.02)
+    phase[1] = 0.95
+    fused = a.effective_belief(observation(phase, np.ones(N)))
+    assert float(fused[0]) > 0.9
+    assert float(fused[1]) == pytest.approx(0.0)
+
+
+def test_the_window_start_is_rated_above_the_middle_of_the_cycle():
     a = IndexAgent.from_scenario(load_scenario("B"), deadline_s=10.0)
     a.start_episode()
     fused_at_zero = a.effective_belief(observation(np.zeros(N), np.ones(N)))
     fused_mid = a.effective_belief(observation(np.full(N, 0.5), np.ones(N)))
     assert float(fused_at_zero[0]) > float(fused_mid[0])
+
+
+def _look(agent, band, phase, detected, confidence=0.9):
+    """One look at ``band`` taken while every band sat at ``phase`` under a periodicity claim."""
+    agent.select_action(observation(np.full(N, phase), np.full(N, confidence)))
+    agent.observe({"scanned_bands": [band], "detected_bands": [band] if detected else []})
+
+
+def test_the_window_width_is_learned_from_the_agents_own_hits_and_misses():
+    """Ai-ml-2 fits a duty alongside period and phase but does not send it, so the agent infers it.
+
+    Hits up to phase 0.17 and misses from 0.27 on pin this band's window near a fifth of the
+    cycle: still open at 0.1, closed by 0.3. A band never looked at keeps the flat prior.
+    """
+    a = IndexAgent.from_scenario(load_scenario("B"))
+    a.start_episode()
+    for phase, detected in [(0.02, True), (0.12, True), (0.17, True),
+                            (0.27, False), (0.35, False), (0.45, False)] * 2:
+        _look(a, band=3, phase=phase, detected=detected)
+
+    learned_open = float(a.window_occupancy(np.full(N, 0.1))[3])
+    learned_closed = float(a.window_occupancy(np.full(N, 0.3))[3])
+    prior_open = float(a.window_occupancy(np.full(N, 0.1))[10])
+    prior_closed = float(a.window_occupancy(np.full(N, 0.3))[10])
+
+    assert learned_open > 0.95
+    assert learned_closed < 0.05
+    assert learned_open > prior_open
+    assert learned_closed < prior_closed
+
+
+def test_looks_without_a_periodicity_claim_teach_nothing_about_the_window():
+    """Below Ai-ml-2's claim threshold the phase is a placeholder, not a position in any cycle."""
+    fresh = IndexAgent.from_scenario(load_scenario("B"))
+    fresh.start_episode()
+    a = IndexAgent.from_scenario(load_scenario("B"))
+    a.start_episode()
+    for phase in (0.05, 0.3, 0.6, 0.9):
+        _look(a, band=3, phase=phase, detected=False, confidence=0.3)
+        _look(a, band=3, phase=phase, detected=True, confidence=0.0)
+
+    for phase in (0.0, 0.1, 0.3, 0.6):
+        assert a.window_occupancy(np.full(N, phase)) == pytest.approx(
+            fresh.window_occupancy(np.full(N, phase))
+        )
+
+
+def test_the_learned_window_does_not_carry_into_the_next_episode():
+    a = IndexAgent.from_scenario(load_scenario("B"))
+    a.start_episode()
+    before = a.window_occupancy(np.full(N, 0.3)).copy()
+    for _ in range(4):
+        _look(a, band=3, phase=0.3, detected=False)
+    assert float(a.window_occupancy(np.full(N, 0.3))[3]) < float(before[3])
+
+    a.start_episode()
+    assert a.window_occupancy(np.full(N, 0.3)) == pytest.approx(before)
 
 
 def test_zero_confidence_leaves_the_occupancy_belief_untouched():
@@ -145,11 +222,15 @@ def test_fusion_never_leaves_the_unit_interval():
 # -- the guarantee survives all of it ----------------------------------------------------------------
 
 def test_the_coverage_guarantee_still_holds_with_a_strong_value_signal():
-    """A loud, confidently periodic band must not be allowed to monopolise the receiver."""
+    """A loud, confidently periodic band must not be allowed to monopolise the receiver.
+
+    Band 3 sits at the start of its window for ever, hitting on every look, so nothing it learns
+    about its window ever makes it quieter.
+    """
     a = IndexAgent.from_scenario(load_scenario("B"))
     a.start_episode()
     phase = np.full(N, 0.5)
-    phase[3] = 1.0
+    phase[3] = 0.0
     confidence = np.full(N, 0.95)
     obs = observation(phase, confidence)
 

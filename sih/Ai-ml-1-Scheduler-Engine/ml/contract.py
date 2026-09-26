@@ -133,6 +133,10 @@ class DecideRequest(BaseModel):
     state: StateVector
     policy: LearningPolicy
     model_id: Optional[str] = None
+    scenario_id: Optional[str] = None
+    """The Section 13 scenario the simulation runs (e.g. "B"), when it runs one. Used only to pick
+    a model trained on that scenario; a decision never depends on it otherwise. Optional, so a
+    Backend that does not send it still validates."""
 
 
 class DecideResponse(BaseModel):
@@ -152,6 +156,12 @@ class LearnRequest(BaseModel):
     action: Action
     reward: float
     next_state: Optional[StateVector] = None
+    scanned_bands: Optional[list[int]] = None
+    """Bands actually scanned this step (empty if the observation was invalid). With
+    ``detected_bands`` this is the raw hit/miss outcome a belief-tracking policy (index) updates
+    on. Optional: when absent it is derived exactly from ``next_state`` (a scanned band has
+    ``time_since_last_scan == 0``; a detected one also has ``consecutive_misses == 0``)."""
+    detected_bands: Optional[list[int]] = None
 
 
 class LearnResponse(BaseModel):
@@ -187,6 +197,8 @@ class ModelMetadata(BaseModel):
     model_id: str
     algorithm: PolicyType
     scenario: Optional[str] = None
+    num_bands: Optional[int] = None
+    """Band count the model's weights are sized for; it can only serve scenarios with this many."""
     version: int = 1
     active: bool = False
     created_at: str

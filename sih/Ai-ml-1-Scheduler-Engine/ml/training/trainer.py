@@ -15,9 +15,15 @@ from __future__ import annotations
 import time
 from typing import Any, Callable
 
+import gymnasium as gym
+
 from ml.agents.base import Agent
 from ml.agents.factory import build_agent
 from ml.environments.environment import make_env
+from ml.features.periodicity_provider import (
+    serving_periodicity_provider,
+    serving_periodicity_source,
+)
 from ml.evaluation.evaluator import EpisodeMetrics, aggregate
 from ml.evaluation.runner import run_episode
 from ml.utils.config import episode_seeds, load_hyperparams, load_scenario
@@ -46,6 +52,8 @@ def train(
     defaults = {k: v for k, v in load_hyperparams(algorithm).items() if not k.startswith("_")}
     merged = {**defaults, **(hyperparams or {})}
     merged.pop("algorithm", None)
+    if algorithm in ("dqn", "ppo"):
+        merged = _scale_for_band_count(algorithm, merged, cfg["bands"])
 
     episodes = int(
         episode_count if episode_count is not None else merged.pop("train_episodes", 20)
@@ -74,7 +82,9 @@ def train(
             progress(fraction * TRAIN_FRACTION, {"phase": "training", **(detail or {})})
 
     if algorithm in ("dqn", "ppo"):
-        train_curve = _train_deep(agent, cfg, train_seeds, merged, train_progress)
+        train_curve = _train_deep(
+            agent, cfg, train_seeds, merged, train_progress, explicit_seeds=seed_range is not None
+        )
     else:
         train_curve = _train_tabular(agent, cfg, train_seeds, train_progress)
 
@@ -89,13 +99,21 @@ def train(
 
     eval_progress(0.0, {"episode": 0})
     summary = evaluate(agent, cfg, eval_episodes, progress=eval_progress)
+    source = serving_periodicity_source()
+    if source != "ai-ml-2":
+        log.warning(
+            "trained without Ai-ml-2's estimator; the served periodicity features will differ",
+            extra={"algorithm": algorithm, "periodicity_source": source},
+        )
     summary.update(
         {
             "algorithm": algorithm,
             "train_episodes": len(train_curve),
             "train_seeds": [train_seeds[0], train_seeds[-1]] if train_seeds else [],
             "train_seconds": round(train_seconds, 3),
-            "hyperparams": merged,
+            # Persisted into the registry record through hyperparams, next to what it explains.
+            "hyperparams": {**merged, "periodicity_source": source},
+            "periodicity_source": source,
             "reward_weights": cfg.get("reward_weights", {}),
         }
     )
@@ -106,12 +124,44 @@ def train(
     return {"agent": agent, "summary": summary, "train_curve": train_curve}
 
 
+def _scale_for_band_count(algorithm: str, hyperparams: dict, num_bands: int) -> dict:
+    """Scale DQN/PPO's exploration budget with the action-space size.
+
+    Unlike bandit/Q-Learning -- whose optimistic per-band init forces every band to be tried at
+    least once, by construction -- DQN/PPO explore with a fixed epsilon/entropy schedule over a
+    fixed total_timesteps, regardless of num_bands. At reference_bands the schedule was tuned to
+    work; at 2x the bands, each action gets roughly half the exploration hits, which was observed
+    collapsing the trained policy onto 1-2 bands (near-0 Pd on 32-band scenarios E/F). Scale
+    linearly against the reference band count so smaller scenarios are unaffected.
+    """
+    reference = float(hyperparams.get("reference_bands", 16))
+    scale = max(1.0, num_bands / reference)
+    scaled = dict(hyperparams)
+    scaled.pop("reference_bands", None)
+    if "total_timesteps" in scaled:
+        scaled["total_timesteps"] = int(round(scaled["total_timesteps"] * scale))
+    if algorithm == "dqn" and "exploration_fraction" in scaled:
+        scaled["exploration_fraction"] = min(0.6, scaled["exploration_fraction"] * scale)
+    if algorithm == "ppo" and "ent_coef" in scaled:
+        scaled["ent_coef"] = min(0.05, scaled["ent_coef"] * scale)
+    return scaled
+
+
+def _serving_env(cfg: dict, seed: int):
+    """An environment whose periodicity features are the ones a served model will receive.
+
+    Training and evaluation both use Ai-ml-2's estimator (see ServicePeriodicityProvider): a
+    model is only as good as the features it is served, not the ones it happened to train on.
+    """
+    return make_env(cfg, seed=seed, periodicity_provider=serving_periodicity_provider())
+
+
 def _train_tabular(
     agent: Agent, cfg: dict, seeds: list[int], progress: ProgressCallback | None
 ) -> list[float]:
     curve: list[float] = []
     for i, seed in enumerate(seeds):
-        env = make_env(cfg, seed=seed)
+        env = _serving_env(cfg, seed)
         m = run_episode(env, agent, seed=seed, learn=True, episode=i)
         curve.append(m.cumulative_reward)
         if progress:
@@ -119,15 +169,57 @@ def _train_tabular(
     return curve
 
 
-def _train_deep(
-    agent: Agent, cfg: dict, seeds: list[int], merged: dict, progress: ProgressCallback | None
-) -> list[float]:
-    """SB3 path. Trains on one seed's environment for total_timesteps.
+class _SeedCyclingEnv(gym.Wrapper):
+    """Gives every SB3 training episode its own spectrum.
 
-    A single environment is intentional at this level: the point of Level 9 is to show DQN/PPO
-    working through the unchanged contract, not to build a distributed training rig. Widening to
-    a VecEnv over several seeds is the obvious next step if the deep agents are ever promoted.
+    SB3 seeds an environment once, on its first reset, and auto-resets with ``seed=None`` after
+    that -- and ``EWEnvironment.reset(seed=None)`` deliberately replays the same seed, so the same
+    emitter layout and noise came back every episode. DQN/PPO were therefore trained on ONE
+    spectrum realisation replayed 25-150 times: they memorised which band paid in that layout and
+    collapsed onto a single constant action (every one of 600 served decisions was band 12),
+    scoring below the round-robin sweep on any other seed. The tabular agents never had this
+    problem because ``_train_tabular`` builds a fresh environment per seed.
     """
+
+    def __init__(self, env: gym.Env, seeds: list[int]) -> None:
+        super().__init__(env)
+        self._seeds = list(seeds)
+        self._episode = 0
+
+    def reset(self, *, seed=None, options=None):
+        episode_seed = self._seeds[self._episode % len(self._seeds)]
+        self._episode += 1
+        return self.env.reset(seed=episode_seed, options=options)
+
+
+def deep_training_seeds(cfg: dict, seeds: list[int], total_timesteps: int) -> list[int]:
+    """One distinct training seed per episode SB3 will actually run.
+
+    An explicit ``seed_range`` is respected (and cycled if SB3 runs more episodes than it holds);
+    otherwise the default ``seed + 1000 + i`` stream is extended far enough that no layout repeats.
+    Either way the stream stays disjoint from the scenario's evaluation ``seed_range``.
+    """
+    needed = -(-int(total_timesteps) // max(1, int(cfg["duration_steps"]))) + 1
+    if len(seeds) >= needed:
+        return list(seeds)
+    base = seeds[0] if seeds else int(cfg.get("seed", 42)) + 1000
+    extended = list(seeds)
+    i = len(extended)
+    while len(extended) < needed:
+        extended.append(base + i)
+        i += 1
+    return extended
+
+
+def _train_deep(
+    agent: Agent,
+    cfg: dict,
+    seeds: list[int],
+    merged: dict,
+    progress: ProgressCallback | None,
+    explicit_seeds: bool = False,
+) -> list[float]:
+    """SB3 path: one environment whose every episode is a different seed's spectrum."""
     from stable_baselines3.common.callbacks import BaseCallback
 
     total = int(merged.get("total_timesteps", 50_000))
@@ -138,8 +230,9 @@ def _train_deep(
                 progress(min(1.0, self.num_timesteps / total), {"timesteps": self.num_timesteps})
             return True
 
-    env = make_env(cfg, seed=seeds[0] if seeds else cfg.get("seed", 42))
-    agent.fit(env, total_timesteps=total, seed=seeds[0] if seeds else None, callback=_Progress())
+    episode_seeds = list(seeds) if explicit_seeds and seeds else deep_training_seeds(cfg, seeds, total)
+    env = _SeedCyclingEnv(_serving_env(cfg, episode_seeds[0]), episode_seeds)
+    agent.fit(env, total_timesteps=total, seed=episode_seeds[0], callback=_Progress())
     return [float(total)]
 
 
@@ -162,7 +255,7 @@ def evaluate(
     per_episode: list[EpisodeMetrics] = []
     latencies: list[float] = []
     for i, seed in enumerate(seed_list):
-        env = make_env(cfg, seed=seed)
+        env = _serving_env(cfg, seed)
         started = time.perf_counter()
         per_episode.append(
             run_episode(env, agent, seed=seed, learn=True, explore=False, episode=i)

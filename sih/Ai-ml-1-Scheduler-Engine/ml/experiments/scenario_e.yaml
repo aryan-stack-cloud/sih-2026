@@ -29,7 +29,7 @@ reward_weights:
   w2_priority: 2.0
   w3_latency: 3.0
   w4_false_alarm: 5.0
-  w5_redundant: 3.0
+  w5_redundant: 8.0
   w6_missed: 4.0
 expected_outcome: Many emitters, so most bands are active; the gap to baseline narrows
   and Pfa/efficiency matter more than Pd.
