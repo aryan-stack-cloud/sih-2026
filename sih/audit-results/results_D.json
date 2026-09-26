@@ -1,0 +1,678 @@
+﻿{
+    "scenario":  "D",
+    "scenario_name":  "D - Mixed Environment",
+    "episodes":  10,
+    "duration_steps":  2000,
+    "seeds":  [
+                  42,
+                  43,
+                  44,
+                  45,
+                  46,
+                  47,
+                  48,
+                  49,
+                  50,
+                  51
+              ],
+    "expected_outcome":  "Even split across all five classes; the generalisation check.",
+    "policies":  {
+                     "baseline":  {
+                                      "episodes":  10,
+                                      "pd":  0.07279058708024606,
+                                      "pfa":  0.06743489764656733,
+                                      "ait":  3.1986588432523053,
+                                      "ait_censored":  1358.0172475745599,
+                                      "hpdr":  0.06982701630674305,
+                                      "interception_ratio":  0.9666666666666667,
+                                      "emitters_detected":  145,
+                                      "emitters_present":  150,
+                                      "median_latency":  2.0,
+                                      "scan_efficiency":  0.2819,
+                                      "precision":  0.8304891922639362,
+                                      "recall":  0.07279058708024606,
+                                      "f1":  0.133849549721088,
+                                      "coverage":  1.0,
+                                      "miss_rate":  0.9272094129197539,
+                                      "cumulative_reward_mean":  2462.1600000000003,
+                                      "detected_runs":  7158,
+                                      "total_runs":  22264,
+                                      "run_intercept_rate":  0.32150556952928494,
+                                      "invalid_steps":  0,
+                                      "retunes":  19990,
+                                      "tp_high_priority":  2535,
+                                      "fn_high_priority":  33769,
+                                      "counts":  {
+                                                     "tn":  26787,
+                                                     "fp":  1937,
+                                                     "fn":  120884,
+                                                     "tp":  9490
+                                                 },
+                                      "ml_decisions":  0,
+                                      "fallback_decisions":  0,
+                                      "degraded_episodes":  0,
+                                      "model_ids":  [
+
+                                                    ]
+                                  },
+                     "random":  {
+                                    "episodes":  10,
+                                    "pd":  0.06962277754767054,
+                                    "pfa":  0.06719841161166644,
+                                    "ait":  3.625,
+                                    "ait_censored":  1481.3585609054976,
+                                    "hpdr":  0.07013001322168357,
+                                    "interception_ratio":  1.0,
+                                    "emitters_detected":  150,
+                                    "emitters_present":  150,
+                                    "median_latency":  2.0,
+                                    "scan_efficiency":  0.2697,
+                                    "precision":  0.8221920289855073,
+                                    "recall":  0.06962277754767054,
+                                    "f1":  0.12837484266055693,
+                                    "coverage":  1.0,
+                                    "miss_rate":  0.9303772224523295,
+                                    "cumulative_reward_mean":  -2192.144166666665,
+                                    "detected_runs":  5784,
+                                    "total_runs":  22264,
+                                    "run_intercept_rate":  0.2597915918074021,
+                                    "invalid_steps":  0,
+                                    "retunes":  19225,
+                                    "tp_high_priority":  2546,
+                                    "fn_high_priority":  33758,
+                                    "counts":  {
+                                                   "tn":  27249,
+                                                   "fp":  1963,
+                                                   "fn":  121297,
+                                                   "tp":  9077
+                                               },
+                                    "ml_decisions":  0,
+                                    "fallback_decisions":  0,
+                                    "degraded_episodes":  0,
+                                    "model_ids":  [
+
+                                                  ]
+                                },
+                     "ctmc":  {
+                                  "episodes":  10,
+                                  "pd":  0.06930829766671269,
+                                  "pfa":  0.06755649621082815,
+                                  "ait":  3.6280250465391775,
+                                  "ait_censored":  1470.150826446281,
+                                  "hpdr":  0.06946892904363156,
+                                  "interception_ratio":  1.0,
+                                  "emitters_detected":  150,
+                                  "emitters_present":  150,
+                                  "median_latency":  2.0,
+                                  "scan_efficiency":  0.26765,
+                                  "precision":  0.8203359055832955,
+                                  "recall":  0.06930829766671269,
+                                  "f1":  0.1278175812828438,
+                                  "coverage":  1.0,
+                                  "miss_rate":  0.9306917023332874,
+                                  "cumulative_reward_mean":  -1805.0974999999987,
+                                  "detected_runs":  5909,
+                                  "total_runs":  22264,
+                                  "run_intercept_rate":  0.26540603665109597,
+                                  "invalid_steps":  0,
+                                  "retunes":  20000,
+                                  "tp_high_priority":  2522,
+                                  "fn_high_priority":  33782,
+                                  "counts":  {
+                                                 "tn":  27315,
+                                                 "fp":  1979,
+                                                 "fn":  121338,
+                                                 "tp":  9036
+                                             },
+                                  "ml_decisions":  20000,
+                                  "fallback_decisions":  0,
+                                  "degraded_episodes":  0,
+                                  "model_ids":  [
+                                                    "model_ctmc_91560392"
+                                                ]
+                              },
+                     "index":  {
+                                   "episodes":  10,
+                                   "pd":  0.07865065120346082,
+                                   "pfa":  0.06625161940405931,
+                                   "ait":  3.0982445788464377,
+                                   "ait_censored":  1391.9782159540064,
+                                   "hpdr":  0.08186425738210666,
+                                   "interception_ratio":  0.9933333333333333,
+                                   "emitters_detected":  149,
+                                   "emitters_present":  150,
+                                   "median_latency":  2.0,
+                                   "scan_efficiency":  0.3053,
+                                   "precision":  0.8477883422902026,
+                                   "recall":  0.07865065120346082,
+                                   "f1":  0.1439471042823351,
+                                   "coverage":  1.0,
+                                   "miss_rate":  0.9213493487965392,
+                                   "cumulative_reward_mean":  1972.2125,
+                                   "detected_runs":  6779,
+                                   "total_runs":  22264,
+                                   "run_intercept_rate":  0.3044825727632052,
+                                   "invalid_steps":  0,
+                                   "retunes":  19884,
+                                   "tp_high_priority":  2972,
+                                   "fn_high_priority":  33332,
+                                   "counts":  {
+                                                  "tn":  25947,
+                                                  "fp":  1841,
+                                                  "fn":  120120,
+                                                  "tp":  10254
+                                              },
+                                   "ml_decisions":  20000,
+                                   "fallback_decisions":  0,
+                                   "degraded_episodes":  0,
+                                   "model_ids":  [
+                                                     "model_index_4827a4a7"
+                                                 ]
+                               },
+                     "bandit":  {
+                                    "episodes":  10,
+                                    "pd":  0.16173470170432755,
+                                    "pfa":  0.06711573790569504,
+                                    "ait":  2.153757225433526,
+                                    "ait_censored":  1611.8988052461373,
+                                    "hpdr":  0.2720361392684002,
+                                    "interception_ratio":  0.8933333333333333,
+                                    "emitters_detected":  134,
+                                    "emitters_present":  150,
+                                    "median_latency":  1.0,
+                                    "scan_efficiency":  0.59175,
+                                    "precision":  0.9505905689297629,
+                                    "recall":  0.16173470170432755,
+                                    "f1":  0.27643619392223184,
+                                    "coverage":  0.9833333333333334,
+                                    "miss_rate":  0.8382652982956724,
+                                    "cumulative_reward_mean":  5065.982499999996,
+                                    "detected_runs":  4325,
+                                    "total_runs":  22264,
+                                    "run_intercept_rate":  0.1942597915918074,
+                                    "invalid_steps":  0,
+                                    "retunes":  10752,
+                                    "tp_high_priority":  9876,
+                                    "fn_high_priority":  26428,
+                                    "counts":  {
+                                                   "tn":  15234,
+                                                   "fp":  1096,
+                                                   "fn":  109288,
+                                                   "tp":  21086
+                                               },
+                                    "ml_decisions":  20000,
+                                    "fallback_decisions":  0,
+                                    "degraded_episodes":  0,
+                                    "model_ids":  [
+                                                      "model_bandit_fe860f0e"
+                                                  ]
+                                },
+                     "q_learning":  {
+                                        "episodes":  10,
+                                        "pd":  0.12598370840811818,
+                                        "pfa":  0.06695860997316005,
+                                        "ait":  2.832479605387972,
+                                        "ait_censored":  1527.1707689543657,
+                                        "hpdr":  0.1621584398413398,
+                                        "interception_ratio":  0.9933333333333333,
+                                        "emitters_detected":  149,
+                                        "emitters_present":  150,
+                                        "median_latency":  1.25,
+                                        "scan_efficiency":  0.469075,
+                                        "precision":  0.9203227433182047,
+                                        "recall":  0.12598370840811818,
+                                        "f1":  0.22162851417815288,
+                                        "coverage":  1.0,
+                                        "miss_rate":  0.8740162915918819,
+                                        "cumulative_reward_mean":  2989.841666666671,
+                                        "detected_runs":  5271,
+                                        "total_runs":  22264,
+                                        "run_intercept_rate":  0.2367499101688825,
+                                        "invalid_steps":  0,
+                                        "retunes":  14092,
+                                        "tp_high_priority":  5887,
+                                        "fn_high_priority":  30417,
+                                        "counts":  {
+                                                       "tn":  19815,
+                                                       "fp":  1422,
+                                                       "fn":  113949,
+                                                       "tp":  16425
+                                                   },
+                                        "ml_decisions":  20000,
+                                        "fallback_decisions":  0,
+                                        "degraded_episodes":  0,
+                                        "model_ids":  [
+                                                          "model_q_learning_6753c68f"
+                                                      ]
+                                    },
+                     "dqn":  {
+                                 "episodes":  10,
+                                 "pd":  0.10768251338457055,
+                                 "pfa":  0.06625216173927366,
+                                 "ait":  2.2393114936146583,
+                                 "ait_censored":  1676.7906036651095,
+                                 "hpdr":  0.09191824592331424,
+                                 "interception_ratio":  0.7733333333333333,
+                                 "emitters_detected":  116,
+                                 "emitters_present":  150,
+                                 "median_latency":  1.0,
+                                 "scan_efficiency":  0.39285,
+                                 "precision":  0.8971753578732107,
+                                 "recall":  0.10768251338457055,
+                                 "f1":  0.19228609387626527,
+                                 "coverage":  0.8,
+                                 "miss_rate":  0.8923174866154294,
+                                 "cumulative_reward_mean":  -4670.120000000007,
+                                 "detected_runs":  3602,
+                                 "total_runs":  22264,
+                                 "run_intercept_rate":  0.16178584261588214,
+                                 "invalid_steps":  0,
+                                 "retunes":  9848,
+                                 "tp_high_priority":  3337,
+                                 "fn_high_priority":  32967,
+                                 "counts":  {
+                                                "tn":  22677,
+                                                "fp":  1609,
+                                                "fn":  116335,
+                                                "tp":  14039
+                                            },
+                                 "ml_decisions":  20000,
+                                 "fallback_decisions":  0,
+                                 "degraded_episodes":  0,
+                                 "model_ids":  [
+                                                   "model_dqn_340ed645"
+                                               ]
+                             },
+                     "ppo":  {
+                                 "episodes":  10,
+                                 "pd":  0.07598907757681746,
+                                 "pfa":  0.06745272997663056,
+                                 "ait":  3.086841233012927,
+                                 "ait_censored":  1458.7956342076895,
+                                 "hpdr":  0.07285698545614808,
+                                 "interception_ratio":  0.9933333333333333,
+                                 "emitters_detected":  149,
+                                 "emitters_present":  150,
+                                 "median_latency":  2.0,
+                                 "scan_efficiency":  0.29395,
+                                 "precision":  0.8387233322045378,
+                                 "recall":  0.07598907757681746,
+                                 "f1":  0.1393526788854036,
+                                 "coverage":  0.9958333333333333,
+                                 "miss_rate":  0.9240109224231825,
+                                 "cumulative_reward_mean":  -1782.6441666666656,
+                                 "detected_runs":  6034,
+                                 "total_runs":  22264,
+                                 "run_intercept_rate":  0.2710204814947898,
+                                 "invalid_steps":  0,
+                                 "retunes":  19953,
+                                 "tp_high_priority":  2645,
+                                 "fn_high_priority":  33659,
+                                 "counts":  {
+                                                "tn":  26337,
+                                                "fp":  1905,
+                                                "fn":  120467,
+                                                "tp":  9907
+                                            },
+                                 "ml_decisions":  20000,
+                                 "fallback_decisions":  0,
+                                 "degraded_episodes":  0,
+                                 "model_ids":  [
+                                                   "model_ppo_9a6264c8"
+                                               ]
+                             }
+                 },
+    "comparison":  {
+                       "reference":  "baseline",
+                       "random":  {
+                                      "pd":  {
+                                                 "value":  0.06962277754767054,
+                                                 "reference":  0.07279058708024606,
+                                                 "absolute":  -0.003167809532575519,
+                                                 "percent":  -4.35194942044258
+                                             },
+                                      "pfa":  {
+                                                  "value":  0.06719841161166644,
+                                                  "reference":  0.06743489764656733,
+                                                  "absolute":  -0.0002364860349008957,
+                                                  "percent":  -0.35068791257064635
+                                              },
+                                      "ait":  {
+                                                  "value":  3.625,
+                                                  "reference":  3.1986588432523053,
+                                                  "absolute":  0.4263411567476947,
+                                                  "percent":  13.328747379454931
+                                              },
+                                      "ait_censored":  {
+                                                           "value":  1481.3585609054976,
+                                                           "reference":  1358.0172475745599,
+                                                           "absolute":  123.34131333093774,
+                                                           "percent":  9.082455583773118
+                                                       },
+                                      "hpdr":  {
+                                                   "value":  0.07013001322168357,
+                                                   "reference":  0.06982701630674305,
+                                                   "absolute":  0.00030299691494051206,
+                                                   "percent":  0.43392504930968023
+                                               },
+                                      "interception_ratio":  {
+                                                                 "value":  1.0,
+                                                                 "reference":  0.9666666666666667,
+                                                                 "absolute":  0.033333333333333326,
+                                                                 "percent":  3.4482758620689724
+                                                             },
+                                      "scan_efficiency":  {
+                                                              "value":  0.2697,
+                                                              "reference":  0.2819,
+                                                              "absolute":  -0.012199999999999989,
+                                                              "percent":  -4.327775807023759
+                                                          },
+                                      "run_intercept_rate":  {
+                                                                 "value":  0.2597915918074021,
+                                                                 "reference":  0.32150556952928494,
+                                                                 "absolute":  -0.06171397772188286,
+                                                                 "percent":  -19.19530595138307
+                                                             }
+                                  },
+                       "ctmc":  {
+                                    "pd":  {
+                                               "value":  0.06930829766671269,
+                                               "reference":  0.07279058708024606,
+                                               "absolute":  -0.0034822894135333737,
+                                               "percent":  -4.78398314014753
+                                           },
+                                    "pfa":  {
+                                                "value":  0.06755649621082815,
+                                                "reference":  0.06743489764656733,
+                                                "absolute":  0.00012159856426081916,
+                                                "percent":  0.18031993597458218
+                                            },
+                                    "ait":  {
+                                                "value":  3.6280250465391775,
+                                                "reference":  3.1986588432523053,
+                                                "absolute":  0.42936620328687214,
+                                                "percent":  13.423319720158243
+                                            },
+                                    "ait_censored":  {
+                                                         "value":  1470.150826446281,
+                                                         "reference":  1358.0172475745599,
+                                                         "absolute":  112.13357887172106,
+                                                         "percent":  8.257154249844278
+                                                     },
+                                    "hpdr":  {
+                                                 "value":  0.06946892904363156,
+                                                 "reference":  0.06982701630674305,
+                                                 "absolute":  -0.00035808726311149786,
+                                                 "percent":  -0.512820512820511
+                                             },
+                                    "interception_ratio":  {
+                                                               "value":  1.0,
+                                                               "reference":  0.9666666666666667,
+                                                               "absolute":  0.033333333333333326,
+                                                               "percent":  3.4482758620689724
+                                                           },
+                                    "scan_efficiency":  {
+                                                            "value":  0.26765,
+                                                            "reference":  0.2819,
+                                                            "absolute":  -0.014249999999999985,
+                                                            "percent":  -5.054984036892507
+                                                        },
+                                    "run_intercept_rate":  {
+                                                               "value":  0.26540603665109597,
+                                                               "reference":  0.32150556952928494,
+                                                               "absolute":  -0.056099532878188973,
+                                                               "percent":  -17.449008102822006
+                                                           }
+                                },
+                       "index":  {
+                                     "pd":  {
+                                                "value":  0.07865065120346082,
+                                                "reference":  0.07279058708024606,
+                                                "absolute":  0.005860064123214756,
+                                                "percent":  8.050579557428872
+                                            },
+                                     "pfa":  {
+                                                 "value":  0.06625161940405931,
+                                                 "reference":  0.06743489764656733,
+                                                 "absolute":  -0.0011832782425080235,
+                                                 "percent":  -1.7546971728343075
+                                             },
+                                     "ait":  {
+                                                 "value":  3.0982445788464377,
+                                                 "reference":  3.1986588432523053,
+                                                 "absolute":  -0.10041426440586765,
+                                                 "percent":  -3.1392614632127946
+                                             },
+                                     "ait_censored":  {
+                                                          "value":  1391.9782159540064,
+                                                          "reference":  1358.0172475745599,
+                                                          "absolute":  33.96096837944651,
+                                                          "percent":  2.5007759246137296
+                                                      },
+                                     "hpdr":  {
+                                                  "value":  0.08186425738210666,
+                                                  "reference":  0.06982701630674305,
+                                                  "absolute":  0.012037241075363608,
+                                                  "percent":  17.238658777120342
+                                              },
+                                     "interception_ratio":  {
+                                                                "value":  0.9933333333333333,
+                                                                "reference":  0.9666666666666667,
+                                                                "absolute":  0.026666666666666616,
+                                                                "percent":  2.758620689655178
+                                                            },
+                                     "scan_efficiency":  {
+                                                             "value":  0.3053,
+                                                             "reference":  0.2819,
+                                                             "absolute":  0.023400000000000032,
+                                                             "percent":  8.300815892160362
+                                                         },
+                                     "run_intercept_rate":  {
+                                                                "value":  0.3044825727632052,
+                                                                "reference":  0.32150556952928494,
+                                                                "absolute":  -0.017022996766079768,
+                                                                "percent":  -5.2947750768371
+                                                            }
+                                 },
+                       "bandit":  {
+                                      "pd":  {
+                                                 "value":  0.16173470170432755,
+                                                 "reference":  0.07279058708024606,
+                                                 "absolute":  0.08894411462408149,
+                                                 "percent":  122.19178082191782
+                                             },
+                                      "pfa":  {
+                                                  "value":  0.06711573790569504,
+                                                  "reference":  0.06743489764656733,
+                                                  "absolute":  -0.00031915974087229348,
+                                                  "percent":  -0.47328572002146574
+                                              },
+                                      "ait":  {
+                                                  "value":  2.153757225433526,
+                                                  "reference":  3.1986588432523053,
+                                                  "absolute":  -1.044901617818779,
+                                                  "percent":  -32.66686661577053
+                                              },
+                                      "ait_censored":  {
+                                                           "value":  1611.8988052461373,
+                                                           "reference":  1358.0172475745599,
+                                                           "absolute":  253.8815576715774,
+                                                           "percent":  18.69501717485649
+                                                       },
+                                      "hpdr":  {
+                                                   "value":  0.2720361392684002,
+                                                   "reference":  0.06982701630674305,
+                                                   "absolute":  0.20220912296165716,
+                                                   "percent":  289.5857988165681
+                                               },
+                                      "interception_ratio":  {
+                                                                 "value":  0.8933333333333333,
+                                                                 "reference":  0.9666666666666667,
+                                                                 "absolute":  -0.07333333333333336,
+                                                                 "percent":  -7.586206896551728
+                                                             },
+                                      "scan_efficiency":  {
+                                                              "value":  0.59175,
+                                                              "reference":  0.2819,
+                                                              "absolute":  0.30985,
+                                                              "percent":  109.9148634267471
+                                                          },
+                                      "run_intercept_rate":  {
+                                                                 "value":  0.1942597915918074,
+                                                                 "reference":  0.32150556952928494,
+                                                                 "absolute":  -0.12724577793747754,
+                                                                 "percent":  -39.57809443978765
+                                                             }
+                                  },
+                       "q_learning":  {
+                                          "pd":  {
+                                                     "value":  0.12598370840811818,
+                                                     "reference":  0.07279058708024606,
+                                                     "absolute":  0.053193121327872114,
+                                                     "percent":  73.07692307692307
+                                                 },
+                                          "pfa":  {
+                                                      "value":  0.06695860997316005,
+                                                      "reference":  0.06743489764656733,
+                                                      "absolute":  -0.00047628767340728018,
+                                                      "percent":  -0.7062925725839331
+                                                  },
+                                          "ait":  {
+                                                      "value":  2.832479605387972,
+                                                      "reference":  3.1986588432523053,
+                                                      "absolute":  -0.3661792378643334,
+                                                      "percent":  -11.447899129249206
+                                                  },
+                                          "ait_censored":  {
+                                                               "value":  1527.1707689543657,
+                                                               "reference":  1358.0172475745599,
+                                                               "absolute":  169.15352137980585,
+                                                               "percent":  12.455918485712658
+                                                           },
+                                          "hpdr":  {
+                                                       "value":  0.1621584398413398,
+                                                       "reference":  0.06982701630674305,
+                                                       "absolute":  0.09233142353459674,
+                                                       "percent":  132.22879684418146
+                                                   },
+                                          "interception_ratio":  {
+                                                                     "value":  0.9933333333333333,
+                                                                     "reference":  0.9666666666666667,
+                                                                     "absolute":  0.026666666666666616,
+                                                                     "percent":  2.758620689655178
+                                                                 },
+                                          "scan_efficiency":  {
+                                                                  "value":  0.469075,
+                                                                  "reference":  0.2819,
+                                                                  "absolute":  0.18717500000000004,
+                                                                  "percent":  66.39765874423556
+                                                              },
+                                          "run_intercept_rate":  {
+                                                                     "value":  0.2367499101688825,
+                                                                     "reference":  0.32150556952928494,
+                                                                     "absolute":  -0.08475565936040244,
+                                                                     "percent":  -26.362112321877618
+                                                                 }
+                                      },
+                       "dqn":  {
+                                   "pd":  {
+                                              "value":  0.10768251338457055,
+                                              "reference":  0.07279058708024606,
+                                              "absolute":  0.034891926304324486,
+                                              "percent":  47.934668071654386
+                                          },
+                                   "pfa":  {
+                                               "value":  0.06625216173927366,
+                                               "reference":  0.06743489764656733,
+                                               "absolute":  -0.001182735907293675,
+                                               "percent":  -1.753892937589241
+                                           },
+                                   "ait":  {
+                                               "value":  2.2393114936146583,
+                                               "reference":  3.1986588432523053,
+                                               "absolute":  -0.959347349637647,
+                                               "percent":  -29.992174741030208
+                                           },
+                                   "ait_censored":  {
+                                                        "value":  1676.7906036651095,
+                                                        "reference":  1358.0172475745599,
+                                                        "absolute":  318.77335609054967,
+                                                        "percent":  23.47343943236979
+                                                    },
+                                   "hpdr":  {
+                                                "value":  0.09191824592331424,
+                                                "reference":  0.06982701630674305,
+                                                "absolute":  0.022091229616571187,
+                                                "percent":  31.63708086785011
+                                            },
+                                   "interception_ratio":  {
+                                                              "value":  0.7733333333333333,
+                                                              "reference":  0.9666666666666667,
+                                                              "absolute":  -0.19333333333333336,
+                                                              "percent":  -20.000000000000007
+                                                          },
+                                   "scan_efficiency":  {
+                                                           "value":  0.39285,
+                                                           "reference":  0.2819,
+                                                           "absolute":  0.11095,
+                                                           "percent":  39.35792834338419
+                                                       },
+                                   "run_intercept_rate":  {
+                                                              "value":  0.16178584261588214,
+                                                              "reference":  0.32150556952928494,
+                                                              "absolute":  -0.1597197269134028,
+                                                              "percent":  -49.67868119586477
+                                                          }
+                               },
+                       "ppo":  {
+                                   "pd":  {
+                                              "value":  0.07598907757681746,
+                                              "reference":  0.07279058708024606,
+                                              "absolute":  0.0031984904965713934,
+                                              "percent":  4.394099051633282
+                                          },
+                                   "pfa":  {
+                                               "value":  0.06745272997663056,
+                                               "reference":  0.06743489764656733,
+                                               "absolute":  1.7832330063222157E-05,
+                                               "percent":  0.026443771230555413
+                                           },
+                                   "ait":  {
+                                               "value":  3.086841233012927,
+                                               "reference":  3.1986588432523053,
+                                               "absolute":  -0.11181761023937842,
+                                               "percent":  -3.4957654354187184
+                                           },
+                                   "ait_censored":  {
+                                                        "value":  1458.7956342076895,
+                                                        "reference":  1358.0172475745599,
+                                                        "absolute":  100.77838663312968,
+                                                        "percent":  7.420994601734354
+                                                    },
+                                   "hpdr":  {
+                                                "value":  0.07285698545614808,
+                                                "reference":  0.06982701630674305,
+                                                "absolute":  0.0030299691494050235,
+                                                "percent":  4.339250493096647
+                                            },
+                                   "interception_ratio":  {
+                                                              "value":  0.9933333333333333,
+                                                              "reference":  0.9666666666666667,
+                                                              "absolute":  0.026666666666666616,
+                                                              "percent":  2.758620689655178
+                                                          },
+                                   "scan_efficiency":  {
+                                                           "value":  0.29395,
+                                                           "reference":  0.2819,
+                                                           "absolute":  0.012050000000000005,
+                                                           "percent":  4.274565448740697
+                                                       },
+                                   "run_intercept_rate":  {
+                                                              "value":  0.2710204814947898,
+                                                              "reference":  0.32150556952928494,
+                                                              "absolute":  -0.05048508803449514,
+                                                              "percent":  -15.702710254260966
+                                                          }
+                               }
+                   }
+}

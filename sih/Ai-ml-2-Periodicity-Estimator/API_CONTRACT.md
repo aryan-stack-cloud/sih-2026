@@ -67,7 +67,7 @@ Base path: `/api/v1`
 | PUT | `/receiver/config` | `bandwidth_k`, `dwell_ms`, `tuning_delay`, `threshold` |
 | POST | `/receiver/scan` | Manual single-step scan (debug) → `Observation` |
 | GET | `/scheduler/status` | Current policy + step count |
-| PUT | `/scheduler/config` | Select policy: `baseline`\|`bandit`\|`q_learning`\|`dqn`\|`ppo` |
+| PUT | `/scheduler/config` | Select policy (`baseline`\|`random`\|`ctmc`\|`index`\|`bandit`\|`q_learning`\|`dqn`\|`ppo`) and optionally pin `modelId` for a draft simulation; the pin is stored on the simulation and sent to Ai-ml-1 as `model_id` |
 | POST | `/scheduler/start` / `/scheduler/stop` | Start/stop scheduling loop |
 | GET | `/scheduler/decision` | Latest decision + state vector (debug) |
 | GET | `/scheduler/history` | Paginated decision log |
@@ -81,7 +81,7 @@ Base path: `/api/v1`
 | GET | `/experiments/{id}` | Detail |
 | POST | `/experiments/{id}/run` | Execute baseline + ML runs (async, WS progress) |
 | POST | `/experiments/{id}/stop` | Cancel a running experiment |
-| GET | `/experiments/{id}/results` | Comparison results: Pd/Pfa/latency per policy |
+| GET | `/experiments/{id}/results` | Comparison results: Pd/Pfa/latency per policy. Each `policies[<policy>]` entry also carries its provenance — `ml_decisions`, `fallback_decisions`, `degraded_episodes`, `model_ids` (the Ai-ml-1 models that actually served it), `unavailable_reason` (set when Ai-ml-1 answered `NO_COMPATIBLE_MODEL`) — so a run that fell back to the local sweep is never presented as an ML result; and `tp_high_priority`/`fn_high_priority`, the counts behind HPDR. In `comparison`, a policy that made no ML decisions carries `{ "status": "fell_back_to_sweep", "reason" }` instead of metric deltas |
 | GET | `/metrics/live?simulationId=` | Live metrics (polling fallback for WS) |
 | GET | `/metrics/{experimentId}` | Stored metrics for an experiment |
 | GET | `/metrics/compare?ids[]=` | Compare ≥2 experiments |
@@ -115,11 +115,11 @@ Base path: `/internal` on the Ai-ml-1 service (default port `8500`).
 
 | Method | Endpoint | Request | Response |
 |---|---|---|---|
-| POST | `/internal/decide` | `{ "simulation_id", "state": StateVector, "policy": "index"\|"ctmc"\|"bandit"\|"q_learning"\|"dqn"\|"ppo", "model_id"? }` | `{ "action": { "next_band": int, "dwell_time"?: int }, "model_id", "decision_id", "index_breakdown"? }` |
-| POST | `/internal/learn` | `{ "simulation_id", "decision_id", "state", "action", "reward": float, "next_state" }` | `{ "acknowledged": true }` (no-op for baseline, called by Backend after every step) |
+| POST | `/internal/decide` | `{ "simulation_id", "state": StateVector, "policy": "index"\|"ctmc"\|"bandit"\|"q_learning"\|"dqn"\|"ppo", "model_id"?, "scenario_id"? }` | `{ "action": { "next_band": int, "dwell_time"?: int }, "model_id", "decision_id", "index_breakdown"? }` — `409 NO_COMPATIBLE_MODEL` when `dqn`/`ppo` has no registered model for the state's band count |
+| POST | `/internal/learn` | `{ "simulation_id", "decision_id", "state", "action", "reward": float, "next_state", "scanned_bands"?: [int], "detected_bands"?: [int] }` | `{ "acknowledged": true }` (no-op for baseline, called by Backend after every step) |
 | POST | `/internal/train` | `{ "algorithm", "scenario", "hyperparams": {}, "episode_count", "seed_range": [start,end] }` | `{ "job_id" }` (async) |
 | GET | `/internal/train/{job_id}/status` | — | `{ "status": "running"\|"done"\|"failed", "progress": 0-1 }` |
-| GET | `/internal/models` | Query: `algorithm?`, `active?` | List of model metadata |
+| GET | `/internal/models` | Query: `algorithm?`, `active?` | List of model metadata (each carries `num_bands`, the band count its weights are sized for) |
 | GET | `/internal/models/{id}` | — | Model detail + eval metrics |
 | POST | `/internal/models/{id}/activate` | — | Deactivates previous active model of same algorithm |
 | POST | `/internal/models/{id}/evaluate` | `{ "scenario", "episode_count" }` | Metrics summary (Pd, Pfa, AIT, latency, HPDR) |
@@ -174,6 +174,20 @@ estimates are built up across a run. `/internal/reset` is what clears it. A simu
 call both `/internal/reset` (Ai-ml-1) and `/internal/periodicity/reset` (Ai-ml-2), or the next run
 of that `simulation_id` inherits the previous run's beliefs.
 
+**Which model serves a session.** A model's weights are sized to a band count, and activation is
+per algorithm, so one active model cannot serve every scenario. When no `model_id` is pinned,
+Ai-ml-1 picks, among registered models of the policy whose `num_bands` matches the state: one
+trained on `scenario_id` (the active one first), else the active model, else the newest model
+trained on any scenario A–G. `index`, `ctmc`, `bandit` and `q_learning` start a cold online learner
+when nothing fits (reported as `model_id: "online_<policy>"`); `dqn`/`ppo` cannot act without
+weights and answer `409 NO_COMPATIBLE_MODEL`. A pinned `model_id` of the wrong band count is a
+`422`, never silently replaced.
+
+**`scanned_bands` / `detected_bands` on learn.** The raw hit/miss outcome of the step, which the
+`index` policy's occupancy belief and revisit deadlines update on. Optional: when absent, Ai-ml-1
+recovers it from `next_state` (scanned ⇔ `time_since_last_scan == 0`; detected ⇔ scanned and
+`consecutive_misses == 0`).
+
 ### Reward (ML-003 / Equation 10.1) — computed by Backend, passed to `/internal/learn`
 
 `r(t) = w1·D(t) + w2·P(t)·D(t) − w3·L(t) − w4·F(t) − w5·C(t) − w6·M(t)`
@@ -189,7 +203,8 @@ Base path: `/internal` on the Ai-ml-2 service (default port `8600`).
 |---|---|---|---|
 | POST | `/internal/periodicity/update` | `{ "simulation_id", "band_id", "detection_timestamp", "detected"? }` | `{ "acknowledged": true }` — called by Backend on every scan outcome. `detected` defaults to `true`; pass `false` to report a scan that found nothing. See the note below |
 | GET | `/internal/periodicity/predict?simulation_id=&band_id=` | — | `{ "predicted_next_active_window": {"start": t, "end": t}, "estimated_period": float, "confidence": 0-1 }` |
-| POST | `/internal/periodicity/predict/batch` | `{ "simulation_id", "band_ids": [int], "now"? }` | `{ "predictions": [ { "band_id", "predicted_next_active_window", "estimated_period", "confidence", "phase" } ] }` — **the endpoint the StateBuilder should use.** See the note below |
+| POST | `/internal/periodicity/predict/batch` | `{ "simulation_id", "band_ids": [int], "now"? }` | `{ "predictions": [ { "band_id", "predicted_next_active_window", "estimated_period", "confidence", "phase" } ] }` — used for a simulation's first step. See the note below |
+| POST | `/internal/periodicity/step` | `{ "simulation_id", "outcomes": [ { "band_id", "detected": bool, "timestamp" } ], "now", "band_ids": [int] }` | Applies every outcome in order (as `update` with `detected`), then returns the `predict/batch` payload for `band_ids` at `now`. **The endpoint the Backend uses once per step**: step t's hits and misses in, step t+1's features out, in one round trip, so a prediction can never overtake the updates it depends on |
 | GET | `/internal/periodicity/state?simulation_id=&band_id=` | — | Raw inter-arrival buffer + current estimate, for debugging |
 | POST | `/internal/periodicity/reset` | `{ "simulation_id" }` | Clears estimator state for a simulation (used on simulation reset) |
 | GET | `/internal/health` | — | `{ "status": "ok" }` |

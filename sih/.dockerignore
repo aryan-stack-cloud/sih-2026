@@ -1,0 +1,14 @@
+.git/
+.claude/
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/node_modules/
+**/target/
+**/dist/
+**/.venv/
+**/ml/checkpoints/
+**/runs/
+**/*.h5
+Frontend/videos/
+Frontend/brag-output*/

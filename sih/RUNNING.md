@@ -131,18 +131,34 @@ cd Ai-ml-1-Scheduler-Engine && python scripts/compare.py --scenario B --policies
 
 `ml/checkpoints/*` is git-ignored by design (mounted as a Docker volume in a real deployment,
 never committed — see `Ai-ml-1-Scheduler-Engine/.gitignore`), so a fresh clone has an empty model
-registry until these are run. All six policies, in the order run on 17 September 2026:
+registry until this is run. One command trains and registers every policy for every scenario:
 
 ```bash
 cd Ai-ml-1-Scheduler-Engine
-python scripts/train_agent.py --algo bandit --scenario B --episodes 30 --seed 42 --activate
-python scripts/train_agent.py --algo q_learning --scenario B --episodes 40 --seed 42 --activate
-python scripts/train_agent.py --algo dqn --scenario B --timesteps 6000 --seed 42 --force --activate
-python scripts/train_agent.py --algo ppo --scenario B --timesteps 6000 --seed 42 --force --activate
+python scripts/train_all.py --workers 8        # 42 models; about 1-2 h on 12 cores
 ```
 
+On a Windows laptop, run this from a foreground terminal with Power mode set to **Best
+performance**. Windows 11 power-throttles background processes (EcoQoS): training jobs launched
+from a background shell were measured at ~30 % of a core each, and at 100 % once exempted — a 3x
+difference. The request/response services are not measurably affected (decide latency 4.4 vs
+4.7 ms median).
+
+**Why one model per (policy, scenario).** A model's weights are sized to its scenario's band count
+(A/B 16, C/D/G 24, E/F 32). When a run starts, Ai-ml-1 serves the model trained on that run's own
+scenario, else the algorithm's active model, else the newest model with the same band count
+(`ModelRegistry.resolve`). `--activate B` (the default) makes the Scenario B models each
+algorithm's active default. With no compatible model, `index`/`ctmc`/`bandit`/`q_learning` start a
+cold online learner and `dqn`/`ppo` answer `409 NO_COMPATIBLE_MODEL` — the run then shows as
+"fell back to sweep", never as a DQN result.
+
+Training uses Ai-ml-2's own estimator in-process for the periodicity features (the sibling
+`Ai-ml-2-Periodicity-Estimator` folder, or `AI_ML_2_PATH`), so offline-trained models see the same
+features they are served. Individual models can still be trained with `scripts/train_agent.py`
+(`--algo`, `--scenario`, `--timesteps`, `--force` for dqn/ppo, `--activate`).
+
 `index` and `ctmc` are config-driven, not weight-trained (see `IndexAgent.save`/`CTMCFloorAgent.save`
-docstrings), so they register directly rather than through `train_agent.py`:
+docstrings); `train_all.py` builds and scores them per scenario. By hand, for one scenario:
 
 ```python
 # ctmc — fixed-form, nothing to tune
@@ -175,10 +191,10 @@ agent = IndexAgent.from_scenario(scenario, weights=weights, rho_min=p["rho_min"]
 ModelRegistry().register(agent, algorithm="index", scenario="B", hyperparams=p, activate=True)
 ```
 
-Verify all six landed:
+Verify which model each scenario will be served (run from `Ai-ml-1-Scheduler-Engine`):
 
 ```bash
-python -c "import json; [print(r['algorithm'], mid, 'active' if r['active'] else '') for mid, r in json.load(open('ml/checkpoints/index.json')).items() if r['active']]"
+python -c "from ml.model_registry import ModelRegistry as R; from ml.utils.config import load_scenario as L; r=R(); [print(s, a, (m.model_id if (m:=r.resolve(a, L(s)['bands'], s)) else 'NONE')) for s in 'ABCDEFG' for a in ('ctmc','index','bandit','q_learning','dqn','ppo')]"
 ```
 
 ---
