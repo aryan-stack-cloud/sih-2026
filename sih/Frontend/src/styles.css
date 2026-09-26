@@ -329,17 +329,48 @@ label.field {
   margin-top: 12px;
 }
 
+.numbers-disclosure { margin-top: 14px; }
+
+.numbers-disclosure > summary,
 .waterfall-data > summary {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 9px;
+  max-width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--brand-gold);
+  border-radius: 999px;
+  background: var(--panel-raised);
   cursor: pointer;
-  color: var(--ink-muted);
-  font-size: 0.88rem;
-  width: fit-content;
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 600;
+  list-style: none;
 }
 
+.numbers-disclosure > summary::-webkit-details-marker,
+.waterfall-data > summary::-webkit-details-marker { display: none; }
+
+.numbers-disclosure > summary::before,
+.waterfall-data > summary::before { content: "▦"; color: var(--brand-gold); font-size: 1rem; line-height: 1; }
+
+.numbers-disclosure > summary::after,
+.waterfall-data > summary::after { content: "⌄"; display: inline-block; margin-left: 3px; transition: transform 0.2s ease; }
+
+.numbers-disclosure[open] > summary::after,
+.waterfall-data[open] > summary::after { transform: rotate(180deg); }
+
+.numbers-disclosure > summary:hover,
+.waterfall-data > summary:hover { background: rgba(232, 184, 75, 0.13); }
+
+.numbers-disclosure > summary:focus-visible,
 .waterfall-data > summary:focus-visible {
-  outline: 2px solid var(--intercepted);
+  outline: 2px solid var(--brand-gold);
   outline-offset: 2px;
 }
+
+.numbers-disclosure > summary small { color: var(--ink-muted); font-size: 0.72rem; font-weight: 400; }
 
 .waterfall-data table {
   margin-top: 10px;
@@ -369,6 +400,14 @@ label.field {
 .demo-status {
   margin-top: 10px;
 }
+
+.section p.note.demo-status-line { display: flex; align-items: baseline; gap: 8px; margin-top: 10px; max-width: none; overflow-wrap: anywhere; }
+.demo-status-dot { width: 7px; height: 7px; flex: none; border-radius: 50%; background: var(--brand-gold); }
+.demo-status-dot.is-done { background: var(--intercepted); }
+.demo-status-dot.is-error { background: var(--false-alarm); }
+
+.section p.note.scenario-description { margin: -6px 0 12px; max-width: none; font-family: var(--font-display); }
+.scenario-description strong { color: var(--ink); font-weight: 600; }
 
 .demo-progress {
   width: 100%;
@@ -496,12 +535,26 @@ table.data th {
   text-transform: uppercase;
 }
 
+table.data.metric-table td:first-child {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-variant-numeric: normal;
+}
+
 /* -- lift chart detail strip ------------------------------------------------------------------
    Lives outside the chart's SVG: the gloss text needs to read as a real sentence, which SVG
    <text> cannot wrap on its own. Fixed min-height so hovering different rows doesn't reflow the
    panels below it. */
 
 .lift-chart { margin: 0; max-width: 100%; }
+.lift-takeaway { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-bottom: 12px; color: var(--ink); font-size: 0.88rem; }
+.lift-takeaway > strong { font-weight: 600; }
+.lift-takeaway-counts { display: flex; flex-wrap: wrap; gap: 5px; }
+.lift-chart figcaption { margin-top: 10px; color: var(--ink-muted); font-size: 0.8rem; line-height: 1.5; }
+.policy-run-details { margin-top: 12px; }
+.policy-provenance-line { margin: 0; color: var(--ink-muted); font-size: 0.78rem; overflow-wrap: anywhere; }
+.policy-provenance-line strong { font-weight: 600; }
+.policy-provenance-alert { margin: 0 0 6px; padding: 8px 10px; border-left: 3px solid var(--false-alarm); background: rgba(216, 66, 95, 0.12); color: var(--ink); font-size: 0.82rem; }
 .lift-sample {
   margin: 0 0 14px;
   color: var(--ink-muted);
@@ -1294,4 +1347,10 @@ table.data.simulation-table {
   .aperture-ruler i { height: 42px; }
   .aperture-ruler small { display: none; }
   .strategy-spotlight { max-width: none; width: 100%; }
+  .step-tracker { display: grid; grid-template-columns: 1fr; gap: 7px; overflow: visible; }
+  .step-tracker li { min-width: 0; white-space: normal; }
+  .step-tracker li::after { display: none; }
+  .receiver-stage + .section .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .receiver-stage + .section .tiles .tile { min-width: 0; min-height: 0; padding: 12px; }
+  .receiver-stage + .section .tile .tile-value { font-size: clamp(1.2rem, 5vw, 1.75rem); }
 }

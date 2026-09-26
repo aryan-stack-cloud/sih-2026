@@ -244,7 +244,7 @@ export function ExperimentsPage() {
             </div>
 
             <div className="panel panel-scroll">
-              <table className="data">
+              <table className="data metric-table">
                 <thead>
                   <tr>
                     <th>Metric</th>
@@ -287,8 +287,8 @@ export function ExperimentsPage() {
               </div>
 
               <p className="note" style={{ marginTop: 10 }}>
-                Compare policies on <span className="mono">intercept time, all bursts</span>, not{" "}
-                <span className="mono">caught only</span>: the second averages just the runs a
+                Compare policies on <strong>intercept time, all bursts</strong>, not{" "}
+                <strong>caught only</strong>: the second averages just the runs a
                 policy actually caught, so a policy that intercepts more can score worse on it —
                 which is why that row alone carries no winner highlight.
               </p>

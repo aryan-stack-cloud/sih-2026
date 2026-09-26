@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { policyLabel } from "../lib/policyLabels";
 
 /**
  * Change against the open-loop sweep.
@@ -81,9 +82,11 @@ const VERDICT_LABEL: Record<Verdict, string> = {
 export function LiftChart({
   rows,
   referenceName,
+  policyName,
 }: {
   rows: LiftRow[];
   referenceName: string;
+  policyName: string;
 }) {
   const [hovered, setHovered] = useState<number | null>(null);
 
@@ -93,6 +96,10 @@ export function LiftChart({
   if (validRows.length === 0) {
     return <p className="empty">No finite relative lifts are available. Check the underlying values; a zero reference has no percent change.</p>;
   }
+  const verdictCounts = validRows.reduce<Record<Verdict, number>>((counts, row) => {
+    counts[verdictFor(row)]++;
+    return counts;
+  }, { better: 0, worse: 0, same: 0, uncertain: 0 });
 
   const maxAbs = Math.max(compress(20), ...validRows.map((r) => Math.abs(compress(r.percent)))) * 1.15;
   const scale = (pct: number) => (compress(pct) / maxAbs) * 45;
@@ -102,6 +109,15 @@ export function LiftChart({
 
   return (
     <figure className="lift-chart">
+      <div className="lift-takeaway">
+        <strong>{policyName} beats the {referenceName} on {verdictCounts.better} of {validRows.length} measures</strong>
+        <span className="lift-takeaway-counts">
+          <span className="lift-verdict lift-verdict--better">▲ {verdictCounts.better} better</span>
+          <span className="lift-verdict lift-verdict--worse">▼ {verdictCounts.worse} worse</span>
+          {verdictCounts.uncertain > 0 && <span className="lift-verdict lift-verdict--uncertain">≈ {verdictCounts.uncertain} too few to call</span>}
+          {verdictCounts.same > 0 && <span className="lift-verdict lift-verdict--same">= {verdictCounts.same} same</span>}
+        </span>
+      </div>
       <div className="lift-rows" role="list" aria-label={`Percent change against ${referenceName}`}>
         {validRows.map((row, i) => {
           const verdict = verdictFor(row);
@@ -183,12 +199,12 @@ export function ComparisonTable({
 }) {
   const names = Object.keys(policies);
   return (
-    <table className="data">
+    <table className="data metric-table">
       <thead>
         <tr>
           <th>Metric</th>
           {names.map((n) => (
-            <th key={n}>{n}</th>
+            <th key={n}>{policyLabel(n)}</th>
           ))}
         </tr>
       </thead>

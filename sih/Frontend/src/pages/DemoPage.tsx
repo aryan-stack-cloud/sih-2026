@@ -19,6 +19,7 @@ import type { ExperimentResults, MetricsSummary, ModelMetadata, PolicyType, Scen
 
 const pct = (v: number) => `${(v * 100).toFixed(1)}%`;
 const steps = (v: number) => `${v.toFixed(1)} steps`;
+const scenarioName = (name: string) => name.replace(/^[A-G]\s*[-–—:]\s*/, "").trim();
 
 const CHALLENGERS = POLICY_TYPES.filter((p) => p !== "baseline");
 const CHECKPOINT_POLICIES: PolicyType[] = ["dqn", "ppo"];
@@ -102,7 +103,7 @@ export function DemoPage() {
   } = useStore();
 
   const [scenario, setScenario] = useState<ScenarioId>("B");
-  const [challenger, setChallenger] = useState<PolicyType>("index");
+  const [challenger, setChallenger] = useState<PolicyType>("bandit");
   const [stage, setStage] = useState<string>("");
   const [running, setRunning] = useState(false);
   const [results, setResults] = useState<ExperimentResults | null>(null);
@@ -158,7 +159,7 @@ export function DemoPage() {
     !CHECKPOINT_POLICIES.includes(policy) || checkpointReady[policy] === true;
 
   useEffect(() => {
-    if (!policyAvailable(challenger)) setChallenger("index");
+    if (!policyAvailable(challenger)) setChallenger("bandit");
   }, [challenger, checkpointReady]);
 
   const selectedScenario = scenarios.find((s) => s.id === scenario);
@@ -413,9 +414,10 @@ export function DemoPage() {
                 disabled={running}
                 onChange={(e) => setScenario(e.target.value as ScenarioId)}
               >
-                {["A", "B", "C", "D", "E", "F", "G"].map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
+                {["A", "B", "C", "D", "E", "F", "G"].map((s) => {
+                  const name = scenarios.find((item) => item.id === s)?.name;
+                  return <option key={s} value={s}>{name ? `${s} · ${scenarioName(name)}` : s}</option>;
+                })}
               </select>
             </label>
             <label className="field">
@@ -456,8 +458,9 @@ export function DemoPage() {
         </div>
 
         {selectedScenario && (
-          <p className="note mono" style={{ marginTop: -6, marginBottom: 12 }}>
-            Scenario {selectedScenario.id} · {selectedScenario.name} — {selectedScenario.expected_outcome}
+          <p className="note scenario-description">
+            Scenario {selectedScenario.id} — <strong>{scenarioName(selectedScenario.name)}.</strong>{" "}
+            {selectedScenario.expected_outcome}
           </p>
         )}
 
@@ -507,8 +510,11 @@ export function DemoPage() {
                 <progress className="demo-progress" aria-label={stage || "Demo running"} />
               )
             )}
-            <p className="note mono" style={{ marginTop: 10 }} role="status">
-              {stage} {activeSimulationId && `· ${activeSimulationId} · socket ${connection}`}
+            <p className="note demo-status-line" role="status">
+              <span className={`demo-status-dot${stepFailed ? " is-error" : stage === "Done." ? " is-done" : ""}`} aria-hidden="true" />
+              <span>{stage === "Done." ? "Done" : stage === "Cancelled." ? "Cancelled" : stage === "Stopped." ? "Stopped" : stage}
+                {activeSimulationId && ` — live run ${activeSimulationId}`}
+                {activeSimulationId && connection !== "open" && ` · connection ${connection}`}</span>
             </p>
           </div>
         )}
@@ -517,8 +523,8 @@ export function DemoPage() {
       <section className="section">
         <p className="eyebrow">This run</p>
         <p className="note" style={{ marginBottom: 12 }}>
-          One run of {CHALLENGER_LABELS[challenger]}. High-priority detection is shown with
-          counts in the comparison below; a one-episode result is illustrative, not a stable estimate.
+          The tiles summarize one {DEMO_LIVE_STEPS}-step live run of {CHALLENGER_LABELS[challenger]}.
+          The comparison below averages {DEMO_COMPARISON_EPISODES} matched {DEMO_COMPARISON_STEPS}-step episodes.
         </p>
         <div className={`tiles${results ? " results-reveal" : ""}`}>
           <Tile
@@ -561,23 +567,24 @@ export function DemoPage() {
             <div className="panel results-reveal">
               <p className="lift-sample">{sampleCaption}</p>
               {fallbackOnly ? (
-                <p className="empty">Fell back to sweep — no trained model served this scenario. A 0% lift would describe the fallback, not the selected policy.</p>
-              ) : <LiftChart rows={liftRows} referenceName="fixed sweep" />}
-              <PolicyRunDetails policies={results.policies} />
+                <p className="policy-provenance-alert">Fell back to sweep — no trained model served this scenario. A 0% lift would describe the fallback, not the selected policy.</p>
+              ) : <LiftChart rows={liftRows} referenceName="fixed sweep" policyName={comparisonPolicy ? CHALLENGER_LABELS[comparisonPolicy as PolicyType] ?? comparisonPolicy : CHALLENGER_LABELS[challenger]} />}
+              {!fallbackOnly && <PolicyRunDetails policies={results.policies} compact />}
             </div>
 
-            <details style={{ marginTop: 14 }}>
-              <summary style={{ cursor: "pointer", color: "var(--ink-muted)", fontSize: "0.88rem" }}>
-                Show the underlying numbers
+            <details className="numbers-disclosure">
+              <summary>
+                <span>Show the underlying numbers</span>
+                <small>all 8 metrics for both policies</small>
               </summary>
-              <div className="panel" style={{ marginTop: 10 }}>
+              <div className="panel panel-scroll" style={{ marginTop: 10 }}>
                 <ComparisonTable
                   policies={results.policies as unknown as Record<string, Record<string, unknown>>}
                   metrics={TABLE_METRICS}
                 />
                 <p className="note" style={{ marginTop: 12 }}>
-                  Compare policies on <span className="mono">intercept time, all bursts</span>,
-                  not on <span className="mono">caught only</span>. The second averages just the
+                  Compare policies on <strong>intercept time, all bursts</strong>,
+                  not on <strong>caught only</strong>. The second averages just the
                   bursts a policy managed to catch, so a scheduler that catches more of the hard
                   ones scores worse on it.
                 </p>
