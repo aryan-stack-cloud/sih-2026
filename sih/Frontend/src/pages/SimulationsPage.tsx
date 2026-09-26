@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import * as api from "../services/api/client";
 import { useStore } from "../store/useStore";
+import { policyLabel } from "../lib/policyLabels";
 import { POLICY_TYPES, SCENARIO_IDS } from "../types/contract";
 import type { PolicyType, ScenarioId } from "../types/contract";
 
@@ -19,6 +20,8 @@ export function SimulationsPage({ onWatch }: { onWatch: () => void }) {
   useEffect(() => {
     void refreshSimulations();
     void refreshScenarios();
+    const timer = setInterval(() => void refreshSimulations(), 2000);
+    return () => clearInterval(timer);
   }, [refreshSimulations, refreshScenarios]);
 
   const selected = scenarios.find((s) => s.id === scenario);
@@ -69,7 +72,7 @@ export function SimulationsPage({ onWatch }: { onWatch: () => void }) {
               <span>Policy</span>
               <select value={policy} onChange={(e) => setPolicy(e.target.value as PolicyType)}>
                 {POLICY_TYPES.map((p) => (
-                  <option key={p} value={p}>{p}</option>
+                  <option key={p} value={p}>{policyLabel(p)}</option>
                 ))}
               </select>
             </label>
@@ -164,9 +167,9 @@ export function SimulationsPage({ onWatch }: { onWatch: () => void }) {
                     <td className="simulation-name">{simulation.name}</td>
                     <td>{simulation.status}</td>
                     <td>{simulation.scenario_id ?? "—"}</td>
-                    <td>{simulation.policy_type}</td>
+                    <td>{policyLabel(simulation.policy_type)}</td>
                     <td className="mono">
-                      {simulation.current_step} / {simulation.duration_steps}
+                      {simulation.status === "completed" ? simulation.duration_steps : simulation.current_step} / {simulation.duration_steps}
                     </td>
                     <td>
                       <code className="simulation-id" title={simulation.id}>{simulation.id}</code>
@@ -214,7 +217,13 @@ export function SimulationsPage({ onWatch }: { onWatch: () => void }) {
                           type="button"
                           disabled={busy}
                           aria-label={`Delete ${simulation.name}`}
-                          onClick={() => void act(() => api.deleteSimulation(simulation.id))}
+                          onClick={() => {
+                            const ok = window.confirm(
+                              `Delete "${simulation.name}"? This cannot be undone.`,
+                            );
+                            if (!ok) return;
+                            void act(() => api.deleteSimulation(simulation.id));
+                          }}
                         >
                           Delete
                         </button>

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import * as api from "../services/api/client";
 import { useStore } from "../store/useStore";
+import { policyLabel } from "../lib/policyLabels";
+import { StatusDot } from "../components/StatusDot";
+import { PolicyRunDetails } from "../components/PolicyRunDetails";
 import { POLICY_TYPES, SCENARIO_IDS } from "../types/contract";
 import type { PolicyType, ScenarioId } from "../types/contract";
 
@@ -37,13 +40,14 @@ const NO_WINNER_HIGHLIGHT = new Set<MetricKey>(["ait"]);
  * the flattering one would misrepresent the result.
  */
 export function ExperimentsPage() {
-  const { experiments, results, refreshExperiments, loadResults, setError } = useStore();
+  const { experiments, results, refreshExperiments, loadResults, clearResults, setError } = useStore();
 
   const [scenario, setScenario] = useState<ScenarioId>("B");
   const [policies, setPolicies] = useState<PolicyType[]>(["random", "baseline", "bandit"]);
   const [episodes, setEpisodes] = useState(3);
   const [durationSteps, setDurationSteps] = useState(400);
   const [busy, setBusy] = useState(false);
+  const [loadingResultsId, setLoadingResultsId] = useState<string | null>(null);
 
   useEffect(() => {
     void refreshExperiments();
@@ -96,6 +100,7 @@ export function ExperimentsPage() {
               type="number"
               value={episodes}
               style={{ width: 60 }}
+              min={1}
               onChange={(e) => setEpisodes(Number(e.target.value))}
             />
           </label>
@@ -105,24 +110,25 @@ export function ExperimentsPage() {
               type="number"
               value={durationSteps}
               style={{ width: 80 }}
+              min={1}
               onChange={(e) => setDurationSteps(Number(e.target.value))}
             />
           </label>
           <button
             className="primary"
-            disabled={busy || policies.length === 0}
+            disabled={busy || policies.length === 0 || !Number.isInteger(episodes) || episodes < 1}
             onClick={() => void act(() => api.createExperiment({ scenario, policies, episodes }))}
           >
             Create
           </button>
         </div>
 
-        <div className="controls" style={{ marginTop: 10 }}>
-          <span className="eyebrow" style={{ margin: 0 }}>Policies</span>
+        <div className="controls controls-secondary">
+          <span className="eyebrow">Policies</span>
           {POLICY_TYPES.map((p) => (
             <label key={p} className="field">
               <input type="checkbox" checked={policies.includes(p)} onChange={() => toggle(p)} />
-              {p}
+              {policyLabel(p)}
             </label>
           ))}
         </div>
@@ -139,7 +145,7 @@ export function ExperimentsPage() {
         {experiments.length === 0 ? (
           <p className="empty">No experiments yet — create one above to compare policies.</p>
         ) : (
-          <div className="panel" style={{ overflowX: "auto" }}>
+          <div className="panel panel-scroll">
             <table className="data">
               <thead>
                 <tr>
@@ -156,7 +162,11 @@ export function ExperimentsPage() {
                   <tr key={e.id}>
                     <td className="mono">{e.id}</td>
                     <td>{e.scenario}</td>
-                    <td>{Array.isArray(e.policies) ? e.policies.join(", ") : String(e.policies)}</td>
+                    <td>
+                      {Array.isArray(e.policies)
+                        ? e.policies.map(policyLabel).join(", ")
+                        : String(e.policies)}
+                    </td>
                     <td>
                       <StatusDot tone={e.status === "completed" ? "good" : e.status === "failed" ? "bad" : "neutral"}>
                         {e.status}
@@ -168,8 +178,8 @@ export function ExperimentsPage() {
                           <div className="progress">
                             <div className="progress-bar" style={{ width: `${e.progress.fraction * 100}%` }} />
                           </div>
-                          <span className="mono" style={{ fontSize: "0.72rem", color: "var(--ink-muted)" }}>
-                            {(e.progress.fraction * 100).toFixed(0)}% · {e.progress.current_policy}
+                          <span className="mono progress-caption">
+                            {(e.progress.fraction * 100).toFixed(0)}% · {policyLabel(e.progress.current_policy)}
                           </span>
                         </>
                       ) : (
@@ -179,15 +189,30 @@ export function ExperimentsPage() {
                     <td>
                       <div className="row-actions">
                         <button
-                          disabled={busy}
-                          onClick={() => void act(() => api.runExperiment(e.id, durationSteps))}
+                          disabled={busy || e.status === "running" || !Number.isInteger(durationSteps) || durationSteps < 1}
+                          onClick={() => void act(async () => {
+                            await api.runExperiment(e.id, durationSteps);
+                            clearResults(e.id);
+                          })}
                         >
                           Run
                         </button>
-                        <button disabled={busy} onClick={() => void act(() => api.stopExperiment(e.id))}>
+                        <button disabled={busy || e.status !== "running"} onClick={() => void act(() => api.stopExperiment(e.id))}>
                           Stop
                         </button>
-                        <button onClick={() => void loadResults(e.id)}>Results</button>
+                        <button
+                          disabled={loadingResultsId === e.id || e.status !== "completed"}
+                          onClick={async () => {
+                            setLoadingResultsId(e.id);
+                            try {
+                              await loadResults(e.id);
+                            } finally {
+                              setLoadingResultsId(null);
+                            }
+                          }}
+                        >
+                          {loadingResultsId === e.id ? "Loading…" : "Results"}
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -207,7 +232,7 @@ export function ExperimentsPage() {
                 <p className="eyebrow">Results</p>
                 <h2>
                   {r.scenario_name}{" "}
-                  <span className="mono" style={{ fontSize: "0.7rem", fontWeight: 400, color: "var(--ink-faint)" }}>
+                  <span className="mono heading-id">
                     {id}
                   </span>
                 </h2>
@@ -218,21 +243,22 @@ export function ExperimentsPage() {
               </div>
             </div>
 
-            <div className="panel" style={{ overflowX: "auto" }}>
+            <div className="panel panel-scroll">
               <table className="data">
                 <thead>
                   <tr>
                     <th>Metric</th>
                     {names.map((n) => (
-                      <th key={n}>{n}</th>
+                      <th key={n}>{policyLabel(n)}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {METRICS.map((m) => {
-                    const values = names.map((n) => Number(r.policies[n][m.key] ?? 0));
-                    const best = m.higherIsBetter ? Math.max(...values) : Math.min(...values);
-                    const canHighlight = names.length > 1 && !NO_WINNER_HIGHLIGHT.has(m.key);
+                    const values = names.map((n) => r.policies[n]?.[m.key]);
+                    const finite = values.filter((v): v is number => typeof v === "number" && Number.isFinite(v));
+                    const best = m.higherIsBetter ? Math.max(...finite) : Math.min(...finite);
+                    const canHighlight = finite.length > 1 && !NO_WINNER_HIGHLIGHT.has(m.key);
                     return (
                       <tr key={m.key}>
                         <td>{m.label}</td>
@@ -241,7 +267,7 @@ export function ExperimentsPage() {
                             key={names[i]}
                             style={canHighlight && v === best ? { color: "var(--better)", fontWeight: 600 } : undefined}
                           >
-                            {m.format(v)}
+                            {typeof v === "number" && Number.isFinite(v) ? m.format(v) : "—"}
                           </td>
                         ))}
                       </tr>
@@ -249,6 +275,9 @@ export function ExperimentsPage() {
                   })}
                 </tbody>
               </table>
+
+              <PolicyRunDetails policies={r.policies} />
+              {r.episodes < 2 && <p className="note">High-priority detection from one episode is noisy; use multiple episodes for evidence.</p>}
 
               <div className="legend" style={{ marginTop: 10 }}>
                 <span className="legend-item">
@@ -268,16 +297,5 @@ export function ExperimentsPage() {
         );
       })}
     </>
-  );
-}
-
-function StatusDot({ tone, children }: { tone: "good" | "bad" | "neutral"; children: string }) {
-  return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-      <span className={`status-dot${tone === "neutral" ? "" : ` ${tone}`}`} />
-      <span style={{ fontSize: "0.78rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em" }}>
-        {children}
-      </span>
-    </span>
   );
 }

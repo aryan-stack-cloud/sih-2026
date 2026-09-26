@@ -102,6 +102,8 @@ export interface LiveSnapshot {
   model_id?: string;
   metrics?: MetricsSummary;
   error?: string;
+  /** Set when the chosen policy has no trained model for this scenario and the run is sweeping. */
+  unavailable_reason?: string | null;
 }
 
 export interface MetricsSummary {
@@ -132,6 +134,14 @@ export interface MetricsSummary {
   total_scans: number;
   useful_scans: number;
   counts: { tp: number; fn: number; fp: number; tn: number };
+  /** Present on newer experiment results; older persisted runs omit these fields. */
+  ml_decisions?: number;
+  fallback_decisions?: number;
+  model_ids?: string[];
+  tp_high_priority?: number;
+  fn_high_priority?: number;
+  /** Why the policy could not be served (e.g. no trained model for the scenario's band count). */
+  unavailable_reason?: string | null;
   [key: string]: unknown;
 }
 
@@ -211,6 +221,9 @@ export interface ModelMetadata {
   version: number;
   active: boolean;
   scenario: string | null;
+  /** Band count the weights are sized for; the model can only serve scenarios with this many.
+   * Optional because a Backend predating it omits the field. */
+  num_bands?: number | null;
   created_at: string;
   metrics: Record<string, unknown>;
   hyperparams: Record<string, unknown>;

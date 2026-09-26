@@ -14,7 +14,7 @@
  * written label in the legend.
  */
 
-@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap");
 
 :root {
   /* surfaces */
@@ -22,6 +22,8 @@
   --panel: #141b2e;
   --panel-raised: #1b2440;
   --rule: #263054;
+  --electric: #77a8ff;
+  --electric-soft: rgba(119, 168, 255, 0.18);
 
   /* ink */
   --ink: #e6eaf5;
@@ -49,6 +51,7 @@
   --brand-gold-ink: #241a05;
 
   --font-display: "Archivo", "Segoe UI", system-ui, sans-serif;
+  --font-headline: "Barlow Condensed", "Arial Narrow", sans-serif;
   --font-mono: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
 
   --radius: 4px;
@@ -60,7 +63,9 @@
 
 body {
   margin: 0;
-  background: var(--ground);
+  background:
+    radial-gradient(ellipse 70% 38% at 72% -8%, rgba(32, 77, 153, 0.28), transparent 68%),
+    linear-gradient(180deg, #090f22 0%, var(--ground) 42rem);
   color: var(--ink);
   font-family: var(--font-display);
   font-size: 15px;
@@ -88,8 +93,9 @@ body {
 
 /* Nameplate: wide tracking and uppercase, the way an instrument is labelled. */
 .masthead h1 {
+  font-family: var(--font-headline);
   margin: 0;
-  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  font-size: clamp(1.65rem, 3vw, 2.45rem);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -112,8 +118,9 @@ body {
 }
 
 /* -- brand mark --------------------------------------------------------------------------
-   Team mark. A placeholder wordmark badge until the supplied PUSHPAK emblem is available as
-   a file asset - swap the `.brand-mark` letter for that image then, same slot, same size. */
+   Team mark. Simplified gold-wing mark in the PUSHPAK gold/navy language, drawn from the
+   ceremonial emblem's aircraft-wing motif. If the full emblem ever ships as a UI-sized file
+   asset, it takes this same slot at this same size. */
 
 .brand-row {
   display: flex;
@@ -134,6 +141,12 @@ body {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.72rem;
+}
+
+img.brand-mark {
+  display: block;
+  background: transparent;
+  object-fit: contain;
 }
 
 .brand-name {
@@ -163,22 +176,27 @@ body {
 }
 
 .service .dot {
-  width: 7px;
-  height: 7px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: var(--ink-faint);
+  box-shadow: 0 0 0 3px transparent;
+  transition: box-shadow 0.2s;
 }
 
 .service.up .dot {
   background: var(--intercepted);
+  box-shadow: 0 0 0 3px rgba(15, 158, 115, 0.22);
 }
 
 .service.down .dot {
   background: var(--false-alarm);
+  box-shadow: 0 0 0 3px rgba(216, 66, 95, 0.22);
 }
 
 .service.down {
   color: var(--false-alarm);
+  font-weight: 600;
 }
 
 /* -- sections ---------------------------------------------------------------------------- */
@@ -289,6 +307,100 @@ label.field {
   flex-wrap: wrap;
 }
 
+/* A second controls row directly under the first - a policy checklist under a scenario/episode
+   row, say - reads as one continuous form rather than two unrelated ones. */
+.controls-secondary {
+  margin-top: 10px;
+}
+
+.controls-secondary .eyebrow {
+  margin: 0;
+}
+
+/* Wraps a <table class="data"> that can outgrow its panel - the scroll stays inside the panel
+   instead of pushing the page wide. Same idiom as .simulation-table-scroll, generalised. */
+.panel-scroll {
+  overflow-x: auto;
+}
+
+/* Text alternative for the waterfall SVG: a disclosure holding a per-band summary table,
+   so the spectrum data is reachable by keyboard and screen readers, not just by sight. */
+.waterfall-data {
+  margin-top: 12px;
+}
+
+.waterfall-data > summary {
+  cursor: pointer;
+  color: var(--ink-muted);
+  font-size: 0.88rem;
+  width: fit-content;
+}
+
+.waterfall-data > summary:focus-visible {
+  outline: 2px solid var(--intercepted);
+  outline-offset: 2px;
+}
+
+.waterfall-data table {
+  margin-top: 10px;
+}
+
+.waterfall-data caption {
+  text-align: left;
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+  padding-bottom: 8px;
+}
+
+.waterfall-data tbody th[scope="row"] {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
+/* Small progress readout directly under a .progress bar - a fraction plus what's in flight. */
+.progress-caption {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+}
+
+/* Native progress for the demo run: determinate while the head-to-head comparison reports
+   its own fraction, indeterminate while the spectrum builds and the scheduler runs. */
+.demo-status {
+  margin-top: 10px;
+}
+
+.demo-progress {
+  width: 100%;
+  height: 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--panel-raised);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.demo-progress::-webkit-progress-bar {
+  background: var(--panel-raised);
+}
+
+.demo-progress::-webkit-progress-value {
+  background: var(--intercepted);
+}
+
+.demo-progress::-moz-progress-bar {
+  background: var(--intercepted);
+}
+
+/* A resource's id trailing its own heading, de-emphasised so the human-readable name still reads
+   first - "B - Mostly Periodic  exp_6130a59b", not the reverse. */
+.heading-id {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--ink-faint);
+}
+
 /* -- legend ------------------------------------------------------------------------------- */
 
 .legend {
@@ -384,6 +496,97 @@ table.data th {
   text-transform: uppercase;
 }
 
+/* -- lift chart detail strip ------------------------------------------------------------------
+   Lives outside the chart's SVG: the gloss text needs to read as a real sentence, which SVG
+   <text> cannot wrap on its own. Fixed min-height so hovering different rows doesn't reflow the
+   panels below it. */
+
+.lift-chart { margin: 0; max-width: 100%; }
+.lift-sample {
+  margin: 0 0 14px;
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+}
+.lift-rows { display: grid; gap: 2px; }
+.lift-row {
+  display: grid;
+  grid-template-columns: minmax(145px, 185px) minmax(130px, 1fr) minmax(190px, auto) minmax(140px, auto);
+  grid-template-areas: "label plot figures outcome";
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 9px 10px;
+  border-radius: var(--radius);
+}
+.lift-row:hover, .lift-row:focus-visible {
+  background: var(--panel-raised);
+  outline: 1px solid var(--rule);
+}
+.lift-label { grid-area: label; min-width: 0; color: var(--ink); font-weight: 600; }
+.lift-plot { grid-area: plot; display: block; width: 100%; height: 26px; min-width: 0; }
+.lift-figures {
+  grid-area: figures;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.lift-reference, .lift-arrow { color: var(--ink-muted); }
+.lift-policy-value { color: var(--ink); font-weight: 700; }
+.lift-figures small { display: block; color: var(--ink-muted); font-size: 0.68rem; }
+.lift-outcome { grid-area: outcome; display: flex; justify-content: flex-end; align-items: center; gap: 8px; min-width: 0; }
+.lift-percent { color: var(--ink); font: 600 0.78rem var(--font-mono); white-space: nowrap; }
+.lift-verdict {
+  color: var(--ink);
+  border: 1px solid var(--ink-faint);
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.lift-verdict--better { border-color: var(--better); background: rgba(15, 158, 115, 0.14); }
+.lift-verdict--worse { border-color: var(--worse); background: rgba(216, 66, 95, 0.14); }
+.lift-verdict--uncertain, .lift-verdict--same { color: var(--ink-muted); background: var(--panel-raised); }
+@media (max-width: 980px) {
+  .lift-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "label outcome" "plot plot" "figures figures";
+    gap: 6px 12px;
+  }
+  .lift-outcome { justify-content: flex-end; }
+}
+@media (max-width: 520px) {
+  .lift-row {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "label" "plot" "figures" "outcome";
+  }
+  .lift-outcome { justify-content: flex-start; }
+}
+.lift-detail {
+  min-height: 20px;
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule);
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+
+.lift-detail strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.lift-detail-placeholder {
+  color: var(--ink-faint);
+}
+
 /* -- misc ------------------------------------------------------------------------------------ */
 
 .alert {
@@ -407,16 +610,40 @@ table.data th {
   font-variant-numeric: tabular-nums;
 }
 
+.text-muted {
+  color: var(--ink-muted);
+}
+
+.text-faint {
+  color: var(--ink-faint);
+}
+
 .tabs {
   display: flex;
   gap: 6px;
   margin-top: 18px;
+  /* Six tabs don't fit a phone-width shell. Scrolling the strip itself keeps the overflow
+     contained here instead of forcing the whole page to scroll sideways. */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
-.tabs button[aria-current="true"] {
+.tabs button {
+  flex: none;
+}
+
+.tabs button[aria-selected="true"] {
   background: var(--panel-raised);
   border-color: var(--ink-faint);
   color: var(--ink);
+}
+
+/* The active view's panel is focusable so keyboard users can move into it; the ring
+   follows the same treatment as every other control. */
+.tabpanel:focus-visible {
+  outline: 2px solid var(--intercepted);
+  outline-offset: 2px;
 }
 
 /* The instant a hit lands on the newest row, it pulses once - a chase-light beat that makes a
@@ -430,6 +657,106 @@ table.data th {
 
 .hit-fresh {
   animation: hit-pulse 0.6s ease-out;
+}
+
+/* -- demo step tracker --------------------------------------------------------------------
+   Build spectrum -> Run scheduler -> Compare vs sweep. Replaces a bare status line with a
+   structure a judge can read at a glance without parsing prose. */
+
+.step-tracker {
+  display: flex;
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0 0 4px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.step-tracker li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.step-tracker li:not(:last-child)::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  min-width: 20px;
+  background: var(--rule);
+  margin: 0 10px;
+}
+
+.step-tracker .step-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+}
+
+.step-tracker li.done {
+  color: var(--ink-muted);
+}
+
+.step-tracker li.done .step-index {
+  background: var(--intercepted);
+  border-color: var(--intercepted);
+  color: var(--ground);
+}
+
+.step-tracker li.done:not(:last-child)::after {
+  background: var(--intercepted);
+  opacity: 0.5;
+}
+
+.step-tracker li.active {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.step-tracker li.active .step-index {
+  border-color: var(--brand-gold);
+  color: var(--brand-gold);
+}
+
+.step-tracker li.error {
+  color: var(--false-alarm);
+  font-weight: 600;
+}
+
+.step-tracker li.error .step-index {
+  border-color: var(--false-alarm);
+  color: var(--false-alarm);
+}
+
+/* -- results reveal -------------------------------------------------------------------------
+   Plays once, the instant the comparison lands, so the stat tiles and the head-to-head chart
+   read as one moment rather than the chart silently appearing underneath. */
+
+@keyframes results-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.results-reveal {
+  animation: results-reveal 0.4s ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -477,6 +804,19 @@ input:focus-visible {
 
 .status-dot.bad {
   background: var(--false-alarm);
+}
+
+.status-readout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-readout-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 /* Thin progress bar for an in-flight experiment run or training job - the same fraction the
@@ -733,4 +1073,225 @@ table.data.simulation-table {
   .simulation-form button {
     grid-column: auto;
   }
+}
+
+/* Mission Briefing Instrument ---------------------------------------------------------------
+   The dashboard opens as a story about a narrow receiver aperture, then moves into controls
+   and telemetry. It is intentionally distinct from the supporting engineer-facing tabs. */
+
+.top-rule {
+  height: 3px;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr 0.5fr;
+  gap: 4px;
+  margin: -28px 0 26px;
+}
+
+.top-rule span { background: var(--rule); }
+.top-rule span:nth-child(2) { background: var(--brand-gold); }
+.top-rule span:nth-child(3) { background: var(--intercepted); }
+
+.masthead { padding-bottom: 22px; }
+.masthead-copy { max-width: 680px; }
+.title-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+.classification {
+  border: 1px solid rgba(119, 168, 255, 0.36);
+  border-radius: 999px;
+  color: var(--electric);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  padding: 4px 8px;
+  text-transform: uppercase;
+}
+
+.masthead-status {
+  background: rgba(16, 26, 49, 0.62);
+  border: 1px solid var(--rule);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.03);
+  padding: 13px 16px;
+}
+
+.status-kicker {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 7px;
+  text-transform: uppercase;
+}
+
+.navigation-wrap {
+  align-items: center;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.navigation-label {
+  color: var(--ink-faint);
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.navigation-wrap .tabs { margin-top: 0; }
+.navigation-wrap .tabs button { border-bottom: 0; border-radius: 4px 4px 0 0; }
+.navigation-wrap .tabs button[aria-selected="true"] { border-color: var(--electric); }
+
+.mission-hero {
+  align-items: stretch;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1.1fr 0.9fr;
+  margin-top: 42px;
+  padding-bottom: 8px;
+}
+
+.mission-copy {
+  border-left: 2px solid var(--brand-gold);
+  padding: 4px 0 6px 20px;
+}
+
+.mission-number {
+  color: var(--electric);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  margin: 9px 0 12px;
+  text-transform: uppercase;
+}
+
+.mission-copy h2 {
+  font-family: var(--font-headline);
+  font-size: clamp(2rem, 3.8vw, 3.6rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 0.86;
+  text-transform: uppercase;
+  margin: 0;
+  max-width: 12ch;
+}
+
+.mission-copy h2 em { color: var(--brand-gold); font-style: normal; }
+
+.mission-lede {
+  color: var(--ink-muted);
+  font-size: 1rem;
+  line-height: 1.65;
+  margin: 17px 0 0;
+  max-width: 55ch;
+}
+
+.mission-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.mission-badges span {
+  background: rgba(23, 37, 69, 0.78);
+  border: 1px solid var(--rule);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 8px 10px;
+}
+.mission-badges b { color: var(--ink); font-weight: 600; }
+
+.aperture-card {
+  background:
+    linear-gradient(135deg, rgba(32, 77, 153, 0.22), transparent 58%),
+    rgba(16, 26, 49, 0.8);
+  border: 1px solid var(--rule);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255,255,255,0.035);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 286px;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.aperture-card::after {
+  background: repeating-linear-gradient(90deg, transparent 0, transparent 22px, rgba(119, 168, 255, 0.045) 23px);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.aperture-card-top, .aperture-caption { position: relative; z-index: 1; }
+.aperture-card-top { display: flex; justify-content: space-between; text-transform: uppercase; }
+.aperture-card-top span { color: var(--ink-muted); font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; }
+.aperture-card-top strong { color: var(--brand-gold); font-family: var(--font-mono); font-size: 0.78rem; }
+
+.aperture-ruler {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  margin: 38px 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.aperture-ruler span { align-items: center; display: grid; gap: 7px; justify-items: center; }
+.aperture-ruler i { background: #253759; display: block; height: 56px; transition: background 0.25s, box-shadow 0.25s; width: 100%; }
+.aperture-ruler small { color: var(--ink-faint); font-family: var(--font-mono); font-size: 0.55rem; }
+.aperture-ruler .is-observed i { background: var(--brand-gold); box-shadow: 0 0 20px rgba(232, 184, 75, 0.55); }
+.aperture-ruler .is-observed small { color: var(--brand-gold); }
+
+.aperture-caption { align-items: center; color: var(--ink-muted); display: flex; font-size: 0.78rem; gap: 8px; }
+.aperture-pulse { background: var(--intercepted); border-radius: 50%; box-shadow: 0 0 0 5px rgba(15, 158, 115, 0.15); height: 7px; width: 7px; }
+
+.receiver-stage { margin-top: 30px; }
+.receiver-stage .section-head { align-items: end; }
+.strategy-spotlight {
+  background: var(--panel);
+  border-left: 2px solid var(--electric);
+  max-width: 278px;
+  padding: 11px 14px;
+}
+.strategy-spotlight span { color: var(--electric); display: block; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.strategy-spotlight strong { display: block; font-size: 0.86rem; margin-top: 3px; }
+.strategy-spotlight p { color: var(--ink-muted); font-size: 0.72rem; line-height: 1.4; margin: 4px 0 0; }
+.mission-controls {
+  background: linear-gradient(90deg, rgba(23, 37, 69, 0.95), rgba(16, 26, 49, 0.72));
+  border: 1px solid var(--rule);
+  box-shadow: inset 3px 0 var(--brand-gold);
+  padding: 12px 14px;
+}
+.button-mark { font-size: 0.7rem; margin-right: 5px; }
+.spectrum-panel {
+  background: linear-gradient(180deg, rgba(20, 27, 46, 0.95), rgba(11, 16, 32, 0.92));
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.22);
+  padding: 18px;
+}
+
+.receiver-stage + .section .tiles .tile {
+  background: linear-gradient(145deg, var(--panel), rgba(20, 27, 46, 0.65));
+  border-top: 2px solid var(--electric);
+  min-height: 132px;
+}
+
+.receiver-stage + .section .tiles .tile:nth-child(2) { border-top-color: var(--false-alarm); }
+.receiver-stage + .section .tiles .tile:nth-child(3) { border-top-color: var(--brand-gold); }
+.receiver-stage + .section .tiles .tile:nth-child(4) { border-top-color: var(--intercepted); }
+
+@media (max-width: 760px) {
+  .top-rule { margin-top: -28px; }
+  .navigation-wrap { align-items: flex-start; flex-direction: column; gap: 8px; padding-bottom: 0; }
+  .navigation-wrap .tabs { min-width: 0; max-width: 100%; }
+  .mission-hero { grid-template-columns: 1fr; }
+  .aperture-card { min-height: 220px; }
+  .mission-copy h2 { font-size: 2.35rem; }
+}
+
+@media (max-width: 560px) {
+  .shell { padding-left: 16px; padding-right: 16px; }
+  .aperture-card { padding: 16px; }
+  .aperture-ruler { gap: 2px; margin-top: 26px; }
+  .aperture-ruler i { height: 42px; }
+  .aperture-ruler small { display: none; }
+  .strategy-spotlight { max-width: none; width: 100%; }
 }

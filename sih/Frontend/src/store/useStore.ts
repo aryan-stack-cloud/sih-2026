@@ -19,14 +19,25 @@ import type {
   Experiment,
   ExperimentResults,
   LiveSnapshot,
+  ModelMetadata,
   ReadyStatus,
   Scenario,
+  ScenarioId,
   Simulation,
   WsFrame,
 } from "../types/contract";
 
 /** Rolling window of recent frames; the harness shows the tail, not the whole run. */
 const FRAME_WINDOW = 40;
+
+export interface TrainingJob {
+  id: string;
+  status: string;
+  progress: number;
+  phase: string;
+  algorithm: string;
+  scenario: ScenarioId;
+}
 
 export interface SpectrumFrame {
   t: number;
@@ -51,9 +62,14 @@ interface StoreState {
   scenarios: Scenario[];
   simulations: Simulation[];
   experiments: Experiment[];
+  models: ModelMetadata[];
+
+  // training
+  trainingJob: TrainingJob | null;
 
   // live
   activeSimulationId: string | null;
+  activeBandsCount: number | null;
   live: LiveSnapshot | null;
   frames: SpectrumFrame[];
   lastDecision: WsFrame | null;
@@ -67,14 +83,26 @@ interface StoreState {
   refreshScenarios: () => Promise<void>;
   refreshSimulations: () => Promise<void>;
   refreshExperiments: () => Promise<void>;
+  refreshModels: () => Promise<void>;
+  startTraining: (body: {
+    algorithm: string;
+    scenario: ScenarioId;
+    episodeCount?: number;
+  }) => Promise<void>;
   watch: (simulationId: string) => void;
   unwatch: () => void;
   pollLive: (simulationId: string) => Promise<void>;
   loadResults: (experimentId: string) => Promise<void>;
+  clearResults: (experimentId: string) => void;
   setError: (message: string | null) => void;
 }
 
 let connection: SimulationConnection | null = null;
+
+// Module-level, like `connection` above: a training job is a fire-and-forget background task on
+// the server, and the poll that watches it must not die just because ModelsPage unmounts when the
+// user switches tabs mid-training.
+let trainingPollTimer: ReturnType<typeof setInterval> | null = null;
 
 export const useStore = create<StoreState>((set, get) => ({
   connection: "idle",
@@ -85,7 +113,10 @@ export const useStore = create<StoreState>((set, get) => ({
   scenarios: [],
   simulations: [],
   experiments: [],
+  models: [],
+  trainingJob: null,
   activeSimulationId: null,
+  activeBandsCount: null,
   live: null,
   frames: [],
   lastDecision: null,
@@ -122,7 +153,77 @@ export const useStore = create<StoreState>((set, get) => ({
   refreshExperiments: async () => {
     try {
       const page = await api.listExperiments(undefined, 0, 50);
-      set({ experiments: page.items });
+      // The catalogue response omits progress; it is present on GET /experiments/{id}.
+      const experiments = await Promise.all(page.items.map(async (experiment) => {
+        if (experiment.status !== "running") return experiment;
+        try {
+          return await api.getExperiment(experiment.id);
+        } catch {
+          return experiment;
+        }
+      }));
+      set({ experiments });
+    } catch (e) {
+      set({ error: describe(e) });
+    }
+  },
+
+  refreshModels: async () => {
+    try {
+      set({ models: await api.listModels() });
+    } catch (e) {
+      set({ error: describe(e) });
+    }
+  },
+
+  startTraining: async (body) => {
+    try {
+      const r = await api.trainModel(body);
+      const jobId = r.job_id;
+      set({
+        trainingJob: {
+          id: jobId,
+          status: "running",
+          progress: 0,
+          phase: "",
+          algorithm: body.algorithm,
+          scenario: body.scenario,
+        },
+      });
+
+      if (trainingPollTimer) clearInterval(trainingPollTimer);
+      let polling = false;
+      trainingPollTimer = setInterval(async () => {
+        if (polling) return;
+        polling = true;
+        try {
+          const s = await api.trainStatus(jobId);
+          if (get().trainingJob?.id !== jobId) return;
+          set((st) =>
+            st.trainingJob && st.trainingJob.id === jobId
+              ? {
+                  trainingJob: {
+                    ...st.trainingJob,
+                    status: s.status,
+                    progress: s.progress,
+                    phase: String((s.detail as Record<string, unknown>)?.phase ?? ""),
+                  },
+                }
+              : {},
+          );
+          if (s.status !== "running") {
+            if (trainingPollTimer) {
+              clearInterval(trainingPollTimer);
+              trainingPollTimer = null;
+            }
+            void get().refreshModels();
+          }
+        } catch (e) {
+          if (get().trainingJob?.id === jobId) set({ error: describe(e) });
+        } finally {
+          polling = false;
+        }
+      }, 2000);
     } catch (e) {
       set({ error: describe(e) });
     }
@@ -130,8 +231,10 @@ export const useStore = create<StoreState>((set, get) => ({
 
   watch: (simulationId) => {
     get().unwatch();
+    const knownBands = get().simulations.find((s) => s.id === simulationId)?.bands ?? null;
     set({
       activeSimulationId: simulationId,
+      activeBandsCount: knownBands,
       frames: [],
       live: null,
       lastDecision: null,
@@ -141,27 +244,38 @@ export const useStore = create<StoreState>((set, get) => ({
     connection = new SimulationConnection(
       simulationId,
       {
-        onFrame: (frame) => applyFrame(set, get, frame),
+        onFrame: (frame) => {
+          if (get().activeSimulationId === simulationId) applyFrame(set, get, frame);
+        },
         onStateChange: (state, detail) =>
-          set({ connection: state, connectionDetail: detail ?? "" }),
+          set((s) => s.activeSimulationId === simulationId
+            ? { connection: state, connectionDetail: detail ?? "" } : {}),
       },
     );
     connection.connect();
+    if (knownBands === null) {
+      void api.getSimulation(simulationId).then((simulation) => {
+        if (get().activeSimulationId === simulationId) set({ activeBandsCount: simulation.bands });
+      }).catch((e) => {
+        if (get().activeSimulationId === simulationId) set({ error: describe(e) });
+      });
+    }
   },
 
   unwatch: () => {
     connection?.close();
     connection = null;
-    set({ connection: "idle", activeSimulationId: null });
+    set({ connection: "idle", activeSimulationId: null, activeBandsCount: null, live: null, frames: [], lastDecision: null });
   },
 
   pollLive: async (simulationId) => {
     // The contract calls GET /metrics/live the polling fallback for the WebSocket, so the
     // harness must work with the socket closed too.
     try {
-      set({ live: await api.liveMetrics(simulationId), error: null });
+      const live = await api.liveMetrics(simulationId);
+      if (get().activeSimulationId === simulationId) set({ live, error: null });
     } catch (e) {
-      set({ error: describe(e) });
+      if (get().activeSimulationId === simulationId) set({ error: describe(e) });
     }
   },
 
@@ -173,6 +287,12 @@ export const useStore = create<StoreState>((set, get) => ({
       set({ error: describe(e) });
     }
   },
+
+  clearResults: (experimentId) => set((s) => {
+    const results = { ...s.results };
+    delete results[experimentId];
+    return { results };
+  }),
 }));
 
 function applyFrame(

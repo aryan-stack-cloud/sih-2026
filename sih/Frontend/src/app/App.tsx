@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { KeyboardEvent } from "react";
 import { useStore } from "../store/useStore";
 import { DemoPage } from "../pages/DemoPage";
 import { SimulationsPage } from "../pages/SimulationsPage";
@@ -29,10 +30,28 @@ const TABS: { id: Tab; label: string }[] = [
 export function App() {
   const [tab, setTab] = useState<Tab>("demo");
   const { error, setError, ready, refreshReady } = useStore();
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
     void refreshReady();
+    const timer = setInterval(() => void refreshReady(), 8000);
+    return () => clearInterval(timer);
   }, [refreshReady]);
+
+  // WAI-ARIA tabs keyboard contract: arrows move between tabs, Home/End jump to the
+  // ends. Selection follows focus, so there is exactly one Tab stop in the strip.
+  const onTabKeyDown = (e: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    let next: number | null = null;
+    if (e.key === "ArrowRight") next = (index + 1) % TABS.length;
+    else if (e.key === "ArrowLeft") next = (index - 1 + TABS.length) % TABS.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = TABS.length - 1;
+    if (next !== null) {
+      e.preventDefault();
+      setTab(TABS[next].id);
+      tabRefs.current[next]?.focus();
+    }
+  };
 
   const service = (label: string, state: "up" | "down" | undefined) => (
     <span className={`service ${state ?? ""}`} key={label}>
@@ -43,13 +62,24 @@ export function App() {
 
   return (
     <div className="shell">
+      <div className="top-rule" aria-hidden="true"><span /><span /><span /></div>
       <header className="masthead">
-        <div>
+        <div className="masthead-copy">
           <div className="brand-row">
-            <span className="brand-mark" aria-hidden="true">P</span>
+            <img
+              className="brand-mark"
+              src="/favicon.svg"
+              alt=""
+              aria-hidden="true"
+              width={20}
+              height={20}
+            />
             <span className="brand-name">Team Pushpak</span>
           </div>
-          <h1>Spectrum Scan Scheduler</h1>
+          <div className="title-row">
+            <h1>Spectrum Scan Scheduler</h1>
+            <span className="classification">Research prototype</span>
+          </div>
           <p className="standfirst">
             A receiver that can hear two bands at a time, deciding where to listen next — and
             learning to do it better than a fixed sweep.
@@ -58,24 +88,38 @@ export function App() {
             Simulation only · no RF hardware · no interception · no jamming
           </p>
         </div>
-        <div className="services">
-          {service("Backend", ready ? "up" : "down")}
-          {service("Scheduler", ready?.ml_scheduler)}
-          {service("Periodicity", ready?.ml_periodicity)}
+        <div className="masthead-status">
+          <div className="status-kicker">System status</div>
+          <div className="services">
+            {service("Backend", ready ? "up" : "down")}
+            {service("Scheduler", ready?.ml_scheduler)}
+            {service("Periodicity", ready?.ml_periodicity)}
+          </div>
         </div>
       </header>
 
-      <nav className="tabs" aria-label="Views">
-        {TABS.map((t) => (
+      <div className="navigation-wrap">
+        <span className="navigation-label">Mission views</span>
+        <div className="tabs" role="tablist" aria-label="Views">
+          {TABS.map((t, i) => (
           <button
             key={t.id}
-            aria-current={tab === t.id}
+            ref={(el) => {
+              tabRefs.current[i] = el;
+            }}
+            role="tab"
+            id={`tab-${t.id}`}
+            aria-selected={tab === t.id}
+            aria-controls={`panel-${t.id}`}
+            tabIndex={tab === t.id ? 0 : -1}
             onClick={() => setTab(t.id)}
+            onKeyDown={(e) => onTabKeyDown(e, i)}
           >
             {t.label}
           </button>
-        ))}
-      </nav>
+          ))}
+        </div>
+      </div>
 
       {error && (
         <p className="alert" role="alert">
@@ -86,12 +130,20 @@ export function App() {
         </p>
       )}
 
-      {tab === "demo" && <DemoPage />}
-      {tab === "simulations" && <SimulationsPage onWatch={() => setTab("live")} />}
-      {tab === "live" && <LiveSimulationPage />}
-      {tab === "experiments" && <ExperimentsPage />}
-      {tab === "models" && <ModelsPage />}
-      {tab === "health" && <HealthPanel />}
+      <div
+        role="tabpanel"
+        id={`panel-${tab}`}
+        aria-labelledby={`tab-${tab}`}
+        tabIndex={0}
+        className="tabpanel"
+      >
+        {tab === "demo" && <DemoPage />}
+        {tab === "simulations" && <SimulationsPage onWatch={() => setTab("live")} />}
+        {tab === "live" && <LiveSimulationPage />}
+        {tab === "experiments" && <ExperimentsPage />}
+        {tab === "models" && <ModelsPage />}
+        {tab === "health" && <HealthPanel />}
+      </div>
     </div>
   );
 }

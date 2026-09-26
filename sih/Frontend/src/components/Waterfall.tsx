@@ -51,7 +51,7 @@ export function Waterfall({
   frames: SpectrumFrame[];
   bands: number;
 }) {
-  if (frames.length === 0) {
+  if (frames.length === 0 || !Number.isInteger(bands) || bands <= 0) {
     return (
       <p className="empty">
         Waiting for the receiver. Start a run to watch the spectrum.
@@ -64,6 +64,23 @@ export function Waterfall({
   const width = bands * CELL_W;
   const height = AXIS_H + APERTURE_H + rows.length * CELL_H;
   const newest = rows[0];
+
+  // Text alternative for the SVG grid below: per-band outcome totals over the buffered
+  // window. Bounded by band count (not frames x bands), so it stays a readable table no
+  // matter how long the run gets.
+  const bandSummary = Array.from({ length: bands }, (_, b) => {
+    let hit = 0, missed = 0, falseAlarm = 0, listened = 0;
+    for (const frame of rows) {
+      switch (classify(b, frame)) {
+        case "hit": hit++; break;
+        case "missed": missed++; break;
+        case "falseAlarm": falseAlarm++; break;
+        case "listened": listened++; break;
+        case "idle": break;
+      }
+    }
+    return { band: b, hit, missed, falseAlarm, listened };
+  });
 
   return (
     <figure style={{ margin: 0 }}>
@@ -97,7 +114,7 @@ export function Waterfall({
             const y = AXIS_H + APERTURE_H + r * CELL_H;
             const fresh = r === 0 && state === "hit";
             return (
-              <g key={`${frame.t}-${b}`}>
+              <g key={`${r}-${frame.t}-${b}`}>
                 <rect
                   className={fresh ? "hit-fresh" : undefined}
                   x={x + GAP / 2}
@@ -128,15 +145,11 @@ export function Waterfall({
             the scroll - real SDR waterfalls (GQRX, SDR#, Fldigi) all thread the tuned range down
             through every row already scrolled past, not just the newest one, so it reads as a
             measured span instead of a floating box you have to project downward by eye. */}
-        {newest.scannedBands.length > 0 &&
-          (() => {
-            const sorted = [...newest.scannedBands].sort((a, z) => a - z);
-            const start = sorted[0];
-            const contiguous = sorted[sorted.length - 1] - start + 1 === sorted.length;
-            const x = start * CELL_W;
-            const w = (contiguous ? sorted.length : 1) * CELL_W;
+        {[...new Set(newest.scannedBands)].filter((band) => Number.isInteger(band) && band >= 0 && band < bands).map((band) => {
+            const x = band * CELL_W;
+            const w = CELL_W;
             return (
-              <g>
+              <g key={band}>
                 <line
                   x1={x} y1={AXIS_H} x2={x} y2={height}
                   stroke="var(--ink)" strokeWidth={1} strokeDasharray="1.5 2.5" opacity={0.35}
@@ -164,14 +177,21 @@ export function Waterfall({
                   letterSpacing="0.08em"
                   fill="var(--ink)"
                 >
-                  {w > 40 ? "LISTENING" : "▲"}
+                  ▲
                 </text>
               </g>
             );
-          })()}
+          })}
       </svg>
 
       <figcaption className="legend">
+        <span className="legend-item">
+          <span
+            className="legend-swatch"
+            style={{ background: "transparent", border: "1.5px solid var(--ink)" }}
+          />
+          Receiver aperture — what it can hear right now
+        </span>
         <span className="legend-item">
           <span className="legend-swatch" style={{ background: "var(--intercepted)" }} />
           Intercepted
@@ -199,6 +219,37 @@ export function Waterfall({
           step {newest.t}
         </span>
       </figcaption>
+
+      <details className="waterfall-data">
+        <summary>Read the waterfall as a table</summary>
+        <div className="panel-scroll">
+          <table className="data">
+            <caption>
+              Outcome totals per band over the last {rows.length} observed steps.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Band</th>
+                <th scope="col">Intercepted</th>
+                <th scope="col">Missed</th>
+                <th scope="col">False alarms</th>
+                <th scope="col">Listened, empty</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bandSummary.map((s) => (
+                <tr key={s.band}>
+                  <th scope="row">{s.band}</th>
+                  <td>{s.hit}</td>
+                  <td>{s.missed}</td>
+                  <td>{s.falseAlarm}</td>
+                  <td>{s.listened}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
     </figure>
   );
 }

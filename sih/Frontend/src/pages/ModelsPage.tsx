@@ -1,22 +1,12 @@
 import { useEffect, useState } from "react";
 import * as api from "../services/api/client";
 import { useStore } from "../store/useStore";
+import { policyLabel } from "../lib/policyLabels";
+import { StatusDot } from "../components/StatusDot";
 import { SCENARIO_IDS } from "../types/contract";
 import type { ModelMetadata, ScenarioId } from "../types/contract";
 
 const pct = (v: number) => `${(v * 100).toFixed(1)}%`;
-
-const ALGO_LABELS: Record<string, string> = {
-  baseline: "Baseline (fixed sweep)",
-  random: "Random",
-  bandit: "Bandit",
-  q_learning: "Q-Learning",
-  dqn: "DQN",
-  ppo: "PPO",
-  index: "Index (Search-Confirm-Track)",
-  ctmc: "CTMC (randomised floor)",
-};
-const algoLabel = (a: string) => ALGO_LABELS[a] ?? a;
 
 const seedRange = (m: ModelMetadata) =>
   m.seed_range ? `${m.seed_range[0]}–${m.seed_range[1]}` : "—";
@@ -37,41 +27,16 @@ const trainedOn = (iso: string) => {
  * would look like a hang.
  */
 export function ModelsPage() {
-  const { setError } = useStore();
-  const [models, setModels] = useState<ModelMetadata[]>([]);
+  const { models, trainingJob, refreshModels, startTraining, setError } = useStore();
   const [scenario, setScenario] = useState<ScenarioId>("B");
   const [algorithm, setAlgorithm] = useState("bandit");
   const [episodes, setEpisodes] = useState(5);
-  const [job, setJob] = useState<{ id: string; status: string; progress: number; phase: string } | null>(null);
 
-  const refresh = async () => {
-    try {
-      setModels(await api.listModels());
-    } catch (e) {
-      setError(String(e));
-    }
-  };
+  // Job tracking lives in the store, not here - so it survives switching away from this tab and
+  // back mid-training (this component unmounts on every tab change; a local useState would not).
+  useEffect(() => { void refreshModels(); }, [refreshModels]);
 
-  useEffect(() => { void refresh(); }, []);
-
-  useEffect(() => {
-    if (!job || job.status !== "running") return;
-    const timer = setInterval(async () => {
-      try {
-        const s = await api.trainStatus(job.id);
-        setJob({
-          id: job.id,
-          status: s.status,
-          progress: s.progress,
-          phase: String((s.detail as Record<string, unknown>)?.phase ?? ""),
-        });
-        if (s.status !== "running") void refresh();
-      } catch (e) {
-        setError(String(e));
-      }
-    }, 2000);
-    return () => clearInterval(timer);
-  }, [job, setError]);
+  const training = trainingJob?.status === "running";
 
   return (
     <>
@@ -81,8 +46,8 @@ export function ModelsPage() {
             <p className="eyebrow">Train</p>
             <h2>Train a model</h2>
             <p className="note">
-              DQN and PPO are a V2 stretch goal, gated behind the bandit beating the baseline; the
-              ML service will train them but the ladder exists for a reason.
+              Train a policy for a scenario, then compare it on held-out seeds. DQN and PPO take
+              longer to train than Bandit and Q-learning.
             </p>
           </div>
         </div>
@@ -116,32 +81,28 @@ export function ModelsPage() {
           </label>
           <button
             className="primary"
-            onClick={async () => {
-              try {
-                const r = await api.trainModel({ algorithm, scenario, episodeCount: episodes });
-                setJob({ id: r.job_id, status: "running", progress: 0, phase: "" });
-              } catch (e) {
-                setError(String(e));
-              }
-            }}
+            disabled={training}
+            onClick={() => void startTraining({ algorithm, scenario, episodeCount: episodes })}
           >
-            Train
+            {training ? "Training…" : "Train"}
           </button>
         </div>
 
-        {job && (
+        {trainingJob && (
           <div className="panel" style={{ marginTop: 14 }}>
-            <div className="section-head" style={{ marginBottom: 10 }}>
-              <span className="mono" style={{ fontSize: "0.8rem", color: "var(--ink-muted)" }}>
-                Job {job.id}
-                {job.phase && ` · ${job.phase}`}
+            <div className="section-head">
+              <span className="mono text-muted">
+                Job {trainingJob.id}
+                {trainingJob.phase && ` · ${trainingJob.phase}`}
               </span>
-              <StatusDot tone={job.status === "failed" ? "bad" : job.status === "running" ? "neutral" : "good"}>
-                {job.status}
+              <StatusDot
+                tone={trainingJob.status === "failed" ? "bad" : trainingJob.status === "running" ? "neutral" : "good"}
+              >
+                {trainingJob.status}
               </StatusDot>
             </div>
             <div className="progress">
-              <div className="progress-bar" style={{ width: `${job.progress * 100}%` }} />
+              <div className="progress-bar" style={{ width: `${trainingJob.progress * 100}%` }} />
             </div>
           </div>
         )}
@@ -153,19 +114,20 @@ export function ModelsPage() {
             <p className="eyebrow">Registry</p>
             <h2>Registered models</h2>
             <p className="note">
-              Every checkpoint carries the seed range it trained on, so a result can be traced
-              back to the exact run that produced it.
+              A model can only serve scenarios with its band count. When a run starts, the
+              scheduler picks a model of that band count trained on the run&rsquo;s own scenario
+              first, then the active one. Seed ranges are shown when the registry recorded them.
             </p>
           </div>
           <div className="controls">
-            <button onClick={() => void refresh()}>Refresh</button>
+            <button onClick={() => void refreshModels()}>Refresh</button>
           </div>
         </div>
 
         {models.length === 0 ? (
           <p className="empty">No models registered yet — train one above.</p>
         ) : (
-          <div className="panel" style={{ overflowX: "auto" }}>
+          <div className="panel panel-scroll">
             <table className="data">
               <thead>
                 <tr>
@@ -173,6 +135,7 @@ export function ModelsPage() {
                   <th>Algorithm</th>
                   <th>Ver</th>
                   <th>Scenario</th>
+                  <th>Bands</th>
                   <th>Trained</th>
                   <th>Seeds</th>
                   <th>Pd</th>
@@ -184,9 +147,10 @@ export function ModelsPage() {
                 {models.map((m) => (
                   <tr key={m.model_id}>
                     <td className="mono">{m.model_id}</td>
-                    <td>{algoLabel(m.algorithm)}</td>
+                    <td>{policyLabel(m.algorithm)}</td>
                     <td>{m.version}</td>
                     <td>{m.scenario ?? "—"}</td>
+                    <td>{m.num_bands ?? "—"}</td>
                     <td>{trainedOn(m.created_at)}</td>
                     <td className="mono">{seedRange(m)}</td>
                     <td>{typeof m.metrics?.pd === "number" ? pct(m.metrics.pd as number) : "—"}</td>
@@ -194,16 +158,22 @@ export function ModelsPage() {
                       {m.active ? (
                         <StatusDot tone="good">active</StatusDot>
                       ) : (
-                        <span className="mono" style={{ color: "var(--ink-faint)" }}>—</span>
+                        <span className="mono text-faint">—</span>
                       )}
                     </td>
                     <td>
                       {!m.active && (
                         <button
                           onClick={async () => {
+                            const ok = window.confirm(
+                              `Activate ${policyLabel(m.algorithm)} model ${m.model_id}? ` +
+                                "It becomes the default for new runs whose scenario has no " +
+                                "model of its own with the same band count.",
+                            );
+                            if (!ok) return;
                             try {
                               await api.activateModel(m.model_id);
-                              await refresh();
+                              await refreshModels();
                             } catch (e) {
                               setError(String(e));
                             }
@@ -221,16 +191,5 @@ export function ModelsPage() {
         )}
       </section>
     </>
-  );
-}
-
-function StatusDot({ tone, children }: { tone: "good" | "bad" | "neutral"; children: string }) {
-  return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-      <span className={`status-dot${tone === "neutral" ? "" : ` ${tone}`}`} />
-      <span style={{ fontSize: "0.78rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em" }}>
-        {children}
-      </span>
-    </span>
   );
 }

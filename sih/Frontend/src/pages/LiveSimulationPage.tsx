@@ -13,7 +13,7 @@ import { useStore } from "../store/useStore";
  */
 export function LiveSimulationPage() {
   const {
-    activeSimulationId, connection, connectionDetail, wsEventCount, lastFrameType,
+    activeSimulationId, activeBandsCount, connection, connectionDetail, wsEventCount, lastFrameType,
     frames, live, lastDecision, pollLive, unwatch,
   } = useStore();
 
@@ -41,9 +41,17 @@ export function LiveSimulationPage() {
     );
   }
 
+  const displayFrames = frames.length > 0 ? frames : live?.scanned_bands && live.active_bands
+    ? [{
+        t: live.t,
+        activeBands: live.active_bands,
+        scannedBands: live.scanned_bands,
+        detectedBands: live.detected_bands ?? [],
+        falseAlarmBands: [],
+      }] : [];
   const bands = Math.max(
-    16,
-    ...frames.flatMap((frame) => [...frame.activeBands, ...frame.scannedBands]).map((band) => band + 1),
+    activeBandsCount ?? 16,
+    ...displayFrames.flatMap((frame) => [...frame.activeBands, ...frame.scannedBands]).map((band) => band + 1),
   );
   const connectionClass = connection === "open" ? "up" : connection === "closed" ? "down" : "";
 
@@ -101,7 +109,7 @@ export function LiveSimulationPage() {
             <p className="eyebrow">WebSocket telemetry</p>
             <h2 id="spectrum-window-heading">Spectrum window</h2>
             <p className="note">
-              Last {frames.length} buffered frames. Steps may skip when the server coalesces
+              {frames.length > 0 ? `Last ${frames.length} buffered frames.` : "Latest REST snapshot when no stream frames are buffered."} Steps may skip when the server coalesces
               updates to 10 frames per second under load.
             </p>
           </div>
@@ -112,7 +120,7 @@ export function LiveSimulationPage() {
           tabIndex={0}
           aria-label={`Spectrum activity across ${bands} bands`}
         >
-          {frames.length === 0 ? "Waiting for frames…" : frames.map((frame) => {
+          {displayFrames.length === 0 ? "Waiting for frames…" : displayFrames.map((frame) => {
             const active = new Set(frame.activeBands);
             const scanned = new Set(frame.scannedBands);
             const row = Array.from({ length: bands }, (_, band) => {

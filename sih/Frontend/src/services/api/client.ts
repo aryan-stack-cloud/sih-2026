@@ -31,6 +31,8 @@ const DEFAULT_BASE = "http://localhost:8080";
 export const API_BASE =
   (import.meta.env?.VITE_API_BASE as string | undefined) ?? DEFAULT_BASE;
 
+const REQUEST_TIMEOUT_MS = 15_000;
+
 export class ApiRequestError extends Error {
   constructor(
     readonly code: string,
@@ -57,16 +59,33 @@ async function request<T>(
     }
   }
 
+  // A local service can disappear mid-demo. Bound every request and combine that deadline with
+  // a caller's cancellation signal so the Dashboard's Cancel button returns immediately.
+  const controller = new AbortController();
+  const forwardAbort = () => controller.abort();
+  init?.signal?.addEventListener("abort", forwardAbort, { once: true });
+  const timeout = globalThis.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
   let response: Response;
   try {
     response = await fetch(url.toString(), {
       ...init,
+      signal: controller.signal,
       headers: {
         "Content-Type": "application/json",
         ...(init?.headers ?? {}),
       },
     });
   } catch (cause) {
+    if (controller.signal.aborted) {
+      const callerCancelled = init?.signal?.aborted;
+      throw new ApiRequestError(
+        callerCancelled ? "REQUEST_ABORTED" : "TIMEOUT",
+        callerCancelled ? "Request cancelled." : `The backend did not respond within ${REQUEST_TIMEOUT_MS / 1000} seconds.`,
+        0,
+        { cause: String(cause) },
+      );
+    }
     // A dead backend is the most common failure in a demo; say so plainly rather than
     // surfacing a bare "Failed to fetch".
     throw new ApiRequestError(
@@ -75,6 +94,9 @@ async function request<T>(
       0,
       { cause: String(cause) },
     );
+  } finally {
+    globalThis.clearTimeout(timeout);
+    init?.signal?.removeEventListener("abort", forwardAbort);
   }
 
   let envelope: ApiEnvelope<T> | null = null;
@@ -148,6 +170,13 @@ export const stopSimulation = (id: string) =>
 export const resetSimulation = (id: string) =>
   request<Simulation>(`/api/v1/simulations/${id}/reset`, { method: "POST" });
 
+/** 0 (or omitted) means uncapped - run the step loop as fast as it can, same as before this existed. */
+export const setSimulationSpeed = (id: string, stepDelayMs: number) =>
+  request<{ id: string; step_delay_ms: number }>(`/api/v1/simulations/${id}/speed`, {
+    method: "PUT",
+    body: JSON.stringify({ stepDelayMs }),
+  });
+
 // -- scheduler -------------------------------------------------------------------------------
 
 export const schedulerStatus = (simulationId: string) =>
@@ -201,8 +230,8 @@ export const listExperiments = (status?: string, page = 0, size = 20) =>
     query: { status, page, size },
   });
 
-export const getExperiment = (id: string) =>
-  request<Experiment>(`/api/v1/experiments/${id}`);
+export const getExperiment = (id: string, signal?: AbortSignal) =>
+  request<Experiment>(`/api/v1/experiments/${id}`, { signal });
 
 export const runExperiment = (id: string, durationSteps?: number) =>
   request<Experiment>(`/api/v1/experiments/${id}/run`, json({ durationSteps }));
@@ -210,8 +239,8 @@ export const runExperiment = (id: string, durationSteps?: number) =>
 export const stopExperiment = (id: string) =>
   request<Experiment>(`/api/v1/experiments/${id}/stop`, { method: "POST" });
 
-export const experimentResults = (id: string) =>
-  request<ExperimentResults>(`/api/v1/experiments/${id}/results`);
+export const experimentResults = (id: string, signal?: AbortSignal) =>
+  request<ExperimentResults>(`/api/v1/experiments/${id}/results`, { signal });
 
 // -- models ---------------------------------------------------------------------------------------
 
