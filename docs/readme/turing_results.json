@@ -1,0 +1,13 @@
+{
+  "scope": "Turing Synthetic Radar Dataset replay: 50 held-out scan-mode files, 1000 steps each; learned models trained on 150 files, 1000 steps each",
+  "unit": "percent",
+  "policies": {
+    "ppo": {"pd": 30.6, "scan_efficiency": 63.9},
+    "bandit": {"pd": 26.7, "scan_efficiency": 57.9},
+    "dqn": {"pd": 26.4, "scan_efficiency": 56.1},
+    "q_learning": {"pd": 23.8, "scan_efficiency": 50.7},
+    "baseline": {"pd": 10.8, "scan_efficiency": 24.2},
+    "index": {"pd": 10.8, "scan_efficiency": 24.6},
+    "ctmc": {"pd": 10.7, "scan_efficiency": 24.2}
+  }
+}
