@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -49,6 +50,7 @@ public class SimulationService {
 
     /** Live state for running simulations, keyed by simulation id. */
     private final Map<String, LiveSimulation> live = new ConcurrentHashMap<>();
+    private final Set<String> activeWorkers = ConcurrentHashMap.newKeySet();
     private final AtomicInteger running = new AtomicInteger();
 
     public SimulationService(SimulationRepository repository,
@@ -118,14 +120,29 @@ public class SimulationService {
         }
         if (policyType != null) {
             sim.setPolicyType(policyType);
+            sim.setModelId(null);
         }
         sim.setUpdatedAt(Instant.now());
         return repository.save(sim);
     }
 
     @Transactional
-    public void delete(String id) {
+    public SimulationEntity configureScheduler(String id, String policy, String modelId) {
         SimulationEntity sim = get(id);
+        if (!"draft".equals(sim.getStatus())) {
+            throw ApiException.conflict("SIMULATION_NOT_DRAFT",
+                    "simulation " + id + " is " + sim.getStatus() + "; only draft may be updated");
+        }
+        sim.setPolicyType(policy);
+        sim.setModelId(modelId);
+        sim.setUpdatedAt(Instant.now());
+        return repository.save(sim);
+    }
+
+    @Transactional
+    public synchronized void delete(String id) {
+        SimulationEntity sim = get(id);
+        requireNoWorker(id);
         live.remove(id);
         repository.delete(sim);   // scan/detection events cascade via the FK
     }
@@ -133,10 +150,9 @@ public class SimulationService {
     // -- lifecycle ------------------------------------------------------------------------------
 
     /** Enqueues the simulation worker job. Returns immediately; progress arrives over WebSocket. */
-    @Transactional
-    public SimulationEntity start(String id, StepListener listener) {
+    public synchronized SimulationEntity start(String id, StepListener listener) {
         SimulationEntity sim = get(id);
-        if ("running".equals(sim.getStatus())) {
+        if (activeWorkers.contains(id) || "running".equals(sim.getStatus())) {
             throw ApiException.conflict("SIMULATION_ALREADY_RUNNING",
                     "simulation " + id + " is already running");
         }
@@ -145,6 +161,11 @@ public class SimulationService {
                     "at most " + props.maxConcurrent() + " simulations may run concurrently");
         }
 
+        Scenario scenario = resolveScenario(sim);
+        var request = new SimulationRunner.RunRequest(
+                id, scenario, sim.getPolicyType(), sim.getSeed(), sim.getDurationSteps(),
+                sim.getModelId(), null);
+
         sim.setStatus("running");
         sim.setCurrentStep(0);
         sim.setUpdatedAt(Instant.now());
@@ -152,12 +173,8 @@ public class SimulationService {
 
         LiveSimulation state = new LiveSimulation(id);
         live.put(id, state);
+        activeWorkers.add(id);
         running.incrementAndGet();
-
-        Scenario scenario = resolveScenario(sim);
-        var request = new SimulationRunner.RunRequest(
-                id, scenario, sim.getPolicyType(), sim.getSeed(), sim.getDurationSteps(),
-                null, null);
 
         executor.execute(() -> {
             try {
@@ -166,11 +183,18 @@ public class SimulationService {
                     if (listener != null) {
                         listener.onStep(id, frame);
                     }
-                });
+                }, state);
                 state.complete(result.metrics());
-                finish(id, "completed", result.steps());
+                state.onUnavailable(result.unavailableReason());
+                // result.steps() is the PLANNED duration, not how far it actually got - using it
+                // unconditionally here used to write the full duration as current_step even for a
+                // run a viewer had just stopped partway through. state.currentStep() is the real
+                // last step reached either way.
+                String finalStatus = result.stoppedEarly() || state.stopRequested()
+                        ? "stopped" : "completed";
+                finish(id, finalStatus, state.currentStep());
                 if (listener != null) {
-                    listener.onComplete(id, result);
+                    listener.onComplete(id, result, finalStatus, state.currentStep());
                 }
             } catch (RuntimeException e) {
                 log.error("simulation {} failed", id, e);
@@ -180,14 +204,14 @@ public class SimulationService {
                     listener.onError(id, e.getMessage());
                 }
             } finally {
+                activeWorkers.remove(id);
                 running.decrementAndGet();
             }
         });
         return sim;
     }
 
-    @Transactional
-    public SimulationEntity stop(String id) {
+    public synchronized SimulationEntity stop(String id) {
         SimulationEntity sim = get(id);
         LiveSimulation state = live.get(id);
         if (state != null) {
@@ -207,8 +231,9 @@ public class SimulationService {
      * estimates, or Ai-ml-2's detection buffers (API_CONTRACT.md Sections 4 and 5).
      */
     @Transactional
-    public SimulationEntity reset(String id) {
+    public synchronized SimulationEntity reset(String id) {
         SimulationEntity sim = get(id);
+        requireNoWorker(id);
         live.remove(id);
         schedulerClient.reset(id);
         periodicityClient.reset(id);
@@ -228,6 +253,13 @@ public class SimulationService {
         });
     }
 
+    private void requireNoWorker(String id) {
+        if (activeWorkers.contains(id)) {
+            throw ApiException.conflict("SIMULATION_RUNNING",
+                    "simulation " + id + " still has an active worker");
+        }
+    }
+
     // -- live views ------------------------------------------------------------------------------
 
     public LiveSimulation liveState(String id) {
@@ -241,6 +273,15 @@ public class SimulationService {
 
     public LiveSimulation liveStateOrNull(String id) {
         return live.get(id);
+    }
+
+    /**
+     * Sets the per-step pacing for a running simulation - a viewer's "watch it slower" control.
+     * Takes effect from the very next step, since the run loop reads it fresh every iteration
+     * rather than capturing it once at start.
+     */
+    public void setSpeed(String id, long stepDelayMs) {
+        liveState(id).setStepDelayMs(stepDelayMs);
     }
 
     public int runningCount() {
@@ -267,7 +308,8 @@ public class SimulationService {
     public interface StepListener {
         void onStep(String simulationId, SimulationRunner.StepFrame frame);
 
-        default void onComplete(String simulationId, SimulationRunner.RunResult result) {
+        default void onComplete(String simulationId, SimulationRunner.RunResult result,
+                                String status, int processedSteps) {
         }
 
         default void onError(String simulationId, String message) {
@@ -275,13 +317,16 @@ public class SimulationService {
     }
 
     /** In-memory state of one running simulation, for the live views and WS replay. */
-    public static class LiveSimulation {
+    public static class LiveSimulation implements SimulationRunner.LiveControl {
 
         private final String simulationId;
         private volatile SimulationRunner.StepFrame latest;
         private volatile MetricsSummary metrics;
         private volatile String error;
+        private volatile String unavailableReason;
         private volatile boolean stopRequested;
+        /** 0 = uncapped (today's default: run as fast as the CPU and Ai-ml-1 allow). */
+        private volatile long stepDelayMs;
         private final AtomicInteger step = new AtomicInteger();
         private final Map<String, Object> counters = new ConcurrentHashMap<>();
 
@@ -294,7 +339,7 @@ public class SimulationService {
 
         void record(SimulationRunner.StepFrame frame) {
             latest = frame;
-            step.set(frame.t());
+            step.set(frame.t() + 1);
             counters.merge("detections", frame.detectedBands().size(),
                     (a, b) -> ((Number) a).intValue() + ((Number) b).intValue());
             counters.merge("false_alarms", frame.falseAlarmBands().size(),
@@ -315,8 +360,23 @@ public class SimulationService {
             this.stopRequested = true;
         }
 
+        @Override
         public boolean stopRequested() {
             return stopRequested;
+        }
+
+        void setStepDelayMs(long stepDelayMs) {
+            this.stepDelayMs = Math.max(0, stepDelayMs);
+        }
+
+        @Override
+        public long stepDelayMs() {
+            return stepDelayMs;
+        }
+
+        @Override
+        public void onUnavailable(String reason) {
+            this.unavailableReason = reason;
         }
 
         public int currentStep() {
@@ -341,6 +401,8 @@ public class SimulationService {
             out.put("simulation_id", simulationId);
             out.put("t", step.get());
             out.put("counters", new HashMap<>(counters));
+            out.put("step_delay_ms", stepDelayMs);
+            out.put("unavailable_reason", unavailableReason);
             if (latest != null) {
                 out.put("last_action", latest.action());
                 out.put("scanned_bands", latest.scannedBands());

@@ -8,6 +8,7 @@ import com.rfscheduler.metrics.RewardWeights;
 import com.rfscheduler.ml.BandPeriodicity;
 import com.rfscheduler.ml.MlPeriodicityClient;
 import com.rfscheduler.ml.MlSchedulerClient;
+import com.rfscheduler.ml.NoCompatibleModelException;
 import com.rfscheduler.ml.ScanDecision;
 import com.rfscheduler.ml.StateBuilder;
 import com.rfscheduler.receiver.DetectionEngine;
@@ -22,9 +23,11 @@ import com.rfscheduler.simulation.Scenario;
 import com.rfscheduler.simulation.Seeding;
 import com.rfscheduler.simulation.Spectrum;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +76,7 @@ public class SimulationRunner {
 
     /** One episode of one policy against one seed. */
     public RunResult run(RunRequest request) {
-        return run(request, null);
+        return run(request, null, null);
     }
 
     /**
@@ -82,6 +85,15 @@ public class SimulationRunner {
      * @param onStep called after every step; must not block for long
      */
     public RunResult run(RunRequest request, Consumer<StepFrame> onStep) {
+        return run(request, onStep, null);
+    }
+
+    /**
+     * @param onStep  called after every step; must not block for long
+     * @param control live playback control for an interactively-watched run (stop, pacing).
+     *                Never passed for batch experiment episodes, which always run at full speed.
+     */
+    public RunResult run(RunRequest request, Consumer<StepFrame> onStep, LiveControl control) {
         Scenario scenario = request.scenario();
         int numBands = scenario.bands();
         int duration = request.durationSteps() > 0
@@ -125,11 +137,20 @@ public class SimulationRunner {
         List<StepFrame> frames = new ArrayList<>();
         int mlDecisions = 0;
         int fallbackDecisions = 0;
+        String unavailableReason = null;
+        Set<String> servedModelIds = new HashSet<>();
+        boolean stoppedEarly = false;
         Map<String, Object> previousState = null;
 
         for (int t = 0; t < duration; t++) {
-            // 1. Merge Ai-ml-2's periodicity into the state, before deciding.
-            if (usesMl && request.periodicityEnabled()) {
+            if (control != null && control.stopRequested()) {
+                stoppedEarly = true;
+                break;
+            }
+
+            // Step 0 needs an initial prediction. Later steps reuse the prediction fetched
+            // after the preceding scan, which also makes /learn's next_state current.
+            if (t == 0 && usesMl && request.periodicityEnabled()) {
                 List<BandPeriodicity> periodicity =
                         periodicityClient.predictAll(request.simulationId(), numBands, t);
                 for (BandPeriodicity bp : periodicity) {
@@ -140,9 +161,18 @@ public class SimulationRunner {
 
             // 2. Decide.
             ScanDecision decision = null;
-            if (usesMl) {
-                decision = schedulerClient.decide(
-                        request.simulationId(), state, policy, request.modelId());
+            if (usesMl && unavailableReason == null) {
+                try {
+                    decision = schedulerClient.decide(request.simulationId(), state, policy,
+                            request.modelId(), scenario.id());
+                } catch (NoCompatibleModelException e) {
+                    unavailableReason = policy + " has no trained model for scenario "
+                            + scenario.id() + " (" + numBands + " bands)";
+                    log.warn("{}; this run uses the fallback sweep", unavailableReason);
+                    if (control != null) {
+                        control.onUnavailable(unavailableReason);
+                    }
+                }
             }
             if (decision == null) {
                 decision = ScanDecision.local(fallback.decide(), policy);
@@ -154,10 +184,14 @@ public class SimulationRunner {
                 }
             } else {
                 mlDecisions++;
+                if (decision.modelId() != null && !decision.modelId().isBlank()) {
+                    servedModelIds.add(decision.modelId());
+                }
             }
 
             // 3. Scan and classify. Ages are snapshotted BEFORE the state update - see class doc.
             int[] agesBefore = stateBuilder.timeSinceLastScanSnapshot();
+            // Current checkpoints select a band only; their optional dwell_time is not executed.
             Observation observation = scanner.execute(t, decision.nextBand(), truth.occupancyAt(t));
             DetectionOutcome outcome = detectionEngine.evaluate(observation, truth);
 
@@ -183,21 +217,23 @@ public class SimulationRunner {
             // this is the fix for the gap RUNNING.md documents - without it Ai-ml-2 cannot tell
             // "this band is quiet" from "this band was never looked at", which is why periodicity
             // prediction did not previously translate into a measurable scheduling benefit.
-            for (int band : outcome.detectedBands()) {
-                periodicityClient.recordDetection(request.simulationId(), band, t);
-            }
-            for (int band : scanned) {
-                if (!outcome.detectedBands().contains(band)) {
-                    periodicityClient.recordMiss(request.simulationId(), band, t);
+            // 6. Advance state, then merge t+1 periodicity before posting /learn.
+            stateBuilder.update(scanned, outcome.detectedBands());
+            boolean needsNextPrediction = usesMl && request.periodicityEnabled()
+                    && t + 1 < duration && (control == null || !control.stopRequested());
+            List<BandPeriodicity> nextPeriodicity = periodicityClient.step(
+                    request.simulationId(), scanned, outcome.detectedBands(), t,
+                    numBands, t + 1, needsNextPrediction);
+            if (needsNextPrediction) {
+                for (BandPeriodicity bp : nextPeriodicity) {
+                    stateBuilder.setPeriodicity(bp.bandId(), bp.phase(), bp.confidence());
                 }
             }
-
-            // 6. Advance state, then post the reward back to Ai-ml-1.
-            stateBuilder.update(scanned, outcome.detectedBands());
             Map<String, Object> nextState = stateBuilder.toContract(receiver);
             if (usesMl && decision.fromMl()) {
                 schedulerClient.learn(request.simulationId(), decision.decisionId(), state,
-                        decision.nextBand(), decision.dwellTime(), reward.reward(), nextState);
+                        decision.nextBand(), decision.dwellTime(), reward.reward(), nextState,
+                        scanned, outcome.detectedBands());
             }
 
             metrics.record(outcome, observation.valid(), observation.retuned(), reward.reward());
@@ -206,20 +242,56 @@ public class SimulationRunner {
                     t, decision.nextBand(), scanned, truth.activeBands(t),
                     outcome.detectedBands(), outcome.falseAlarmBands(),
                     reward.reward(), reward.terms(), decision.modelId(), observation.valid());
-            frames.add(frame);
+            // Batch experiments need aggregate results, not thousands of retained step frames.
+            if (onStep != null || control == null) {
+                frames.add(frame);
+            }
             if (onStep != null) {
                 onStep.accept(frame);
             }
             previousState = nextState;
+
+            // Pacing, for a human actually watching this run rather than a batch experiment
+            // racing to a result. Sleeping AFTER the frame is emitted, not before, so the delay
+            // is "how long this step stays on screen" rather than added latency before it appears.
+            if (control != null) {
+                long delayMs = control.stepDelayMs();
+                if (delayMs > 0) {
+                    try {
+                        Thread.sleep(delayMs);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        stoppedEarly = true;
+                        break;
+                    }
+                }
+            }
         }
 
         MetricsSummary summary = metrics.summary();
-        if (usesMl && fallbackDecisions > 0) {
+        if (usesMl && fallbackDecisions > 0 && unavailableReason == null) {
             log.warn("simulation {} used the local fallback for {} of {} decisions",
                     request.simulationId(), fallbackDecisions, duration);
         }
         return new RunResult(request.simulationId(), policy, seed, duration, summary, frames,
-                truth, mlDecisions, fallbackDecisions);
+                truth, mlDecisions, fallbackDecisions, stoppedEarly, Set.copyOf(servedModelIds),
+                unavailableReason);
+    }
+
+    /**
+     * Live control for an interactively-watched run. {@code SimulationService.LiveSimulation}
+     * implements this directly - both fields are the same mutable, polled-once-per-step state a
+     * viewer's Stop button and speed selector already need to reach, just read from the inside of
+     * the loop instead of from the outside.
+     */
+    public interface LiveControl {
+        boolean stopRequested();
+
+        /** 0 (or less) means no pacing - run the step loop as fast as it can, today's default. */
+        long stepDelayMs();
+
+        default void onUnavailable(String reason) {
+        }
     }
 
     // -- value types ------------------------------------------------------------------------
@@ -279,7 +351,10 @@ public class SimulationRunner {
             List<StepFrame> frames,
             GroundTruth groundTruth,
             int mlDecisions,
-            int fallbackDecisions) {
+            int fallbackDecisions,
+            boolean stoppedEarly,
+            Set<String> servedModelIds,
+            String unavailableReason) {
 
         /** True only when an ML policy had to fall back to the local sweep mid-run. */
         public boolean degraded() {

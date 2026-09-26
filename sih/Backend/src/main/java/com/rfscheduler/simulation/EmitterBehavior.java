@@ -1,6 +1,10 @@
 package com.rfscheduler.simulation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -31,6 +35,9 @@ public final class EmitterBehavior {
      * @return array of length {@code duration}
      */
     public static int[] activityTrack(Emitter emitter, int duration, Random rng) {
+        if (emitter.switching() != null) {
+            return switchingTrack(emitter, duration, rng);
+        }
         int[] track = new int[duration];
         java.util.Arrays.fill(track, -1);
 
@@ -45,6 +52,99 @@ public final class EmitterBehavior {
                             + "'; must be one of " + CLASSES);
         }
         return track;
+    }
+
+    private static int[] switchingTrack(Emitter emitter, int duration, Random rng) {
+        Emitter.SwitchingPlan plan = emitter.switching();
+        int[] track = new int[duration];
+        Arrays.fill(track, -1);
+        plan.clearRegimes();
+        int start = 0;
+        String behavior = emitter.behaviorClass();
+        int[] bands = emitter.bands();
+        Map<String, Object> params = emitter.params();
+        while (start < duration) {
+            int length = plan.minSteps()
+                    + rng.nextInt(2 * (plan.meanSteps() - plan.minSteps()) + 1);
+            int end = Math.min(duration, start + length);
+            plan.addRegime(new Emitter.Regime(start, end, behavior,
+                    Arrays.copyOf(bands, bands.length), Map.copyOf(params)));
+            Emitter segment = new Emitter(emitter.emitterId(), behavior, bands,
+                    emitter.priority(), params);
+            int[] activity = activityTrack(segment, end - start, rng);
+            System.arraycopy(activity, 0, track, start, activity.length);
+            start = end;
+            if (start < duration) {
+                behavior = nextClass(behavior, plan.mix(), rng);
+                params = EmitterFactory.randomiseParams(behavior,
+                        plan.paramsByClass().getOrDefault(behavior, Map.of()), rng);
+                bands = switchBands(behavior, emitter.primaryBand(), plan.numBands(), params, rng);
+            }
+        }
+        return track;
+    }
+
+    private static String nextClass(String current, Map<String, Double> mix, Random rng) {
+        double total = 0;
+        for (String name : CLASSES) {
+            if (!name.equals(current)) {
+                total += Math.max(0, mix.getOrDefault(name, 0.0));
+            }
+        }
+        if (total <= 0) {
+            throw new IllegalArgumentException(
+                    "switching requires another class with positive mix weight");
+        }
+        double draw = rng.nextDouble() * total;
+        String last = null;
+        for (String name : CLASSES) {
+            double weight = name.equals(current) ? 0 : Math.max(0, mix.getOrDefault(name, 0.0));
+            if (weight > 0) {
+                last = name;
+                draw -= weight;
+                if (draw < 0) {
+                    return name;
+                }
+            }
+        }
+        return last;
+    }
+
+    private static int[] switchBands(String behavior, int home, int numBands,
+                                     Map<String, Object> params, Random rng) {
+        if (!"agile".equals(behavior)) {
+            return new int[] {home};
+        }
+        if (params.get("bands") instanceof List<?> pinned) {
+            List<Integer> result = new ArrayList<>();
+            result.add(home);
+            for (Object value : pinned) {
+                int band = ((Number) value).intValue();
+                if (band < 0 || band >= numBands) {
+                    throw new IllegalArgumentException("pinned band outside spectrum: " + band);
+                }
+                if (!result.contains(band)) {
+                    result.add(band);
+                }
+            }
+            return result.stream().mapToInt(Integer::intValue).toArray();
+        }
+        int requested = params.get("hop_set_size") instanceof Number n
+                ? n.intValue() : Math.min(4, numBands);
+        int size = Math.max(1, Math.min(Math.max(2, requested), numBands));
+        List<Integer> pool = new ArrayList<>();
+        for (int b = 0; b < numBands; b++) {
+            if (b != home) {
+                pool.add(b);
+            }
+        }
+        Collections.shuffle(pool, rng);
+        int[] bands = new int[size];
+        bands[0] = home;
+        for (int i = 1; i < size; i++) {
+            bands[i] = pool.get(i - 1);
+        }
+        return bands;
     }
 
     /** Continuously or near-continuously active on one assigned band. */

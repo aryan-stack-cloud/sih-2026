@@ -1,8 +1,9 @@
 package com.rfscheduler.config;
 
 import java.time.Duration;
+import java.net.http.HttpClient;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -24,10 +25,13 @@ public class AppConfig {
 
     @Bean
     public RestTemplate mlRestTemplate(MlProperties props) {
-        // Built directly rather than via RestTemplateBuilder: the builder's package moved between
-        // Spring Boot 3 and 4, and this is one line either way.
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(Duration.ofMillis(props.connectTimeoutMs()));
+        // A shared HttpClient reuses localhost connections across the many per-step requests.
+        // Opening a fresh socket for every call exhausted ephemeral ports during 10-episode sweeps.
+        HttpClient client = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofMillis(props.connectTimeoutMs()))
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
+        JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory(client);
         factory.setReadTimeout(Duration.ofMillis(props.readTimeoutMs()));
         return new RestTemplate(factory);
     }

@@ -33,9 +33,16 @@ public record RewardWeights(
     /**
      * Defaults matching Ai-ml-1's ml/environments/reward.py. These two implementations must agree
      * - the agent is trained against one and scored by the other.
+     *
+     * <p>w5_redundant raised 3.0 -> 8.0 (README "Reward weight w5" / IMPLEMENTATION.md's swept
+     * table): at 3.0 the camping penalty tops out at -3 per step against a +10 to +16 detection,
+     * so camping stays net-positive even while "penalised". The swept 8.0 point trades a Pd drop
+     * (0.338 -> 0.259) for interception ratio 0.725 -> 0.900 and a *better* censored AIT
+     * (812 -> 703) - the point on the frontier that matches the PS's stated primary objective
+     * (intercept time, interception rate) rather than raw detection density.
      */
     public static RewardWeights defaults() {
-        return new RewardWeights(10.0, 2.0, 3.0, 5.0, 3.0, 4.0);
+        return new RewardWeights(10.0, 2.0, 3.0, 5.0, 8.0, 4.0);
     }
 
     public Map<String, Double> asMap() {

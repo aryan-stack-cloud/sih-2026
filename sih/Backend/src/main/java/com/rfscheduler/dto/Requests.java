@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -44,6 +45,13 @@ public final class Requests {
             String policy) {
     }
 
+    /** PUT /simulations/{id}/speed - 0 (or omitted) means uncapped, today's default pace. */
+    public record SetSpeed(
+            @Min(value = 0, message = "stepDelayMs must not be negative")
+            @Max(value = 5000, message = "stepDelayMs must be at most 5000")
+            Long stepDelayMs) {
+    }
+
     /** PUT /receiver/config */
     public record ReceiverConfigRequest(
             @Min(1) @Max(64) Integer bandwidthK,
@@ -61,7 +69,7 @@ public final class Requests {
             @Pattern(regexp = "^(baseline|random|bandit|q_learning|dqn|ppo|index|ctmc)$",
                     message = "policy must be one of baseline|random|bandit|q_learning|dqn|ppo|index|ctmc")
             String policy,
-            String modelId) {
+            @Size(max = 64) String modelId) {
     }
 
     /** POST /experiments */

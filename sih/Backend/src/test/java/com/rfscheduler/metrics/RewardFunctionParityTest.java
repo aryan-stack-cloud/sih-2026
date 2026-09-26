@@ -236,7 +236,7 @@ class RewardFunctionParityTest {
         assertThat(defaults.w2Priority()).isEqualTo(2.0);
         assertThat(defaults.w3Latency()).isEqualTo(3.0);
         assertThat(defaults.w4FalseAlarm()).isEqualTo(5.0);
-        assertThat(defaults.w5Redundant()).isEqualTo(3.0);
+        assertThat(defaults.w5Redundant()).isEqualTo(8.0);
         assertThat(defaults.w6Missed()).isEqualTo(4.0);
     }
 }

@@ -62,6 +62,7 @@ public final class ScenarioLibrary {
             case "G" -> new Scenario("G", "G - Rapidly Changing", 24, 15, 3000, 20, 42,
                     mix(null, 0), 0.25, receiver(),
                     Map.of(
+                            "switching", Map.of("mean_regime_steps", 600, "min_regime_steps", 200),
                             "agile", Map.of("hop_rate", 3),
                             "intermittent", Map.of("p_on_to_off", 0.4, "p_off_to_on", 0.12),
                             "periodic", Map.of("jitter", 4)),

@@ -53,7 +53,8 @@ public class SchedulerController {
         body.put("ml_scheduler_degraded", scheduler.isDegraded());
         body.put("ml_periodicity_degraded", periodicity.isDegraded());
         body.put("available_policies",
-                List.of("baseline", "random", "bandit", "q_learning", "dqn", "ppo"));
+                List.of("baseline", "random", "ctmc", "index", "bandit", "q_learning",
+                        "dqn", "ppo"));
         return ApiResponse.ok(body);
     }
 
@@ -61,7 +62,7 @@ public class SchedulerController {
     public ApiResponse<Map<String, Object>> configure(
             @RequestParam String simulationId,
             @Valid @RequestBody Requests.SchedulerConfigRequest body) {
-        var sim = simulations.update(simulationId, null, null, null, null, body.policy());
+        var sim = simulations.configureScheduler(simulationId, body.policy(), body.modelId());
         return ApiResponse.ok(SimulationController.summary(sim));
     }
 

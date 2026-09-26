@@ -1,6 +1,7 @@
 package com.rfscheduler.ml;
 
 import com.rfscheduler.config.MlProperties;
+import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -9,7 +10,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * HTTP client for Ai-ml-1, the scan-decision policy service (API_CONTRACT.md Section 4).
@@ -28,6 +31,7 @@ import org.springframework.web.client.RestTemplate;
 public class MlSchedulerClient {
 
     private static final Logger log = LoggerFactory.getLogger(MlSchedulerClient.class);
+    private static final JsonMapper mapper = JsonMapper.builder().build();
 
     private final RestTemplate rest;
     private final MlProperties props;
@@ -54,17 +58,20 @@ public class MlSchedulerClient {
     }
 
     /**
-     * {@code POST /internal/decide}. Returns null when the service is unreachable, so the caller
-     * can apply its fallback rather than this client inventing a decision.
+     * {@code POST /internal/decide}. Transient failures return null for local fallback. A
+     * structured NO_COMPATIBLE_MODEL conflict is thrown so a run stops retrying an unavailable
+     * model on every step.
      */
     @SuppressWarnings("unchecked")
     public ScanDecision decide(
-            String simulationId, Map<String, Object> stateVector, String policy, String modelId) {
+            String simulationId, Map<String, Object> stateVector, String policy, String modelId,
+            String scenarioId) {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("simulation_id", simulationId);
         body.put("state", stateVector);
         body.put("policy", policy);
+        body.put("scenario_id", scenarioId);
         if (modelId != null) {
             body.put("model_id", modelId);
         }
@@ -82,10 +89,36 @@ public class MlSchedulerClient {
                     (String) data.get("model_id"),
                     (String) data.get("decision_id"),
                     true);
+        } catch (HttpClientErrorException e) {
+            String unavailableMessage = unavailableMessage(e);
+            if (unavailableMessage != null) {
+                throw new NoCompatibleModelException(unavailableMessage);
+            }
+            markDegraded("decide", simulationId, e);
+            return null;
         } catch (RuntimeException e) {
             markDegraded("decide", simulationId, e);
             return null;
         }
+    }
+
+    /** Only the structured 409 code disables further decisions for this run. */
+    private static String unavailableMessage(HttpClientErrorException response) {
+        if (response.getStatusCode().value() != 409) {
+            return null;
+        }
+        try {
+            Map<?, ?> envelope = mapper.readValue(response.getResponseBodyAsString(), Map.class);
+            if (envelope.get("error") instanceof Map<?, ?> error
+                    && "NO_COMPATIBLE_MODEL".equals(error.get("code"))) {
+                Object message = error.get("message");
+                return message instanceof String s && !s.isBlank()
+                        ? s : "No compatible trained model is registered";
+            }
+        } catch (RuntimeException ignored) {
+            // A malformed 409 is an ordinary upstream failure, not a model availability signal.
+        }
+        return null;
     }
 
     /**
@@ -102,7 +135,9 @@ public class MlSchedulerClient {
             int actionBand,
             Integer dwellTime,
             double reward,
-            Map<String, Object> nextState) {
+            Map<String, Object> nextState,
+            List<Integer> scannedBands,
+            List<Integer> detectedBands) {
 
         if (decisionId == null) {
             return false;   // the decision came from the local fallback; nothing to teach
@@ -120,6 +155,8 @@ public class MlSchedulerClient {
         body.put("state", state);
         body.put("action", action);
         body.put("reward", reward);
+        body.put("scanned_bands", scannedBands);
+        body.put("detected_bands", detectedBands);
         if (nextState != null) {
             body.put("next_state", nextState);
         }

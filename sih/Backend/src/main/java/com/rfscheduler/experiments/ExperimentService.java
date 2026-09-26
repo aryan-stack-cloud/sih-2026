@@ -8,14 +8,22 @@ import com.rfscheduler.repository.ExperimentRepository;
 import com.rfscheduler.service.SimulationRunner;
 import com.rfscheduler.simulation.Scenario;
 import com.rfscheduler.simulation.ScenarioLibrary;
+import jakarta.annotation.PreDestroy;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,14 +57,36 @@ public class ExperimentService {
     // concrete mapper is JsonMapper. Annotations stay on the com.fasterxml package.
     private final JsonMapper mapper = JsonMapper.builder().build();
 
+    // A separate pool from `executor` on purpose. `execute()` below runs ON a thread borrowed
+    // from `executor` and then blocks joining episode futures - scheduling those futures onto
+    // that SAME bounded pool would starve it under load (every worker thread parked waiting on
+    // children that can never get a worker thread to run on). Sized to cores because each episode
+    // is CPU-bound simulation work plus blocking HTTP calls to Ai-ml-1, not I/O-bound waiting.
+    private final ExecutorService episodeExecutor =
+            Executors.newFixedThreadPool(Math.max(2, Runtime.getRuntime().availableProcessors()));
+
     /** Progress per running experiment, for WS training/experiment frames. */
     private final Map<String, Progress> progress = new ConcurrentHashMap<>();
+    private final Map<String, String> activeInvocations = new ConcurrentHashMap<>();
 
     public ExperimentService(ExperimentRepository repository, SimulationRunner runner,
                              TaskExecutor simulationExecutor) {
         this.repository = repository;
         this.runner = runner;
         this.executor = simulationExecutor;
+    }
+
+    @PreDestroy
+    void shutdownEpisodeExecutor() {
+        episodeExecutor.shutdown();
+        try {
+            if (!episodeExecutor.awaitTermination(5, TimeUnit.SECONDS)) {
+                episodeExecutor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            episodeExecutor.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 
     @Transactional
@@ -88,8 +118,7 @@ public class ExperimentService {
     }
 
     /** Launches the comparison in the background. Progress is polled or streamed over WS. */
-    @Transactional
-    public ExperimentEntity run(String id, Integer durationOverride,
+    public synchronized ExperimentEntity run(String id, Integer durationOverride,
                                 BiConsumer<String, Progress> onProgress) {
         ExperimentEntity exp = get(id);
         if ("running".equals(exp.getStatus())) {
@@ -97,6 +126,7 @@ public class ExperimentService {
                     "experiment " + id + " is already running");
         }
         exp.setStatus("running");
+        exp.setResultsJson(null);
         exp.setUpdatedAt(Instant.now());
         repository.save(exp);
 
@@ -108,24 +138,32 @@ public class ExperimentService {
         int duration = durationOverride == null ? scenario.durationSteps() : durationOverride;
 
         Progress state = new Progress(policies.size() * episodes);
+        String invocationId = UUID.randomUUID().toString();
+        activeInvocations.put(id, invocationId);
         progress.put(id, state);
 
         executor.execute(() -> {
             try {
                 Map<String, Object> results = execute(
-                        id, scenario, policies, episodes, baseSeed, duration, state, onProgress);
-                persistResults(id, "completed", results);
+                        id, invocationId, scenario, policies, episodes, baseSeed, duration,
+                        state, onProgress);
+                if (!state.cancelled()) {
+                    persistResults(id, invocationId, "completed", results);
+                }
             } catch (RuntimeException e) {
                 log.error("experiment {} failed", id, e);
-                persistResults(id, "failed", Map.of("error", String.valueOf(e.getMessage())));
+                persistResults(id, invocationId, "failed",
+                        Map.of("error", String.valueOf(e.getMessage())));
             } finally {
                 state.finish();
+                activeInvocations.remove(id, invocationId);
             }
         });
         return exp;
     }
 
-    private Map<String, Object> execute(String experimentId, Scenario scenario,
+    private Map<String, Object> execute(String experimentId, String invocationId,
+                                        Scenario scenario,
                                         List<String> policies, int episodes, long baseSeed,
                                         int duration, Progress state,
                                         BiConsumer<String, Progress> onProgress) {
@@ -138,19 +176,62 @@ public class ExperimentService {
 
         Map<String, Object> byPolicy = new LinkedHashMap<>();
         for (String policy : policies) {
-            List<MetricsSummary> runs = new ArrayList<>(episodes);
+            if (state.cancelled()) {
+                break;
+            }
+            // Episodes within a policy are independent by construction (NFR-006: separate seed
+            // streams, no shared mutable state) - the whole point of the shared seed list above is
+            // that each one is a self-contained rerun of the same spectrum. Running them
+            // concurrently is a straight wall-clock win, not just a "one thread does more" trick:
+            // the ML-backed episodes each block on hundreds of /internal/decide round trips, so
+            // three of them one at a time is three round-trip queues back to back for no reason.
+            AtomicInteger completed = new AtomicInteger(0);
+            List<CompletableFuture<SimulationRunner.RunResult>> futures = new ArrayList<>(episodes);
             for (int i = 0; i < episodes; i++) {
                 long seed = seeds.get(i);
                 var request = new SimulationRunner.RunRequest(
-                        experimentId + "_" + policy + "_" + i, scenario, policy, seed, duration,
+                        experimentId + "_" + invocationId + "_" + policy + "_" + i,
+                        scenario, policy, seed, duration,
                         null, null);
-                runs.add(runner.run(request).metrics());
-                state.advance(policy, i + 1, episodes);
-                if (onProgress != null) {
-                    onProgress.accept(experimentId, state);
-                }
+                futures.add(CompletableFuture.supplyAsync(() -> {
+                    SimulationRunner.RunResult result = runner.run(request, null, new SimulationRunner.LiveControl() {
+                        @Override
+                        public boolean stopRequested() {
+                            return state.cancelled();
+                        }
+
+                        @Override
+                        public long stepDelayMs() {
+                            return 0;
+                        }
+                    });
+                    if (state.cancelled()) {
+                        return result;
+                    }
+                    // Episodes finish out of order under concurrency; the count of how many of
+                    // this policy's episodes are done is still meaningful, the index isn't.
+                    publishProgressIfCurrent(experimentId, invocationId, state, policy,
+                            completed.incrementAndGet(), episodes, onProgress);
+                    return result;
+                }, episodeExecutor));
             }
-            byPolicy.put(policy, MetricsSummary.aggregate(runs));
+            List<SimulationRunner.RunResult> runs = futures.stream()
+                    .map(CompletableFuture::join).toList();
+            Map<String, Object> policyResult = new LinkedHashMap<>(MetricsSummary.aggregate(
+                    runs.stream().map(SimulationRunner.RunResult::metrics).toList()));
+            policyResult.put("ml_decisions", runs.stream()
+                    .mapToInt(SimulationRunner.RunResult::mlDecisions).sum());
+            policyResult.put("fallback_decisions", runs.stream()
+                    .mapToInt(SimulationRunner.RunResult::fallbackDecisions).sum());
+            policyResult.put("degraded_episodes", (int) runs.stream()
+                    .filter(SimulationRunner.RunResult::degraded).count());
+            Set<String> modelIds = new TreeSet<>();
+            runs.forEach(run -> modelIds.addAll(run.servedModelIds()));
+            policyResult.put("model_ids", List.copyOf(modelIds));
+            runs.stream().map(SimulationRunner.RunResult::unavailableReason)
+                    .filter(reason -> reason != null && !reason.isBlank()).findFirst()
+                    .ifPresent(reason -> policyResult.put("unavailable_reason", reason));
+            byPolicy.put(policy, policyResult);
         }
 
         Map<String, Object> results = new LinkedHashMap<>();
@@ -172,7 +253,7 @@ public class ExperimentService {
      * policy actually caught, so a policy that intercepts more runs looks worse on it - see
      * {@code MetricsEngine}. A comparison table that showed only raw AIT would mislead.
      */
-    private Map<String, Object> compare(Map<String, Object> byPolicy) {
+    Map<String, Object> compare(Map<String, Object> byPolicy) {
         Object referenceKey = byPolicy.containsKey("baseline") ? "baseline"
                 : byPolicy.containsKey("random") ? "random" : null;
         if (referenceKey == null) {
@@ -193,6 +274,14 @@ public class ExperimentService {
             }
             @SuppressWarnings("unchecked")
             Map<String, Object> policy = (Map<String, Object>) entry.getValue();
+            if (toDouble(policy.get("ml_decisions")) == 0
+                    && toDouble(policy.get("fallback_decisions")) > 0) {
+                Object reason = policy.get("unavailable_reason");
+                out.put(entry.getKey(), Map.of("status", "fell_back_to_sweep",
+                        "reason", reason instanceof String s ? s
+                                : "No ML decisions were served; the run used the fallback sweep"));
+                continue;
+            }
             Map<String, Object> deltas = new LinkedHashMap<>();
             for (String metric : metrics) {
                 double base = toDouble(reference.get(metric));
@@ -213,9 +302,32 @@ public class ExperimentService {
         return v instanceof Number n ? n.doubleValue() : 0.0;
     }
 
+    private synchronized void publishProgressIfCurrent(String id, String invocationId,
+                                                       Progress state, String policy, int episode,
+                                                       int episodes,
+                                                       BiConsumer<String, Progress> onProgress) {
+        if (!invocationId.equals(activeInvocations.get(id)) || progress.get(id) != state) {
+            return;
+        }
+        state.advance(policy, episode, episodes);
+        if (onProgress != null) {
+            onProgress.accept(id, state);
+        }
+    }
+
     @Transactional
-    protected void persistResults(String id, String status, Map<String, Object> results) {
+    protected synchronized void persistResults(String id, String invocationId, String status,
+                                               Map<String, Object> results) {
+        if (!invocationId.equals(activeInvocations.get(id))) {
+            return;
+        }
         repository.findById(id).ifPresent(exp -> {
+            // A cancellation is terminal for this invocation. Workers may finish their current
+            // step after stop() returns, but they must not turn the visible status back into a
+            // completed or failed run.
+            if ("cancelled".equals(exp.getStatus())) {
+                return;
+            }
             exp.setStatus(status);
             exp.setUpdatedAt(Instant.now());
             try {
@@ -227,13 +339,13 @@ public class ExperimentService {
         });
     }
 
-    @Transactional
-    public ExperimentEntity stop(String id) {
+    public synchronized ExperimentEntity stop(String id) {
         ExperimentEntity exp = get(id);
         Progress state = progress.get(id);
         if (state != null) {
             state.cancel();
         }
+        activeInvocations.remove(id);
         exp.setStatus("cancelled");
         exp.setUpdatedAt(Instant.now());
         return repository.save(exp);
@@ -273,7 +385,10 @@ public class ExperimentService {
             this.totalRuns = Math.max(1, totalRuns);
         }
 
-        void advance(String policy, int episode, int episodesPerPolicy) {
+        // Synchronized: episodes of one policy now complete concurrently (see execute() above),
+        // so several threads can call this at once. `completedRuns++` alone is a lost-update race
+        // under that; the read-modify-write needs to be atomic, not just each field volatile.
+        synchronized void advance(String policy, int episode, int episodesPerPolicy) {
             this.currentPolicy = policy;
             this.currentEpisode = episode;
             this.episodesPerPolicy = episodesPerPolicy;

@@ -66,10 +66,7 @@ public class DetectionEngine {
             if (active && above) {
                 outcomes.put(band, DetectionOutcome.TP);
                 detected.add(band);
-                long emitterId = truth.emitterIdAt(t, band);
-                if (emitterId >= 0) {
-                    detectedEmitters.add(emitterId);
-                }
+                detectedEmitters.addAll(truth.emitterIdsAt(t, band));
                 maxPriority = Math.max(maxPriority, truth.priorityAt(t, band));
 
                 int runStart = truth.activationStart(t, band);

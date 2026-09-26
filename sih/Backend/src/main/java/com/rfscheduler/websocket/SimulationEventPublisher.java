@@ -74,11 +74,12 @@ public class SimulationEventPublisher implements SimulationService.StepListener 
     }
 
     @Override
-    public void onComplete(String simulationId, SimulationRunner.RunResult result) {
+    public void onComplete(String simulationId, SimulationRunner.RunResult result,
+                           String status, int processedSteps) {
         lastSpectrumEmit.remove(simulationId);
         Map<String, Object> payload = new LinkedHashMap<>();
-        payload.put("t", result.steps());
-        payload.put("status", "completed");
+        payload.put("t", processedSteps);
+        payload.put("status", status);
         payload.put("metrics", result.metrics().asMap());
         payload.put("degraded", result.degraded());
         payload.put("ml_decisions", result.mlDecisions());

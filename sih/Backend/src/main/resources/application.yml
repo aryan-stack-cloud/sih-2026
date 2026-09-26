@@ -42,8 +42,10 @@ management:
 rfscheduler:
   ml:
     # API_CONTRACT.md Section 7. Overridden in the docker profile to the compose service names.
-    scheduler-url: http://localhost:8500
-    periodicity-url: http://localhost:8600
+    # Pin the local loopback family. The Python services bind IPv4 and some clients otherwise
+    # attempt IPv6 localhost before falling back, adding avoidable connection latency per step.
+    scheduler-url: http://127.0.0.1:8500
+    periodicity-url: http://127.0.0.1:8600
     connect-timeout-ms: 2000
     read-timeout-ms: 5000
     # When the ML services are unreachable the scheduler degrades to round-robin rather than

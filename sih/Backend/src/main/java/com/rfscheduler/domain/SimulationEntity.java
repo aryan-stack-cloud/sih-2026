@@ -26,6 +26,9 @@ public class SimulationEntity {
     @Column(name = "policy_type")
     private String policyType;
 
+    @Column(name = "model_id", length = 64)
+    private String modelId;
+
     @Column(name = "scenario_id")
     private String scenarioId;
 
@@ -92,6 +95,14 @@ public class SimulationEntity {
 
     public void setPolicyType(String policyType) {
         this.policyType = policyType;
+    }
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
     }
 
     public String getScenarioId() {

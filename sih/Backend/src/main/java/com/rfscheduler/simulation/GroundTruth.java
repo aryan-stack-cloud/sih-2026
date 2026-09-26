@@ -22,15 +22,18 @@ public final class GroundTruth {
     private final boolean[][] occupancy;      // [t][band]
     private final int[][] owner;              // emitter index into emitters, or -1
     private final double[][] priority;
+    private final Set<Long>[][] transmitters;
     private final int[][] activationStarts;   // start of the run this cell belongs to, or -1
     private final List<Emitter> emitters;
     private final int duration;
     private final int numBands;
 
-    GroundTruth(boolean[][] occupancy, int[][] owner, double[][] priority, List<Emitter> emitters) {
+    GroundTruth(boolean[][] occupancy, int[][] owner, double[][] priority,
+                Set<Long>[][] transmitters, List<Emitter> emitters) {
         this.occupancy = occupancy;
         this.owner = owner;
         this.priority = priority;
+        this.transmitters = transmitters;
         this.emitters = List.copyOf(emitters);
         this.duration = occupancy.length;
         this.numBands = duration == 0 ? 0 : occupancy[0].length;
@@ -98,6 +101,12 @@ public final class GroundTruth {
         return index < 0 ? -1L : emitters.get(index).emitterId();
     }
 
+    /** All co-channel emitters are present and receive credit when that cell is detected. */
+    public Set<Long> emitterIdsAt(int t, int band) {
+        Set<Long> ids = transmitters[t][band];
+        return ids == null ? Set.of() : Set.copyOf(ids);
+    }
+
     /** Total contiguous activation runs across all bands - the denominator for run coverage. */
     public int totalActivationRuns() {
         int total = 0;
@@ -117,9 +126,7 @@ public final class GroundTruth {
         Set<Long> present = new HashSet<>();
         for (int t = 0; t < duration; t++) {
             for (int b = 0; b < numBands; b++) {
-                if (owner[t][b] >= 0) {
-                    present.add(emitters.get(owner[t][b]).emitterId());
-                }
+                present.addAll(emitterIdsAt(t, b));
             }
         }
         return present;

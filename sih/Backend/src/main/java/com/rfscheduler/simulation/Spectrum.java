@@ -3,6 +3,8 @@ package com.rfscheduler.simulation;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Owns the frequency bands and produces the ground truth for a run (PRD Section 8.1).
@@ -43,6 +45,8 @@ public class Spectrum {
         boolean[][] occupancy = new boolean[duration][numBands];
         int[][] owner = new int[duration][numBands];
         double[][] priority = new double[duration][numBands];
+        @SuppressWarnings("unchecked")
+        Set<Long>[][] transmitters = (Set<Long>[][]) new Set[duration][numBands];
         for (int[] row : owner) {
             Arrays.fill(row, -1);
         }
@@ -56,12 +60,16 @@ public class Spectrum {
                     continue;
                 }
                 occupancy[t][band] = true;
+                if (transmitters[t][band] == null) {
+                    transmitters[t][band] = new HashSet<>();
+                }
+                transmitters[t][band].add(emitter.emitterId());
                 if (emitter.priority() > priority[t][band]) {
                     priority[t][band] = emitter.priority();
                     owner[t][band] = i;
                 }
             }
         }
-        return new GroundTruth(occupancy, owner, priority, emitters);
+        return new GroundTruth(occupancy, owner, priority, transmitters, emitters);
     }
 }

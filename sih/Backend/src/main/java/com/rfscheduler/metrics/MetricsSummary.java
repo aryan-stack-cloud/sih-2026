@@ -38,7 +38,9 @@ public record MetricsSummary(
         int retunes,
         int detectedRuns,
         int totalRuns,
-        double runInterceptRate) {
+        double runInterceptRate,
+        int emittersDetected,
+        int emittersPresent) {
 
     /** Flat map for JSON responses and experiment result storage. */
     public Map<String, Object> asMap() {
@@ -58,6 +60,10 @@ public record MetricsSummary(
         m.put("coverage", coverage);
         m.put("miss_rate", missRate);
         m.put("run_intercept_rate", runInterceptRate);
+        m.put("emitters_detected", emittersDetected);
+        m.put("emitters_present", emittersPresent);
+        m.put("tp_high_priority", tpHighPriority);
+        m.put("fn_high_priority", fnHighPriority);
         m.put("detected_runs", detectedRuns);
         m.put("total_runs", totalRuns);
         m.put("steps", steps);
@@ -89,12 +95,14 @@ public record MetricsSummary(
         int scans = 0;
         int detectedRuns = 0;
         int totalRuns = 0;
+        int emittersDetected = 0;
+        int emittersPresent = 0;
         int invalid = 0;
         int retunes = 0;
         double latencySum = 0;
         double censoredSum = 0;
         double coverage = 0;
-        double interception = 0;
+        List<Double> episodeMedians = new java.util.ArrayList<>();
         double rewardSum = 0;
 
         for (MetricsSummary e : episodes) {
@@ -108,12 +116,16 @@ public record MetricsSummary(
             scans += e.totalScans();
             detectedRuns += e.detectedRuns();
             totalRuns += e.totalRuns();
+            emittersDetected += e.emittersDetected();
+            emittersPresent += e.emittersPresent();
             invalid += e.invalidSteps();
             retunes += e.retunes();
             latencySum += e.ait() * e.detectedRuns();
             censoredSum += e.aitCensored() * e.totalRuns();
             coverage += e.coverage();
-            interception += e.interceptionRatio();
+            if (e.detectedRuns() > 0) {
+                episodeMedians.add(e.medianLatency());
+            }
             rewardSum += e.cumulativeReward();
         }
 
@@ -128,7 +140,16 @@ public record MetricsSummary(
         out.put("ait", div(latencySum, detectedRuns));
         out.put("ait_censored", div(censoredSum, totalRuns));
         out.put("hpdr", div(tpHi, tpHi + fnHi));
-        out.put("interception_ratio", interception / n);
+        out.put("interception_ratio", div(emittersDetected, emittersPresent));
+        out.put("emitters_detected", emittersDetected);
+        out.put("emitters_present", emittersPresent);
+        // Each episode retains only its median; this is the median of detected episode medians.
+        episodeMedians.sort(Double::compareTo);
+        int medianCount = episodeMedians.size();
+        out.put("median_latency", medianCount == 0 ? 0.0 : medianCount % 2 == 1
+                ? episodeMedians.get(medianCount / 2)
+                : (episodeMedians.get(medianCount / 2 - 1)
+                        + episodeMedians.get(medianCount / 2)) / 2.0);
         out.put("scan_efficiency", div(useful, scans));
         out.put("precision", precision);
         out.put("recall", pd);
@@ -141,6 +162,8 @@ public record MetricsSummary(
         out.put("run_intercept_rate", div(detectedRuns, totalRuns));
         out.put("invalid_steps", invalid);
         out.put("retunes", retunes);
+        out.put("tp_high_priority", tpHi);
+        out.put("fn_high_priority", fnHi);
         out.put("counts", Map.of("tp", tp, "fn", fn, "fp", fp, "tn", tn));
         return out;
     }

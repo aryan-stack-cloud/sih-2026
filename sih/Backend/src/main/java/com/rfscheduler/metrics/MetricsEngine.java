@@ -164,7 +164,8 @@ public class MetricsEngine {
                 tpHighPriority, fnHighPriority,
                 steps, totalScans, usefulScans, invalidSteps, retunes,
                 detectedRuns.size(), totalRuns,
-                safeDiv(detectedRuns.size(), totalRuns));
+                safeDiv(detectedRuns.size(), totalRuns),
+                intercepted.size(), present.size());
     }
 
     private static double median(List<Integer> sorted) {

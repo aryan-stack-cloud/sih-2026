@@ -1,5 +1,7 @@
 package com.rfscheduler.simulation;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +15,49 @@ public record Emitter(
         String behaviorClass,
         int[] bands,
         double priority,
-        Map<String, Object> params) {
+        Map<String, Object> params,
+        SwitchingPlan switching) {
+
+    public Emitter(long emitterId, String behaviorClass, int[] bands,
+                   double priority, Map<String, Object> params) {
+        this(emitterId, behaviorClass, bands, priority, params, null);
+    }
+
+    public record Regime(int start, int end, String behaviorClass, int[] bands,
+                         Map<String, Object> params) {
+    }
+
+    public static final class SwitchingPlan {
+        private final int meanSteps;
+        private final int minSteps;
+        private final int numBands;
+        private final Map<String, Double> mix;
+        private final Map<String, Map<String, Object>> paramsByClass;
+        private final List<Regime> regimes = new ArrayList<>();
+
+        public SwitchingPlan(int meanSteps, int minSteps, int numBands,
+                             Map<String, Double> mix,
+                             Map<String, Map<String, Object>> paramsByClass) {
+            if (minSteps < 1 || meanSteps < minSteps) {
+                throw new IllegalArgumentException(
+                        "switching requires 1 <= min_regime_steps <= mean_regime_steps");
+            }
+            this.meanSteps = meanSteps;
+            this.minSteps = minSteps;
+            this.numBands = numBands;
+            this.mix = Map.copyOf(mix);
+            this.paramsByClass = Map.copyOf(paramsByClass);
+        }
+
+        public int meanSteps() { return meanSteps; }
+        public int minSteps() { return minSteps; }
+        public int numBands() { return numBands; }
+        public Map<String, Double> mix() { return mix; }
+        public Map<String, Map<String, Object>> paramsByClass() { return paramsByClass; }
+        public List<Regime> regimes() { return List.copyOf(regimes); }
+        void clearRegimes() { regimes.clear(); }
+        void addRegime(Regime regime) { regimes.add(regime); }
+    }
 
     public Emitter {
         if (!EmitterBehavior.CLASSES.contains(behaviorClass)) {

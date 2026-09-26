@@ -32,6 +32,8 @@ public final class EmitterFactory {
 
         List<String> classes = allocateClasses(numEmitters, mix);
         List<Emitter> emitters = new ArrayList<>(numEmitters);
+        Map<String, Object> switching = paramsByClass == null
+                ? null : paramsByClass.get("switching");
 
         for (int i = 0; i < classes.size(); i++) {
             String behavior = classes.get(i);
@@ -41,8 +43,12 @@ public final class EmitterFactory {
                             : paramsByClass.getOrDefault(behavior, Map.of()));
             int[] bands = assignBands(behavior, numBands, rng, params);
             double priority = rng.nextDouble() < highPriorityFraction ? 2.0 : 1.0;
+            Emitter.SwitchingPlan plan = switching == null ? null : new Emitter.SwitchingPlan(
+                    ((Number) switching.get("mean_regime_steps")).intValue(),
+                    ((Number) switching.get("min_regime_steps")).intValue(),
+                    numBands, mix, paramsByClass);
             emitters.add(new Emitter(i, behavior, bands, priority,
-                    randomiseParams(behavior, params, rng)));
+                    randomiseParams(behavior, params, rng), plan));
         }
         return emitters;
     }
@@ -105,7 +111,7 @@ public final class EmitterFactory {
         return new int[] {rng.nextInt(numBands)};
     }
 
-    private static Map<String, Object> randomiseParams(
+    static Map<String, Object> randomiseParams(
             String behavior, Map<String, Object> params, Random rng) {
         Map<String, Object> out = new HashMap<>(params);
         switch (behavior) {

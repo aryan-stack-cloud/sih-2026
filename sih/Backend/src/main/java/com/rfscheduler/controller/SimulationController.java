@@ -92,6 +92,15 @@ public class SimulationController {
         return ApiResponse.ok(summary(simulations.reset(id)));
     }
 
+    /** How fast a currently-running simulation plays for a viewer; 0 (or omitted) is uncapped. */
+    @PutMapping("/{id}/speed")
+    public ApiResponse<Map<String, Object>> setSpeed(
+            @PathVariable String id, @Valid @RequestBody Requests.SetSpeed body) {
+        long delay = body.stepDelayMs() == null ? 0 : body.stepDelayMs();
+        simulations.setSpeed(id, delay);
+        return ApiResponse.ok(Map.of("id", id, "step_delay_ms", delay));
+    }
+
     static Map<String, Object> summary(SimulationEntity sim) {
         Map<String, Object> m = new LinkedHashMap<>();
         m.put("id", sim.getId());
@@ -102,6 +111,7 @@ public class SimulationController {
         m.put("current_step", sim.getCurrentStep());
         m.put("seed", sim.getSeed());
         m.put("policy_type", sim.getPolicyType());
+        m.put("model_id", sim.getModelId());
         m.put("scenario_id", sim.getScenarioId());
         m.put("created_at", sim.getCreatedAt());
         return m;
