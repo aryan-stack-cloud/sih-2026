@@ -28,6 +28,7 @@ from periodicity.contract import (
     ResetRequest,
     ResetResponse,
     StateResponse,
+    StepRequest,
     SuccessEnvelope,
     UpdateRequest,
     UpdateResponse,
@@ -170,13 +171,28 @@ def predict_batch(body: BatchPredictRequest) -> JSONResponse:
     if at is None:
         at = service.latest_detection(body.simulation_id, body.band_ids)
 
+    return _batch_predictions(body.simulation_id, body.band_ids, float(at))
+
+
+def _batch_predictions(simulation_id: str, band_ids: list[int], now: float) -> JSONResponse:
     predictions = [
         BandPrediction(band_id=band_id, phase=phase, **prediction.to_contract())
         for band_id, prediction, phase in service.predict_many(
-            body.simulation_id, body.band_ids, float(at)
+            simulation_id, band_ids, now
         )
     ]
     return ok(BatchPredictResponse(predictions=predictions).model_dump(mode="json"))
+
+
+@router.post("/periodicity/step")
+def step(body: StepRequest) -> JSONResponse:
+    """Apply ordered scan outcomes and return the same shape as batch prediction."""
+    for outcome in body.outcomes:
+        if outcome.detected:
+            service.update(body.simulation_id, outcome.band_id, outcome.timestamp)
+        else:
+            service.observe_miss(body.simulation_id, outcome.band_id, outcome.timestamp)
+    return _batch_predictions(body.simulation_id, body.band_ids, body.now)
 
 
 @router.get("/periodicity/state")

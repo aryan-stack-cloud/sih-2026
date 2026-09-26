@@ -11,6 +11,12 @@ max_period: 512.0
 period_resolution: 0.25
 min_cycles_observed: 2.0 # a period longer than half the watched span is one gap, not a cycle
 
+# Misses are retained immediately; recomputing the period fit is batched so a quiet scan loop
+# does not run a full search after every look.
+miss_refit_interval: 512
+hit_refit_interval: 64
+maturity_refit_observations: 121
+
 # Confidence (confidence = 1 - p, Rayleigh test corrected for the look-elsewhere effect)
 min_samples: 8           # distinct activations, counted after clustering
 low_confidence_threshold: 0.95   # the ordinary p < 0.05

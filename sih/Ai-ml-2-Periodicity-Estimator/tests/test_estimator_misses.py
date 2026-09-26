@@ -109,3 +109,38 @@ def test_service_falls_back_to_hits_only_with_no_misses_recorded():
     assert fit.period == pytest.approx(20, abs=0.3)
 
     svc.reset(sim)
+
+
+def test_service_batches_miss_refits_to_protect_the_scheduler_critical_path():
+    """Every miss is retained, but a quiet scan must not trigger a full fit every step."""
+    from periodicity.service import PeriodicityService
+
+    cfg = EstimatorConfig(miss_refit_interval=3)
+    svc = PeriodicityService(cfg)
+    sim = "sim_batched_misses"
+    for k in range(12):
+        svc.update(sim, band_id=1, detection_timestamp=float(k * 20))
+
+    original = svc.estimate(sim, band_id=1)
+    svc.observe_miss(sim, band_id=1, timestamp=241.0)
+    svc.observe_miss(sim, band_id=1, timestamp=242.0)
+    assert svc.estimate(sim, band_id=1) is original
+
+    svc.observe_miss(sim, band_id=1, timestamp=243.0)
+    assert svc.estimate(sim, band_id=1) is not original
+    svc.reset(sim)
+
+
+def test_service_batches_new_activations_after_bootstrap():
+    from periodicity.service import PeriodicityService
+
+    svc = PeriodicityService(EstimatorConfig(hit_refit_interval=3))
+    for t in (0, 20, 40, 60):
+        svc.update("hit_batch", 0, float(t))
+    svc.observe_miss("hit_batch", 0, 61.0)
+    original = svc.estimate("hit_batch", 0)
+    svc.update("hit_batch", 0, 80.0)
+    svc.update("hit_batch", 0, 100.0)
+    assert svc.estimate("hit_batch", 0) is original
+    svc.update("hit_batch", 0, 120.0)
+    assert svc.estimate("hit_batch", 0) is not original

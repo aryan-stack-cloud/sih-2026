@@ -75,9 +75,19 @@ class DetectionBuffer:
             self._last_raw = t
 
         i = bisect.bisect_left(buf, t)
-        if i > 0 and t - buf[i - 1] <= self._gap:
+        joins_left = i > 0 and t - buf[i - 1] <= self._gap
+        joins_right = i < len(buf) and buf[i] - t <= self._gap
+        if joins_left and joins_right:
+            # A late detection can connect two previously separate activation starts.
+            del buf[i]
+            return True
+        if joins_left:
             return False
-        if i < len(buf) and buf[i] - t <= self._gap:
+        if joins_right:
+            # Preserve the first detection time even when it arrives after a later one.
+            if t < buf[i]:
+                buf[i] = t
+                return True
             return False
 
         buf.insert(i, t)
@@ -190,6 +200,25 @@ class BufferStore:
         merged.sort(key=lambda o: o[0])
         return merged
 
+    def fit_snapshot(self, simulation_id: str, band_id: int) -> tuple[list[float], list[float], tuple]:
+        """Atomically copy both streams and identify the exact version being fitted."""
+        key = (simulation_id, int(band_id))
+        with self._lock:
+            hits = self._buffers.get(key)
+            misses = self._misses.get(key)
+            token = (hits, hits.total_seen if hits else 0,
+                     misses, misses.total_seen if misses else 0)
+            return (hits.timestamps if hits else [],
+                    misses.timestamps if misses else [], token)
+
+    def fit_token(self, simulation_id: str, band_id: int) -> tuple:
+        key = (simulation_id, int(band_id))
+        with self._lock:
+            hits = self._buffers.get(key)
+            misses = self._misses.get(key)
+            return (hits, hits.total_seen if hits else 0,
+                    misses, misses.total_seen if misses else 0)
+
     def stats(self, simulation_id: str, band_id: int) -> dict:
         with self._lock:
             buf = self._buffers.get((simulation_id, int(band_id)))
@@ -210,7 +239,7 @@ class BufferStore:
             miss_keys = [k for k in self._misses if k[0] == simulation_id]
             for k in miss_keys:
                 del self._misses[k]
-            return len(keys)
+            return len(set(keys) | set(miss_keys))
 
     def bands(self, simulation_id: str) -> list[int]:
         with self._lock:

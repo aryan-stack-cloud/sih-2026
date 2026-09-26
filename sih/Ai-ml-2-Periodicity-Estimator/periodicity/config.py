@@ -67,6 +67,22 @@ class EstimatorConfig:
     this and with the number of duty candidates, against a T grid already fixed at
     period_resolution -- see estimate_period_with_misses for why T cannot be coarsened."""
 
+    miss_refit_interval: int = 512
+    """Number of new misses retained before a cached fit is recomputed.
+
+    Misses remain part of the next fit. The service uses a shorter bootstrap interval for the
+    first 64 observations, then this interval to keep long episodes affordable."""
+
+    hit_refit_interval: int = 64
+    """New activations between mature fits. The first four activations refit immediately."""
+
+    maturity_refit_observations: int = 121
+    """Force one fit after this many scans of a band, before long batching takes over.
+
+    A 32-band, two-at-a-time sweep observes each band 125 times in 2,000 steps. At 120 looks,
+    one of the 30 deterministic alias cases is still ambiguous; the next look resolves it.
+    This checkpoint retains that evidence without sweeping after every scan."""
+
     # -- confidence ------------------------------------------------------------------------
     min_samples: int = 8
     """Distinct *activations* needed before any prediction is offered (Level 5 DoD).

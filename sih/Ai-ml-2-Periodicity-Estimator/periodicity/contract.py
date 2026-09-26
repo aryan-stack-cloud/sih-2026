@@ -94,6 +94,27 @@ class BatchPredictRequest(BaseModel):
     now: Optional[float] = None
 
 
+class StepOutcome(BaseModel):
+    """One ordered scan outcome in a combined step request."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    band_id: int = Field(ge=0)
+    detected: bool
+    timestamp: float = Field(ge=0)
+
+
+class StepRequest(BaseModel):
+    """Apply scan outcomes, then predict all requested bands in one round trip."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    simulation_id: str
+    outcomes: list[StepOutcome]
+    now: float
+    band_ids: list[int] = Field(min_length=1, max_length=1024)
+
+
 class BandPrediction(PredictResponse):
     """One band's prediction inside a batch response."""
 

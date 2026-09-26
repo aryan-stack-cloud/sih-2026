@@ -63,14 +63,13 @@ at the first detection in the group. This is self-consistent rather than arbitra
 will not report a period shorter than ``min_period``, so on its own terms two detections closer
 than that *cannot* be separate cycles.
 
-## Known limitation: scan-schedule aliasing
+## Scan-schedule aliasing
 
 We see detections, which are the product of emitter activity *and* the scan schedule. A perfectly
-regular scanner revisiting a band every 8 steps can imprint its own period on the timestamps.
-``min_period`` in the config exists to keep the shortest, most degenerate aliases out (a period of
-1 fits any data at all). It is not a complete defence, and the honest mitigation is that the
-scheduler this feeds is adaptive rather than fixed-cadence. If the contract ever carries
-scanned-but-empty observations as well as detections, that would remove the ambiguity properly.
+regular scanner can make several emitter periods observationally indistinguishable. The
+hits-and-misses fit uses empty scans to reject candidates where possible, and returns no claim
+when no candidate has a majority of the posterior mass. No estimator can recover a unique true
+period from a perfectly aliased observation stream without changing the scan schedule.
 """
 
 from __future__ import annotations
@@ -360,34 +359,53 @@ def estimate_period_with_misses(
     log_pd, log_1mpfa = math.log(p_d), math.log(1.0 - p_fa)
     log_pfa, log_1mpd = math.log(p_fa), math.log(1.0 - p_d)
 
-    # frac[T, k]: where timestamp k falls within candidate period T, as a fraction of the cycle.
-    frac = np.mod(times[None, :], periods[:, None]) / periods[:, None]  # (P, N)
-    # rel[T, F, k]: same, relative to candidate phase F. Broadcasts to (P, F, N).
-    rel = np.mod(frac[:, None, :] - phases[None, :, None], 1.0)
+    # Sort folded observations once per period. Binary searches over the sorted rows count the
+    # hits and misses inside each candidate window exactly, without constructing a (P,F,N)
+    # cube and scanning it once for every duty value. Offset rows so searchsorted can process
+    # all periods in one vectorised call.
+    best_per_T = np.empty(n_period_points)
+    best_fi_per_T = np.empty(n_period_points, dtype=int)
+    best_ui_per_T = np.empty(n_period_points, dtype=int)
+    logZ_per_T = np.empty(n_period_points)
+    starts = phases[None, :, None]
+    ends = starts + duties[None, None, :]
+    wrapped = ends > 1.0
+    baseline = n_hits * log_pfa + (n - n_hits) * log_1mpfa
 
-    best_per_T = np.full(n_period_points, -np.inf)
-    best_fi_per_T = np.zeros(n_period_points, dtype=int)
-    best_ui_per_T = np.zeros(n_period_points, dtype=int)
-    logZ_per_T = np.full(n_period_points, -np.inf)  # log-sum-exp over (phase, duty) per T
+    # Keep temporary arrays small across long training runs. A full 2,000-period by 24-phase
+    # sweep repeatedly allocates tens of MB; chunking the periods avoids allocator/pagefile
+    # pressure when many simulations run back-to-back in the same process.
+    for first in range(0, n_period_points, 256):
+        last = min(first + 256, n_period_points)
+        block_periods = periods[first:last]
+        count = len(block_periods)
+        frac = np.mod(times[None, :], block_periods[:, None]) / block_periods[:, None]
+        order = np.argsort(frac, axis=1)
+        sorted_frac = np.take_along_axis(frac, order, axis=1)
+        hit_prefix = np.pad(np.cumsum(hit[order], axis=1), ((0, 0), (1, 0)))
+        row = np.arange(count)[:, None, None]
+        offset = 2.0 * row
+        flattened = (sorted_frac + offset[:, 0, :]).ravel()
+        shape = (count, len(phases), len(duties))
+        start_rank = np.searchsorted(flattened, np.broadcast_to(starts + offset, shape).ravel()).reshape(shape) - row * n
+        end_rank = np.searchsorted(flattened, np.broadcast_to(np.minimum(ends, 1.0) + offset, shape).ravel()).reshape(shape) - row * n
+        wrap_rank = np.searchsorted(flattened, np.broadcast_to(np.maximum(ends - 1.0, 0.0) + offset, shape).ravel()).reshape(shape) - row * n
+        inside = end_rank - start_rank + np.where(wrapped, wrap_rank, 0)
+        hits_inside = (hit_prefix[row, end_rank] - hit_prefix[row, start_rank]
+                       + np.where(wrapped, hit_prefix[row, wrap_rank], 0))
+        misses_inside = inside - hits_inside
 
-    for ui, u in enumerate(duties):
-        illuminated = rel < u  # w_k(T, phi, u), (P, F, N)
-        ll_if_hit = np.where(illuminated, log_pd, log_pfa)
-        ll_if_miss = np.where(illuminated, log_1mpd, log_1mpfa)
-        ll = np.where(hit[None, None, :], ll_if_hit, ll_if_miss).sum(axis=2)  # (P, F)
-
-        fi = np.argmax(ll, axis=1)
-        best_this_u = ll[np.arange(n_period_points), fi]
-        better = best_this_u > best_per_T
-        best_per_T = np.where(better, best_this_u, best_per_T)
-        best_fi_per_T = np.where(better, fi, best_fi_per_T)
-        best_ui_per_T = np.where(better, ui, best_ui_per_T)
-
-        row_max = ll.max(axis=1)
-        row_logZ = row_max + np.log(np.exp(ll - row_max[:, None]).sum(axis=1))
-        combined_max = np.maximum(logZ_per_T, row_logZ)
-        logZ_per_T = combined_max + np.log(
-            np.exp(logZ_per_T - combined_max) + np.exp(row_logZ - combined_max)
+        # Non-illuminated likelihood is constant; only counts moved into the window vary.
+        ll = (baseline + hits_inside * (log_pd - log_pfa)
+              + misses_inside * (log_1mpd - log_1mpfa))
+        flat_ll = ll.reshape(count, -1)
+        best_idx = np.argmax(flat_ll, axis=1)
+        best_per_T[first:last] = flat_ll[np.arange(count), best_idx]
+        best_fi_per_T[first:last] = best_idx // len(duties)
+        best_ui_per_T[first:last] = best_idx % len(duties)
+        row_max = flat_ll.max(axis=1)
+        logZ_per_T[first:last] = row_max + np.log(
+            np.exp(flat_ll - row_max[:, None]).sum(axis=1)
         )
 
     winner = int(np.argmax(best_per_T))
@@ -414,6 +432,12 @@ def estimate_period_with_misses(
     posterior_bins = np.exp(bin_logZ - grand_max)
     posterior_bins /= posterior_bins.sum()
     confidence = float(posterior_bins[bin_of[winner]])
+    if confidence <= 0.5:
+        # Several candidate periods explain the sampled stream comparably well. In particular,
+        # a fixed scanner can alias a true emitter period into its own revisit cadence or a
+        # divisor of it. Reporting the best grid point as an emitter period in that situation
+        # would turn the scanner's schedule into a false state feature.
+        return _no_estimate("period ambiguous under this scan schedule", n_hits, span)
 
     # Local phase refinement only -- T is already on a fine grid above; phase benefits from one
     # more level, same coarse-then-fine pattern estimate_period uses.

@@ -19,7 +19,7 @@ def client() -> TestClient:
 @pytest.fixture(autouse=True)
 def clean_state():
     yield
-    for sim in ("sim_a1b2c3d4", "sim_periodic", "sim_empty", "sim_load", "sim_reset"):
+    for sim in ("sim_a1b2c3d4", "sim_periodic", "sim_empty", "sim_load", "sim_reset", "sim_step"):
         service.reset(sim)
 
 
@@ -331,3 +331,29 @@ def test_batch_rejects_an_empty_band_list(client):
         json={"simulation_id": "sim_periodic", "band_ids": []},
     )
     assert r.status_code == 422
+
+
+def test_step_applies_outcomes_and_matches_batch_shape(client):
+    outcomes = [
+        {"band_id": 2, "detected": t % 20 == 0, "timestamp": float(t)}
+        for t in range(60)
+    ]
+    request = {"simulation_id": "sim_step", "outcomes": outcomes,
+               "now": 60.0, "band_ids": [2, 3]}
+    response = client.post("/internal/periodicity/step", json=request)
+    assert response.status_code == 200
+    assert response.json()["success"] is True
+    predictions = response.json()["data"]["predictions"]
+    assert [p["band_id"] for p in predictions] == [2, 3]
+    assert set(predictions[0]) == {"band_id", "phase", "confidence",
+                                   "estimated_period", "predicted_next_active_window"}
+    assert service.buffers.snapshot("sim_step", 2) == [0.0, 20.0, 40.0]
+    assert len(service.buffers.snapshot_misses("sim_step", 2)) == 57
+
+    batch = client.post("/internal/periodicity/predict/batch", json={
+        "simulation_id": "sim_step", "now": 60.0, "band_ids": [2, 3]
+    }).json()["data"]
+    assert response.json()["data"] == batch
+    empty = client.post("/internal/periodicity/step", json={**request, "outcomes": []})
+    assert empty.status_code == 200
+    assert empty.json()["data"] == batch
