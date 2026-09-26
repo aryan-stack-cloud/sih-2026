@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 520">
+  <ellipse id="searchlight-shadow" cx="260" cy="461" rx="142" ry="24" fill="#14123C" fill-opacity=".18"/>
+  <g id="searchlight-stand">
+    <path d="M160 285h94l30 121h-66Z" fill="#2D3A6B"/>
+    <path d="M254 285h38l26 121h-64Z" fill="#1F2340"/>
+    <rect x="186" y="214" width="82" height="110" rx="28" fill="#4B519A"/>
+    <rect x="202" y="226" width="28" height="86" rx="14" fill="#5A62B5"/>
+    <g id="sl-base">
+      <path d="M130 398h238l52 58H78Z" fill="#2D3A6B"/>
+      <path d="m318 398 50 58h-60l-38-58Z" fill="#1F2340"/>
+      <rect x="76" y="450" width="346" height="22" rx="11" fill="#1F2340"/>
+    </g>
+  </g>
+  <g id="searchlight-yoke" fill="none" stroke="#1F2340" stroke-width="28" stroke-linecap="round">
+    <path d="M148 344V260c0-66 42-108 108-108"/>
+    <path d="M256 344V260c0-66-42-108-108-108"/>
+  </g>
+  <g id="sl-head" data-pivot="202 256" transform="rotate(-30 202 256)">
+    <path d="M92 210h242l44 46-44 46H92Z" fill="#4B519A"/>
+    <path d="M288 210h46l44 46-44 46h-46Z" fill="#1F2340"/>
+    <path d="M92 210h48v92H92Z" fill="#5A62B5"/>
+    <path d="M118 166h50v180h-50Z" fill="#2D3A6B"/>
+    <path d="M332 176h44v160h-44Z" fill="#1F2340"/>
+    <path d="M356 188h38v136h-38Z" fill="#2D3A6B"/>
+    <ellipse id="sl-lens" cx="394" cy="256" rx="30" ry="68" fill="#FFF3B0"/>
+    <ellipse cx="388" cy="250" rx="12" ry="28" fill="#FDFCF8" fill-opacity=".8"/>
+    <circle cx="202" cy="256" r="20" fill="#1F2340"/>
+    <circle cx="202" cy="256" r="10" fill="#FFC43D"/>
+  </g>
+  <g id="searchlight-yoke-pins">
+    <circle cx="202" cy="256" r="25" fill="#1F2340"/>
+    <circle cx="202" cy="256" r="13" fill="#5A62B5"/>
+  </g>
+</svg>

@@ -1,0 +1,38 @@
+<div class="cam" id="s03-cam">
+  <div class="abs" style="left:0;top:0;width:1920px;height:1080px;background:radial-gradient(ellipse at 40% 50%,#3D3C8F 0%,#2B2A6E 42%,#1D1B4F 88%)"></div>
+  <img class="bgimg" src="assets/art/bg/night-sky.svg" alt="" style="opacity:0.55">
+  {{gen dial id=s03-dial class=abs style="left:250px;top:108px;width:800px;height:800px"}}
+  <div class="abs dial-cap" style="left:200px;top:922px;width:900px">Fixed sweep: always the same order</div>
+  <div class="abs" id="s03-i-wrap" style="left:1260px;top:430px;width:300px;height:520px">{{intruder id=s03-i}}</div>
+  {{svg src=assets/art/props/metronome.svg id=s03-met class=abs style="left:1560px;top:560px;width:230px"}}
+  <div class="tis-bubble" id="s03-bub" style="left:1230px;top:210px">Tick... tock... too slow!</div>
+</div>
+<div class="hud">
+  <div class="tis-tag" id="s03-tag1">{{icon clock}}<div><span class="lbl">The old way:</span><span class="val">Fixed sweep, like a clock</span></div></div>
+  <div class="tis-tag" id="s03-tag2">{{icon flask}}<div><span class="lbl">Test:</span><span class="val">The rhythm trap</span></div></div>
+  <div class="abs" id="s03-count" style="right:72px;top:60px;background:#FDFCF8;border-radius:18px;padding:14px 30px;box-shadow:0 8px 0 rgba(20,18,60,0.18);text-align:center">
+    <span style="display:block;font:700 22px/1.1 Montserrat;letter-spacing:2px;color:#6B7090">CAUGHT</span>
+    <b style="display:block;font:700 96px/1.1 Fredoka;color:#E63946;margin-top:10px">0</b>
+  </div>
+  <div class="tis-stamp" id="s03-stamp" style="left:360px;top:450px">0 CAUGHT</div>
+  <div class="tis-source" id="s03-src"><b>SOURCE:</b> project rhythm-trap test, 4 runs</div>
+</div>
+<style>
+  #s03 .dial-cap { font: 800 34px/1 "Montserrat"; color: #FDFCF8; text-align: center; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 3px 0 rgba(20, 18, 60, 0.6); }
+</style>
+<sfx src="whoosh" at="0.1" vol="0.35"></sfx>
+<sfx src="tick" at="0.5" vol="0.5"></sfx>
+<sfx src="tock" at="0.8" vol="0.5"></sfx>
+<sfx src="tick" at="1.1" vol="0.5"></sfx>
+<sfx src="tock" at="1.4" vol="0.5"></sfx>
+<sfx src="tick" at="1.7" vol="0.45"></sfx>
+<sfx src="tock" at="2.0" vol="0.45"></sfx>
+<sfx src="tick" at="2.3" vol="0.4"></sfx>
+<sfx src="tock" at="2.6" vol="0.4"></sfx>
+<sfx src="pop" at="s03_2+0.2" vol="0.45"></sfx>
+<sfx src="zap" at="s03_2+1.25" vol="0.4"></sfx>
+<sfx src="zap" at="s03_2+3.65" vol="0.4"></sfx>
+<sfx src="pop" at="s03_2+1.9" vol="0.5"></sfx>
+<sfx src="zap" at="s03_3+2.45" vol="0.4"></sfx>
+<sfx src="stamp" at="s03_3@end-1.0" vol="0.7"></sfx>
+<sfx src="fail" at="s03_3@end-0.7" vol="0.35"></sfx>

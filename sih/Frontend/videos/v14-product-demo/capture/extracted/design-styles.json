@@ -1,0 +1,276 @@
+{
+  "typography": [
+    {
+      "role": "heading",
+      "fontFamily": "Barlow Condensed",
+      "fontSize": "57.6px",
+      "fontWeight": "600",
+      "lineHeight": "49.536px",
+      "letterSpacing": "-1.44px",
+      "color": "#E6EAF5",
+      "sampleText": "The spectrum is wide.Your receiver is not."
+    },
+    {
+      "role": "display",
+      "fontFamily": "Barlow Condensed",
+      "fontSize": "39.2px",
+      "fontWeight": "700",
+      "lineHeight": "58.8px",
+      "letterSpacing": "7.056px",
+      "color": "#E6EAF5",
+      "sampleText": "Spectrum Scan Scheduler"
+    },
+    {
+      "role": "heading-2",
+      "fontFamily": "Archivo",
+      "fontSize": "16.8px",
+      "fontWeight": "600",
+      "lineHeight": "25.2px",
+      "letterSpacing": "0.168px",
+      "color": "#E6EAF5",
+      "sampleText": "What the receiver is hearing"
+    },
+    {
+      "role": "body",
+      "fontFamily": "Archivo",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "26.4px",
+      "letterSpacing": "normal",
+      "color": "#8A93AD",
+      "sampleText": "The scheduler makes every listening window count by selectin"
+    },
+    {
+      "role": "label",
+      "fontFamily": "Archivo",
+      "fontSize": "15px",
+      "fontWeight": "400",
+      "lineHeight": "22.5px",
+      "letterSpacing": "normal",
+      "color": "#E6EAF5",
+      "sampleText": "K = 2 bands heard at once16 bands under surveillance"
+    },
+    {
+      "role": "body-small",
+      "fontFamily": "JetBrains Mono",
+      "fontSize": "8.8px",
+      "fontWeight": "400",
+      "lineHeight": "13.2px",
+      "letterSpacing": "normal",
+      "color": "#5C6580",
+      "sampleText": "01"
+    }
+  ],
+  "spacing": {
+    "observed": [
+      2,
+      3,
+      4,
+      6,
+      7,
+      8,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24
+    ],
+    "baseUnit": 4
+  },
+  "radius": [
+    "4px 4px 0px 0px",
+    "4px"
+  ],
+  "shadows": [
+    {
+      "value": "rgba(0, 0, 0, 0.2) 0px 18px 48px 0px, rgba(255, 255, 255, 0.035) 0px 1px 0px 0px inset",
+      "count": 1
+    },
+    {
+      "value": "rgba(0, 0, 0, 0.22) 0px 22px 50px 0px",
+      "count": 1
+    },
+    {
+      "value": "rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "count": 1
+    },
+    {
+      "value": "rgb(232, 184, 75) 3px 0px 0px 0px inset",
+      "count": 1
+    }
+  ],
+  "buttons": [
+    {
+      "label": "Dashboard",
+      "background": "#1B2440",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#E6EAF5",
+      "padding": "7px 14px",
+      "borderRadius": "4px 4px 0px 0px",
+      "border": "",
+      "boxShadow": "none",
+      "fontSize": "13.6px",
+      "fontWeight": "500",
+      "height": "30px"
+    },
+    {
+      "label": "▶ Run live comparison",
+      "background": "#E8B84B",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#241A05",
+      "padding": "7px 14px",
+      "borderRadius": "4px",
+      "border": "1px solid rgb(232, 184, 75)",
+      "boxShadow": "none",
+      "fontSize": "13.6px",
+      "fontWeight": "600",
+      "height": "31px"
+    },
+    {
+      "label": "▶",
+      "background": "transparent",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#241A05",
+      "padding": "0px",
+      "borderRadius": "0px",
+      "border": "0px none rgb(36, 26, 5)",
+      "boxShadow": "none",
+      "fontSize": "11.2px",
+      "fontWeight": "600",
+      "height": "auto"
+    }
+  ],
+  "cards": [
+    {
+      "label": "card",
+      "background": "transparent",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#E6EAF5",
+      "padding": "0px",
+      "borderRadius": "0px",
+      "border": "0px none rgb(230, 234, 245)",
+      "boxShadow": "none",
+      "fontSize": "15px",
+      "fontWeight": "400",
+      "height": "1264.55px"
+    },
+    {
+      "label": "card",
+      "background": "#101A31",
+      "backgroundImage": "linear-gradient(135deg, rgba(32, 77, 153, 0.22), rgba(0, 0, 0, 0) 58%), none",
+      "backdropFilter": "",
+      "color": "#E6EAF5",
+      "padding": "22px",
+      "borderRadius": "0px",
+      "border": "1px solid rgb(38, 48, 84)",
+      "boxShadow": "rgba(0, 0, 0, 0.2) 0px 18px 48px 0px, rgba(255, 255, 255, 0.035) 0px 1px 0px 0px inset",
+      "fontSize": "15px",
+      "fontWeight": "400",
+      "height": "385.234px"
+    },
+    {
+      "label": "card",
+      "background": "transparent",
+      "backgroundImage": "linear-gradient(rgba(20, 27, 46, 0.95), rgba(11, 16, 32, 0.92))",
+      "backdropFilter": "",
+      "color": "#E6EAF5",
+      "padding": "18px",
+      "borderRadius": "4px",
+      "border": "1px solid rgb(38, 48, 84)",
+      "boxShadow": "rgba(0, 0, 0, 0.22) 0px 22px 50px 0px",
+      "fontSize": "15px",
+      "fontWeight": "400",
+      "height": "127.266px"
+    },
+    {
+      "label": "card",
+      "background": "transparent",
+      "backgroundImage": "linear-gradient(145deg, rgb(20, 27, 46), rgba(20, 27, 46, 0.65))",
+      "backdropFilter": "",
+      "color": "#E6EAF5",
+      "padding": "14px 16px",
+      "borderRadius": "4px",
+      "border": "",
+      "boxShadow": "none",
+      "fontSize": "15px",
+      "fontWeight": "400",
+      "height": "132px"
+    }
+  ],
+  "nav": {
+    "label": "navigation",
+    "background": "transparent",
+    "backgroundImage": "",
+    "backdropFilter": "",
+    "color": "#E6EAF5",
+    "padding": "0px 0px 22px",
+    "borderRadius": "0px",
+    "border": "",
+    "boxShadow": "none",
+    "fontSize": "15px",
+    "fontWeight": "400",
+    "height": "229.531px"
+  },
+  "chips": [
+    {
+      "label": "Research prototype",
+      "background": "transparent",
+      "color": "#77A8FF",
+      "padding": "4px 8px",
+      "borderRadius": "999px",
+      "border": "1px solid rgba(119, 168, 255, 0.36)",
+      "boxShadow": "none",
+      "fontSize": "10.24px",
+      "fontWeight": "400",
+      "height": "25.3438px"
+    }
+  ],
+  "statCells": [],
+  "tabs": [
+    {
+      "label": "Dashboard",
+      "background": "#1B2440",
+      "color": "#E6EAF5",
+      "padding": "7px 14px",
+      "borderRadius": "4px 4px 0px 0px",
+      "border": "",
+      "boxShadow": "none",
+      "fontSize": "13.6px",
+      "fontWeight": "500",
+      "height": "30px"
+    }
+  ],
+  "backgrounds": [
+    {
+      "value": "radial-gradient(70% 38% at 72% -8%, rgba(32, 77, 153, 0.28), rgba(0, 0, 0, 0) 68%), linear-gradient(rgb(9, 15, 34) 0%, rgb(11, 16, 32) 672px)",
+      "area": 3248940
+    },
+    {
+      "value": "repeating-linear-gradient(90deg, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 22px, rgba(119, 168, 255, 0.043) 23px)",
+      "area": 192081
+    },
+    {
+      "value": "linear-gradient(135deg, rgba(32, 77, 153, 0.22), rgba(0, 0, 0, 0) 58%), none",
+      "area": 192081
+    },
+    {
+      "value": "linear-gradient(145deg, rgb(20, 27, 46), rgba(20, 27, 46, 0.65))",
+      "area": 144672
+    },
+    {
+      "value": "linear-gradient(rgba(20, 27, 46, 0.95), rgba(11, 16, 32, 0.92))",
+      "area": 144065
+    },
+    {
+      "value": "linear-gradient(90deg, rgba(23, 37, 69, 0.95), rgba(16, 26, 49, 0.72))",
+      "area": 40409
+    }
+  ],
+  "glass": []
+}

@@ -1,0 +1,18 @@
+PUSHPAK · Smart Scan: the solution, told as a story (v11)
+
+Our night guard has one searchlight and 16 rooms, and intruders who flash a torch for a split second. A real EW receiver has the same problem: it can only hear a narrow slice of the spectrum at once (at least 10x narrower than the band it guards, per the SIH problem statement). We can't make the window bigger, but we can make it smarter.
+
+We built six ways to decide where to look next, every 10 ms:
+- Smart rules: CTMC (roll the dice) and Index (a to-do list of busy and overdue bands)
+- Learn from experience: Bandit (slot machines) and Q-learning (a cheat sheet)
+- Neural networks: DQN (scores every band at once) and PPO (a prize wheel whose winning slices grow)
+
+Trained and tested on our simulator's signal worlds and the Alan Turing Institute synthetic radar dataset. Tested on runs the models had never seen.
+
+Results (simulation):
+- Rhythm trap: the fixed sweep found the hidden signal in 0 of 4 runs; CTMC and Index found it in 4 of 4
+- Busy night (Scenario B): 11 -> 13 of every 100 signal moments caught, +22%, with emitter reach still 97%
+- Bandit catches 34 of 100 but reaches only 71% of emitters, a trade-off
+- Training on a laptop CPU: 1 min 21 s (Bandit) to 7 min 27 s (PPO); decisions in 6.6 ms
+
+Same receiver. Same narrow window. Smarter choices.

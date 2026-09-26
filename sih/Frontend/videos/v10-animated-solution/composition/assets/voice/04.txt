@@ -1,0 +1,1 @@
+﻿Each scan gives us evidence. We update what we know, choose the next two bands, retune, and scan again. All six strategies get the same virtual receiver and time budget.

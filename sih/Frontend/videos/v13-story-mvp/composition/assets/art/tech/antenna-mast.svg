@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 920">
+  <ellipse id="antenna-mast-shadow" cx="210" cy="852" rx="146" ry="28" fill="#14123C" fill-opacity=".18"/>
+  <g id="antenna-mast-guys" fill="none" stroke="#5A62B5" stroke-width="7" stroke-linecap="round">
+    <path d="M210 586 82 810H338Z"/>
+    <path d="M210 270 66 620M210 270l144 350"/>
+  </g>
+  <g id="antenna-mast-base">
+    <path d="M134 790h152l34 54H100Z" fill="#2D3A6B"/>
+    <path d="M100 844h220v22H100Z" fill="#1F2340"/>
+    <rect x="171" y="758" width="78" height="42" rx="12" fill="#4B519A"/>
+  </g>
+  <g id="antenna-mast-lattice">
+    <path d="M172 112h56l16 646h-88Z" fill="#1F2340"/>
+    <path d="M190 112h20l8 646h-36Z" fill="#5A62B5"/>
+    <g fill="none" stroke="#2D3A6B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M180 132 218 198l-38 66 38 66-38 66 38 66-38 66 38 66-38 66 38 66-38 66 38 66-38 66 38 66-38 66 38 66"/>
+      <path d="M220 132 182 198l38 66-38 66 38 66-38 66 38 66-38 66 38 66-38 66 38 66-38 66 38 66-38 66 38 66-38 66 38 66"/>
+    </g>
+  </g>
+  <g id="antenna-mast-head">
+    <rect x="170" y="94" width="80" height="52" rx="16" fill="#4B519A"/>
+    <rect x="185" y="76" width="50" height="32" rx="12" fill="#1F2340"/>
+    <path d="M210 70V42" stroke="#5A62B5" stroke-width="10" stroke-linecap="round"/>
+    <g id="antenna-mast-fishbone" fill="none" stroke-linecap="round">
+      <path d="M92 134H330" stroke="#5A62B5" stroke-width="13"/>
+      <path d="M210 134 118 64M210 134l-30-86M210 134l16-106M210 134l62-94M210 134l102-68M210 134l132-34" stroke="#3A3F7A" stroke-width="12"/>
+      <path d="M110 134 258 206M154 134l106 86M206 134l86 60M264 134l62 36" stroke="#2D3A6B" stroke-width="10"/>
+      <path d="M81 150h42M297 150h48" stroke="#1F2340" stroke-width="12"/>
+    </g>
+  </g>
+  <g id="ant-waves" fill="none" stroke="#3DDCFF" stroke-linecap="round">
+    <path d="M330 88c20 18 20 50 0 68" stroke-width="9"/>
+    <path d="M354 66c34 32 34 80 0 112" stroke-width="9"/>
+    <path d="M378 44c48 46 48 116 0 156" stroke-width="9"/>
+  </g>
+</svg>

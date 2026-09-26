@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 640">
+  <ellipse id="server-screen-shadow" cx="550" cy="592" rx="420" ry="20" fill="#14123C" fill-opacity=".18"/>
+  <g id="server-screen-shell">
+    <rect x="34" y="24" width="1032" height="584" rx="28" fill="#1F2340"/>
+    <path d="m982 24 84 24v560h-84Z" fill="#232E57"/>
+    <rect id="big-screen" x="50" y="40" width="1000" height="560" rx="14" fill="#16204A"/>
+    <path d="M78 68h944" stroke="#3DDCFF" stroke-width="5" stroke-linecap="round" stroke-opacity=".16"/>
+    <circle cx="550" cy="580" r="7" fill="#3DDCFF" fill-opacity=".5"/>
+  </g>
+  <g id="server-screen-mount">
+    <rect x="466" y="610" width="168" height="20" rx="10" fill="#2D3A6B"/>
+    <rect x="500" y="628" width="100" height="8" rx="4" fill="#1F2340"/>
+  </g>
+</svg>

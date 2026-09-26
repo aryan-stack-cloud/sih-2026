@@ -1,0 +1,59 @@
+[BrowserManager] Browser launched (HeadlessChrome/152.0.7977.30, screenshot, gl=--use-gl=angle --use-angle=swiftshader, headlessShell=true, platform=win32)
+[initSession:screenshot] page.goto start (0ms)
+[HyperFrames] render runtime fps [object Object]
+[initSession:screenshot] page.goto complete (902ms)
+[initSession:screenshot] GSAP proxy flush complete (921ms)
+[initSession:screenshot] pollHfReady complete (926ms)
+[initSession:screenshot] pollSubCompositionTimelines complete (ready) (935ms)
+[initSession:screenshot] applyVideoMetadataHints complete (935ms)
+[initSession:screenshot] media + fonts + tailwind ready (942ms)
+[initSession:screenshot] static-frame dedup: disabled (eligible) (1034ms)
+
+Animation map: 39/44 tweens (skipped 5 micro-tweens)
+  paced-slow: 6
+  paced-fast: 2
+  collision: 6
+  degenerate: 1
+  staggers: 5 elements stagger at 340ms intervals; 3 elements stagger at 500ms intervals
+Timeline (40.0s, each char ≈ 0.67s):
+  0s                                                    40s
+  ┼───────────────────────────────────────────────────────────┤
+  █████████████████████████████████████████████████             (onUpdate driver) p
+  ████████████████████████████████████████████████████████████  (onUpdate driver) p
+  ██                                                            #black opacity
+    ████                                                        text.plate opacity
+            █████                                               (onUpdate driver) p
+                ████████████████████                            (onUpdate driver) p
+                     ████                                       (onUpdate driver) p
+                         ██                                     #route opacity
+                             █                                  #route opacity
+                             ██                                 #roomInner clipPath
+                             ██                                 #splitLine attr
+                             ██                                 #splitL opacity+x
+                             ██                                 #splitR opacity+x
+                              █                                 #meanwhile opacity+scale
+                                   ██                           #route opacity
+                                      ██                        #route opacity
+                                       ███████████████████████  (onUpdate driver) p
+                                          ██                    #cMany opacity+x
+                                           █                    #vsWord opacity
+                                           ██                   #cLimited opacity+x
+                                                █               #cMany opacity
+                                                ██              #lbTop scaleY
+                                                 ██             #extInner opacity
+                                                  ██            #specHeader opacity+y
+                                                  ██            text.bandlbl opacity
+                                                  ██            #ch1 opacity+y
+                                                  █             #bandPulse opacity
+                                                   █            #ch2 opacity+y
+                                                   ██           #ch3 opacity+y
+                                                    █           #ch4 opacity+y
+                                                    █           #ap-box attr
+                                                    ██          #ch5 opacity+y
+                                                     █          #ch6 opacity+y
+                                                       ██       #ch1 opacity+y
+                                                       ██       #specLine opacity
+                                                       ██       #stmt1 opacity+y
+                                                        ██      #stmt2 opacity+y
+                                                         ██     #stmt3 opacity+y
+                                                          ██    #question opacity+x

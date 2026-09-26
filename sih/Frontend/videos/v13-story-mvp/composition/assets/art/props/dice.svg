@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <ellipse cx="200" cy="346" rx="126" ry="16" fill="rgba(20,18,60,0.18)"/>
+  <g id="dice-body" data-pivot="none" transform="rotate(-8 200 208)">
+    <rect x="68" y="78" width="264" height="264" rx="54" fill="#FDFCF8"/>
+    <path d="M262 78h16c30 0 54 24 54 54v156c0 30-24 54-54 54h-16c30-24 46-52 46-94V172c0-42-16-70-46-94Z" fill="#D8DEEA"/>
+    <path d="M68 132c0-30 24-54 54-54h140c-30 24-46 52-46 94v34H68Z" fill="#EFE3CF"/>
+    <rect x="122" y="132" width="156" height="156" rx="16" fill="#FDFCF8"/>
+    <g fill="#E0457B">
+      <circle cx="160" cy="170" r="12"/><circle cx="240" cy="170" r="12"/>
+      <circle cx="200" cy="210" r="12"/>
+      <circle cx="160" cy="250" r="12"/><circle cx="240" cy="250" r="12"/>
+    </g>
+  </g>
+</svg>

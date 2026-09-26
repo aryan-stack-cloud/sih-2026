@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480">
+  <ellipse cx="200" cy="430" rx="126" ry="12" fill="rgba(20,18,60,0.18)"/>
+  <g id="sw-button" data-pivot="none">
+    <rect x="170" y="36" width="60" height="54" rx="20" fill="#E0457B"/>
+    <rect x="156" y="76" width="88" height="32" rx="16" fill="#4B519A"/>
+  </g>
+  <circle cx="200" cy="238" r="166" fill="#2D3A6B"/>
+  <circle cx="200" cy="238" r="140" fill="#FDFCF8"/>
+  <circle cx="200" cy="238" r="118" fill="#EFE3CF"/>
+  <g fill="#3A86FF">
+    <rect x="194" y="132" width="12" height="24" rx="6"/>
+    <rect x="194" y="320" width="12" height="24" rx="6"/>
+    <rect x="106" y="232" width="24" height="12" rx="6"/>
+    <rect x="270" y="232" width="24" height="12" rx="6"/>
+    <rect x="133" y="171" width="12" height="20" rx="6" transform="rotate(-45 139 181)"/>
+    <rect x="255" y="289" width="12" height="20" rx="6" transform="rotate(-45 261 299)"/>
+  </g>
+  <g id="sw-hand" data-pivot="200 235">
+    <path d="M200 235 154 190" fill="none" stroke="#1F2340" stroke-width="13" stroke-linecap="round"/>
+    <path d="M200 235 256 174" fill="none" stroke="#2EC4B6" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <circle cx="200" cy="235" r="16" fill="#FFC43D"/>
+  <path d="m200 84 20 0-10 18Z" fill="#E0457B"/>
+</svg>

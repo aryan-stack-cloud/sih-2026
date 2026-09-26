@@ -1,0 +1,54 @@
+<div class="cam" id="s08-cam">
+  <img class="bgimg" src="assets/art/bg/desk-top.svg" alt="">
+  <div class="abs" id="s08-nb" style="left:540px;top:170px;width:940px;height:668px">
+    <img class="abs" src="assets/art/props/notebook.svg" alt="" style="left:0;top:0;width:940px;height:668px">
+  </div>
+  <div class="chip-col" style="left:792px;top:118px">1–2</div>
+  <div class="chip-col" style="left:943px;top:118px">5–6</div>
+  <div class="chip-col" style="left:1093px;top:118px">9–10</div>
+  <div class="chip-col" style="left:1244px;top:118px">13–14</div>
+  <div class="chip-row" style="left:300px;top:290px">Quiet</div>
+  <div class="chip-row" style="left:300px;top:409px">Busy</div>
+  <div class="chip-row" style="left:300px;top:528px">Overdue</div>
+  <div class="chip-row" style="left:300px;top:647px">Rhythm due</div>
+  <div class="cap" style="left:792px;top:62px;width:577px;text-align:center">Look at bands…</div>
+  <div class="cap" style="left:300px;top:230px;width:230px;text-align:center">When…</div>
+  <!-- marks, positioned at cell centres (screen coordinates) -->
+  <img class="abs mk" id="s08-m1" src="assets/art/icons/checkmark.svg" alt="" style="left:973px;top:407px">
+  <img class="abs mk" id="s08-m2" src="assets/art/icons/cross.svg" alt="" style="left:822px;top:407px">
+  <img class="abs mk" id="s08-m3" src="assets/art/icons/checkmark.svg" alt="" style="left:1123px;top:526px">
+  <img class="abs mk" id="s08-m4" src="assets/art/icons/cross.svg" alt="" style="left:1273px;top:407px">
+  <img class="abs mk" id="s08-m5" src="assets/art/icons/checkmark.svg" alt="" style="left:822px;top:645px">
+  <img class="abs mk" id="s08-m6" src="assets/art/icons/cross.svg" alt="" style="left:973px;top:645px">
+  <img class="abs mk" id="s08-m7" src="assets/art/icons/checkmark.svg" alt="" style="left:1273px;top:645px">
+  <img class="abs mk" id="s08-m8" src="assets/art/icons/cross.svg" alt="" style="left:1123px;top:288px">
+  <svg class="abs mk" id="s08-star" viewBox="0 0 100 100" style="left:1123px;top:288px"><polygon points="50,4 62,36 96,36 68,57 79,92 50,71 21,92 32,57 4,36 38,36" fill="#FFC43D" stroke="#F2B632" stroke-width="4" stroke-linejoin="round"/></svg>
+  <svg class="abs" id="s08-later" viewBox="0 0 520 300" style="left:1240px;top:190px;width:520px;height:300px;overflow:visible">
+    <path id="s08-arrow" d="M20 130 C120 20 300 20 390 120" fill="none" stroke="#FFC43D" stroke-width="16" stroke-linecap="round"/>
+    <polygon id="s08-ahead" points="362,110 420,160 426,92" fill="#FFC43D"/>
+  </svg>
+  <img class="abs" id="s08-coin" src="assets/art/props/coin.svg" alt="" style="left:1660px;top:300px;width:170px;height:170px">
+  <div class="tis-bubble" id="s08-bub" style="left:1420px;top:520px">Pays off later!</div>
+  <div class="tis-numcard" id="s08-num"><b>#4</b></div>
+</div>
+<div class="hud">
+  <div class="tis-name" id="s08-name"><div><b>Q-learning</b><small>A cheat sheet of what worked</small></div><i class="tis-chip learn">Learns from experience</i></div>
+</div>
+<style>
+  #s08 .chip-col, #s08 .chip-row { position: absolute; height: 46px; border-radius: 14px; background: #FDFCF8; box-shadow: 0 5px 0 rgba(20, 18, 60, 0.3); font: 800 28px/46px "Montserrat"; color: #1F2340; text-align: center; }
+  #s08 .chip-col { width: 122px; }
+  #s08 .chip-row { width: 230px; }
+  #s08 .colh { width: 125px; text-align: center; font: 800 32px/1 "Montserrat"; color: #1F2340; }
+  #s08 .colcap { text-align: center; font: 700 26px/1 "Montserrat"; color: #6B7090; text-transform: uppercase; letter-spacing: 2px; }
+  #s08 .rowh { width: 205px; font: 800 28px/1.05 "Montserrat"; color: #1F2340; }
+  #s08 .mk { width: 58px; height: 58px; display: block; }
+</style>
+<sfx src="whoosh_big" at="0.02" vol="0.45"></sfx>
+<sfx src="card_slide" at="1.1" vol="0.5"></sfx>
+<sfx src="marker" at="1.8" vol="0.35"></sfx>
+<sfx src="marker" at="2.5" vol="0.35"></sfx>
+<sfx src="marker" at="3.2" vol="0.35"></sfx>
+<sfx src="marker" at="3.9" vol="0.35"></sfx>
+<sfx src="whoosh" at="s08_2+2.45" vol="0.4"></sfx>
+<sfx src="coin_drop" at="s08_2+2.95" vol="0.45"></sfx>
+<sfx src="sparkle" at="s08_2+3.3" vol="0.4"></sfx>

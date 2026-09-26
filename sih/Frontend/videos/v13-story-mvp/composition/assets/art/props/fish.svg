@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 140">
+  <g id="fish-tail" data-pivot="70 70">
+    <path d="M83 70Q38 25 13 29q-5 21 13 41Q8 90 13 111q29 3 70-41Z" fill="#2EC4B6"/>
+    <path d="M68 70Q35 39 17 32q-2 16 8 30 19-2 43 8Z" fill="#3DDCFF"/>
+    <path d="M68 70q-25 17-43 38 20 0 54-31Z" fill="#1F9E89"/>
+  </g>
+  <g id="fish-body">
+    <path d="M68 69q31-46 96-44 53 1 88 45-32 46-88 46-66 0-96-47Z" fill="#2EC4B6"/>
+    <path d="M117 29q25-27 54-18l-10 22Z" fill="#1F9E89"/>
+    <path d="M125 110q14 22 34 20l20-22Z" fill="#1F9E89"/>
+    <path d="M163 30q51 4 89 40-25 35-77 43 24-32 20-74Z" fill="#1F9E89" opacity="0.8"/>
+    <path d="M77 78q29 36 87 36 52 0 80-35-53 15-105 9-39-5-62-10Z" fill="#3DDCFF"/>
+    <path d="M98 63q25 3 42-8l12 15 15-19 15 16 13-18 14 13-13 16-14-14-15 19-16-17-11 16q-20-12-42-10Z" fill="#FFC43D"/>
+    <circle cx="211" cy="56" r="17" fill="#FDFCF8"/>
+    <circle cx="216" cy="58" r="8" fill="#1F2340"/>
+    <circle cx="213" cy="54" r="3" fill="#FDFCF8"/>
+    <path d="M223 88q11 7 20-1-5 13-13 12-6-1-7-11Z" fill="#1F2340"/>
+    <circle cx="221" cy="79" r="3" fill="#1F9E89"/>
+  </g>
+</svg>

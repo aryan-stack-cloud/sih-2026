@@ -1,0 +1,1 @@
+It remembers which move worked in each situation, even moves that only pay off later.

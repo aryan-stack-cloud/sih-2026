@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <radialGradient id="yellow-bokeh" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#FFC43D" stop-opacity="0.86"/><stop offset="0.35" stop-color="#FFC43D" stop-opacity="0.24"/><stop offset="1" stop-color="#FFC43D" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="magenta-bokeh" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#E0457B" stop-opacity="0.74"/><stop offset="0.38" stop-color="#E0457B" stop-opacity="0.2"/><stop offset="1" stop-color="#E0457B" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="teal-bokeh" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#2EC4B6" stop-opacity="0.72"/><stop offset="0.38" stop-color="#2EC4B6" stop-opacity="0.18"/><stop offset="1" stop-color="#2EC4B6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g id="casino-hall-far">
+    <rect width="1920" height="1080" fill="#4A1F6B"/>
+    <g fill="#8E2C80">
+      <rect x="80" y="70" width="300" height="170" rx="30"/><rect x="410" y="70" width="300" height="170" rx="30"/><rect x="740" y="70" width="440" height="170" rx="30"/><rect x="1210" y="70" width="300" height="170" rx="30"/><rect x="1540" y="70" width="300" height="170" rx="30"/>
+      <rect x="0" y="660" width="1920" height="160" fill="#8E2C80" opacity="0.42"/>
+    </g>
+    <path fill="#2B2A6E" opacity="0.32" d="M0 0h1920v64H0ZM0 804h1920v40H0Z"/>
+    <rect y="820" width="1920" height="260" fill="#252456"/>
+    <g id="carpet-pattern" fill="#8E2C80" opacity="0.72">
+      <circle cx="100" cy="900" r="18"/><circle cx="300" cy="900" r="18"/><circle cx="500" cy="900" r="18"/><circle cx="700" cy="900" r="18"/><circle cx="900" cy="900" r="18"/><circle cx="1100" cy="900" r="18"/><circle cx="1300" cy="900" r="18"/><circle cx="1500" cy="900" r="18"/><circle cx="1700" cy="900" r="18"/><circle cx="1900" cy="900" r="18"/>
+      <path d="M0 946h1920v18H0ZM0 1022h1920v18H0Z"/>
+    </g>
+    <g fill="#2EC4B6" opacity="0.6"><path d="M170 846l42 34-42 34-42-34ZM570 846l42 34-42 34-42-34ZM970 846l42 34-42 34-42-34ZM1370 846l42 34-42 34-42-34ZM1770 846l42 34-42 34-42-34Z"/></g>
+  </g>
+  <g id="casino-hall-mid">
+    <g id="casino-lights">
+      <g id="casino-light-1"><circle cx="70" cy="120" r="54" fill="url(#yellow-bokeh)"/><circle cx="70" cy="120" r="13" fill="#FFC43D"/></g>
+      <g id="casino-light-2"><circle cx="180" cy="120" r="48" fill="url(#magenta-bokeh)"/><circle cx="180" cy="120" r="12" fill="#E0457B"/></g>
+      <g id="casino-light-3"><circle cx="290" cy="120" r="50" fill="url(#teal-bokeh)"/><circle cx="290" cy="120" r="12" fill="#2EC4B6"/></g>
+      <g id="casino-light-4"><circle cx="400" cy="120" r="48" fill="url(#yellow-bokeh)"/><circle cx="400" cy="120" r="12" fill="#FFC43D"/></g>
+      <g id="casino-light-5"><circle cx="510" cy="120" r="50" fill="url(#magenta-bokeh)"/><circle cx="510" cy="120" r="12" fill="#E0457B"/></g>
+      <g id="casino-light-6"><circle cx="620" cy="120" r="48" fill="url(#teal-bokeh)"/><circle cx="620" cy="120" r="12" fill="#2EC4B6"/></g>
+      <g id="casino-light-7"><circle cx="730" cy="120" r="50" fill="url(#yellow-bokeh)"/><circle cx="730" cy="120" r="12" fill="#FFC43D"/></g>
+      <g id="casino-light-8"><circle cx="840" cy="120" r="48" fill="url(#magenta-bokeh)"/><circle cx="840" cy="120" r="12" fill="#E0457B"/></g>
+      <g id="casino-light-9"><circle cx="950" cy="120" r="50" fill="url(#teal-bokeh)"/><circle cx="950" cy="120" r="12" fill="#2EC4B6"/></g>
+      <g id="casino-light-10"><circle cx="1060" cy="120" r="48" fill="url(#yellow-bokeh)"/><circle cx="1060" cy="120" r="12" fill="#FFC43D"/></g>
+      <g id="casino-light-11"><circle cx="1170" cy="120" r="50" fill="url(#magenta-bokeh)"/><circle cx="1170" cy="120" r="12" fill="#E0457B"/></g>
+      <g id="casino-light-12"><circle cx="1280" cy="120" r="48" fill="url(#teal-bokeh)"/><circle cx="1280" cy="120" r="12" fill="#2EC4B6"/></g>
+      <g id="casino-light-13"><circle cx="1390" cy="120" r="50" fill="url(#yellow-bokeh)"/><circle cx="1390" cy="120" r="12" fill="#FFC43D"/></g>
+      <g id="casino-light-14"><circle cx="1500" cy="120" r="48" fill="url(#magenta-bokeh)"/><circle cx="1500" cy="120" r="12" fill="#E0457B"/></g>
+      <g id="casino-light-15"><circle cx="1610" cy="120" r="50" fill="url(#teal-bokeh)"/><circle cx="1610" cy="120" r="12" fill="#2EC4B6"/></g>
+      <g id="casino-light-16"><circle cx="1720" cy="120" r="48" fill="url(#yellow-bokeh)"/><circle cx="1720" cy="120" r="12" fill="#FFC43D"/></g>
+      <g id="casino-light-17"><circle cx="1830" cy="120" r="50" fill="url(#magenta-bokeh)"/><circle cx="1830" cy="120" r="12" fill="#E0457B"/></g>
+      <g id="casino-light-18"><circle cx="70" cy="220" r="46" fill="url(#teal-bokeh)"/><circle cx="70" cy="220" r="11" fill="#2EC4B6"/></g>
+      <g id="casino-light-19"><circle cx="180" cy="220" r="44" fill="url(#yellow-bokeh)"/><circle cx="180" cy="220" r="11" fill="#FFC43D"/></g>
+      <g id="casino-light-20"><circle cx="1740" cy="220" r="44" fill="url(#yellow-bokeh)"/><circle cx="1740" cy="220" r="11" fill="#FFC43D"/></g>
+      <g id="casino-light-21"><circle cx="1850" cy="220" r="46" fill="url(#teal-bokeh)"/><circle cx="1850" cy="220" r="11" fill="#2EC4B6"/></g>
+      <g id="casino-light-22"><circle cx="80" cy="720" r="44" fill="url(#magenta-bokeh)"/><circle cx="80" cy="720" r="11" fill="#E0457B"/></g>
+      <g id="casino-light-23"><circle cx="1840" cy="720" r="44" fill="url(#magenta-bokeh)"/><circle cx="1840" cy="720" r="11" fill="#E0457B"/></g>
+    </g>
+    <path fill="#4A1F6B" d="M0 300h80v420H0ZM1840 300h80v420h-80Z"/>
+  </g>
+  <g id="casino-hall-near">
+    <path fill="#8C5A3C" opacity="0.48" d="M0 844h1920v18H0Z"/>
+    <g fill="#4A1F6B"><rect x="0" y="862" width="1920" height="42"/><rect x="0" y="1038" width="1920" height="42"/></g>
+    <g fill="#E0457B" opacity="0.7"><circle cx="0" cy="883" r="16"/><circle cx="400" cy="883" r="16"/><circle cx="800" cy="883" r="16"/><circle cx="1200" cy="883" r="16"/><circle cx="1600" cy="883" r="16"/><circle cx="1920" cy="883" r="16"/></g>
+  </g>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <radialGradient id="dawn-pink-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#F07B9B" stop-opacity="0.9"/>
+      <stop offset="0.62" stop-color="#F07B9B" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#F07B9B" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="dawn-orange-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#FF9F5A" stop-opacity="0.96"/>
+      <stop offset="0.58" stop-color="#FF9F5A" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#FF9F5A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#FFD58A" stop-opacity="0.9"/>
+      <stop offset="0.34" stop-color="#FFD58A" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#FFD58A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g id="sunrise-sky-far">
+    <rect width="1920" height="1080" fill="#5B5BA8"/>
+    <ellipse cx="990" cy="1040" rx="1280" ry="650" fill="url(#dawn-pink-glow)"/>
+    <ellipse cx="1450" cy="930" rx="1020" ry="470" fill="url(#dawn-orange-glow)"/>
+    <path fill="#F07B9B" opacity="0.42" d="M0 812c252-42 437 32 661 2 235-32 414 18 622-8 243-30 422-60 637-24v298H0Z"/>
+    <path fill="#FF9F5A" opacity="0.34" d="M0 920c268-48 481 18 718-16 245-36 420 14 638-20 205-32 379-18 564 10v186H0Z"/>
+  </g>
+  <g id="sunrise-sky-mid">
+    <g id="sunrise-sun">
+      <circle cx="1450" cy="760" r="320" fill="url(#sun-glow)"/>
+      <circle cx="1450" cy="760" r="118" fill="#FFD58A"/>
+    </g>
+    <g id="cloud-1" fill="#FDFCF8" opacity="0.78">
+      <rect x="110" y="292" width="330" height="66" rx="33"/><circle cx="205" cy="280" r="58"/><circle cx="302" cy="268" r="76"/><circle cx="380" cy="294" r="50"/>
+    </g>
+    <g id="cloud-2" fill="#FDFCF8" opacity="0.72">
+      <rect x="600" y="482" width="290" height="58" rx="29"/><circle cx="686" cy="468" r="52"/><circle cx="780" cy="460" r="66"/><circle cx="844" cy="482" r="44"/>
+    </g>
+    <g id="cloud-3" fill="#FDFCF8" opacity="0.8">
+      <rect x="1060" y="270" width="280" height="58" rx="29"/><circle cx="1140" cy="254" r="50"/><circle cx="1226" cy="246" r="68"/><circle cx="1292" cy="270" r="46"/>
+    </g>
+    <g id="cloud-4" fill="#FDFCF8" opacity="0.7">
+      <rect x="1480" y="510" width="330" height="62" rx="31"/><circle cx="1570" cy="494" r="54"/><circle cx="1652" cy="484" r="70"/><circle cx="1734" cy="504" r="48"/>
+    </g>
+  </g>
+  <g id="sunrise-sky-near">
+    <path fill="#4A1F6B" opacity="0.78" d="M0 908h126l38-76 54 76h116l40-130 76 130h124l30-64 52 64h100l48-154 78 154h120l44-90 68 90h124l54-176 86 176h132l40-82 66 82h124l52-142 78 142h140v172H0Z"/>
+    <path fill="#2B2A6E" d="M0 1000h168l44-58 62 58h146l48-82 72 82h138l54-118 86 118h150l40-68 62 68h146l60-142 86 142h148l46-82 66 82h146l52-112 78 112h126v80H0Z"/>
+    <g fill="#FFD58A" opacity="0.58">
+      <circle cx="130" cy="854" r="4"/><circle cx="274" cy="854" r="4"/><circle cx="398" cy="854" r="4"/><circle cx="536" cy="854" r="4"/><circle cx="682" cy="854" r="4"/><circle cx="830" cy="854" r="4"/><circle cx="1020" cy="854" r="4"/><circle cx="1166" cy="854" r="4"/><circle cx="1310" cy="854" r="4"/><circle cx="1470" cy="854" r="4"/><circle cx="1602" cy="854" r="4"/><circle cx="1750" cy="854" r="4"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,27 @@
+<div class="cam" id="s09-cam">
+  {{svg src=assets/art/bg/control-room.svg id=s09-bg class=bgimg}}
+  {{gen net id=s09-net scores=0.30,0.22,0.41,0.35,0.28,0.52,0.47,0.33,0.26,0.39,0.93,0.88,0.44,0.31,0.24,0.36 class=abs style="left:460px;top:110px;width:1000px;height:520px"}}
+  <div class="abs" id="s09-pick" style="left:1372px;top:436px;display:flex;align-items:center;gap:6px">
+    <svg viewBox="0 0 40 30" style="width:40px;height:30px;display:block"><polygon points="0,15 22,0 22,9 40,9 40,21 22,21 22,30" fill="#FFC43D"/></svg>
+    <b style="display:block;font:700 40px/1 Fredoka;color:#FFC43D">Pick!</b>
+  </div>
+  <div class="cap" id="s09-lbl-in" style="left:470px;top:640px;width:260px;text-align:center">16 bands in</div>
+  <div class="cap" id="s09-lbl-out" style="left:1130px;top:640px;width:320px;text-align:center">16 scores out</div>
+  <div class="abs" id="s09-nb" style="left:620px;top:470px;width:640px;height:438px">{{gen maze id=s09-map class=abs style="left:0;top:0;width:640px;height:438px"}}</div>
+  {{gen robot id=s09-rb class=abs style="left:1500px;top:520px;width:370px;height:407px"}}
+  <div class="tis-numcard" id="s09-num"><b>#3</b></div>
+</div>
+<div class="hud">
+  <div class="tis-name" id="s09-name"><div><b>DQN</b><small>A neural network scores every band</small></div><i class="tis-chip neural">Neural network</i></div>
+</div>
+<style>#s09-bg-side-monitor-right, #s09-bg-side-monitor-left { display: none; }  #s09-map-arrows g { fill: #2DB86B; }
+  #s09-map-glows rect { opacity: 0.32; }
+</style>
+<sfx src="whoosh_big" at="0.02" vol="0.45"></sfx>
+<sfx src="card_slide" at="1.2" vol="0.45"></sfx>
+<sfx src="whoosh" at="2.35" vol="0.5"></sfx>
+<sfx src="pop" at="2.55" vol="0.5"></sfx>
+<sfx src="robot_bleeps" at="2.8" vol="0.4"></sfx>
+<sfx src="riser" at="s09_2-0.6" vol="0.3"></sfx>
+<sfx src="ding" at="s09_2+0.85" vol="0.35"></sfx>
+<sfx src="robot_bleeps" at="s09_2+1.2" vol="0.3"></sfx>

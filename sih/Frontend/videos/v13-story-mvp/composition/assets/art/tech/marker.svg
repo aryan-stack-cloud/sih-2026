@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 90">
+  <g id="marker-body">
+    <path d="M46 21h202v48H46Z" fill="#1F2340"/>
+    <path d="M46 21h24v48H46Z" fill="#2D3A6B"/>
+    <path d="m248 29 30 16-30 16Z" fill="#5A62B5"/>
+    <path d="m278 45 20-8v16Z" fill="#1F2340"/>
+    <rect x="28" y="13" width="54" height="64" rx="12" fill="#1F9E89"/>
+    <rect x="28" y="13" width="20" height="64" rx="10" fill="#2EC4B6"/>
+    <rect x="72" y="31" width="142" height="8" rx="4" fill="#5A62B5"/>
+  </g>
+</svg>

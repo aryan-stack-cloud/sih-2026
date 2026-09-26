@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style type="text/css" data-vite-dev-id="C:/Users/This PC/Documents/codex and claude/sih/Frontend/src/styles.css">
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap");
+/*
+ * Design tokens for the demo dashboard.
+ *
+ * DIRECTION. The subject is an electronic-warfare receiver watching a spectrum it cannot hear
+ * all of at once. So the page borrows from the instrument that actually does this job - an SDR
+ * waterfall - rather than from generic dashboard furniture. Deep indigo ground, monospace
+ * readouts, and one hero: the spectrum itself with the receiver's aperture drawn on it.
+ *
+ * COLOR. The four cell states are a *status* palette, not a sequential ramp, so each gets one
+ * reserved hue and never doubles as anything else. The three data hues were snapped into the
+ * OKLCH dark band and checked with the dataviz validator against this exact surface: lightness
+ * band, chroma floor, CVD separation (worst adjacent 8.5 deutan), normal-vision floor (15.4) and
+ * 3:1 contrast all pass. They are never used alone - every state also carries a glyph and a
+ * written label in the legend.
+ */
+
+:root {
+  /* surfaces */
+  --ground: #0b1020;
+  --panel: #141b2e;
+  --panel-raised: #1b2440;
+  --rule: #263054;
+  --electric: #77a8ff;
+  --electric-soft: rgba(119, 168, 255, 0.18);
+
+  /* ink */
+  --ink: #e6eaf5;
+  --ink-muted: #8a93ad;
+  --ink-faint: #5c6580;
+
+  /* status - reserved, never reused as "series 4" */
+  --intercepted: #0f9e73;
+  --missed: #c87a18;
+  --false-alarm: #d8425f;
+
+  /* structural, deliberately recessive: effort spent, nothing found */
+  --listened: #3a445f;
+  --idle: #161d33;
+
+  /* diverging poles for change-vs-reference; same meaning as above */
+  --better: #0f9e73;
+  --worse: #d8425f;
+
+  /* PUSHPAK brand accent, EW Console direction (17 Sep design decision). Reserved for brand and
+     "confirmed real thing" moments only - the primary action, the team mark, a genuinely
+     noteworthy highlight - never for a data state. The status palette above already owns every
+     data meaning and stays untouched; this never competes with it inside the waterfall. */
+  --brand-gold: #e8b84b;
+  --brand-gold-ink: #241a05;
+
+  --font-display: "Archivo", "Segoe UI", system-ui, sans-serif;
+  --font-headline: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+
+  --radius: 4px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse 70% 38% at 72% -8%, rgba(32, 77, 153, 0.28), transparent 68%),
+    linear-gradient(180deg, #090f22 0%, var(--ground) 42rem);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* -- shell ------------------------------------------------------------------------------- */
+
+.shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 24px 64px;
+}
+
+.masthead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Nameplate: wide tracking and uppercase, the way an instrument is labelled. */
+.masthead h1 {
+  font-family: var(--font-headline);
+  margin: 0;
+  font-size: clamp(1.65rem, 3vw, 2.45rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.masthead .standfirst {
+  margin: 6px 0 0;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  max-width: 52ch;
+}
+
+.scope-note {
+  margin: 10px 0 0;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+/* -- brand mark --------------------------------------------------------------------------
+   Team mark. Simplified gold-wing mark in the PUSHPAK gold/navy language, drawn from the
+   ceremonial emblem's aircraft-wing motif. If the full emblem ever ships as a UI-sized file
+   asset, it takes this same slot at this same size. */
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--brand-gold);
+  color: var(--brand-gold-ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+
+img.brand-mark {
+  display: block;
+  background: transparent;
+  object-fit: contain;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* -- service status --------------------------------------------------------------------- */
+
+.services {
+  display: flex;
+  gap: 18px;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.service {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ink-muted);
+}
+
+.service .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+  box-shadow: 0 0 0 3px transparent;
+  transition: box-shadow 0.2s;
+}
+
+.service.up .dot {
+  background: var(--intercepted);
+  box-shadow: 0 0 0 3px rgba(15, 158, 115, 0.22);
+}
+
+.service.down .dot {
+  background: var(--false-alarm);
+  box-shadow: 0 0 0 3px rgba(216, 66, 95, 0.22);
+}
+
+.service.down {
+  color: var(--false-alarm);
+  font-weight: 600;
+}
+
+/* -- sections ---------------------------------------------------------------------------- */
+
+.section {
+  margin-top: 34px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 2px;
+}
+
+.section h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.section p.note {
+  margin: 6px 0 0;
+  color: var(--ink-muted);
+  font-size: 0.88rem;
+  max-width: 68ch;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+/* -- controls ----------------------------------------------------------------------------- */
+
+button {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--panel-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 7px 14px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--ink-faint);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--intercepted);
+  outline-offset: 2px;
+}
+
+button.primary {
+  background: var(--brand-gold);
+  border-color: var(--brand-gold);
+  color: var(--brand-gold-ink);
+  font-weight: 600;
+}
+
+select {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: var(--panel-raised);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 6px 8px;
+}
+
+label.field {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* A second controls row directly under the first - a policy checklist under a scenario/episode
+   row, say - reads as one continuous form rather than two unrelated ones. */
+.controls-secondary {
+  margin-top: 10px;
+}
+
+.controls-secondary .eyebrow {
+  margin: 0;
+}
+
+/* Wraps a <table class="data"> that can outgrow its panel - the scroll stays inside the panel
+   instead of pushing the page wide. Same idiom as .simulation-table-scroll, generalised. */
+.panel-scroll {
+  overflow-x: auto;
+}
+
+/* Text alternative for the waterfall SVG: a disclosure holding a per-band summary table,
+   so the spectrum data is reachable by keyboard and screen readers, not just by sight. */
+.waterfall-data {
+  margin-top: 12px;
+}
+
+.waterfall-data > summary {
+  cursor: pointer;
+  color: var(--ink-muted);
+  font-size: 0.88rem;
+  width: fit-content;
+}
+
+.waterfall-data > summary:focus-visible {
+  outline: 2px solid var(--intercepted);
+  outline-offset: 2px;
+}
+
+.waterfall-data table {
+  margin-top: 10px;
+}
+
+.waterfall-data caption {
+  text-align: left;
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+  padding-bottom: 8px;
+}
+
+.waterfall-data tbody th[scope="row"] {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
+/* Small progress readout directly under a .progress bar - a fraction plus what's in flight. */
+.progress-caption {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+}
+
+/* Native progress for the demo run: determinate while the head-to-head comparison reports
+   its own fraction, indeterminate while the spectrum builds and the scheduler runs. */
+.demo-status {
+  margin-top: 10px;
+}
+
+.demo-progress {
+  width: 100%;
+  height: 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--panel-raised);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.demo-progress::-webkit-progress-bar {
+  background: var(--panel-raised);
+}
+
+.demo-progress::-webkit-progress-value {
+  background: var(--intercepted);
+}
+
+.demo-progress::-moz-progress-bar {
+  background: var(--intercepted);
+}
+
+/* A resource's id trailing its own heading, de-emphasised so the human-readable name still reads
+   first - "B - Mostly Periodic  exp_6130a59b", not the reverse. */
+.heading-id {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--ink-faint);
+}
+
+/* -- legend ------------------------------------------------------------------------------- */
+
+.legend {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend-swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  flex: none;
+}
+
+/* -- stat tiles ---------------------------------------------------------------------------- */
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.tile {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+
+.tile .tile-label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.tile .tile-value {
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1.15;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.tile .tile-sub {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  margin-top: 3px;
+}
+
+/* -- tables --------------------------------------------------------------------------------- */
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+table.data th,
+table.data td {
+  text-align: right;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--rule);
+}
+
+table.data th:first-child,
+table.data td:first-child {
+  text-align: left;
+  color: var(--ink-muted);
+}
+
+table.data th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink-faint);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* -- lift chart detail strip ------------------------------------------------------------------
+   Lives outside the chart's SVG: the gloss text needs to read as a real sentence, which SVG
+   <text> cannot wrap on its own. Fixed min-height so hovering different rows doesn't reflow the
+   panels below it. */
+
+.lift-detail {
+  min-height: 20px;
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule);
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+
+.lift-detail strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.lift-detail-placeholder {
+  color: var(--ink-faint);
+}
+
+/* -- misc ------------------------------------------------------------------------------------ */
+
+.alert {
+  border: 1px solid var(--false-alarm);
+  background: rgba(216, 66, 95, 0.12);
+  color: var(--ink);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+  margin-top: 16px;
+}
+
+.empty {
+  color: var(--ink-faint);
+  font-size: 0.88rem;
+  padding: 20px 0;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.text-muted {
+  color: var(--ink-muted);
+}
+
+.text-faint {
+  color: var(--ink-faint);
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-top: 18px;
+  /* Six tabs don't fit a phone-width shell. Scrolling the strip itself keeps the overflow
+     contained here instead of forcing the whole page to scroll sideways. */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.tabs button {
+  flex: none;
+}
+
+.tabs button[aria-selected="true"] {
+  background: var(--panel-raised);
+  border-color: var(--ink-faint);
+  color: var(--ink);
+}
+
+/* The active view's panel is focusable so keyboard users can move into it; the ring
+   follows the same treatment as every other control. */
+.tabpanel:focus-visible {
+  outline: 2px solid var(--intercepted);
+  outline-offset: 2px;
+}
+
+/* The instant a hit lands on the newest row, it pulses once - a chase-light beat that makes a
+   live detection feel like an event, not a silent cell update. Disabled with every other
+   animation below for reduced-motion. */
+@keyframes hit-pulse {
+  0% { opacity: 0.55; }
+  30% { opacity: 1; }
+  100% { opacity: 0.94; }
+}
+
+.hit-fresh {
+  animation: hit-pulse 0.6s ease-out;
+}
+
+/* -- demo step tracker --------------------------------------------------------------------
+   Build spectrum -> Run scheduler -> Compare vs sweep. Replaces a bare status line with a
+   structure a judge can read at a glance without parsing prose. */
+
+.step-tracker {
+  display: flex;
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0 0 4px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.step-tracker li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.step-tracker li:not(:last-child)::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  min-width: 20px;
+  background: var(--rule);
+  margin: 0 10px;
+}
+
+.step-tracker .step-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+}
+
+.step-tracker li.done {
+  color: var(--ink-muted);
+}
+
+.step-tracker li.done .step-index {
+  background: var(--intercepted);
+  border-color: var(--intercepted);
+  color: var(--ground);
+}
+
+.step-tracker li.done:not(:last-child)::after {
+  background: var(--intercepted);
+  opacity: 0.5;
+}
+
+.step-tracker li.active {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.step-tracker li.active .step-index {
+  border-color: var(--brand-gold);
+  color: var(--brand-gold);
+}
+
+.step-tracker li.error {
+  color: var(--false-alarm);
+  font-weight: 600;
+}
+
+.step-tracker li.error .step-index {
+  border-color: var(--false-alarm);
+  color: var(--false-alarm);
+}
+
+/* -- results reveal -------------------------------------------------------------------------
+   Plays once, the instant the comparison lands, so the stat tiles and the head-to-head chart
+   read as one moment rather than the chart silently appearing underneath. */
+
+@keyframes results-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.results-reveal {
+  animation: results-reveal 0.4s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* -- experiments / models / health (claude pass) -- */
+
+/* Plain text/number inputs never got the treatment `select` already has above, so every episode
+   count and step count on these pages was rendering as an unstyled native box against the dark
+   ground. Scoped by type so it never touches the policy checkboxes. */
+input[type="text"],
+input[type="number"] {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: var(--panel-raised);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 6px 8px;
+}
+
+input:focus-visible {
+  outline: 2px solid var(--intercepted);
+  outline-offset: 2px;
+}
+
+/* Small state dot for a status word - generalises the masthead's .service .dot so a table row
+   or a tile can carry the same idiom. No modifier reads as neutral/in-progress; .good and .bad
+   reuse the existing status hues rather than adding new ones. */
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+}
+
+.status-dot.good {
+  background: var(--intercepted);
+}
+
+.status-dot.bad {
+  background: var(--false-alarm);
+}
+
+.status-readout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-readout-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Thin progress bar for an in-flight experiment run or training job - the same fraction the
+   page already prints as a percentage, just also legible without reading the number. */
+.progress {
+  height: 4px;
+  background: var(--panel-raised);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--intercepted);
+}
+
+/* Real gap between buttons packed into a table cell, replacing the `{" "}` text-node spacing
+   used for this elsewhere in the app. */
+.row-actions {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* -- simulations / live stream (codex pass) -- */
+
+.simulation-form {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.5fr) repeat(4, minmax(90px, 0.75fr)) auto;
+  align-items: end;
+}
+
+.simulation-form .field {
+  display: grid;
+  align-items: start;
+  gap: 6px;
+  min-width: 0;
+}
+
+.simulation-form .field > span {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.simulation-form input {
+  width: 100%;
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: var(--panel-raised);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 6px 8px;
+}
+
+.simulation-form input:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.simulation-form button {
+  min-height: 34px;
+  white-space: nowrap;
+}
+
+.section p.note.simulation-scenario-note {
+  margin-top: 16px;
+  padding-top: 14px;
+  max-width: none;
+  border-top: 1px solid var(--rule);
+}
+
+.simulation-scenario-note strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.simulation-count {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+}
+
+.simulation-table-panel {
+  padding: 0;
+}
+
+.simulation-table-scroll {
+  overflow-x: auto;
+}
+
+table.data.simulation-table {
+  min-width: 1080px;
+}
+
+.simulation-table th,
+.simulation-table td {
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+
+.simulation-table tbody tr:hover {
+  background: var(--panel-raised);
+}
+
+.simulation-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.simulation-table .simulation-name {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-align: left;
+}
+
+.simulation-table th:last-child,
+.simulation-table td:last-child {
+  text-align: left;
+}
+
+.simulation-table .empty {
+  text-align: center;
+}
+
+.simulation-id {
+  display: block;
+  max-width: 120px;
+  overflow: hidden;
+  color: var(--ink-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.simulation-row-actions {
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+
+.simulation-row-actions button {
+  padding: 5px 8px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.simulation-workspace .panel.empty {
+  padding: 24px;
+}
+
+.live-empty-state {
+  display: grid;
+  gap: 4px;
+}
+
+.live-empty-state strong {
+  color: var(--ink);
+}
+
+.live-simulation-id {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.tile .tile-value.live-event-name {
+  font-size: 1rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.live-stream-readout {
+  max-width: 100%;
+  max-height: 32rem;
+  min-height: 12rem;
+  margin: 0;
+  overflow: auto;
+  background: var(--ground);
+  color: var(--ink);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.simulation-workspace .legend code {
+  color: var(--ink);
+  font-family: var(--font-mono);
+}
+
+.live-swatch-hit {
+  background: var(--intercepted);
+}
+
+.live-swatch-missed {
+  background: var(--missed);
+}
+
+.live-swatch-listened {
+  background: var(--listened);
+}
+
+.live-swatch-idle {
+  background: var(--idle);
+  border: 1px solid var(--rule);
+}
+
+.live-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.live-detail-grid .section {
+  min-width: 0;
+}
+
+.live-key-value td {
+  overflow-wrap: anywhere;
+}
+
+.live-key-value tr:last-child th,
+.live-key-value tr:last-child td {
+  border-bottom: 0;
+}
+
+.live-json {
+  max-height: 30rem;
+  min-height: 16rem;
+}
+
+@media (max-width: 940px) {
+  .simulation-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .simulation-form button {
+    grid-column: 1 / -1;
+  }
+
+  .live-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .simulation-form {
+    grid-template-columns: 1fr;
+  }
+
+  .simulation-form button {
+    grid-column: auto;
+  }
+}
+
+/* Mission Briefing Instrument ---------------------------------------------------------------
+   The dashboard opens as a story about a narrow receiver aperture, then moves into controls
+   and telemetry. It is intentionally distinct from the supporting engineer-facing tabs. */
+
+.top-rule {
+  height: 3px;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr 0.5fr;
+  gap: 4px;
+  margin: -28px 0 26px;
+}
+
+.top-rule span { background: var(--rule); }
+.top-rule span:nth-child(2) { background: var(--brand-gold); }
+.top-rule span:nth-child(3) { background: var(--intercepted); }
+
+.masthead { padding-bottom: 22px; }
+.masthead-copy { max-width: 680px; }
+.title-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+.classification {
+  border: 1px solid rgba(119, 168, 255, 0.36);
+  border-radius: 999px;
+  color: var(--electric);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  padding: 4px 8px;
+  text-transform: uppercase;
+}
+
+.masthead-status {
+  background: rgba(16, 26, 49, 0.62);
+  border: 1px solid var(--rule);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.03);
+  padding: 13px 16px;
+}
+
+.status-kicker {
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 7px;
+  text-transform: uppercase;
+}
+
+.navigation-wrap {
+  align-items: center;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.navigation-label {
+  color: var(--ink-faint);
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.navigation-wrap .tabs { margin-top: 0; }
+.navigation-wrap .tabs button { border-bottom: 0; border-radius: 4px 4px 0 0; }
+.navigation-wrap .tabs button[aria-selected="true"] { border-color: var(--electric); }
+
+.mission-hero {
+  align-items: stretch;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1.1fr 0.9fr;
+  margin-top: 42px;
+  padding-bottom: 8px;
+}
+
+.mission-copy {
+  border-left: 2px solid var(--brand-gold);
+  padding: 4px 0 6px 20px;
+}
+
+.mission-number {
+  color: var(--electric);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  margin: 9px 0 12px;
+  text-transform: uppercase;
+}
+
+.mission-copy h2 {
+  font-family: var(--font-headline);
+  font-size: clamp(2rem, 3.8vw, 3.6rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 0.86;
+  text-transform: uppercase;
+  margin: 0;
+  max-width: 12ch;
+}
+
+.mission-copy h2 em { color: var(--brand-gold); font-style: normal; }
+
+.mission-lede {
+  color: var(--ink-muted);
+  font-size: 1rem;
+  line-height: 1.65;
+  margin: 17px 0 0;
+  max-width: 55ch;
+}
+
+.mission-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.mission-badges span {
+  background: rgba(23, 37, 69, 0.78);
+  border: 1px solid var(--rule);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 8px 10px;
+}
+.mission-badges b { color: var(--ink); font-weight: 600; }
+
+.aperture-card {
+  background:
+    linear-gradient(135deg, rgba(32, 77, 153, 0.22), transparent 58%),
+    rgba(16, 26, 49, 0.8);
+  border: 1px solid var(--rule);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255,255,255,0.035);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 286px;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.aperture-card::after {
+  background: repeating-linear-gradient(90deg, transparent 0, transparent 22px, rgba(119, 168, 255, 0.045) 23px);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.aperture-card-top, .aperture-caption { position: relative; z-index: 1; }
+.aperture-card-top { display: flex; justify-content: space-between; text-transform: uppercase; }
+.aperture-card-top span { color: var(--ink-muted); font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; }
+.aperture-card-top strong { color: var(--brand-gold); font-family: var(--font-mono); font-size: 0.78rem; }
+
+.aperture-ruler {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  margin: 38px 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.aperture-ruler span { align-items: center; display: grid; gap: 7px; justify-items: center; }
+.aperture-ruler i { background: #253759; display: block; height: 56px; transition: background 0.25s, box-shadow 0.25s; width: 100%; }
+.aperture-ruler small { color: var(--ink-faint); font-family: var(--font-mono); font-size: 0.55rem; }
+.aperture-ruler .is-observed i { background: var(--brand-gold); box-shadow: 0 0 20px rgba(232, 184, 75, 0.55); }
+.aperture-ruler .is-observed small { color: var(--brand-gold); }
+
+.aperture-caption { align-items: center; color: var(--ink-muted); display: flex; font-size: 0.78rem; gap: 8px; }
+.aperture-pulse { background: var(--intercepted); border-radius: 50%; box-shadow: 0 0 0 5px rgba(15, 158, 115, 0.15); height: 7px; width: 7px; }
+
+.receiver-stage { margin-top: 30px; }
+.receiver-stage .section-head { align-items: end; }
+.strategy-spotlight {
+  background: var(--panel);
+  border-left: 2px solid var(--electric);
+  max-width: 278px;
+  padding: 11px 14px;
+}
+.strategy-spotlight span { color: var(--electric); display: block; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.strategy-spotlight strong { display: block; font-size: 0.86rem; margin-top: 3px; }
+.strategy-spotlight p { color: var(--ink-muted); font-size: 0.72rem; line-height: 1.4; margin: 4px 0 0; }
+.mission-controls {
+  background: linear-gradient(90deg, rgba(23, 37, 69, 0.95), rgba(16, 26, 49, 0.72));
+  border: 1px solid var(--rule);
+  box-shadow: inset 3px 0 var(--brand-gold);
+  padding: 12px 14px;
+}
+.button-mark { font-size: 0.7rem; margin-right: 5px; }
+.spectrum-panel {
+  background: linear-gradient(180deg, rgba(20, 27, 46, 0.95), rgba(11, 16, 32, 0.92));
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.22);
+  padding: 18px;
+}
+
+.receiver-stage + .section .tiles .tile {
+  background: linear-gradient(145deg, var(--panel), rgba(20, 27, 46, 0.65));
+  border-top: 2px solid var(--electric);
+  min-height: 132px;
+}
+
+.receiver-stage + .section .tiles .tile:nth-child(2) { border-top-color: var(--false-alarm); }
+.receiver-stage + .section .tiles .tile:nth-child(3) { border-top-color: var(--brand-gold); }
+.receiver-stage + .section .tiles .tile:nth-child(4) { border-top-color: var(--intercepted); }
+
+@media (max-width: 760px) {
+  .top-rule { margin-top: -28px; }
+  .navigation-wrap { align-items: flex-start; flex-direction: column; gap: 8px; padding-bottom: 0; }
+  .mission-hero { grid-template-columns: 1fr; }
+  .aperture-card { min-height: 220px; }
+  .mission-copy h2 { font-size: 2.35rem; }
+}
+
+@media (max-width: 560px) {
+  .shell { padding-left: 16px; padding-right: 16px; }
+  .aperture-card { padding: 16px; }
+  .aperture-ruler { gap: 2px; margin-top: 26px; }
+  .aperture-ruler i { height: 42px; }
+  .aperture-ruler small { display: none; }
+  .strategy-spotlight { max-width: none; width: 100%; }
+}
+</style>
+<script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$RefreshSig$ = () => (type) => type;</script>
+<script type="module" src="/@vite/client"></script>
+</head>
+<body>
+
+    <div id="root"><div class="shell"><div class="top-rule" aria-hidden="true"><span></span><span></span><span></span></div><header class="masthead"><div class="masthead-copy"><div class="brand-row"><img class="brand-mark" src="http://localhost:5173/favicon.svg" alt="" aria-hidden="true" width="20" height="20"><span class="brand-name">Team Pushpak</span></div><div class="title-row"><h1>Spectrum Scan Scheduler</h1><span class="classification">Research prototype</span></div><p class="standfirst">A receiver that can hear two bands at a time, deciding where to listen next — and learning to do it better than a fixed sweep.</p><p class="scope-note">Simulation only · no RF hardware · no interception · no jamming</p></div><div class="masthead-status"><div class="status-kicker">System status</div><div class="services"><span class="service up"><span class="dot"></span>Backend</span><span class="service up"><span class="dot"></span>Scheduler</span><span class="service up"><span class="dot"></span>Periodicity</span></div></div></header><div class="navigation-wrap"><span class="navigation-label">Mission views</span><div class="tabs" role="tablist" aria-label="Views"><button role="tab" id="tab-demo" aria-selected="true" aria-controls="panel-demo" tabindex="0">Dashboard</button><button role="tab" id="tab-simulations" aria-selected="false" aria-controls="panel-simulations" tabindex="-1">Simulations</button><button role="tab" id="tab-live" aria-selected="false" aria-controls="panel-live" tabindex="-1">Raw stream</button><button role="tab" id="tab-experiments" aria-selected="false" aria-controls="panel-experiments" tabindex="-1">Experiments</button><button role="tab" id="tab-models" aria-selected="false" aria-controls="panel-models" tabindex="-1">Models</button><button role="tab" id="tab-health" aria-selected="false" aria-controls="panel-health" tabindex="-1">Health</button></div></div><div role="tabpanel" id="panel-demo" aria-labelledby="tab-demo" tabindex="0" class="tabpanel"><section class="mission-hero"><div class="mission-copy"><p class="eyebrow">Live receiver intelligence</p><p class="mission-number">01 / Observe · Decide · Adapt</p><h2>The spectrum is wide.<br><em>Your receiver is not.</em></h2><p class="mission-lede">The scheduler makes every listening window count by selecting the next frequency band from information learned in previous scans.</p><div class="mission-badges"><span><b>K = 2</b> bands heard at once</span><span><b>16</b> bands under surveillance</span></div></div><div class="aperture-card" aria-label="Receiver aperture observing bands 8 and 9 of 16"><div class="aperture-card-top"><span>Receiver aperture</span><strong>K = 2</strong></div><div class="aperture-ruler" aria-hidden="true" style="grid-template-columns: repeat(16, minmax(0px, 1fr));"><span><i></i><small>01</small></span><span><i></i><small>02</small></span><span><i></i><small>03</small></span><span><i></i><small>04</small></span><span><i></i><small>05</small></span><span><i></i><small>06</small></span><span><i></i><small>07</small></span><span class="is-observed"><i></i><small>08</small></span><span class="is-observed"><i></i><small>09</small></span><span><i></i><small>10</small></span><span><i></i><small>11</small></span><span><i></i><small>12</small></span><span><i></i><small>13</small></span><span><i></i><small>14</small></span><span><i></i><small>15</small></span><span><i></i><small>16</small></span></div><div class="aperture-caption"><span class="aperture-pulse"></span>Observing the highlighted bands now</div></div></section><section class="section receiver-stage"><div class="section-head"><div><p class="eyebrow">Configure mission</p><h2>What the receiver is hearing</h2><p class="note">Frequency runs across, time runs down, newest at the top. The bracket is the receiver’s aperture — the only bands it can hear at this instant. Everything amber is a transmission going past uncaught.</p></div><div class="strategy-spotlight"><span>Designed scheduler</span><strong>Index scheduler</strong><p>Ranks bands by revisit pressure, occupancy belief and threat value.</p></div><div class="controls mission-controls"><label class="field">Scenario<select><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></label><label class="field">Compare against<select><option value="random">Random</option><option value="bandit">Bandit</option><option value="q_learning">Q-learning</option><option value="dqn">DQN</option><option value="ppo">PPO</option><option value="index">Index (SCT)</option><option value="ctmc">CTMC floor</option></select></label><label class="field">Speed<select><option value="200">0.5×</option><option value="100">1×</option><option value="50">2×</option><option value="25">4×</option><option value="0">Max</option></select></label><button class="primary"><span class="button-mark">▶</span> Run live comparison</button></div></div><p class="note mono" style="margin-top: -6px; margin-bottom: 12px;">Scenario B · B - Mostly Periodic — The headline scenario. Round-robin systematically polls periodic bands in their OFF phase; periodicity features should cut detection latency (PRD DoD item 8).</p><div class="panel spectrum-panel"><p class="empty">Waiting for the receiver. Start a run to watch the spectrum.</p></div></section><section class="section"><p class="eyebrow">This run</p><p class="note" style="margin-bottom: 12px;">One run of Index (SCT). High-priority detection is shown with counts in the comparison below; a one-episode result is illustrative, not a stable estimate.</p><div class="tiles"><div class="tile"><div class="tile-label">Spectrum heard</div><div class="tile-value">—</div><div class="tile-sub">of all transmitting band-moments</div></div><div class="tile"><div class="tile-label">False alarms</div><div class="tile-value">—</div><div class="tile-sub">heard something that was not there</div></div><div class="tile"><div class="tile-label">Listening efficiency</div><div class="tile-value">—</div><div class="tile-sub">time spent on a live band</div></div><div class="tile"><div class="tile-label">Interceptions</div><div class="tile-value">—</div><div class="tile-sub">transmissions caught so far</div></div></div></section><section class="section"><div class="section-head"><div><p class="eyebrow">Head to head</p><h2>Index (SCT) vs the fixed sweep</h2><p class="note">Both run the same scenario on the same seeds, so the spectrum is identical and the only difference is where each chose to listen.</p></div></div><p class="empty">Press <strong>Run the demo</strong> to race Index (SCT) against the fixed sweep.</p></section></div></div></div>
+    <script type="module" src="/src/main.tsx?t=1790367096657"></script>
+  
+
+
+</body>
+</html>

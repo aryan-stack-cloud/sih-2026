@@ -1,0 +1,2 @@
+PUSHPAK — Learning where to listen.
+A live, simulation-only receiver races a machine-learned scan scheduler against a fixed sweep — which goes fully blind (0.000 detection) in a synchronization trap the learned policies escape. Built for SIH26055.

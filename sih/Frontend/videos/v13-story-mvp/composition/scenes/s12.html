@@ -1,0 +1,73 @@
+<div class="cam" id="s12-cam">
+  <div class="abs" style="left:0;top:0;width:1920px;height:1080px;background:radial-gradient(ellipse at 50% 45%,#3D3C8F 0%,#2B2A6E 45%,#1D1B4F 88%)"></div>
+  <img class="bgimg" src="assets/art/bg/night-sky.svg" alt="" style="opacity:0.35">
+  <!-- C: busy night waffles (Scenario B) -->
+  <div class="shot" id="s12-C">
+    <div class="abs wf-head" style="left:290px;top:236px;width:460px"><i class="tis-chip" style="background:#C9CCEA">Old fixed sweep</i></div>
+    <div class="abs wf-head" style="left:1170px;top:236px;width:460px"><i class="tis-chip learn">Index</i></div>
+    {{gen waffle id=s12-w1 class=abs style="left:304px;top:310px;width:432px;height:432px"}}
+    {{gen waffle id=s12-w2 class=abs style="left:1184px;top:310px;width:432px;height:432px"}}
+    <div class="abs wf-num" style="left:290px;top:764px;width:460px"><b id="s12-n1">0</b><span>of 100 caught</span></div>
+    <div class="abs wf-num" style="left:1170px;top:764px;width:460px"><b id="s12-n2">0</b><span>of 100 caught</span></div>
+    <div class="abs" id="s12-plus" style="left:770px;top:410px;width:380px;text-align:center"><b style="display:block;font:700 150px/1 Fredoka;color:#FFC43D;text-shadow:0 10px 0 rgba(20,18,60,0.5)">+22%</b><span class="cap" id="s12-reach" style="position:static;display:block;margin-top:34px">same reach: 97%</span></div>
+    <div class="abs cap" id="s12-sig" style="left:360px;top:176px;width:1200px;text-align:center;white-space:nowrap">Every square = a moment a signal was on</div>
+  </div>
+  <!-- T: Turing data scoreboard, all seven methods scored on the same 50 unseen recordings -->
+  <div class="shot" id="s12-T">
+    <div class="card" id="s12-board" style="left:160px;top:235px;width:1600px;height:610px">
+      <div class="abs bt" style="left:40px;top:30px">Signal moments caught, per 100</div>
+      <div class="abs rh" id="s12-rh" style="left:1260px;top:40px;width:270px">Emitters reached</div>
+      <div class="row" id="s12-r1" style="top:130px"><b>Old fixed sweep</b><span class="trk"><i class="base" id="s12-bar1"></i></span><em id="s12-val1">0</em><strong class="none"></strong><u id="s12-rch1">93%</u></div>
+      <div class="row" id="s12-r2" style="top:220px"><b>Bandit</b><span class="trk"><i id="s12-bar2"></i></span><em id="s12-val2">0</em><strong id="s12-gain2">+147%</strong><u class="bad" id="s12-rch2">72%</u></div>
+      <div class="row" id="s12-r3" style="top:310px"><b>Q-learning</b><span class="trk"><i id="s12-bar3"></i></span><em id="s12-val3">0</em><strong id="s12-gain3">+120%</strong><u class="bad" id="s12-rch3">60%</u></div>
+      <div class="row" id="s12-r4" style="top:400px"><b>DQN</b><span class="trk"><i id="s12-bar4"></i></span><em id="s12-val4">0</em><strong id="s12-gain4">+146%</strong><u class="bad" id="s12-rch4">72%</u></div>
+      <div class="row" id="s12-r5" style="top:490px"><b>PPO</b><span class="trk"><i id="s12-bar5"></i></span><em id="s12-val5">0</em><strong id="s12-gain5">+172%</strong><u class="bad" id="s12-rch5">58%</u></div>
+      <i class="spk" id="s12-spk2" style="left:1244px;top:202px"></i><i class="spk" id="s12-spk3" style="left:1244px;top:292px"></i><i class="spk" id="s12-spk4" style="left:1244px;top:382px"></i><i class="spk" id="s12-spk5" style="left:1244px;top:472px"></i>
+      <div class="abs twox" id="s12-2x" data-layout-allow-overflow style="left:774px;top:112px;height:468px"><span>2× old sweep</span></div>
+    </div>
+  </div>
+  <div class="tis-statement" id="s12-st"><p>So... did it work?</p></div>
+</div>
+<div class="hud">
+  <div class="tis-tag" id="s12-tag2">{{icon chart}}<div><span class="lbl">Busy night:</span><span class="val">Scenario B, unseen runs</span></div></div>
+  <div class="tis-tag" id="s12-tag5">{{icon database}}<div><span class="lbl">Turing data:</span><span class="val">50 unseen recordings</span></div></div>
+  <div class="tis-source" id="s12-src2"><b>SOURCE:</b> project results, 6 unseen runs of 2,000 steps</div>
+  <div class="tis-source" id="s12-src5"><b>SOURCE:</b> project model registry, Turing replay (scan mode), same 50 recordings</div>
+</div>
+<style>
+  #s12 .wf-head { display: flex; justify-content: center; }
+  #s12 .wf-num { display: flex; align-items: baseline; justify-content: center; gap: 16px; }
+  #s12 .wf-num b { font: 700 120px/1 "Fredoka"; color: #FDFCF8; }
+  #s12 .wf-num span { font: 800 34px/1 "Montserrat"; color: #FDFCF8; text-transform: uppercase; letter-spacing: 2px; }
+  #s12 .bt { font: 700 46px/1 "Fredoka"; color: #1F2340; }
+  #s12 .rh { font: 800 22px/1.1 "Montserrat"; letter-spacing: 2px; color: #6B7090; text-transform: uppercase; text-align: center; }
+  #s12 .row { position: absolute; left: 40px; right: 40px; height: 70px; display: flex; align-items: center; }
+  #s12 .row b { display: block; width: 250px; font: 800 34px/1 "Montserrat"; color: #1F2340; }
+  #s12 .row .trk { position: relative; display: block; width: 700px; height: 44px; margin-left: 10px; border-radius: 22px; background: #E3E6F0; overflow: hidden; }
+  #s12 .row .trk i { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; display: block; border-radius: 22px; background: #2DB86B; }
+  #s12 .row .trk i.base { background: #6B7090; }
+  #s12 .row em { display: block; width: 80px; font: 700 44px/1 "Fredoka"; font-style: normal; color: #1F2340; text-align: right; }
+  #s12 .row strong { display: block; width: 160px; margin-left: 20px; height: 56px; border-radius: 28px; background: #1E8A4F; font: 700 38px/56px "Fredoka"; color: #FDFCF8; text-align: center; }
+  #s12 .row strong.none { background: transparent; }
+  #s12 .row u { display: block; width: 190px; margin-left: 40px; font: 700 44px/1 "Fredoka"; text-decoration: none; color: #1F2340; text-align: center; }
+  #s12 .row u.bad { color: #E63946; }
+  #s12 .spk { position: absolute; display: block; width: 36px; height: 36px; background: #FFE066; clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); }
+  #s12 .twox { width: 0; border-left: 5px dashed #1F2340; }
+  #s12 .twox span { position: absolute; left: -110px; top: -32px; width: 220px; text-align: center; font: 800 22px/1 "Montserrat"; letter-spacing: 1px; color: #1F2340; text-transform: uppercase; white-space: nowrap; }
+</style>
+<sfx src="riser" at="0.0" vol="0.3"></sfx>
+<sfx src="whoosh_big" at="s12_2-0.15" vol="0.45"></sfx>
+<sfx src="pop_soft" at="s12_2+0.45" vol="0.4"></sfx>
+<sfx src="pop_soft" at="s12_2+1.05" vol="0.4"></sfx>
+<sfx src="stamp" at="s12_2+1.95" vol="0.45"></sfx>
+<sfx src="ding" at="s12_2+2.05" vol="0.35"></sfx>
+<sfx src="success" at="s12_2+2.95" vol="0.3"></sfx>
+<sfx src="whoosh_big" at="s12_3-0.15" vol="0.45"></sfx>
+<sfx src="sweep_tick" at="s12_3+0.35" vol="0.35"></sfx>
+<sfx src="card_slide" at="s12_3+1.0" vol="0.4"></sfx>
+<sfx src="chips" at="s12_3+1.3" vol="0.35"></sfx>
+<sfx src="pop" at="s12_3+2.1" vol="0.4"></sfx>
+<sfx src="pop" at="s12_3+2.5" vol="0.4"></sfx>
+<sfx src="ding" at="s12_3+2.8" vol="0.35"></sfx>
+<sfx src="whoosh" at="s12_4-0.05" vol="0.4"></sfx>
+<sfx src="fail" at="s12_4+0.85" vol="0.3"></sfx>

@@ -1,0 +1,1 @@
+They practice on two kinds of data: signal worlds from our own simulator, and the Alan Turing Institute's synthetic radar dataset.

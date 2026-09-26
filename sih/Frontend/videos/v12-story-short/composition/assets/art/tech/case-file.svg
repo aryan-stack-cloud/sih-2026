@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 720">
+  <ellipse id="case-file-shadow" cx="500" cy="650" rx="410" ry="26" fill="#14123C" fill-opacity=".18"/>
+  <g id="case-file-base">
+    <path d="M108 188 180 108h646l102 84-42 442H150Z" fill="#D9C7AA"/>
+    <path d="M812 108h114l-42 526h-70Z" fill="#EFE3CF"/>
+    <path d="M108 188h774l-10 54H116Z" fill="#EFE3CF"/>
+    <path d="M116 242h744l-8 386H150Z" fill="#D9C7AA"/>
+  </g>
+  <g id="case-file-inside">
+    <path d="M168 230h680v324H168Z" fill="#6B7090" fill-opacity=".28"/>
+    <path d="M190 206h640v344H190Z" fill="#FDFCF8"/>
+    <path d="M830 206h40l16 344h-40Z" fill="#D8DEEA"/>
+    <rect id="folder-paper" x="210" y="226" width="588" height="304" rx="8" fill="#FDFCF8"/>
+    <g id="case-file-lines" fill="#6B7090" fill-opacity=".22">
+      <rect x="256" y="278" width="350" height="9" rx="4.5"/><rect x="256" y="318" width="476" height="9" rx="4.5"/><rect x="256" y="358" width="420" height="9" rx="4.5"/><rect x="256" y="398" width="454" height="9" rx="4.5"/><rect x="256" y="438" width="364" height="9" rx="4.5"/>
+    </g>
+    <g id="case-file-clip" fill="none" stroke="#5A62B5" stroke-width="9" stroke-linecap="round">
+      <path d="M722 188v70c0 27 20 48 46 48s46-21 46-48v-82c0-20-16-36-36-36s-36 16-36 36v76c0 11 9 20 20 20s20-9 20-20v-62"/>
+    </g>
+  </g>
+  <g id="folder-flap" data-pivot="500 200">
+    <path d="M108 188 194 112h612l106 88-116 80H222Z" fill="#EFE3CF"/>
+    <path d="m806 112 106 88-116 80h-82l96-80Z" fill="#D9C7AA"/>
+    <path d="M700 192h92v118h-92Z" fill="#E63946"/>
+    <path d="M780 192h12v118h-12Z" fill="#8E2C80"/>
+  </g>
+</svg>

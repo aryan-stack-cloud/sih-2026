@@ -1,0 +1,324 @@
+<template>
+<style>
+  /* v14 local-font declarations: Windows-bundled faces that render in headless Chrome */
+  @font-face { font-family: 'Arial'; src: local('Arial'); }
+  @font-face { font-family: 'Arial Narrow'; src: local('Arial Narrow'); }
+  @font-face { font-family: 'Consolas'; src: local('Consolas'); }
+#root {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  container-type: size;
+  background: #101A31;
+  color: #E6EAF5;
+  font-family: sans-serif;
+}
+#root .bg {
+  position: absolute;
+  inset: 0;
+}
+#root .bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#root .bg .scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 26, 49, 0.45);
+}
+#root .content {
+  position: absolute;
+  inset: 0;
+  padding: 80px 80px 0 80px;
+}
+#root .kicker {
+  font-family: monospace;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #E6EAF5;
+}
+#root .kicker .spike {
+  color: #E8B84B;
+}
+#root .headline {
+  font-family: serif;
+  font-size: 4.4cqw;
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.012em;
+  margin: 24px 0 0 0;
+  max-width: 1060px;
+}
+#root .headline .word {
+  display: inline-block;
+  will-change: transform;
+}
+#root .ruler {
+  display: flex;
+  gap: 12px;
+  width: 960px;
+  margin: 48px auto 0 auto;
+}
+#root .slot {
+  flex: 1;
+  height: 64px;
+  border-radius: 6px;
+  background: #0E1523;
+  border: 1px solid rgba(230, 234, 245, 0.12);
+}
+#root .slot.on {
+  background: rgba(232, 184, 75, 0.35);
+  border: 1px solid rgba(232, 184, 75, 0.9);
+}
+#root .chiprow {
+  margin-top: 56px;
+  min-height: 64px;
+}
+#root .chip {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #E6EAF5;
+  background: #0E1523;
+  border: 1px solid rgba(230, 234, 245, 0.2);
+  border-radius: 9999px;
+  padding: 16px 28px;
+  white-space: nowrap;
+}
+#root .chip .caret {
+  display: inline-block;
+  width: 14px;
+  opacity: 0;
+}
+#root .badges {
+  position: relative;
+  height: 120px;
+  margin-top: 24px;
+  max-width: 1060px;
+}
+#root .badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: monospace;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #101A31;
+  background: #E6EAF5;
+  border: 1px solid rgba(230, 234, 245, 0.2);
+  border-radius: 9999px;
+  padding: 16px 30px;
+  white-space: nowrap;
+  will-change: transform;
+}
+#root .runrow {
+  margin-top: 16px;
+}
+#root .runbtn {
+  display: inline-block;
+  font-size: 28px;
+  font-weight: 500;
+  color: #101A31;
+  background: #E8B84B;
+  border-radius: 8px;
+  padding: 20px 34px;
+  will-change: transform;
+}
+#root .inset {
+  position: absolute;
+  right: 80px;
+  top: 150px;
+  width: 430px;
+  background: #0E1523;
+  border: 1px solid rgba(230, 234, 245, 0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  will-change: transform;
+}
+#root .inset .tag {
+  font-family: monospace;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #E6EAF5;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(230, 234, 245, 0.12);
+}
+#root .inset img {
+  display: block;
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  object-position: top;
+}
+#root .cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 34px;
+  height: 34px;
+  z-index: 50;
+  pointer-events: none;
+  will-change: transform;
+}
+#root .ring {
+  position: absolute;
+  left: 260px;
+  top: 816px;
+  width: 110px;
+  height: 110px;
+  margin: -55px 0 0 -55px;
+  border-radius: 50%;
+  border: 2px solid #E8B84B;
+  opacity: 0;
+  z-index: 49;
+  pointer-events: none;
+  will-change: transform;
+}
+</style>
+<div data-hf-id="hf-x9k8" id="root" data-composition-id="02-aperture" data-width="1920" data-height="1080" data-duration="12.5">
+  <div data-hf-id="hf-05fz" class="clip bg" data-start="0" data-duration="12.5" data-track-index="0">
+    <img data-hf-id="hf-4cb6" src="assets/full-page.png" alt="">
+    <div data-hf-id="hf-261e" class="scrim"></div>
+  </div>
+  <div data-hf-id="hf-mcm7" class="content">
+    <div data-hf-id="hf-wy2d" class="clip" data-start="0" data-duration="12.5" data-track-index="1">
+      <div data-hf-id="hf-7o3q" class="kicker"><span data-hf-id="hf-3274" class="spike">✱</span> The fair fight</div>
+      <p data-hf-id="hf-ixwr" class="headline"><span data-hf-id="hf-umdp" class="word" data-word="w-hears">Hears</span> <span data-hf-id="hf-v4gp" class="word" data-word="w-2">2</span> <span data-hf-id="hf-6zq1" class="word" data-word="w-bands">bands</span> <span data-hf-id="hf-m5or" class="word" data-word="w-of">of</span> <span data-hf-id="hf-yfbf" class="word" data-word="w-16">16.</span><br data-hf-id="hf-x5px"><span data-hf-id="hf-4gpm" class="word" data-word="w-same1">Same</span> <span data-hf-id="hf-asgf" class="word" data-word="w-spec">spectrum.</span> <span data-hf-id="hf-ss01" class="word" data-word="w-same2">Same</span> <span data-hf-id="hf-8jk1" class="word" data-word="w-seeds">seeds.</span></p>
+    </div>
+    <div data-hf-id="hf-0w6e" class="clip" data-start="0" data-duration="12.5" data-track-index="2">
+      <div data-hf-id="hf-db9w" class="ruler">
+        <div data-hf-id="hf-fv78" class="slot"></div><div data-hf-id="hf-exn0" class="slot"></div><div data-hf-id="hf-dqpx" class="slot"></div><div data-hf-id="hf-e50y" class="slot"></div><div data-hf-id="hf-g4k3" class="slot"></div><div data-hf-id="hf-giv4" class="slot"></div><div data-hf-id="hf-fby1" class="slot"></div><div data-hf-id="hf-e7n3" class="slot on"></div><div data-hf-id="hf-ruxb" class="slot on"></div><div data-hf-id="hf-fq92" class="slot"></div><div data-hf-id="hf-bcvr" class="slot"></div><div data-hf-id="hf-br6s" class="slot"></div><div data-hf-id="hf-1ayc" class="slot"></div><div data-hf-id="hf-0wnb" class="slot"></div><div data-hf-id="hf-0ica" class="slot"></div><div data-hf-id="hf-0419" class="slot"></div>
+      </div>
+    </div>
+    <div data-hf-id="hf-4uaf" class="clip" data-start="0" data-duration="12.5" data-track-index="3">
+      <div data-hf-id="hf-wzde" class="chiprow"><span data-hf-id="hf-442f" class="chip"><span data-hf-id="hf-7aln" class="typed"></span><span data-hf-id="hf-bwaf" class="caret">_</span></span></div>
+    </div>
+    <div data-hf-id="hf-8seg" class="clip" data-start="0" data-duration="12.5" data-track-index="4">
+      <div data-hf-id="hf-1bhc" class="badges">
+        <div data-hf-id="hf-0ti1" class="badge" data-target-x="-320" data-target-y="0">Same spectrum</div>
+        <div data-hf-id="hf-a5ot" class="badge" data-target-x="210" data-target-y="0">Same seeds</div>
+      </div>
+    </div>
+    <div data-hf-id="hf-9k29" class="clip" data-start="0" data-duration="12.5" data-track-index="5">
+      <div data-hf-id="hf-up4x" class="runrow"><span data-hf-id="hf-jy1g" class="runbtn">▶ Run live comparison</span></div>
+    </div>
+    <div data-hf-id="hf-fps2" class="clip" data-start="0" data-duration="12.5" data-track-index="6">
+      <div data-hf-id="hf-cx1j" class="inset">
+        <div data-hf-id="hf-rdxn" class="tag">Controls · close-up</div>
+        <img data-hf-id="hf-gboe" src="assets/scroll-100.png" alt="">
+      </div>
+    </div>
+  </div>
+  <div data-hf-id="hf-tuza" class="cursor">
+    <svg data-hf-id="hf-2b42" width="34" height="34" viewBox="0 0 34 34"><path data-hf-id="hf-nzax" d="M7 3 L7 27 L13.5 21 L17 29 L21 27 L17.5 19.2 L24 19 Z" fill="#E6EAF5" stroke="#101A31" stroke-width="2" /></svg>
+  </div>
+  <div data-hf-id="hf-0qcu" class="ring"></div>
+</div>
+<script>
+(function () {
+  var root = document.querySelector('[data-composition-id="02-aperture"]');
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+  window.__timelines["02-aperture"] = tl;
+  var DUR = 12;
+
+  function q(s) { return root.querySelector(s); }
+  function qa(s) { return Array.prototype.slice.call(root.querySelectorAll(s)); }
+
+  var bgImg = q(".bg img");
+  var header = q('[data-track-index="1"]');
+  var ruler = q(".ruler");
+  var cursor = q(".cursor");
+  var typed = q(".typed");
+  var caret = q(".caret");
+  var badges = qa(".badge");
+  var inset = q(".inset");
+  var runbtn = q(".runbtn");
+  var ring = q(".ring");
+  var words = qa(".headline .word");
+  var slotsOn = qa(".slot.on");
+
+  gsap.set(cursor, { x: 1560, y: 820, scale: 1 });
+
+  /* Scene 1 (0.0-3.5): plate establishes, header + ruler enter */
+  tl.fromTo(bgImg, { opacity: 0 }, { opacity: 0.6, duration: 0.6, ease: "power1.out" }, 0);
+  tl.fromTo(header, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.05);
+  tl.fromTo(ruler, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.15);
+
+  /* asr-keyword-glow on "2" + "16" (attack/sustain/release envelope, one linear driver) */
+  var ATTACK = 0.15, RELEASE = 0.4, REST = 0.25, MAX_BLUR = 30, MAX_BOOST = 0.18;
+  var TIMINGS = { "w-2": { start: 0.6, end: 1.4 }, "w-16": { start: 1.5, end: 2.3 } };
+  var REST_RGB = { r: 230, g: 234, b: 245 };
+  var ACTIVE_RGB = { r: 245, g: 212, b: 122 };
+  function envelope(t, s, e) {
+    if (t < s) return 0;
+    if (t < e) return Math.min((t - s) / ATTACK, 1);
+    if (t < e + RELEASE) return 1 - ((t - e) / RELEASE) * (1 - REST);
+    return REST;
+  }
+  function chan(a, b, e) { return Math.round(a + (b - a) * e); }
+  var glowDriver = { t: 0 };
+  tl.to(glowDriver, {
+    t: 3.5, duration: 3.5, ease: "none",
+    onUpdate: function () {
+      var peak = 0;
+      words.forEach(function (el) {
+        var timing = TIMINGS[el.dataset.word];
+        if (!timing) return;
+        var env = envelope(glowDriver.t, timing.start, timing.end);
+        if (env > peak) peak = env;
+        el.style.textShadow = "0 0 " + (MAX_BLUR * env).toFixed(1) + "px rgba(232,184,75," + (0.9 * env).toFixed(2) + ")";
+        el.style.transform = "scale(" + (1 + MAX_BOOST * env).toFixed(3) + ")";
+        el.style.color = "rgb(" + chan(REST_RGB.r, ACTIVE_RGB.r, env) + "," + chan(REST_RGB.g, ACTIVE_RGB.g, env) + "," + chan(REST_RGB.b, ACTIVE_RGB.b, env) + ")";
+      });
+      slotsOn.forEach(function (slot) {
+        slot.style.boxShadow = "0 0 " + (26 * peak).toFixed(1) + "px rgba(232,184,75," + (0.85 * peak).toFixed(2) + ")";
+      });
+    }
+  }, 0);
+
+  /* Scene 2 (3.5-6.5): cursor sweeps in, honesty chip types on (smooth-slice discrete-text-sequence) */
+  tl.to(cursor, { x: 640, y: 560, duration: 0.9, ease: "power2.inOut" }, 3.5);
+  var fullText = "SIMULATION ONLY \u00B7 NO RF HARDWARE";
+  var typeLen = { v: 0 };
+  tl.to(typeLen, {
+    v: fullText.length, duration: 2.0, ease: "power1.inOut",
+    onUpdate: function () { typed.textContent = fullText.substring(0, Math.floor(typeLen.v)); }
+  }, 3.8);
+  tl.set(caret, { opacity: 1 }, 3.8);
+  var blink = { p: 0 };
+  tl.to(blink, {
+    p: Math.PI * 2 * 18, duration: DUR, ease: "none",
+    onUpdate: function () {
+      var localT = (blink.p / (Math.PI * 2 * 18)) * DUR;
+      caret.style.opacity = localT < 3.75 ? "0" : (Math.sin(blink.p) > 0 ? "1" : "0");
+    }
+  }, 0);
+
+  /* Scene 3 (6.5-9.5): twin seed badges, center-outward-expansion, asymmetric 60/40 */
+  badges.forEach(function (el, i) {
+    tl.fromTo(el,
+      { xPercent: -50, yPercent: -50, x: 0, y: 0, scale: 0.6, opacity: 0 },
+      { x: Number(el.dataset.targetX), y: Number(el.dataset.targetY), scale: 1, opacity: 1, duration: 1.2, ease: "power3.out" },
+      6.6 + i * 0.9);
+  });
+
+  /* Scene 4 (9.5-12): inset pops, cursor lands on Run, press ripple, hold */
+  tl.fromTo(inset, { opacity: 0, scale: 0.92, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "power2.out" }, 9.5);
+  tl.to(cursor, { x: 260, y: 816, duration: 0.8, ease: "power2.inOut" }, 9.5);
+  tl.to(cursor, { scale: 0.85, duration: 0.09, ease: "power2.in", yoyo: true, repeat: 1 }, 10.4);
+  tl.to(runbtn, { scale: 0.95, duration: 0.09, ease: "power2.in", yoyo: true, repeat: 1 }, 10.4);
+  tl.fromTo(ring, { scale: 0, opacity: 0.9 }, { scale: 4.5, opacity: 0, duration: 0.7, ease: "power2.out" }, 10.48);
+})();
+</script>
+</template>

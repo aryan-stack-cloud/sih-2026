@@ -1,0 +1,62 @@
+<div class="cam" id="s08-cam">
+  <img class="bgimg" src="assets/art/bg/desk-top.svg" alt="">
+  <div class="abs" id="s08-nb" style="left:540px;top:170px;width:940px;height:668px">
+    <img class="abs" src="assets/art/props/notebook.svg" alt="" style="left:0;top:0;width:940px;height:668px">
+  </div>
+  <div class="chip-col" style="left:792px;top:118px">1–2</div>
+  <div class="chip-col" style="left:943px;top:118px">5–6</div>
+  <div class="chip-col" style="left:1093px;top:118px">9–10</div>
+  <div class="chip-col" style="left:1244px;top:118px">13–14</div>
+  <div class="chip-row" id="s08-r1" style="left:300px;top:290px">Quiet</div>
+  <div class="chip-row" id="s08-r2" style="left:300px;top:409px">Busy</div>
+  <div class="chip-row" id="s08-r3" style="left:300px;top:528px">Overdue</div>
+  <div class="chip-row" id="s08-r4" style="left:300px;top:647px">Rhythm due</div>
+  <div class="cap" style="left:792px;top:62px;width:577px;text-align:center">Look at bands…</div>
+  <div class="cap" style="left:300px;top:230px;width:230px;text-align:center">When…</div>
+  <!-- a score for every move in every situation, written at the cell centres -->
+  <div class="abs" id="s08-rowhi" style="left:776px;top:392px;width:602px;height:88px;border-radius:16px;background:#FFC43D"></div>
+  <div class="abs ring" id="s08-best" style="left:958px;top:392px;border-color:#2DB86B"></div>
+  <div class="abs ring" id="s08-ring" style="left:1108px;top:273px"></div>
+  <b class="qv" id="s08-v11" style="left:821px;top:287px">2</b><b class="qv" id="s08-v12" style="left:972px;top:287px">1</b><b class="qv" id="s08-v13" style="left:1122px;top:287px">1</b><b class="qv" id="s08-v14" style="left:1272px;top:287px">3</b>
+  <b class="qv" id="s08-v21" style="left:821px;top:406px">4</b><b class="qv" id="s08-v22" style="left:972px;top:406px">9</b><b class="qv" id="s08-v23" style="left:1122px;top:406px">5</b><b class="qv" id="s08-v24" style="left:1272px;top:406px">2</b>
+  <b class="qv" id="s08-v31" style="left:821px;top:525px">3</b><b class="qv" id="s08-v32" style="left:972px;top:525px">2</b><b class="qv" id="s08-v33" style="left:1122px;top:525px">8</b><b class="qv" id="s08-v34" style="left:1272px;top:525px">1</b>
+  <b class="qv" id="s08-v41" style="left:821px;top:644px">7</b><b class="qv" id="s08-v42" style="left:972px;top:644px">2</b><b class="qv" id="s08-v43" style="left:1122px;top:644px">3</b><b class="qv" id="s08-v44" style="left:1272px;top:644px">8</b>
+  <svg class="abs" id="s08-later" viewBox="0 0 520 300" style="left:1162px;top:190px;width:520px;height:300px;overflow:visible">
+    <path id="s08-arrow" d="M20 130 C120 20 300 20 390 120" fill="none" stroke="#FFC43D" stroke-width="16" stroke-linecap="round"/>
+    <polygon id="s08-ahead" points="362,110 420,160 426,92" fill="#FFC43D"/>
+    <circle id="s08-d1" cx="107" cy="68" r="14" fill="#FDFCF8" stroke="#1F2340" stroke-width="6"/>
+    <circle id="s08-d2" cx="209" cy="46" r="14" fill="#FDFCF8" stroke="#1F2340" stroke-width="6"/>
+    <circle id="s08-d3" cx="308" cy="64" r="14" fill="#FDFCF8" stroke="#1F2340" stroke-width="6"/>
+  </svg>
+  <div class="abs steps" id="s08-steps" style="left:1384px;top:166px;width:240px">3 steps later</div>
+  <img class="abs" id="s08-coin" src="assets/art/props/coin.svg" alt="" style="left:1570px;top:300px;width:170px;height:170px">
+  <div class="abs" id="s08-credit" style="left:1605px;top:355px">+5</div>
+  <div class="tis-bubble" id="s08-bub" style="left:1400px;top:520px">Pays off later!</div>
+  <div class="tis-numcard" id="s08-num"><b>#4</b></div>
+</div>
+<div class="hud">
+  <div class="tis-name" id="s08-name"><div><b>Q-learning</b><small>Scores every move, in every situation</small></div><i class="tis-chip learn">Learns from experience</i></div>
+</div>
+<style>
+  #s08 .chip-col, #s08 .chip-row { position: absolute; height: 46px; border-radius: 14px; background: #FDFCF8; box-shadow: 0 5px 0 rgba(20, 18, 60, 0.3); font: 800 28px/46px "Montserrat"; color: #1F2340; text-align: center; }
+  #s08 .chip-col { width: 122px; }
+  #s08 .chip-row { width: 230px; }
+  #s08 .qv { position: absolute; width: 60px; height: 60px; display: block; font: 700 54px/60px "Fredoka"; color: #1F2340; text-align: center; }
+  #s08 .ring { width: 88px; height: 88px; border-radius: 50%; border: 7px solid #FFC43D; box-sizing: border-box; }
+  #s08 .steps { font: 800 28px/1 "Montserrat"; color: #FDFCF8; text-align: center; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 3px 0 rgba(20, 18, 60, 0.6); }
+  #s08-credit { width: 104px; height: 64px; border-radius: 32px; background: #1E8A4F; font: 700 44px/64px "Fredoka"; color: #FDFCF8; text-align: center; box-shadow: 0 5px 0 rgba(20, 18, 60, 0.3); }
+</style>
+<sfx src="whoosh_big" at="0.02" vol="0.45"></sfx>
+<sfx src="card_slide" at="1.1" vol="0.5"></sfx>
+<sfx src="marker" at="s08_2+0.55" vol="0.35"></sfx>
+<sfx src="marker" at="s08_2+0.85" vol="0.35"></sfx>
+<sfx src="marker" at="s08_2+1.15" vol="0.35"></sfx>
+<sfx src="marker" at="s08_2+1.45" vol="0.35"></sfx>
+<sfx src="pop_soft" at="s08_2+1.95" vol="0.45"></sfx>
+<sfx src="whoosh" at="s08_3+0.35" vol="0.4"></sfx>
+<sfx src="tick" at="s08_3+0.45" vol="0.4"></sfx>
+<sfx src="tock" at="s08_3+0.6" vol="0.4"></sfx>
+<sfx src="tick" at="s08_3+0.75" vol="0.4"></sfx>
+<sfx src="coin_drop" at="s08_3+1.0" vol="0.45"></sfx>
+<sfx src="whoosh" at="s08_3+1.95" vol="0.4"></sfx>
+<sfx src="sparkle" at="s08_3+2.45" vol="0.4"></sfx>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480">
+  <ellipse cx="350" cy="428" rx="242" ry="18" fill="rgba(20,18,60,0.18)"/>
+  <g id="thought-cloud-body" data-pivot="none">
+    <g fill="#FDFCF8">
+      <circle cx="196" cy="212" r="92"/>
+      <circle cx="318" cy="142" r="108"/>
+      <circle cx="464" cy="166" r="104"/>
+      <circle cx="540" cy="248" r="76"/>
+      <rect x="166" y="200" width="396" height="122" rx="61"/>
+      <circle cx="214" cy="324" r="44"/>
+      <circle cx="124" cy="372" r="28"/>
+    </g>
+    <path d="M290 292c-18 58-56 92-112 112 72 12 126-10 158-66Z" fill="#FDFCF8"/>
+    <path d="M414 158c24 20 38 50 38 82 22-22 34-50 34-78-18-16-44-20-72-4Z" fill="#E6E3DA"/>
+  </g>
+</svg>

@@ -1,0 +1,98 @@
+◆  Checking composition
+[INFO] [Compiler] Fetched 10 font face(s) for "JetBrains Mono" from Google Fonts (cached to C:\Users\This PC\.cache\hyperframes\fonts\jetbrains-mono)
+[INFO] [Compiler] Injected deterministic @font-face rules for 1 requested font families
+[hyperframes] browserGpuMode probe → hardware (WebGL renderer vendor="Google Inc. (Intel)" renderer="ANGLE (Intel, Intel(R) UHD Graphics (0x0000A7A8) Direct3D11 vs_5_0 ps_5_0, D3D11)")
+
+Lint
+  ⚠ composition_file_too_large: This HTML composition file has 1809 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v7-solution-eg\composition\index.html [data-composition-id] t=0s
+    Fix: Split coherent scenes or layers into separate .html files under compositions/, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  ⚠ nested_structure_needs_subcomposition: <div id="ext"> is a timeline element that contains nested <div id="extInner">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v7-solution-eg\composition\index.html #ext t=0s
+    Fix: Move <div id="ext"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="door"> is a timeline element that contains nested <div id="doorStage">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v7-solution-eg\composition\index.html #door t=0s
+    Fix: Move <div id="door"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="react"> is a timeline element that contains nested <div id="reactStage">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v7-solution-eg\composition\index.html #react t=0s
+    Fix: Move <div id="react"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="ots"> is a timeline element that contains nested <svg id="otsSvg">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v7-solution-eg\composition\index.html #ots t=0s
+    Fix: Move <div id="ots"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="room"> is a timeline element that contains nested <div id="roomInner">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v7-solution-eg\composition\index.html #room t=0s
+    Fix: Move <div id="room"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="split"> is a timeline element that contains nested <svg>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v7-solution-eg\composition\index.html #split t=0s
+    Fix: Move <div id="split"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="hud"> is a timeline element that contains nested <div id="spotTag">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v7-solution-eg\composition\index.html #hud t=0s
+    Fix: Move <div id="hud"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="tech"> is a timeline element that contains nested <div id="techBg">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v7-solution-eg\composition\index.html #tech t=0s
+    Fix: Move <div id="tech"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="fx"> is a timeline element that contains nested <div id="vig">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v7-solution-eg\composition\index.html #fx t=0s
+    Fix: Move <div id="fx"> and its contents into a sub-composition file and mount it with data-composition-src.
+  0 error(s), 10 warning(s), 0 info(s)
+
+Runtime
+  ◇ 0 errors, 0 warnings
+
+Layout
+  ℹ t=2.22s canvas_overflow #ng > g:nth-of-type(1) > text:nth-of-type(1) inside #root overflowed left 32.23px "SECURITY" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=6.67s canvas_overflow #ng > g:nth-of-type(1) > text:nth-of-type(1) inside #root overflowed left 11.4px "SECURITY" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=15.56s canvas_overflow #ng > g:nth-of-type(1) > text:nth-of-type(1) inside #root overflowed left 1011.46px "SECURITY" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s canvas_overflow text.plate inside #root overflowed left 892.52px "01" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s canvas_overflow text.plate inside #root overflowed left 446.76px "02" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s canvas_overflow text.plate inside #root overflowed left 892.52px "05" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s canvas_overflow text.plate inside #root overflowed left 446.76px "06" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s canvas_overflow text.plate inside #root overflowed left 892.52px, bottom 3.49px "09" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s canvas_overflow text.plate inside #root overflowed left 446.76px, bottom 3.49px "10" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s canvas_overflow text.plate inside #root overflowed bottom 3.49px "11" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s text_occluded #b-plates > text:nth-of-type(11) inside #lbBot "11" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=20s canvas_overflow text.plate inside #root overflowed bottom 3.49px "12" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s text_occluded #b-plates > text:nth-of-type(12) inside #lbBot "12" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=20s canvas_overflow text.plate inside #root overflowed left 892.52px, bottom 295.54px "13" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s canvas_overflow text.plate inside #root overflowed left 446.76px, bottom 295.54px "14" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s canvas_overflow text.plate inside #root overflowed bottom 295.54px "15" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s canvas_overflow text.plate inside #root overflowed bottom 295.54px "16" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s canvas_overflow #ng > g:nth-of-type(1) > text:nth-of-type(1) inside #root overflowed left 4007.34px, bottom 632.4px "SECURITY" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=20s escaped_container #Lbld inside #extInner "01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16" — Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).
+        Fix: Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.
+  ℹ t=20s escaped_container #Lnear inside #extInner "SECURITY" — Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).
+        Fix: Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.
+  ℹ t=24.44s canvas_overflow #ng > g:nth-of-type(1) > text:nth-of-type(1) inside #root overflowed left 1015.18px "SECURITY" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=28.89s canvas_overflow #ng > g:nth-of-type(1) > text:nth-of-type(1) inside #root overflowed left 45.71px "SECURITY" — Text extends outside the composition canvas.
+        Fix: Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  0 error(s), 0 warning(s), 22 info(s)
+
+Motion
+  ◇ 0 errors, 0 warnings
+
+Contrast
+  ◇ 84/84 text checks pass WCAG AA
+
+Snapshots
+  ◇ disabled
+
+◇  Check passed

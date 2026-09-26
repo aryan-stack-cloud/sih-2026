@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640">
+  <ellipse id="exam-desk-shadow" cx="450" cy="592" rx="370" ry="22" fill="#14123C" fill-opacity=".18"/>
+  <g id="exam-desk-frame">
+    <path d="M92 414h716v148H92Z" fill="#8C5A3C"/>
+    <path d="m740 414 68 22v126h-68Z" fill="#8C5A3C" fill-opacity=".55"/>
+    <rect x="130" y="520" width="640" height="28" rx="14" fill="#8C5A3C" fill-opacity=".45"/>
+  </g>
+  <g id="exam-desk-top">
+    <path d="m62 296 646-78 132 84-646 126Z" fill="#A86F4C"/>
+    <path d="m62 296 132 132 646-126-132-84Z" fill="#8C5A3C"/>
+    <path d="m708 218 132 84-132 78Z" fill="#8C5A3C" fill-opacity=".45"/>
+  </g>
+  <g id="exam-paper-group" transform="rotate(-7 438 318)">
+    <path d="M250 214h356v234H250Z" fill="#8C5A3C" fill-opacity=".22" transform="translate(14 14)"/>
+    <rect id="exam-paper" x="250" y="214" width="356" height="234" rx="8" fill="#FDFCF8"/>
+    <g id="exam-paper-lines" fill="#6B7090" fill-opacity=".22">
+      <rect x="282" y="252" width="246" height="8" rx="4"/><rect x="282" y="282" width="292" height="8" rx="4"/><rect x="282" y="312" width="254" height="8" rx="4"/><rect x="282" y="342" width="292" height="8" rx="4"/><rect x="282" y="372" width="222" height="8" rx="4"/>
+    </g>
+    <g id="exam-paper-check" fill="none" stroke="#2DB86B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m510 380 16 16 38-42"/>
+    </g>
+  </g>
+  <g id="exam-pencil" transform="rotate(22 700 346)">
+    <rect x="642" y="324" width="136" height="30" rx="6" fill="#FFC43D"/>
+    <path d="M778 324 824 339l-46 15Z" fill="#F2B632"/>
+    <path d="m812 333 12 6-12 6Z" fill="#1F2340"/>
+    <rect x="642" y="324" width="34" height="30" rx="6" fill="#E63946"/>
+  </g>
+</svg>

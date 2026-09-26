@@ -1,0 +1,1 @@
+And training is quick. On an ordinary laptop, the Bandit learns in about eighty seconds.

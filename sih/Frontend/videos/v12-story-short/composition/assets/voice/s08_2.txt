@@ -1,0 +1,1 @@
+For each situation, it scores every move.

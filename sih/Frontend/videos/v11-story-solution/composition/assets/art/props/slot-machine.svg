@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 820">
+  <ellipse cx="250" cy="760" rx="196" ry="12" fill="rgba(20,18,60,0.18)"/>
+  <g id="slot-window" data-pivot="none">
+    <rect x="50" y="50" width="400" height="650" rx="54" fill="#4A1F6B"/>
+    <rect x="78" y="80" width="344" height="594" rx="38" fill="#8E2C80"/>
+    <rect x="106" y="124" width="288" height="300" rx="40" fill="#20224A"/>
+    <path d="M106 224h288M106 324h288" fill="none" stroke="#5A62B5" stroke-width="14"/>
+    <g fill="#3DDCFF">
+      <circle cx="176" cy="174" r="28"/>
+      <rect x="250" y="148" width="88" height="52" rx="18" fill="#E0457B"/>
+      <path d="M142 326c34-62 66-62 100 0" fill="none" stroke="#2DB86B" stroke-width="24" stroke-linecap="round"/>
+      <rect x="274" y="274" width="70" height="100" rx="24" fill="#FFC43D"/>
+    </g>
+    <g id="slot-light" data-pivot="none">
+      <rect x="170" y="92" width="160" height="24" rx="12" fill="#FFD166"/>
+      <circle cx="192" cy="104" r="7" fill="#FFF3B0"/>
+      <circle cx="250" cy="104" r="7" fill="#FFF3B0"/>
+      <circle cx="308" cy="104" r="7" fill="#FFF3B0"/>
+    </g>
+  </g>
+  <g id="slot-tray" data-pivot="none">
+    <rect x="92" y="462" width="316" height="156" rx="34" fill="#FDFCF8"/>
+    <rect x="126" y="500" width="248" height="80" rx="24" fill="#E6E3DA"/>
+    <circle cx="176" cy="540" r="18" fill="#E0457B"/>
+    <rect x="238" y="520" width="84" height="40" rx="18" fill="#3A86FF"/>
+  </g>
+  <g id="slot-lever" data-pivot="407 570">
+    <circle cx="407" cy="570" r="24" fill="#FFC43D"/>
+    <path d="M407 570 426 488c8 4 10 14 6 22l-25 60Z" fill="#FDFCF8"/>
+  </g>
+  <rect x="80" y="700" width="340" height="70" rx="30" fill="#232E57"/>
+  <path d="M130 700h240l-30-40H160Z" fill="#4B519A"/>
+</svg>

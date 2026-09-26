@@ -1,0 +1,11 @@
+01|A signal flashes, then disappears. The receiver reaches that frequency too late.
+02|The antenna may receive a wide range, but the tuner can inspect only a narrow slice at once. The problem statement says that slice is typically at least ten times narrower than the range to monitor. Our simulation uses two of sixteen bands.
+03|A burst outside that slice is invisible at that moment. Software cannot widen the hardware window. It can choose where the window goes next.
+04|Each scan gives us evidence. We update what we know, choose the next two bands, retune, and scan again. All six strategies get the same virtual receiver and time budget.
+05|Two use designed rules. C T M C keeps a random chance of visiting every band. Index ranks bands by likely activity and by how long they have waited.
+06|Two learn from rewards. Bandit weighs a promising band against a new one. Q-learning remembers which choice worked in each situation.
+07|Two use neural learning. D Q N estimates the value of each choice. P P O adjusts the probabilities of its scanning choices.
+08|We test generated emitter patterns and Alan Turing Institute synthetic radar pulses through the virtual receiver. These are simulations, not field measurements.
+09|In held-out Scenario B, fixed sweep sees about eleven percent of active band-time. Index sees thirteen percent. That is a twenty-two percent relative gain with the same narrow window.
+10|Both reach about ninety-seven percent of distinct emitters. In a separate test, Bandit sees more active time but fewer emitters. That is a tradeoff.
+11|Training times were not logged. The warm scheduler API took six point six milliseconds at the ninety-fifth percentile. The receiver remains narrow.

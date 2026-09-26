@@ -1,0 +1,176 @@
+<template>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  /* v14 local-font declarations: Windows-bundled faces that render in headless Chrome */
+  @font-face { font-family: 'Arial'; src: local('Arial'); }
+  @font-face { font-family: 'Arial Narrow'; src: local('Arial Narrow'); }
+  @font-face { font-family: 'Consolas'; src: local('Consolas'); }
+#root {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  container-type: size;
+  overflow: hidden;
+  background: transparent;
+}
+.\30 4-bandit-graph-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.\30 4-bandit-graph-shot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+.\30 4-bandit-graph-shade {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 16, 32, 0.7);
+}
+.\30 4-bandit-graph-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 190px;
+}
+.\30 4-bandit-graph-eyebrow {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 2.6cqw;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #E8B84B;
+}
+.\30 4-bandit-graph-statwrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1cqw;
+}
+.\30 4-bandit-graph-ring {
+  position: absolute;
+  left: calc(50% - 380px);
+  top: calc(50% - 380px);
+  width: 760px;
+  height: 760px;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.\30 4-bandit-graph-stat {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2cqw;
+}
+.\30 4-bandit-graph-counterwrap {
+  min-width: 58cqw;
+  display: flex;
+  justify-content: flex-end;
+}
+.\30 4-bandit-graph-hero {
+  display: inline-block;
+  font-family: "Arial Narrow", "Arial Narrow", sans-serif;
+  font-weight: 600;
+  font-size: 11cqw;
+  line-height: 1;
+  color: #0F9E73;
+  font-variant-numeric: tabular-nums;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.\30 4-bandit-graph-vs {
+  display: inline-block;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 3.4cqw;
+  color: #8A93AD;
+  white-space: nowrap;
+}
+.\30 4-bandit-graph-badge {
+  display: inline-block;
+  margin-top: 1.5cqw;
+  padding: 0.8cqw 2.4cqw;
+  border-radius: 1cqw;
+  background: #E8B84B;
+  color: #241A05;
+  font-family: "Arial Narrow", "Arial Narrow", sans-serif;
+  font-weight: 700;
+  font-size: 5cqw;
+  line-height: 1;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.\30 4-bandit-graph-foot {
+  margin-top: 1.5cqw;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 2.2cqw;
+  color: #5C6580;
+}
+</style>
+<div data-hf-id="hf-9sl4" id="root" data-composition-id="04-bandit-graph" data-start="0" data-duration="15.5" data-track-index="0" data-width="1920" data-height="1080">
+  <div data-hf-id="hf-y4sn" class="04-bandit-graph-bg clip" data-start="0" data-duration="15.5" data-track-index="0">
+    <img data-hf-id="hf-fvgo" class="04-bandit-graph-shot" src="assets/scroll-100.png" alt="">
+    <div data-hf-id="hf-powc" class="04-bandit-graph-shade"></div>
+  </div>
+  <div data-hf-id="hf-zojz" class="04-bandit-graph-stage clip" data-start="0" data-duration="15.5" data-track-index="1">
+    <div data-hf-id="hf-1ija" class="04-bandit-graph-eyebrow" id="04-bandit-graph-eyebrow">Bandit vs the fixed sweep</div>
+    <div data-hf-id="hf-awk7" class="04-bandit-graph-statwrap">
+      <svg data-hf-id="hf-nbyc" class="04-bandit-graph-ring" viewBox="0 0 760 760" aria-hidden="true">
+        <circle data-hf-id="hf-xawz" cx="380" cy="380" r="350" fill="none" stroke="#263054" stroke-width="10" />
+        <circle data-hf-id="hf-2cxt" id="04-bandit-graph-ringfill" cx="380" cy="380" r="350" fill="none" stroke="#E8B84B" stroke-width="10" stroke-linecap="round" transform="rotate(-90 380 380)" />
+      </svg>
+      <div data-hf-id="hf-jihb" class="04-bandit-graph-stat">
+        <div data-hf-id="hf-khdn" class="04-bandit-graph-counterwrap"><span data-hf-id="hf-i7yu" class="04-bandit-graph-hero" id="04-bandit-graph-hero">0.0%</span></div>
+        <span data-hf-id="hf-9a2l" class="04-bandit-graph-vs" id="04-bandit-graph-vs">vs 11.6%</span>
+      </div>
+    </div>
+    <div data-hf-id="hf-0xke" class="04-bandit-graph-badge" id="04-bandit-graph-badge">+48%</div>
+    <div data-hf-id="hf-ugqo" class="04-bandit-graph-foot" id="04-bandit-graph-foot">6 of 10 emitters · 1-episode run, illustrative</div>
+  </div>
+</div>
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+  var hero = document.getElementById("04-bandit-graph-hero");
+  var eyebrow = document.getElementById("04-bandit-graph-eyebrow");
+  var vs = document.getElementById("04-bandit-graph-vs");
+  var badge = document.getElementById("04-bandit-graph-badge");
+  var foot = document.getElementById("04-bandit-graph-foot");
+  var ring = document.getElementById("04-bandit-graph-ringfill");
+
+  tl.fromTo(eyebrow, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0);
+
+  var state = { value: 0 };
+  tl.to(state, {
+    value: 17.3,
+    duration: 3.0,
+    ease: "power3.out",
+    onUpdate: function () {
+      hero.textContent = state.value.toFixed(1) + "%";
+    }
+  }, 0);
+  tl.fromTo(hero, { scale: 0.55 }, { scale: 1, duration: 3.0, ease: "power3.out" }, 0);
+
+  var LEN = ring.getTotalLength();
+  ring.style.strokeDasharray = LEN;
+  ring.style.strokeDashoffset = LEN;
+  tl.to(ring, { strokeDashoffset: LEN * (1 - 0.173), duration: 3.0, ease: "power3.out" }, 0);
+
+  tl.fromTo(vs, { opacity: 0, x: 48 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 3.5);
+
+  tl.fromTo(badge, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "power3.out" }, 6.5);
+
+  tl.fromTo(foot, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 10.5);
+
+  tl.to({}, { duration: 15 }, 0);
+  window.__timelines["04-bandit-graph"] = tl;
+})();
+</script>
+</template>

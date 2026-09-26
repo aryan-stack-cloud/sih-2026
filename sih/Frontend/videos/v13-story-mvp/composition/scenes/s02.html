@@ -1,0 +1,71 @@
+<div class="cam" id="s02-cam">
+  <!-- The real receiver and its narrow window (v12 opens here; the daydream shot was cut) -->
+  <div class="shot first" id="s02-B">
+    <div class="abs" style="left:0;top:0;width:1920px;height:1080px;background:radial-gradient(ellipse at 50% 38%,#3D3C8F 0%,#2B2A6E 45%,#1D1B4F 85%)"></div>
+    <div class="abs" id="s02-bar" style="left:160px;top:230px;width:1600px;height:120px;border-radius:26px;background:linear-gradient(90deg,#3A86FF 0%,#2EC4B6 22%,#2DB86B 42%,#FFC43D 62%,#FF9F5A 80%,#E0457B 100%);box-shadow:0 10px 0 rgba(20,18,60,0.35)"></div>
+    <div class="abs" id="s02-ticks" style="left:160px;top:216px;width:1600px;height:148px">
+      <i class="tick" style="left:160px"></i><i class="tick" style="left:320px"></i><i class="tick" style="left:480px"></i><i class="tick" style="left:640px"></i><i class="tick" style="left:800px"></i><i class="tick" style="left:960px"></i><i class="tick" style="left:1120px"></i><i class="tick" style="left:1280px"></i><i class="tick" style="left:1440px"></i>
+    </div>
+    <div class="abs barlbl" style="left:160px;top:370px">Low frequency</div>
+    <div class="abs barlbl" style="left:1440px;top:370px;width:320px;text-align:right">High frequency</div>
+    <div class="abs" id="s02-bracket" style="left:160px;top:160px;width:1600px;height:60px">
+      <div class="abs" style="left:0;top:40px;width:1600px;height:8px;border-radius:4px;background:#FDFCF8"></div>
+      <div class="abs" style="left:0;top:28px;width:8px;height:32px;border-radius:4px;background:#FDFCF8"></div>
+      <div class="abs" style="left:1592px;top:28px;width:8px;height:32px;border-radius:4px;background:#FDFCF8"></div>
+      <div class="abs brlbl" style="left:560px;top:-26px;width:480px;text-align:center">The band to watch</div>
+    </div>
+    <svg class="abs" viewBox="0 0 1920 1080" style="left:0;top:0;width:1920px;height:1080px;overflow:visible">
+      <polygon id="s02-cone" points="800,352 960,352 1050,672 900,672" fill="#FFF3B0" fill-opacity="0.32"/>
+      <path id="s02-cable1" d="M330 550 C420 550 470 720 640 720" fill="none" stroke="#5A62B5" stroke-width="12" stroke-linecap="round"/>
+      <path id="s02-cable2" d="M1240 730 C1290 730 1300 770 1350 770" fill="none" stroke="#5A62B5" stroke-width="12" stroke-linecap="round"/>
+    </svg>
+    <div class="abs" id="s02-win" style="left:800px;top:216px;width:160px;height:148px;border:10px solid #FFC43D;border-radius:22px;box-shadow:0 0 34px rgba(255,196,61,0.9),inset 0 0 22px rgba(255,196,61,0.5)"></div>
+    <div class="abs" id="s02-bands-wrap" style="left:193px;top:224px;width:1534px;height:140px;opacity:0">
+      <div class="bands" id="s02-bands" style="left:0;top:0">
+        <div class="band"><i>1</i></div><div class="band"><i>2</i></div><div class="band"><i>3</i></div><div class="band"><i>4</i></div><div class="band"><div class="lit"></div><i>5</i></div><div class="band"><div class="lit"></div><i>6</i></div><div class="band"><i>7</i></div><div class="band"><i>8</i></div>
+        <div class="band"><i>9</i></div><div class="band"><i>10</i></div><div class="band"><i>11</i></div><div class="band"><i>12</i></div><div class="band"><i>13</i></div><div class="band"><i>14</i></div><div class="band"><i>15</i></div><div class="band"><i>16</i></div>
+      </div>
+      <div class="win2" id="s02-win2" style="left:374px"></div>
+    </div>
+    <img class="abs" id="s02-ant" src="assets/art/tech/antenna-mast.svg" alt="" style="left:150px;top:420px;width:220px;height:482px">
+    {{svg src=assets/art/tech/receiver-box.svg id=s02-rx class=abs style="left:630px;top:560px;width:620px"}}
+    <img class="abs" id="s02-lap" src="assets/art/tech/laptop.svg" alt="" style="left:1340px;top:630px;width:420px;height:287px">
+    <div class="abs hwlbl" id="s02-l-ant" style="left:150px;top:906px;width:220px">Antenna</div>
+    <div class="abs hwlbl" id="s02-l-rx" style="left:740px;top:932px;width:400px">EW receiver</div>
+    <div class="abs hwlbl" id="s02-l-lap" style="left:1400px;top:932px;width:300px">Computer</div>
+    <div class="tis-arrow" id="s02-ib" style="left:1030px;top:440px"><span>Instantaneous</span><span>bandwidth</span>
+      <svg viewBox="0 0 200 150" style="left:-120px;top:-110px;width:200px;height:150px"><path d="M150 120 Q80 110 40 30" fill="none" stroke="#FFC43D" stroke-width="14" stroke-linecap="round"/><polygon points="16,50 36,4 66,40" fill="#FFC43D"/></svg>
+    </div>
+    <div class="abs" id="s02-ten" style="left:1180px;top:452px;display:flex;align-items:center;gap:20px">
+      <b style="display:block;font:700 150px/1 Fredoka;color:#FFC43D;text-shadow:0 10px 0 rgba(20,18,60,0.45)">&ge;10&times;</b>
+      <span style="display:block;font:800 46px/1.1 Montserrat;color:#FDFCF8;text-transform:uppercase;text-shadow:0 4px 0 rgba(20,18,60,0.5)">narrower</span>
+    </div>
+    <div class="abs" id="s02-two" style="left:1100px;top:440px;display:flex;align-items:center;gap:18px">
+      <b style="display:block;font:700 150px/1 Fredoka;color:#FFC43D;text-shadow:0 10px 0 rgba(20,18,60,0.45)">2</b>
+      <span style="display:block;font:800 46px/1.1 Montserrat;color:#FDFCF8;text-transform:uppercase;text-shadow:0 4px 0 rgba(20,18,60,0.5)">of 16 bands at once</span>
+    </div>
+  </div>
+  <div class="tis-statement" id="s02-st"><p><span style="display:block">We can't make the light bigger.</span><em id="s02-st2" style="display:block;margin-top:28px">We can make it smarter.</em></p></div>
+</div>
+<div class="hud">
+  <div class="tis-tag" id="s02-tag1">{{icon antenna}}<div><span class="lbl">The real world:</span><span class="val">An EW radio receiver</span></div></div>
+  <div class="tis-tag" id="s02-tag2">{{icon laptop}}<div><span class="lbl">Our simulator:</span><span class="val">16 bands, hears 2 at a time</span></div></div>
+  <div class="tis-source" id="s02-src"><b>SOURCE:</b> SIH problem statement</div>
+</div>
+<style>
+  #s02 .tick { position: absolute; top: 0; width: 8px; height: 148px; border-radius: 4px; background: #FDFCF8; opacity: 0.9; }
+  #s02 .barlbl { font: 800 30px/1 "Montserrat"; color: #FDFCF8; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 3px 0 rgba(20, 18, 60, 0.5); }
+  #s02 .brlbl { font: 800 34px/1 "Montserrat"; color: #FDFCF8; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 3px 0 rgba(20, 18, 60, 0.5); }
+  #s02-st p { font-size: 96px; }
+  #s02 .hwlbl { font: 800 32px/1 "Montserrat"; color: #FDFCF8; text-align: center; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 3px 0 rgba(20, 18, 60, 0.6); }
+</style>
+<sfx src="whoosh_big" at="0.02" vol="0.4"></sfx>
+<sfx src="click" at="0.5" vol="0.5"></sfx>
+<sfx src="zap" at="s02_2+2.0" vol="0.4"></sfx>
+<sfx src="pop" at="s02_2+2.35" vol="0.45"></sfx>
+<sfx src="sweep_tick" at="s02_2+3.25" vol="0.35"></sfx>
+<sfx src="stamp" at="s02_2+3.45" vol="0.45"></sfx>
+<sfx src="card_slide" at="s02_2+4.25" vol="0.5"></sfx>
+<sfx src="pop" at="s02_2+4.85" vol="0.45"></sfx>
+<sfx src="whoosh_big" at="s02_5-0.12" vol="0.5"></sfx>
+<sfx src="ding" at="s02_5@end-1.3" vol="0.4"></sfx>

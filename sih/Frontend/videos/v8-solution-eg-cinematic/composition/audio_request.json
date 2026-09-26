@@ -1,0 +1,20 @@
+{
+  "provider": "kokoro",
+  "voice": "af_heart",
+  "lang": "en",
+  "speed": 0.94,
+  "bgm": { "mode": "none" },
+  "lines": [
+    { "id": "s1", "text": "One guard. Sixteen dark rooms. And every one of them is his to watch." },
+    { "id": "s2a", "text": "Somewhere inside, an intruder is moving." },
+    { "id": "s2b", "text": "The only thing that gives him away is his torch." },
+    { "id": "s3a", "text": "So the guard checks the rooms in order. Two at a time." },
+    { "id": "s3b", "text": "He's watching rooms three and four. The torch is in room ten." },
+    { "id": "s3c", "text": "By the time he gets there, it's gone." },
+    { "id": "s4a", "text": "It keeps happening. Always in a room he isn't watching." },
+    { "id": "s4b", "text": "Too many rooms. Too little time to look." },
+    { "id": "s5a", "text": "Now swap the building for the radio spectrum." },
+    { "id": "s5b", "text": "Every room is a frequency band. The guard is a receiver." },
+    { "id": "s6", "text": "So how does it decide where to look, and when?" }
+  ]
+}

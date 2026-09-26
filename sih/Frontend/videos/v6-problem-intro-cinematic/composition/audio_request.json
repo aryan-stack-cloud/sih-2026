@@ -1,0 +1,47 @@
+{
+  "provider": "kokoro",
+  "voice": "am_michael",
+  "lang": "en",
+  "speed": 0.95,
+  "bgm": {
+    "mode": "none"
+  },
+  "lines": [
+    {
+      "id": "s1",
+      "text": "One guard. Fifteen dark rooms. All of them, his to watch."
+    },
+    {
+      "id": "s2",
+      "text": "Somewhere inside, an intruder. Invisible, until his torch flicks on."
+    },
+    {
+      "id": "s3",
+      "text": "So the guard searches, room by room. He can only look at one at a time."
+    },
+    {
+      "id": "s4a",
+      "text": "He's watching room four."
+    },
+    {
+      "id": "s4b",
+      "text": "Room ten. Gone, before he looks."
+    },
+    {
+      "id": "s5",
+      "text": "Room three, while he watches eight. Twelve, while he watches five. Every time, too late."
+    },
+    {
+      "id": "s6",
+      "text": "The building is the radio spectrum. Every room, a frequency band."
+    },
+    {
+      "id": "s7",
+      "text": "The intruder, an unknown emitter. The guard, the receiver."
+    },
+    {
+      "id": "s8",
+      "text": "The signal was there. The receiver was looking elsewhere."
+    }
+  ]
+}

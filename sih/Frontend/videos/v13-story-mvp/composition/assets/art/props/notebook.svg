@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640">
+  <ellipse cx="450" cy="574" rx="334" ry="14" fill="rgba(20,18,60,0.18)"/>
+  <rect x="54" y="48" width="792" height="504" rx="48" fill="#2D3A6B"/>
+  <rect x="76" y="70" width="748" height="460" rx="30" fill="#FDFCF8"/>
+  <rect x="76" y="70" width="118" height="460" rx="30" fill="#E0457B"/>
+  <g fill="#F7F4FF">
+    <circle cx="135" cy="138" r="18"/><circle cx="135" cy="232" r="18"/><circle cx="135" cy="326" r="18"/><circle cx="135" cy="420" r="18"/><circle cx="135" cy="500" r="18"/>
+  </g>
+  <g fill="#E6E3DA" id="nb-cell-r1c1" data-pivot="none"><rect x="238" y="96" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r1c2" data-pivot="none"><rect x="382" y="96" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r1c3" data-pivot="none"><rect x="526" y="96" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r1c4" data-pivot="none"><rect x="670" y="96" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r2c1" data-pivot="none"><rect x="238" y="210" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r2c2" data-pivot="none"><rect x="382" y="210" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r2c3" data-pivot="none"><rect x="526" y="210" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r2c4" data-pivot="none"><rect x="670" y="210" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r3c1" data-pivot="none"><rect x="238" y="324" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r3c2" data-pivot="none"><rect x="382" y="324" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r3c3" data-pivot="none"><rect x="526" y="324" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r3c4" data-pivot="none"><rect x="670" y="324" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r4c1" data-pivot="none"><rect x="238" y="438" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r4c2" data-pivot="none"><rect x="382" y="438" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r4c3" data-pivot="none"><rect x="526" y="438" width="120" height="90" rx="18"/></g>
+  <g fill="#E6E3DA" id="nb-cell-r4c4" data-pivot="none"><rect x="670" y="438" width="120" height="90" rx="18"/></g>
+  <g fill="#3DDCFF">
+    <rect x="262" y="120" width="72" height="42" rx="16"/>
+    <rect x="406" y="234" width="72" height="42" rx="16"/>
+    <rect x="550" y="348" width="72" height="42" rx="16"/>
+    <rect x="694" y="462" width="72" height="42" rx="16"/>
+  </g>
+</svg>

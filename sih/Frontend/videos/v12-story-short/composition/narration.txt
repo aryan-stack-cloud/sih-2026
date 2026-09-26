@@ -1,0 +1,30 @@
+s01_1|Remember our night guard?
+s01_2|One searchlight, sixteen rooms, and intruders who flash a torch for a split second.
+s01_3|By the time his light gets there, they're gone.
+s02_2|A real receiver has the same problem: it hears only a narrow slice of the spectrum at once.
+s02_5|We can't make the light bigger. But we can make it smarter.
+s03_1|Normal receivers sweep in a fixed order, like the hand of a clock.
+s03_2|So a signal on the same rhythm can dodge that sweep forever.
+s04_1|So every ten milliseconds, our receiver looks, learns, and picks its next two bands.
+s04_2|We built six different ways to make that pick.
+s05_1|Number one: C T M C rolls the dice.
+s05_2|Random hops at random times, so no signal can time it.
+s06_1|Number two: the Index keeps a to-do list.
+s06_2|Bands that look busy, or have waited too long, jump to the top.
+s07_1|Number three: the Bandit treats every band like a slot machine.
+s07_2|A catch is a win. It keeps score, and keeps playing the bands that win the most.
+s07_3|But now and then, it tries a new one, just in case it pays better.
+s08_1|Number four: Q-learning keeps a cheat sheet.
+s08_2|For each situation, it scores every move.
+s08_3|Even a move that sets up a catch a few steps later gets credit.
+s09_1|Number five: D Q N swaps the cheat sheet for a neural network.
+s09_2|It scores all sixteen bands at once.
+s10_1|And number six: P P O spins a prize wheel.
+s10_2|The slices that catch signals keep getting bigger.
+s11_1|They trained on our simulator, and on recordings from the Alan Turing Institute's seventy-gigabyte radar dataset, then faced ones they'd never seen.
+s11_2|Two days of training runs in all, yet each final model trains in under an hour.
+s12_1|So, did it work?
+s12_2|On a busy night, the Index catches twenty-two percent more, with the same reach.
+s12_3|And on the Turing data, all four learners more than double the old sweep's catch.
+s12_4|The price: they camp on busy bands, and reach fewer emitters.
+s13_1|Same receiver. Same narrow window. Smarter choices.

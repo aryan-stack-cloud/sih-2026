@@ -1,0 +1,92 @@
+<div class="cam" id="s12-cam">
+  <div class="abs" style="left:0;top:0;width:1920px;height:1080px;background:radial-gradient(ellipse at 50% 45%,#3D3C8F 0%,#2B2A6E 45%,#1D1B4F 88%)"></div>
+  <img class="bgimg" src="assets/art/bg/night-sky.svg" alt="" style="opacity:0.35">
+  <!-- B: rhythm trap scoreboard -->
+  <div class="shot" id="s12-B">
+    <div class="card rc" id="s12-c1" style="left:170px;top:250px"><img src="assets/art/icons/clock.svg" alt=""><b>Fixed sweep</b><strong class="bad">0 / 4</strong><span>runs found it</span></div>
+    <div class="card rc" id="s12-c2" style="left:730px;top:250px"><img src="assets/art/icons/dice.svg" alt=""><b>Dice (CTMC)</b><strong class="good">4 / 4</strong><span>runs found it</span></div>
+    <div class="card rc" id="s12-c3" style="left:1290px;top:250px"><img src="assets/art/icons/list.svg" alt=""><b>To-do list (Index)</b><strong class="good">4 / 4</strong><span>runs found it</span></div>
+  </div>
+  <!-- C: busy night waffles -->
+  <div class="shot" id="s12-C">
+    <div class="abs wf-head" style="left:290px;top:236px;width:460px"><i class="tis-chip" style="background:#C9CCEA">Old fixed sweep</i></div>
+    <div class="abs wf-head" style="left:1170px;top:236px;width:460px"><i class="tis-chip learn">Index</i></div>
+    {{gen waffle id=s12-w1 class=abs style="left:304px;top:310px;width:432px;height:432px"}}
+    {{gen waffle id=s12-w2 class=abs style="left:1184px;top:310px;width:432px;height:432px"}}
+    <div class="abs wf-num" style="left:290px;top:764px;width:460px"><b id="s12-n1">0</b><span>of 100 caught</span></div>
+    <div class="abs wf-num" style="left:1170px;top:764px;width:460px"><b id="s12-n2">0</b><span>of 100 caught</span></div>
+    <div class="abs" id="s12-plus" style="left:770px;top:410px;width:380px;text-align:center"><b style="display:block;font:700 150px/1 Fredoka;color:#FFC43D;text-shadow:0 10px 0 rgba(20,18,60,0.5)">+22%</b><span class="cap" style="position:static;display:block;margin-top:34px">same receiver</span></div>
+    <div class="abs cap" id="s12-sig" style="left:360px;top:176px;width:1200px;text-align:center;white-space:nowrap">Every square = a moment a signal was on</div>
+  </div>
+  <!-- D: reach gauges -->
+  <div class="shot" id="s12-D">
+    <svg class="abs" viewBox="0 0 400 400" style="left:330px;top:250px;width:420px;height:420px"><circle cx="200" cy="200" r="160" fill="none" stroke="#3D3C8F" stroke-width="44"/><circle id="s12-g1" cx="200" cy="200" r="160" fill="none" stroke="#C9CCEA" stroke-width="44" stroke-linecap="round" stroke-dasharray="0 1006" transform="rotate(-90 200 200)"/></svg>
+    <svg class="abs" viewBox="0 0 400 400" style="left:1170px;top:250px;width:420px;height:420px"><circle cx="200" cy="200" r="160" fill="none" stroke="#3D3C8F" stroke-width="44"/><circle id="s12-g2" cx="200" cy="200" r="160" fill="none" stroke="#2DB86B" stroke-width="44" stroke-linecap="round" stroke-dasharray="0 1006" transform="rotate(-90 200 200)"/></svg>
+    <div class="abs gz" style="left:330px;top:410px;width:420px"><b>97%</b></div>
+    <div class="abs gz" style="left:1170px;top:410px;width:420px"><b>97%</b></div>
+    <div class="abs wf-head" style="left:330px;top:190px;width:420px"><i class="tis-chip" style="background:#C9CCEA">Old fixed sweep</i></div>
+    <div class="abs wf-head" style="left:1170px;top:190px;width:420px"><i class="tis-chip learn">Index</i></div>
+    <div class="abs cap" style="left:460px;top:720px;width:1000px;text-align:center">of emitters reached, same as before</div>
+  </div>
+  <!-- E: the greedy bandit -->
+  <div class="shot" id="s12-E">
+    {{gen slot id=s12-slot label=9-10 class=abs style="left:130px;top:300px;width:330px;height:486px"}}
+    <div class="abs" id="s12-g-wrap" style="left:420px;top:380px;width:300px;height:600px">{{guard id=s12-g}}</div>
+    <div class="card bc" id="s12-e1" style="left:900px;top:250px"><img src="assets/art/props/coin.svg" alt=""><div><strong class="good">34 / 100</strong><span>signal moments caught</span></div></div>
+    <div class="card bc" id="s12-e2" style="left:900px;top:570px"><img src="assets/art/icons/cross.svg" alt=""><div><strong class="bad">only 71%</strong><span>of emitters reached</span></div></div>
+    <div class="tis-bubble" id="s12-bub" style="left:470px;top:250px;max-width:400px">This one pays. I'm staying!</div>
+  </div>
+  <!-- F: speed -->
+  <div class="shot" id="s12-F">
+    {{svg src=assets/art/props/stopwatch.svg id=s12-sw class=abs style="left:300px;top:300px;width:420px"}}
+    <div class="abs" style="left:800px;top:330px"><b id="s12-ms" style="display:block;font:700 230px/1 Fredoka;color:#FFC43D;text-shadow:0 12px 0 rgba(20,18,60,0.5)">0.0 ms</b></div>
+    <div class="abs cap" style="left:820px;top:600px;width:900px">per decision: faster than a blink</div>
+  </div>
+  <div class="tis-statement" id="s12-st"><p>So... did it work?</p></div>
+</div>
+<div class="hud">
+  <div class="tis-tag" id="s12-tag1">{{icon flask}}<div><span class="lbl">Test:</span><span class="val">The rhythm trap</span></div></div>
+  <div class="tis-tag" id="s12-tag2">{{icon chart}}<div><span class="lbl">Busy night:</span><span class="val">Scenario B, unseen runs</span></div></div>
+  <div class="tis-tag" id="s12-tag3">{{icon slot}}<div><span class="lbl">Separate test:</span><span class="val">Bandit, 20 runs</span></div></div>
+  <div class="tis-tag" id="s12-tag4">{{icon lightning}}<div><span class="lbl">Speed:</span><span class="val">Scheduler decision time</span></div></div>
+  <div class="tis-source" id="s12-src1"><b>SOURCE:</b> project rhythm-trap test, 4 runs</div>
+  <div class="tis-source" id="s12-src2"><b>SOURCE:</b> project results, 6 unseen runs of 2,000 steps</div>
+  <div class="tis-source" id="s12-src4"><b>SOURCE:</b> project results, Bandit, 20 evaluation runs</div>
+  <div class="tis-source" id="s12-src3"><b>SOURCE:</b> warm scheduler API, 95th percentile</div>
+</div>
+<style>
+  #s12 .rc { width: 460px; height: 560px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+  #s12 .rc img { width: 130px; height: 130px; display: block; }
+  #s12 .rc b { font: 800 40px/1.1 "Montserrat"; color: #1F2340; text-align: center; }
+  #s12 .rc strong, #s12 .bc strong { display: block; font: 700 130px/1 "Fredoka"; }
+  #s12 .rc span, #s12 .bc span { display: block; font: 700 30px/1.1 "Montserrat"; color: #6B7090; }
+  #s12 .good { color: #1E8A4F; }
+  #s12 .bad { color: #E63946; }
+  #s12 .wf-head { display: flex; justify-content: center; }
+  #s12 .wf-num { display: flex; align-items: baseline; justify-content: center; gap: 16px; }
+  #s12 .wf-num b { font: 700 120px/1 "Fredoka"; color: #FDFCF8; }
+  #s12 .wf-num span { font: 800 34px/1 "Montserrat"; color: #FDFCF8; text-transform: uppercase; letter-spacing: 2px; }
+  #s12 .gz { text-align: center; }
+  #s12 .gz b { font: 700 120px/1 "Fredoka"; color: #FDFCF8; }
+  #s12 .bc { width: 900px; height: 270px; display: flex; align-items: center; gap: 40px; padding: 0 50px; }
+  #s12 .bc img { width: 170px; height: 170px; display: block; }
+</style>
+<sfx src="riser" at="0.0" vol="0.3"></sfx>
+<sfx src="whoosh_big" at="s12_2-0.1" vol="0.45"></sfx>
+<sfx src="fail" at="s12_2+0.95" vol="0.35"></sfx>
+<sfx src="success" at="s12_2+1.95" vol="0.4"></sfx>
+<sfx src="success" at="s12_2+2.75" vol="0.4"></sfx>
+<sfx src="whoosh_big" at="s12_3-0.15" vol="0.45"></sfx>
+<sfx src="pop_soft" at="s12_3+2.2" vol="0.4"></sfx>
+<sfx src="pop_soft" at="s12_4+0.3" vol="0.4"></sfx>
+<sfx src="stamp" at="s12_4+2.0" vol="0.45"></sfx>
+<sfx src="ding" at="s12_4+2.1" vol="0.35"></sfx>
+<sfx src="whoosh" at="s12_5-0.1" vol="0.4"></sfx>
+<sfx src="success" at="s12_5+1.5" vol="0.3"></sfx>
+<sfx src="whoosh_big" at="s12_6-0.15" vol="0.45"></sfx>
+<sfx src="coin_drop" at="s12_6+0.9" vol="0.4"></sfx>
+<sfx src="pop" at="s12_6+2.2" vol="0.45"></sfx>
+<sfx src="fail" at="s12_6+5.0" vol="0.35"></sfx>
+<sfx src="whoosh_big" at="s12_7-0.15" vol="0.45"></sfx>
+<sfx src="tick" at="s12_7+0.3" vol="0.4"></sfx>
+<sfx src="ding" at="s12_7+1.2" vol="0.35"></sfx>

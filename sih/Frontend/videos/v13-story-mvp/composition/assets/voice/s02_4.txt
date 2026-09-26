@@ -1,0 +1,1 @@
+In our simulator, it hears just two bands out of sixteen.

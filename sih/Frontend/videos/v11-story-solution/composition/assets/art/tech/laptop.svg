@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520">
+  <ellipse id="laptop-shadow" cx="380" cy="455" rx="300" ry="26" fill="#14123C" fill-opacity=".18"/>
+  <g id="laptop-lid">
+    <path d="M142 60h484l-24 330H166Z" fill="#1F2340"/>
+    <path d="M142 60h38l-14 330h-24Z" fill="#4B519A"/>
+    <rect id="laptop-screen" x="174" y="90" width="420" height="258" rx="12" fill="#16204A"/>
+    <path d="M198 116h372" stroke="#3DDCFF" stroke-width="5" stroke-linecap="round" stroke-opacity=".2"/>
+    <circle cx="608" cy="352" r="5" fill="#3DDCFF" fill-opacity=".45"/>
+  </g>
+  <g id="laptop-hinge">
+    <rect x="170" y="372" width="430" height="36" rx="18" fill="#2D3A6B"/>
+    <rect x="170" y="372" width="430" height="12" rx="6" fill="#5A62B5"/>
+  </g>
+  <g id="laptop-base">
+    <path d="M160 388h454l106 72c8 6 4 18-8 18H61c-12 0-16-12-8-18Z" fill="#4B519A"/>
+    <path d="m546 388 68 72 84 10c12 0 16-12 8-18Z" fill="#232E57"/>
+    <path d="M202 408h352l54 44H150Z" fill="#1F2340"/>
+    <g id="laptop-key-rows" fill="#5A62B5">
+      <rect x="212" y="418" width="28" height="8" rx="4"/><rect x="248" y="418" width="28" height="8" rx="4"/><rect x="284" y="418" width="28" height="8" rx="4"/><rect x="320" y="418" width="28" height="8" rx="4"/><rect x="356" y="418" width="28" height="8" rx="4"/><rect x="392" y="418" width="28" height="8" rx="4"/><rect x="428" y="418" width="28" height="8" rx="4"/><rect x="464" y="418" width="28" height="8" rx="4"/><rect x="500" y="418" width="28" height="8" rx="4"/>
+      <rect x="222" y="432" width="34" height="8" rx="4"/><rect x="264" y="432" width="34" height="8" rx="4"/><rect x="306" y="432" width="34" height="8" rx="4"/><rect x="348" y="432" width="34" height="8" rx="4"/><rect x="390" y="432" width="34" height="8" rx="4"/><rect x="432" y="432" width="34" height="8" rx="4"/><rect x="474" y="432" width="34" height="8" rx="4"/>
+    </g>
+    <rect x="332" y="448" width="72" height="12" rx="6" fill="#2D3A6B"/>
+  </g>
+</svg>

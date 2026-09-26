@@ -1,0 +1,1 @@
+﻿We test generated emitter patterns and Alan Turing Institute synthetic radar pulses through the virtual receiver. These are simulations, not field measurements.

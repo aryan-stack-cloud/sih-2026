@@ -1,0 +1,59 @@
+{
+  "lines": [
+    {
+      "id": "01",
+      "sfx": [
+        "riser"
+      ]
+    },
+    {
+      "id": "02",
+      "sfx": [
+        "click-soft"
+      ]
+    },
+    {
+      "id": "03",
+      "sfx": [
+        "click-soft",
+        "typing"
+      ]
+    },
+    {
+      "id": "04",
+      "sfx": [
+        "ping",
+        "pop"
+      ]
+    },
+    {
+      "id": "05",
+      "sfx": [
+        "click-soft",
+        "typing"
+      ]
+    },
+    {
+      "id": "06",
+      "sfx": [
+        "ping",
+        "pop"
+      ]
+    },
+    {
+      "id": "07",
+      "sfx": [
+        "sparkle"
+      ]
+    },
+    {
+      "id": "08",
+      "sfx": [
+        "chime"
+      ]
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  }
+}

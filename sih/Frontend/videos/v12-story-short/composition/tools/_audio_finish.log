@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v11-story-solution\composition\tools\audio_finish.py", line 21, in <module>
+    lufs = av.measure_concat_loudness(trimmed)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v11-story-solution\composition\tools\audio_voice.py", line 97, in measure_concat_loudness
+    raise RuntimeError("Could not parse concatenated narration loudness")
+RuntimeError: Could not parse concatenated narration loudness
+exit=1

@@ -1,0 +1,162 @@
+<template>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  /* v14 local-font declarations: Windows-bundled faces that render in headless Chrome */
+  @font-face { font-family: 'Arial'; src: local('Arial'); }
+  @font-face { font-family: 'Arial Narrow'; src: local('Arial Narrow'); }
+  @font-face { font-family: 'Consolas'; src: local('Consolas'); }
+#root {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  container-type: size;
+  overflow: hidden;
+  background: transparent;
+}
+.\30 6-qlearning-graph-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.\30 6-qlearning-graph-shot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+  will-change: transform;
+}
+.\30 6-qlearning-graph-shade {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 16, 32, 0.7);
+}
+.\30 6-qlearning-graph-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 190px;
+}
+.\30 6-qlearning-graph-eyebrow {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 2.6cqw;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #E8B84B;
+}
+.\30 6-qlearning-graph-stat {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2cqw;
+  margin-top: 1cqw;
+}
+.\30 6-qlearning-graph-counterwrap {
+  min-width: 58cqw;
+  display: flex;
+  justify-content: flex-end;
+}
+.\30 6-qlearning-graph-hero {
+  display: inline-block;
+  font-family: "Arial Narrow", "Arial Narrow", sans-serif;
+  font-weight: 600;
+  font-size: 11cqw;
+  line-height: 1;
+  color: #0F9E73;
+  font-variant-numeric: tabular-nums;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.\30 6-qlearning-graph-vs {
+  display: inline-block;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 3.4cqw;
+  color: #8A93AD;
+  white-space: nowrap;
+}
+.\30 6-qlearning-graph-badge {
+  display: inline-block;
+  margin-top: 1.5cqw;
+  padding: 0.8cqw 2.4cqw;
+  border-radius: 1cqw;
+  background: #E8B84B;
+  color: #241A05;
+  font-family: "Arial Narrow", "Arial Narrow", sans-serif;
+  font-weight: 700;
+  font-size: 5cqw;
+  line-height: 1;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.\30 6-qlearning-graph-recap {
+  margin-top: 1.5cqw;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 2.2cqw;
+  color: #5C6580;
+}
+.\30 6-qlearning-graph-recap .w {
+  display: inline-block;
+  will-change: transform;
+}
+</style>
+<div data-hf-id="hf-11wo" id="root" data-composition-id="06-qlearning-graph" data-start="0" data-duration="15.4" data-track-index="0" data-width="1920" data-height="1080">
+  <div data-hf-id="hf-i1n9" class="06-qlearning-graph-bg clip" data-start="0" data-duration="15.4" data-track-index="0">
+    <img data-hf-id="hf-8eaz" class="06-qlearning-graph-shot" id="06-qlearning-graph-shot" src="assets/scroll-100.png" alt="">
+    <div data-hf-id="hf-2qjd" class="06-qlearning-graph-shade"></div>
+  </div>
+  <div data-hf-id="hf-q7rj" class="06-qlearning-graph-stage clip" data-start="0" data-duration="15.4" data-track-index="1">
+    <div data-hf-id="hf-z0rk" class="06-qlearning-graph-eyebrow" id="06-qlearning-graph-eyebrow">Q-learning vs the fixed sweep</div>
+    <div data-hf-id="hf-ls0o" class="06-qlearning-graph-stat">
+      <div data-hf-id="hf-0g0y" class="06-qlearning-graph-counterwrap"><span data-hf-id="hf-czte" class="06-qlearning-graph-hero" id="06-qlearning-graph-hero">0.0%</span></div>
+      <span data-hf-id="hf-tdmn" class="06-qlearning-graph-vs" id="06-qlearning-graph-vs">vs 11.6%</span>
+    </div>
+    <div data-hf-id="hf-yeow"><span data-hf-id="hf-go3r" class="06-qlearning-graph-badge" id="06-qlearning-graph-badge">+141%</span></div>
+    <div data-hf-id="hf-uz1e" class="06-qlearning-graph-recap" id="06-qlearning-graph-recap"><span data-hf-id="hf-leru" class="w">Bandit</span> <span data-hf-id="hf-lgmw" class="w">+48%</span> <span data-hf-id="hf-jh5p" class="w">·</span> <span data-hf-id="hf-0dpw" class="w">Q-learning</span> <span data-hf-id="hf-swge" class="w">+141%</span> <span data-hf-id="hf-zyk1" class="w">·</span> <span data-hf-id="hf-rpws" class="w">one</span> <span data-hf-id="hf-aqa4" class="w">button</span></div>
+  </div>
+</div>
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+  var hero = document.getElementById("06-qlearning-graph-hero");
+  var eyebrow = document.getElementById("06-qlearning-graph-eyebrow");
+  var vs = document.getElementById("06-qlearning-graph-vs");
+  var badge = document.getElementById("06-qlearning-graph-badge");
+  var shot = document.getElementById("06-qlearning-graph-shot");
+  var words = document.getElementById("06-qlearning-graph-recap").querySelectorAll(".w");
+
+  // Scene 1 (0-3s): frozen race tail holds center; 28.1% counts up (counting-dynamic-scale)
+  tl.fromTo(eyebrow, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0);
+
+  var state = { value: 0 };
+  tl.to(state, {
+    value: 28.1,
+    duration: 3.0,
+    ease: "power3.out",
+    onUpdate: function () {
+      hero.textContent = state.value.toFixed(1) + "%";
+    }
+  }, 0);
+  tl.fromTo(hero, { scale: 0.55 }, { scale: 1, duration: 3.0, ease: "power3.out" }, 0);
+
+  tl.fromTo(vs, { opacity: 0, x: 48 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 2.4);
+
+  // Scene 2 (3-6s): run panel slides aside (weight transfer), +141% badge pops (spring-pop-entrance)
+  tl.to(shot, { x: -140, scale: 0.94, opacity: 0.22, duration: 1.2, ease: "power3.out" }, 3.0);
+  tl.fromTo(badge, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "power3.out" }, 4.0);
+
+  // Scene 3 (6-11s): recap strip wipes in word by word (dynamic-content-sequencing)
+  words.forEach(function (el, i) {
+    tl.fromTo(el, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 6.0 + i * 0.55);
+  });
+
+  // Scene 4 (11-15s): full still hold
+  tl.to({}, { duration: 15 }, 0);
+  window.__timelines["06-qlearning-graph"] = tl;
+})();
+</script>
+</template>

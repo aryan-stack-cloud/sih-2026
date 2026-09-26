@@ -1,0 +1,38 @@
+s01_1|Remember our night guard?
+s01_2|One searchlight, sixteen rooms, and intruders who flash a torch for a split second.
+s01_3|By the time his light gets there, they're gone.
+s02_1|So why not just get a bigger searchlight?
+s02_2|Because in a real receiver, that beam is the slice of radio spectrum it can hear at one moment.
+s02_3|And it's usually at least ten times narrower than the band it has to guard.
+s02_4|In our simulator, it hears just two bands out of sixteen.
+s02_5|We can't make the light bigger. But we can make it smarter.
+s03_1|Normal receivers sweep in a fixed order, like the hand of a clock.
+s03_2|So a signal on the same rhythm can dodge that sweep forever.
+s03_3|In our rhythm-trap test, the fixed sweep caught it... zero times.
+s04_1|So every ten milliseconds, our receiver looks, learns, and picks its next two bands.
+s04_2|We built six different ways to make that pick.
+s04_3|Two follow rules, two learn from experience, and two use neural networks.
+s05_1|Number one: C T M C rolls the dice.
+s05_2|Random hops at random times, so no signal can time it.
+s06_1|Number two: the Index keeps a to-do list.
+s06_2|Bands that look busy, or have waited too long, jump to the top.
+s07_1|Number three: the Bandit treats every band like a slot machine.
+s07_2|Keep playing the winners, and now and then, try a new one.
+s08_1|Number four: Q-learning keeps a cheat sheet.
+s08_2|It remembers which move worked in each situation, even moves that only pay off later.
+s09_1|Number five: D Q N swaps the cheat sheet for a neural network.
+s09_2|It scores all sixteen bands at once.
+s10_1|And number six: P P O spins a prize wheel.
+s10_2|The slices that catch signals keep getting bigger.
+s11_1|They practice on two kinds of data: signal worlds from our own simulator, and the Alan Turing Institute's synthetic radar dataset.
+s11_2|Then they're tested on runs they have never seen.
+s11_3|And training is quick. On an ordinary laptop, the Bandit learns in about eighty seconds.
+s11_4|Even P P O takes only about seven and a half minutes. The two rule-based methods need no training at all.
+s12_1|So, did it work?
+s12_2|In the rhythm trap, the dice and the to-do list found the hidden signal every single time.
+s12_3|On a busy night, the old sweep catches eleven of every hundred signal moments.
+s12_4|The Index catches thirteen. That's twenty-two percent more, with the exact same receiver.
+s12_5|And it still reaches ninety-seven percent of the emitters.
+s12_6|The Bandit catches even more, but it gets greedy. It camps on the busiest bands, and reaches only seventy-one percent of emitters.
+s12_7|And each decision takes about six milliseconds.
+s13_1|Same receiver. Same narrow window. Smarter choices.

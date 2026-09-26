@@ -1,0 +1,5 @@
+PUSHPAK — Smart Scan: The Animated Solution
+
+This 119-second narrated 2D film shows why a receiver must scan a wide spectrum through a narrow instantaneous window, then explains six scheduling approaches with moving visual examples. It follows the scan decision from evidence to retuning and shows two simulation input sources.
+
+The measured comparison is the documented held-out Scenario B result: Index detection probability 0.1334 versus fixed sweep 0.1092, a 22% relative increase, with both at 0.9667 emitter reach. Bandit's detection/coverage tradeoff is from a separate evaluation. Training wall time was not recorded comparably. The film presents simulation results, not a field RF demonstration.

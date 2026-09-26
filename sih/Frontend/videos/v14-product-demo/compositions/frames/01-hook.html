@@ -1,0 +1,196 @@
+<template>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  /* v14 local-font declarations: Windows-bundled faces that render in headless Chrome */
+  @font-face { font-family: 'Arial'; src: local('Arial'); }
+  @font-face { font-family: 'Arial Narrow'; src: local('Arial Narrow'); }
+  @font-face { font-family: 'Consolas'; src: local('Consolas'); }
+#root {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  container-type: size;
+  overflow: hidden;
+  background: transparent;
+}
+.\30 1-hook-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.\30 1-hook-shot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+}
+.\30 1-hook-shade {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 26, 49, 0.62);
+}
+.\30 1-hook-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 150px;
+}
+.\30 1-hook-eyebrow {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 28px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #E8B84B;
+  white-space: nowrap;
+}
+.\30 1-hook-eyebrow-mark {
+  color: #E8B84B;
+}
+.\30 1-hook-line {
+  font-family: "Arial", Georgia, "Palatino Linotype", serif;
+  font-weight: 400;
+  font-size: 7cqw;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: #E6EAF5;
+}
+.\30 1-hook-line-a {
+  margin-top: 2.5cqw;
+}
+.\30 1-hook-line-b {
+  color: #E8B84B;
+}
+.\30 1-hook-word {
+  display: inline-block;
+  will-change: transform;
+}
+.\30 1-hook-slot {
+  display: inline-block;
+  min-width: 2.9em;
+  text-align: left;
+  white-space: nowrap;
+  will-change: transform;
+}
+.\30 1-hook-chips {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2cqw;
+  margin-top: 3cqw;
+}
+.\30 1-hook-chip {
+  display: inline-block;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 2.2cqw;
+  line-height: 1;
+  color: #E6EAF5;
+  border: 1px solid rgba(230, 234, 245, 0.25);
+  border-radius: 0.8cqw;
+  padding: 0.8cqw 2cqw;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.\30 1-hook-chip-live {
+  border-color: rgba(93, 184, 114, 0.65);
+}
+.\30 1-hook-dot {
+  color: #5DB872;
+}
+</style>
+<div data-hf-id="hf-brri" id="root" data-composition-id="01-hook" data-start="0" data-duration="8.4" data-track-index="0" data-width="1920" data-height="1080">
+  <div data-hf-id="hf-tq5v" class="01-hook-bg clip" data-start="0" data-duration="8.4" data-track-index="0">
+    <img data-hf-id="hf-u3p4" class="01-hook-shot" src="assets/scroll-000.png" alt="">
+    <div data-hf-id="hf-mop7" class="01-hook-shade"></div>
+  </div>
+  <div data-hf-id="hf-ahuz" class="01-hook-stage clip" data-start="0" data-duration="8.4" data-track-index="1">
+    <div data-hf-id="hf-epk6" class="01-hook-eyebrow" id="01-hook-eyebrow"><span data-hf-id="hf-3lon" class="01-hook-eyebrow-mark">✱</span> Live receiver intelligence</div>
+    <div data-hf-id="hf-cf4w" class="01-hook-line 01-hook-line-a" id="01-hook-line-a"><span data-hf-id="hf-v4xn" class="01-hook-word" id="01-hook-w-the">THE</span> <span data-hf-id="hf-3mot" class="01-hook-word" id="01-hook-w-spectrum">SPECTRUM</span> <span data-hf-id="hf-pq0f" class="01-hook-word" id="01-hook-w-is">IS</span> <span data-hf-id="hf-jw7l" class="01-hook-word" id="01-hook-w-wide">WIDE.</span></div>
+    <div data-hf-id="hf-fyv0" class="01-hook-line 01-hook-line-b" id="01-hook-line-b"><span data-hf-id="hf-xar1" class="01-hook-word" id="01-hook-w-your">YOUR</span> <span data-hf-id="hf-ac29" class="01-hook-word" id="01-hook-w-receiver">RECEIVER</span> <span data-hf-id="hf-hesf" class="01-hook-word" id="01-hook-w-is2">IS</span> <span data-hf-id="hf-li8n" class="01-hook-slot" id="01-hook-slot-not"></span></div>
+    <div data-hf-id="hf-3xk1" class="01-hook-chips">
+      <span data-hf-id="hf-xhnn" class="01-hook-chip 01-hook-chip-live" id="01-hook-chip-live"><span data-hf-id="hf-5lrj" class="01-hook-dot">●</span> LIVE</span>
+      <span data-hf-id="hf-pjus" class="01-hook-chip" id="01-hook-chip-twice">proven TWICE</span>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+
+  var eyebrow = document.getElementById("01-hook-eyebrow");
+  var chipLive = document.getElementById("01-hook-chip-live");
+  var chipTwice = document.getElementById("01-hook-chip-twice");
+  var slotNot = document.getElementById("01-hook-slot-not");
+
+  /* Eyebrow index — first paint, hero visible well before t=0.5s */
+  tl.fromTo(eyebrow, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.1);
+
+  /* Scene 1 (0.0-2.5s): "THE SPECTRUM IS WIDE." per-word stagger.
+     dynamic-content-sequencing mechanics: starts pre-computed once, never in onUpdate. */
+  var LINE_A = [
+    { el: document.getElementById("01-hook-w-the"), start: 0.35 },
+    { el: document.getElementById("01-hook-w-spectrum"), start: 0.62 },
+    { el: document.getElementById("01-hook-w-is"), start: 0.89 },
+    { el: document.getElementById("01-hook-w-wide"), start: 1.2 }
+  ];
+  LINE_A.forEach(function (w) {
+    tl.fromTo(w.el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, w.start);
+  });
+
+  /* Scene 2 (2.5-5.5s): line two builds, "NOT." hard-cuts on the spoken "not". */
+  var LINE_B = [
+    { el: document.getElementById("01-hook-w-your"), start: 2.55 },
+    { el: document.getElementById("01-hook-w-receiver"), start: 2.78 },
+    { el: document.getElementById("01-hook-w-is2"), start: 3.01 }
+  ];
+  LINE_B.forEach(function (w) {
+    tl.fromTo(w.el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, w.start);
+  });
+
+  /* discrete-text-sequence mechanics: sparse { t, text } states, reverse-search
+     the latest passed entry, instant jump with no transition between states. */
+  var NOT_SEQUENCE = [
+    { t: 0.0, text: "" },
+    { t: 3.6, text: "NOT." }
+  ];
+  function notAt(time) {
+    for (var i = NOT_SEQUENCE.length - 1; i >= 0; i--) {
+      if (time >= NOT_SEQUENCE[i].t) return NOT_SEQUENCE[i].text;
+    }
+    return "";
+  }
+  var notDriver = { t: 0 };
+  var lastNot = "\u0000";
+  tl.to(notDriver, {
+    t: 8,
+    duration: 8,
+    ease: "none",
+    onUpdate: function () {
+      var s = notAt(notDriver.t);
+      if (s !== lastNot) {
+        slotNot.textContent = s;
+        lastNot = s;
+      }
+    }
+  }, 0);
+  /* Flash pop on the swapped token — the hard cut lands, then it settles. */
+  tl.fromTo(slotNot, { opacity: 0, scale: 1.35 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, 3.6);
+
+  /* Scene 2 close: LIVE + TWICE chips scale in with a smooth long-tail settle. */
+  tl.fromTo(chipLive, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 1.0, ease: "back.out(1.6)" }, 4.6);
+  tl.fromTo(chipTwice, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 1.0, ease: "back.out(1.6)" }, 5.2);
+
+  /* Scene 3 (5.5-8s): hold; one finite positional nudge on the TWICE chip, then still. */
+  tl.to(chipTwice, { x: 14, y: -8, duration: 0.45, ease: "power2.out" }, 6.6);
+
+  tl.to({}, { duration: 8 }, 0);
+  window.__timelines["01-hook"] = tl;
+})();
+</script>
+</template>

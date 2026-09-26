@@ -1,0 +1,44 @@
+<div class="cam" id="s01-cam">
+  {{svg src=assets/art/bg/night-sky.svg id=s01-sky class=bgimg}}
+  {{svg src=assets/art/bg/night-building.svg id=s01-bld class=bgimg}}
+  <!-- room numbers -->
+  <div class="abs" id="s01-nums" style="left:0;top:0;width:1920px;height:1080px">
+    <b class="roomnum" style="left:744px;top:204px">1</b><b class="roomnum" style="left:944px;top:204px">2</b><b class="roomnum" style="left:1144px;top:204px">3</b><b class="roomnum" style="left:1344px;top:204px">4</b>
+    <b class="roomnum" style="left:744px;top:374px">5</b><b class="roomnum" style="left:944px;top:374px">6</b><b class="roomnum" style="left:1144px;top:374px">7</b><b class="roomnum" style="left:1344px;top:374px">8</b>
+    <b class="roomnum" style="left:744px;top:544px">9</b><b class="roomnum" style="left:944px;top:544px">10</b><b class="roomnum" style="left:1144px;top:544px">11</b><b class="roomnum" style="left:1344px;top:544px">12</b>
+    <b class="roomnum" style="left:744px;top:714px">13</b><b class="roomnum" style="left:944px;top:714px">14</b><b class="roomnum" style="left:1144px;top:714px">15</b><b class="roomnum" style="left:1344px;top:714px">16</b>
+  </div>
+  <!-- intruder hiding in room 11 (window glass 1170-1300 x 570-670) -->
+  <div class="abs" id="s01-room11" style="left:1170px;top:570px;width:130px;height:100px;overflow:hidden;border-radius:4px">
+    <div class="abs" id="s01-torchglow" style="left:-50px;top:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(255,224,102,0.95) 0%,rgba(255,183,3,0.6) 40%,rgba(255,183,3,0) 70%);opacity:0"></div>
+    <div class="abs" id="s01-intr-wrap" style="left:22px;top:10px;width:84px;height:146px;opacity:0">{{intruder id=s01-i}}</div>
+  </div>
+  <svg class="abs" id="s01-beam-svg" viewBox="0 0 1920 1080" style="left:0;top:0;width:1920px;height:1080px;overflow:visible">
+    <polygon id="s01-beam" points="580,726 760,220 1110,220 1110,340 627,760" fill="#FFF3B0" fill-opacity="0.34"/>
+  </svg>
+  {{svg src=assets/art/tech/booth.svg id=s01-booth class=abs style="left:40px;top:560px;width:330px"}}
+  <div class="abs" id="s01-g-wrap" style="left:330px;top:596px;width:190px;height:380px">{{guard id=s01-g}}</div>
+  {{svg src=assets/art/tech/searchlight.svg id=s01-sl class=abs style="left:470px;top:700px;width:220px"}}
+</div>
+<div class="hud">
+  <div class="tis-tag" id="s01-tag">{{icon location-pin}}<div><span class="lbl">Previously:</span><span class="val">The guard who kept missing</span></div></div>
+  <div class="tis-arrow" id="s01-lbl-sl" style="left:110px;top:400px"><span>1 searchlight</span>
+    <svg viewBox="0 0 160 240" style="left:330px;top:66px;width:160px;height:240px"><path d="M30 12 Q70 110 118 200" fill="none" stroke="#FFC43D" stroke-width="14" stroke-linecap="round"/><polygon points="94,196 136,232 138,176" fill="#FFC43D"/></svg>
+  </div>
+  <div class="tis-arrow" id="s01-lbl-rooms" style="left:1640px;top:300px"><span>16</span><span>rooms</span></div>
+  <div class="tis-stamp" id="s01-stamp" style="left:1080px;top:760px">MISSED!</div>
+  <div class="tis-bubble" id="s01-bubble" style="left:930px;top:210px">Not AGAIN?!</div>
+</div>
+<style>
+  .roomnum { position: absolute; display: block; width: 46px; height: 46px; border-radius: 50%; background: #FFC43D; color: #1F2340; font: 800 24px/46px "Montserrat"; text-align: center; box-shadow: 0 4px 0 rgba(20, 18, 60, 0.35); opacity: 0; }
+</style>
+<sfx src="whoosh" at="0.1" vol="0.35"></sfx>
+<sfx src="pop" at="s01_1+0.3" vol="0.45"></sfx>
+<sfx src="clunk" at="s01_2+0.05" vol="0.5"></sfx>
+<sfx src="sweep_tick" at="s01_2+1.0" vol="0.4"></sfx>
+<sfx src="switch" at="s01_2@end-1.25" vol="0.6"></sfx>
+<sfx src="zap" at="s01_2@end-1.22" vol="0.45"></sfx>
+<sfx src="whoosh" at="s01_2@end-0.75" vol="0.55"></sfx>
+<sfx src="stamp" at="s01_2@end+0.1" vol="0.7"></sfx>
+<sfx src="fail" at="s01_3@end-0.2" vol="0.4"></sfx>
+<sfx src="pop" at="s01_3@end+0.15" vol="0.55"></sfx>

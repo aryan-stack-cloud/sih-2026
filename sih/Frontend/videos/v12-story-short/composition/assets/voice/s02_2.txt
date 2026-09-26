@@ -1,0 +1,1 @@
+A real receiver has the same problem: it hears only a narrow slice of the spectrum at once.

@@ -1,0 +1,9 @@
+One guard. Sixteen dark rooms. One narrow light.
+
+An intruder only shows himself when his torch is on, and the guard can watch two rooms at a
+time. Now swap the building for the radio spectrum: every room is a frequency band, and the guard
+is an ES receiver that hears 2 of 16 bands at once. Signals appear while it is looking elsewhere.
+
+So how does it decide where to look, and when?
+
+SIH26055 · Smart Scan Strategy for Electronic Warfare · Team PUSHPAK · simulation only

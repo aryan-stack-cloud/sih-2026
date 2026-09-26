@@ -1,0 +1,71 @@
+[span] Team Pushpak
+[h1] Spectrum Scan Scheduler
+[span] Research prototype
+[p] A receiver that can hear two bands at a time, deciding where to listen next — and learning to do it better than a fixed sweep.
+[p] Simulation only · no RF hardware · no interception · no jamming
+[div] System status
+[span] Backend
+[span] Scheduler
+[span] Periodicity
+[span] Mission views
+[button] Dashboard
+[button] Simulations
+[button] Raw stream
+[button] Experiments
+[button] Models
+[button] Health
+[p] Live receiver intelligence
+[p] 01 / Observe · Decide · Adapt
+[h2] The spectrum is wide.
+[em] Your receiver is not.
+[p] The scheduler makes every listening window count by selecting the next frequency band from information learned in previous scans.
+[b] K = 2
+[span] bands heard at once
+[span] bands under surveillance
+[span] Receiver aperture
+[strong] K = 2
+[div] Observing the highlighted bands now
+[p] Configure mission
+[h2] What the receiver is hearing
+[p] Frequency runs across, time runs down, newest at the top. The bracket is the receiver’s aperture — the only bands it can hear at this instant. Everything amber is a transmission going past uncaught.
+[span] Designed scheduler
+[strong] Index scheduler
+[p] Ranks bands by revisit pressure, occupancy belief and threat value.
+[label] Scenario
+[label] Compare against
+[option] Random
+[option] Bandit
+[option] Q-learning
+[option] DQN
+[option] PPO
+[option] Index (SCT)
+[option] CTMC floor
+[label] Speed
+[option] 0.5×
+[option] Max
+[button] Run live comparison
+[p] Scenario
+[p] B - Mostly Periodic
+[p] The headline scenario. Round-robin systematically polls periodic bands in their OFF phase; periodicity features should cut detection latency (PRD DoD item 8).
+[p] Waiting for the receiver. Start a run to watch the spectrum.
+[p] This run
+[p] One run of
+[p] Index (SCT)
+[p] . High-priority detection is shown with counts in the comparison below; a one-episode result is illustrative, not a stable estimate.
+[div] Spectrum heard
+[div] of all transmitting band-moments
+[div] False alarms
+[div] heard something that was not there
+[div] Listening efficiency
+[div] time spent on a live band
+[div] Interceptions
+[div] transmissions caught so far
+[p] Head to head
+[h2] Index (SCT)
+[h2] vs the fixed sweep
+[p] Both run the same scenario on the same seeds, so the spectrum is identical and the only difference is where each chose to listen.
+[p] Press
+[strong] Run the demo
+[p] to race
+[p] Index (SCT)
+[p] against the fixed sweep.

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 620">
+  <defs>
+    <filter id="cyan-glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <ellipse cx="300" cy="560" rx="210" ry="16" fill="rgba(20,18,60,0.18)"/>
+  <g id="robot-antenna-light" data-pivot="none" filter="url(#cyan-glow)">
+    <circle cx="300" cy="62" r="22" fill="#3DDCFF"/>
+  </g>
+  <path d="M300 84v44" fill="none" stroke="#5A62B5" stroke-width="12" stroke-linecap="round"/>
+  <g id="robot-nodes" data-pivot="none">
+    <g fill="none" stroke="#3DDCFF" stroke-width="8" stroke-linecap="round" opacity="0.76">
+      <path d="M170 174 250 132 330 178 420 142 460 232 390 292 280 270 190 304 206 238Z"/>
+      <path d="M250 132 280 270M420 142 390 292M330 178 190 304M170 174 390 292M460 232 280 270"/>
+    </g>
+    <g fill="#3DDCFF" filter="url(#cyan-glow)">
+      <circle id="robot-node-1" cx="170" cy="174" r="15"/><circle id="robot-node-2" cx="250" cy="132" r="15"/>
+      <circle id="robot-node-3" cx="330" cy="178" r="15"/><circle id="robot-node-4" cx="420" cy="142" r="15"/>
+      <circle id="robot-node-5" cx="460" cy="232" r="15"/><circle id="robot-node-6" cx="390" cy="292" r="15"/>
+      <circle id="robot-node-7" cx="280" cy="270" r="15"/><circle id="robot-node-8" cx="190" cy="304" r="15"/>
+    </g>
+    <circle cx="206" cy="238" r="15" fill="#3DDCFF" filter="url(#cyan-glow)"/>
+  </g>
+  <path d="M150 316c0-54 67-98 150-98s150 44 150 98v118c0 42-34 76-76 76H226c-42 0-76-34-76-76Z" fill="#2D3A6B"/>
+  <path d="M176 330c0-45 55-82 124-82s124 37 124 82v38H176Z" fill="#FDFCF8"/>
+  <g id="robot-eye-l" data-pivot="none">
+    <rect x="202" y="332" width="74" height="58" rx="28" fill="#3DDCFF"/>
+    <circle cx="239" cy="361" r="12" fill="#F7F4FF"/>
+  </g>
+  <g id="robot-eye-r" data-pivot="none">
+    <rect x="324" y="332" width="74" height="58" rx="28" fill="#3DDCFF"/>
+    <circle cx="361" cy="361" r="12" fill="#F7F4FF"/>
+  </g>
+  <path d="M258 438c25 24 59 24 84 0" fill="none" stroke="#2EC4B6" stroke-width="16" stroke-linecap="round"/>
+  <path d="M186 510h228l48 62H138Z" fill="#4B519A"/>
+</svg>

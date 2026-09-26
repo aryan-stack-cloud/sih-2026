@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820">
+  <ellipse id="whiteboard-shadow" cx="600" cy="760" rx="420" ry="28" fill="#14123C" fill-opacity=".18"/>
+  <g id="whiteboard-stand">
+    <path d="M158 662h90l20 74H136Z" fill="#2D3A6B"/>
+    <path d="M952 662h90l24 74h-134Z" fill="#1F2340"/>
+    <rect x="126" y="726" width="144" height="28" rx="14" fill="#1F2340"/>
+    <rect x="930" y="726" width="144" height="28" rx="14" fill="#1F2340"/>
+    <circle cx="170" cy="746" r="14" fill="#2D3A6B"/>
+    <circle cx="1030" cy="746" r="14" fill="#5A62B5"/>
+  </g>
+  <g id="whiteboard-frame">
+    <rect x="54" y="62" width="1092" height="660" rx="26" fill="#5A62B5"/>
+    <path d="m1070 62 76 24v610l-76 26Z" fill="#2D3A6B"/>
+    <rect id="wb-surface" x="60" y="82" width="1080" height="620" rx="14" fill="#FDFCF8"/>
+    <path d="M60 658h1080v36H60Z" fill="#D8DEEA"/>
+  </g>
+  <g id="whiteboard-tray">
+    <rect x="334" y="690" width="532" height="34" rx="15" fill="#1F2340"/>
+    <rect x="358" y="679" width="174" height="26" rx="12" fill="#1F9E89"/>
+    <rect x="358" y="679" width="54" height="26" rx="12" fill="#2EC4B6"/>
+    <path d="M506 679v26" stroke="#FDFCF8" stroke-width="5" stroke-linecap="round"/>
+    <rect x="556" y="679" width="174" height="26" rx="12" fill="#E63946"/>
+    <rect x="704" y="679" width="54" height="26" rx="12" fill="#FFC43D"/>
+    <path d="M758 679v26" stroke="#FDFCF8" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <g id="whiteboard-screws" fill="#1F2340">
+    <circle cx="70" cy="78" r="7"/><circle cx="1130" cy="78" r="7"/><circle cx="70" cy="706" r="7"/><circle cx="1130" cy="706" r="7"/>
+  </g>
+</svg>

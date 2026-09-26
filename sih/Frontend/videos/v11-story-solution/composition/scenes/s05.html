@@ -1,0 +1,38 @@
+<div class="cam" id="s05-cam">
+  <div class="abs" style="left:0;top:0;width:1920px;height:1080px;background:radial-gradient(ellipse at 45% 55%,#3D3C8F 0%,#2B2A6E 45%,#1D1B4F 90%)"></div>
+  <img class="bgimg" src="assets/art/bg/night-sky.svg" alt="" style="opacity:0.5">
+  <div class="bandrow" id="s05-row">
+    <div class="bands">
+      <div class="band"><i>1</i></div><div class="band"><i>2</i></div><div class="band"><i>3</i></div><div class="band"><i>4</i></div><div class="band"><i>5</i></div><div class="band"><i>6</i></div><div class="band"><i>7</i></div><div class="band"><i>8</i></div>
+      <div class="band"><i>9</i></div><div class="band"><i>10</i></div><div class="band"><i>11</i></div><div class="band"><i>12</i></div><div class="band"><div class="flash" id="s05-f13"></div><div class="hit" id="s05-h13"></div><i>13</i></div><div class="band"><div class="flash" id="s05-f14"></div><div class="hit" id="s05-h14"></div><i>14</i></div><div class="band"><i>15</i></div><div class="band"><i>16</i></div>
+    </div>
+    <div class="win2" id="s05-win" style="left:-11px"></div>
+  </div>
+  <div class="dice-shadow" id="s05-dshadow" style="left:500px;top:820px"></div>
+  <div class="dice3d" id="s05-dice" style="left:520px;top:450px">
+    <div class="cube" id="s05-cube">
+      <div class="face f1"><i class="pip red"></i></div>
+      <div class="face f2 s"><i class="pip tl"></i><i class="pip br"></i></div>
+      <div class="face f3 d"><i class="pip tl"></i><i class="pip c"></i><i class="pip br"></i></div>
+      <div class="face f4 s"><i class="pip tl"></i><i class="pip tr"></i><i class="pip bl"></i><i class="pip br"></i></div>
+      <div class="face f5"><i class="pip tl"></i><i class="pip tr"></i><i class="pip c"></i><i class="pip bl"></i><i class="pip br"></i></div>
+      <div class="face f6 d"><i class="pip tl"></i><i class="pip tr"></i><i class="pip ml"></i><i class="pip mr"></i><i class="pip bl"></i><i class="pip br"></i></div>
+    </div>
+  </div>
+  <div class="abs" id="s05-i-wrap" style="left:1300px;top:470px;width:280px;height:485px">{{intruder id=s05-i}}</div>
+  {{svg src=assets/art/props/metronome.svg id=s05-met class=abs style="left:1580px;top:600px;width:190px"}}
+  <div class="tis-bubble tail-right" id="s05-bub" style="left:1000px;top:300px">Wait... WHERE is it going?!</div>
+  <div class="tis-stamp green" id="s05-stamp" style="left:1180px;top:330px">CAUGHT!</div>
+  <div class="tis-numcard" id="s05-num"><b>#1</b></div>
+</div>
+<div class="hud">
+  <div class="tis-name" id="s05-name"><div><b>CTMC</b><small>Random hops at random times</small></div><i class="tis-chip">Follows rules</i></div>
+</div>
+<sfx src="whoosh_big" at="0.02" vol="0.45"></sfx>
+<sfx src="dice_shake" at="1.15" vol="0.45"></sfx>
+<sfx src="dice_throw" at="1.55" vol="0.5"></sfx>
+<sfx src="dice_throw" at="2.65" vol="0.45"></sfx>
+<sfx src="dice_throw" at="3.9" vol="0.45"></sfx>
+<sfx src="success" at="4.2" vol="0.4"></sfx>
+<sfx src="dice_throw" at="5.35" vol="0.4"></sfx>
+<sfx src="pop" at="s05_2+1.5" vol="0.5"></sfx>

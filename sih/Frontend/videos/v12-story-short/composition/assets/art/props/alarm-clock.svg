@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 420">
+  <ellipse cx="200" cy="374" rx="126" ry="18" fill="rgba(20,18,60,0.18)"/>
+  <g id="clock-bells" data-pivot="200 112">
+    <path d="M92 124C42 107 31 63 60 35c23-22 57-18 78 9Z" fill="#E0457B"/>
+    <path d="M308 124c50-17 61-61 32-89-23-22-57-18-78 9Z" fill="#E0457B"/>
+    <circle cx="72" cy="74" r="13" fill="#F7F4FF"/>
+    <circle cx="328" cy="74" r="13" fill="#F7F4FF"/>
+  </g>
+  <path d="M66 226c0-75 60-136 134-136s134 61 134 136-60 136-134 136S66 301 66 226Z" fill="#2D3A6B"/>
+  <circle cx="200" cy="222" r="112" fill="#FDFCF8"/>
+  <circle cx="200" cy="222" r="92" fill="#EFE3CF"/>
+  <g fill="#3A86FF">
+    <rect x="194" y="143" width="12" height="22" rx="6"/>
+    <rect x="194" y="279" width="12" height="22" rx="6"/>
+    <rect x="121" y="216" width="22" height="12" rx="6"/>
+    <rect x="257" y="216" width="22" height="12" rx="6"/>
+  </g>
+  <g id="clock-hand-hour" data-pivot="200 222">
+    <path d="M200 222 170 182" fill="none" stroke="#1F2340" stroke-width="16" stroke-linecap="round"/>
+  </g>
+  <g id="clock-hand-min" data-pivot="200 222">
+    <path d="M200 222 248 162" fill="none" stroke="#2EC4B6" stroke-width="12" stroke-linecap="round"/>
+  </g>
+  <circle cx="200" cy="222" r="17" fill="#FFC43D"/>
+  <path d="m158 340 84 0 30 26H128Z" fill="#4B519A"/>
+</svg>

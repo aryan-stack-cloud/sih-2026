@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 160">
+  <ellipse id="splash-ring" cx="110" cy="135" rx="94" ry="17" fill="none" stroke="#3DDCFF" stroke-width="7" opacity="0.6"/>
+  <path d="M35 131q15-8 24-30l8-25 20 30q8 12 17-6l8-43 19 43q7 16 17 4l18-28 7 27q7 21 23 28-38 9-78 9H94q-36 0-59-9Z" fill="#3DDCFF"/>
+  <path d="M54 126q18-8 27-29l6 10q8 17 22 8l6-26 11 27q8 17 25 1l13-15q8 20 25 24-65 12-135 0Z" fill="#F7F4FF" opacity="0.8"/>
+  <path d="M60 133q48 12 100 0-34 8-100 0Z" fill="#FFF3B0" opacity="0.46"/>
+  <path id="splash-drop-1" d="M24 82q-11 15 0 19 12-4 0-19Z" fill="#3DDCFF"/>
+  <path id="splash-drop-2" d="M55 45q-12 17 0 22 13-5 0-22Z" fill="#F7F4FF"/>
+  <path id="splash-drop-3" d="M91 22q-10 15 0 19 11-4 0-19Z" fill="#3DDCFF"/>
+  <path id="splash-drop-4" d="M142 23q-10 15 0 19 11-4 0-19Z" fill="#F7F4FF"/>
+  <path id="splash-drop-5" d="M179 44q-12 17 0 22 13-5 0-22Z" fill="#3DDCFF"/>
+  <path id="splash-drop-6" d="M205 82q-11 15 0 19 12-4 0-19Z" fill="#F7F4FF"/>
+</svg>

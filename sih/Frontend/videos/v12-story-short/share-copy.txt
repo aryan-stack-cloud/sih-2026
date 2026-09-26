@@ -1,0 +1,18 @@
+PUSHPAK · Smart Scan: the solution in under 2 minutes (v12)
+
+Our night guard has one searchlight and 16 rooms, and intruders who flash a torch for a split second. A real EW receiver has the same problem: it hears only a narrow slice of the spectrum at once. We can't make the window bigger, but we can make it smarter.
+
+Every 10 ms our receiver picks its next 2 bands. We built six ways to pick:
+- Rules: CTMC (roll the dice) and Index (a to-do list of busy and overdue bands)
+- Learn from experience: Bandit (every band is a slot machine; a catch is a win, it keeps score, plays the winners and now and then tries another) and Q-learning (scores every move in every situation, and credits moves that set up a catch a few steps later)
+- Neural networks: DQN (scores all 16 bands at once) and PPO (a prize wheel whose winning slices grow)
+
+Data: our simulator's signal worlds plus recordings from the Alan Turing Institute's 70 GB synthetic radar dataset (9,000 recordings). Tested on 50 recordings the models had never seen. Two days of training runs in all. Each final model trains in under an hour on one laptop (Bandit 5 min 51 s, Q-learning 6 min 47 s, DQN about 41 min, PPO about 42 min).
+
+Results (simulation):
+- Rhythm trap: the fixed sweep caught the hidden signal in 0 of 4 runs; CTMC and Index caught it in 4 of 4
+- Busy night (Scenario B): the Index catches 22% more signal moments, with the same 97% reach
+- Turing data, same 50 unseen recordings: every learner more than doubles the fixed sweep. Bandit +147%, Q-learning +120%, DQN +146%, PPO +172%
+- The price: the learners camp on busy bands and reach fewer emitters (58-72% vs 93%)
+
+Same receiver. Same narrow window. Smarter choices.

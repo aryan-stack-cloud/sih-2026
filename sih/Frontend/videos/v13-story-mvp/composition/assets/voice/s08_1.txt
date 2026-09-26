@@ -1,0 +1,1 @@
+Number two: Q-learning. Picture a maze where every move gets a score.

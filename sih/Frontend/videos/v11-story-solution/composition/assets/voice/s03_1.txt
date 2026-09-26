@@ -1,0 +1,1 @@
+Normal receivers sweep in a fixed order, like the hand of a clock.

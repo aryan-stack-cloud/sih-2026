@@ -1,0 +1,1 @@
+Two days of training runs in all, yet each final model trains in under an hour.

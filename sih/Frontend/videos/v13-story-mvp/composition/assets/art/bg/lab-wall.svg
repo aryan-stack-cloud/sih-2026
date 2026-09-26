@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <radialGradient id="lab-window-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#3D3C8F" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#3D3C8F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g id="lab-wall-far">
+    <rect width="1920" height="1080" fill="#EFE3CF"/>
+    <rect y="1000" width="1920" height="80" fill="#B98B5E"/>
+    <rect y="1000" width="1920" height="18" fill="#8C5A3C"/>
+    <g fill="#D9C7AA" opacity="0.65">
+      <rect x="0" y="0" width="18" height="1080"/><rect x="250" y="0" width="10" height="1000"/><rect x="1348" y="0" width="10" height="1000"/><rect x="1902" y="0" width="18" height="1080"/>
+      <rect y="992" width="1920" height="8" fill="#D9C7AA"/>
+    </g>
+    <g id="lab-window">
+      <rect x="1390" y="132" width="470" height="560" rx="28" fill="#8C5A3C"/>
+      <rect x="1416" y="158" width="418" height="508" rx="14" fill="#1D1B4F"/>
+      <ellipse cx="1625" cy="440" rx="360" ry="420" fill="url(#lab-window-glow)"/>
+      <circle cx="1506" cy="250" r="6" fill="#F7F4FF"/><circle cx="1770" cy="320" r="5" fill="#F7F4FF"/>
+      <path fill="#2B2A6E" d="M1416 560c86-58 142-34 216-8 76 26 130 12 202-24v138H1416Z"/>
+    </g>
+  </g>
+  <g id="lab-wall-mid">
+    <g id="left-equipment-shelf">
+      <rect x="46" y="300" width="180" height="22" rx="11" fill="#8C5A3C"/><rect x="46" y="520" width="180" height="22" rx="11" fill="#8C5A3C"/><rect x="46" y="760" width="180" height="22" rx="11" fill="#8C5A3C"/>
+      <g id="oscilloscope"><rect x="66" y="198" width="140" height="102" rx="18" fill="#1F2340"/><rect x="84" y="218" width="104" height="56" rx="8" fill="#16204A"/><path fill="#3DDCFF" d="M94 268l20-32 20 20 18-26 26 38H94Z"/><circle cx="100" cy="286" r="7" fill="#2DB86B"/><circle cx="126" cy="286" r="7" fill="#FFC43D"/></g>
+      <g id="spectrum-analyser"><rect x="64" y="398" width="144" height="122" rx="18" fill="#1F2340"/><rect x="82" y="418" width="108" height="66" rx="8" fill="#16204A"/><g fill="#3DDCFF"><rect x="92" y="452" width="12" height="22" rx="4"/><rect x="114" y="434" width="12" height="40" rx="4"/><rect x="136" y="442" width="12" height="32" rx="4"/><rect x="158" y="420" width="12" height="54" rx="4"/></g><circle cx="104" cy="502" r="7" fill="#2DB86B"/><circle cx="132" cy="502" r="7" fill="#FFC43D"/></g>
+      <g id="cable-coils"><path fill="#2D3A6B" fill-rule="evenodd" d="M92 612a54 54 0 1 0 0 108 54 54 0 1 0 0-108Zm0 18a36 36 0 1 1 0 72 36 36 0 1 1 0-72Z"/><path fill="#1F2340" fill-rule="evenodd" d="M164 630a46 46 0 1 0 0 92 46 46 0 1 0 0-92Zm0 16a30 30 0 1 1 0 60 30 30 0 1 1 0-60Z"/><path fill="#3DDCFF" d="M88 660h10v12H88Z"/></g>
+      <g id="small-plant"><rect x="114" y="880" width="52" height="70" rx="14" fill="#A86F4C"/><path fill="#2DB86B" d="M140 882c-50-14-60-58-58-78 38 4 66 28 58 78Z"/><path fill="#2DB86B" d="M140 882c48-22 76-56 72-82-38 8-72 34-72 82Z"/><path fill="#1F9E89" d="M140 882c-6-52 18-82 44-96 8 32-4 72-44 96Z"/></g>
+    </g>
+    <g id="right-equipment-shelf">
+      <rect x="1400" y="740" width="450" height="24" rx="12" fill="#8C5A3C"/>
+      <rect x="1440" y="670" width="180" height="70" rx="18" fill="#1F2340"/><rect x="1460" y="686" width="140" height="34" rx="8" fill="#16204A"/><g fill="#3DDCFF"><rect x="1472" y="696" width="18" height="14" rx="4"/><rect x="1500" y="688" width="18" height="22" rx="4"/><rect x="1528" y="692" width="18" height="18" rx="4"/><rect x="1556" y="682" width="18" height="28" rx="4"/></g>
+      <rect x="1664" y="690" width="130" height="50" rx="14" fill="#D8DEEA"/><circle cx="1690" cy="714" r="10" fill="#2DB86B"/><circle cx="1720" cy="714" r="10" fill="#FFC43D"/>
+    </g>
+    <g id="lab-clock">
+      <circle cx="1700" cy="96" r="62" fill="#D9C7AA"/><circle cx="1700" cy="96" r="48" fill="#FDFCF8"/>
+      <g fill="#1F2340"><rect x="1694" y="54" width="12" height="16" rx="6"/><rect x="1694" y="122" width="12" height="16" rx="6"/><rect x="1658" y="90" width="16" height="12" rx="6"/><rect x="1726" y="90" width="16" height="12" rx="6"/></g>
+      <g id="lab-clock-hand" data-pivot="1700 96"><rect x="1694" y="62" width="12" height="54" rx="6" fill="#1F2340"/><circle cx="1700" cy="96" r="9" fill="#E0457B"/></g>
+    </g>
+  </g>
+  <g id="lab-wall-near">
+    <rect x="0" y="1000" width="1920" height="80" fill="#B98B5E"/>
+    <path fill="#8C5A3C" opacity="0.35" d="M0 1030h1920v10H0ZM0 1060h1920v10H0Z"/>
+    <rect x="0" y="964" width="250" height="36" rx="18" fill="#8C5A3C"/><rect x="1348" y="964" width="572" height="36" rx="18" fill="#8C5A3C"/>
+  </g>
+</svg>

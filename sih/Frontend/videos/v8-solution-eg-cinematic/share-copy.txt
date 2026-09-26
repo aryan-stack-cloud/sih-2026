@@ -1,0 +1,9 @@
+﻿V8 — The Guard and the Spectrum (cinematic)
+
+Narrated: v8-solution-eg-cinematic.mp4
+Music + SFX only: v8-solution-eg-cinematic-no-voice.mp4
+Poster: v8-poster.png
+
+40 seconds · 1920×1080 · 30 fps.
+Scene upgrades: perspective exterior camera, tracking intruder entry, torch-switch insert, richer character details and lighting, volumetric observation beam, moving shadows, guard reaction and rack focus.
+Technical mapping and final RF section remain grounded in the source notes in composition/BRIEF.md.

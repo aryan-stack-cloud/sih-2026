@@ -1,0 +1,33 @@
+s01_1|Remember our night guard?
+s01_2|One searchlight, sixteen rooms, and intruders who flash a torch for a split second.
+s01_3|By the time his light gets there, they're gone.
+s02_2|A real receiver has the same problem: it hears only a narrow slice of the spectrum at once.
+s02_5|We can't make the light bigger. But we can make it smarter.
+s03_1|Normal receivers sweep in a fixed order, like the hand of a clock.
+s03_2|So a signal on the same rhythm can dodge that sweep forever.
+s04_1|So every ten milliseconds, our receiver looks, learns, and picks its next two bands.
+s04_2|We built six different ways to make that pick.
+s04_3|Two learn from experience, two use neural networks, and two follow simple rules.
+s07_1|Number one: the Bandit. Every band is a fishing spot.
+s07_2|Each signal it catches is a fish, and it keeps a tally for every spot.
+s07_3|Mostly, it fishes where it has caught the most.
+s07_4|But now and then, it tries a new spot, in case the fish have moved.
+s08_1|Number two: Q-learning. Picture a maze where every move gets a score.
+s08_2|The first time it reaches a signal, only the last move gets credit.
+s08_3|Next time, the move before that gets credit too, because it led there.
+s08_4|Run after run, the credit flows back, until the whole path lights up.
+s09_1|Number three: D Q N swaps that score map for a neural network.
+s09_2|It scores all sixteen bands at once.
+s10_1|Number four: P P O spins a prize wheel.
+s10_2|The slices that catch signals keep getting bigger.
+s05_1|Number five: C T M C rolls the dice.
+s05_2|Random hops at random times, so no signal can time it.
+s06_1|And number six: the Index keeps a to-do list.
+s06_2|Bands that look busy, or have waited too long, jump to the top.
+s11_1|They trained on our simulator, and on recordings from the Alan Turing Institute's seventy-gigabyte radar dataset, then faced ones they'd never seen.
+s11_2|Two days of training: thirty-four training runs, and nearly two million practice steps for the neural networks.
+s12_1|So, did it work?
+s12_2|On a busy night, the Index catches twenty-two percent more, with the same reach.
+s12_3|And on the Turing data, all four learners more than double the old sweep's catch.
+s12_4|The price: they camp on busy bands, and reach fewer emitters.
+s13_1|Same receiver. Same narrow window. Smarter choices.

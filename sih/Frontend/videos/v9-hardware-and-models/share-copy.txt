@@ -1,0 +1,3 @@
+PUSHPAK | Smart Scan Strategy — The Solution
+
+The receiver can hear only a narrow part of the spectrum at one instant. This 2D technical chapter shows the RF hardware path, then how six scheduling approaches decide where a virtual receiver scans next. It closes with a measured Scenario B comparison: Index raises detection probability from 0.1092 to 0.1334 while preserving distinct-emitter coverage at 0.9667. Results are from simulation; no field RF hardware is connected.

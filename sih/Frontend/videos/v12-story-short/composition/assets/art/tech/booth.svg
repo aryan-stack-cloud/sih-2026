@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 620">
+  <ellipse id="booth-shadow" cx="260" cy="574" rx="206" ry="22" fill="#14123C" fill-opacity=".18"/>
+  <g id="booth-body">
+    <path d="M74 158h372v398H74Z" fill="#2D3A6B"/>
+    <path d="m386 158 60 38v360h-60Z" fill="#232E57"/>
+    <path d="M74 158h372v28H74Z" fill="#4B519A"/>
+    <path d="M74 524h372v32H74Z" fill="#1F2340"/>
+  </g>
+  <g id="booth-roof">
+    <path d="m52 120 58-56h300l58 56v40H52Z" fill="#4B519A"/>
+    <path d="m410 64 58 56v40h-58Z" fill="#232E57"/>
+    <path d="M52 160h416v28H52Z" fill="#2D3A6B"/>
+    <path d="M236 64h48v-28h-48Z" fill="#1F2340"/>
+    <circle cx="260" cy="34" r="22" fill="#5A62B5"/>
+    <path d="M260 12v44M238 34h44" stroke="#2D3A6B" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <rect id="booth-window" x="102" y="210" width="286" height="196" rx="10" fill="#20224A"/>
+  <g id="booth-window-frame">
+    <path d="M94 198h302v28H94Z" fill="#5A62B5"/>
+    <path d="M94 390h302v28H94Z" fill="#4B519A"/>
+    <rect x="94" y="198" width="28" height="220" rx="8" fill="#5A62B5"/>
+    <rect x="368" y="198" width="28" height="220" rx="8" fill="#4B519A"/>
+    <rect x="233" y="198" width="24" height="220" fill="#4B519A"/>
+    <path d="M94 294h302v18H94Z" fill="#4B519A"/>
+  </g>
+  <g id="booth-door">
+    <rect x="402" y="286" width="44" height="200" rx="8" fill="#1F2340"/>
+    <rect x="412" y="302" width="24" height="144" rx="6" fill="#3A3F7A"/>
+    <circle cx="414" cy="386" r="5" fill="#FFC43D"/>
+  </g>
+  <g id="booth-lamp">
+    <path d="M404 180h54l-8 34h-38Z" fill="#1F2340"/>
+    <path d="M410 180h42l-7 22h-28Z" fill="#FFF3B0"/>
+    <circle cx="431" cy="216" r="8" fill="#FFC43D"/>
+  </g>
+</svg>

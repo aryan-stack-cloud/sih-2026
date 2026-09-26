@@ -1,0 +1,29 @@
+<div class="cam" id="s10-cam">
+  <div class="abs" style="left:0;top:0;width:1920px;height:1080px;background:radial-gradient(ellipse at 42% 55%,#3D3C8F 0%,#2B2A6E 45%,#1D1B4F 90%)"></div>
+  <img class="bgimg" src="assets/art/bg/night-sky.svg" alt="" style="opacity:0.45">
+  <div class="bandrow" id="s10-row">
+    <div class="bands">
+      <div class="band"><i>1</i></div><div class="band"><i>2</i></div><div class="band"><i>3</i></div><div class="band"><i>4</i></div><div class="band"><i>5</i></div><div class="band"><i>6</i></div><div class="band"><i>7</i></div><div class="band"><i>8</i></div>
+      <div class="band"><i>9</i></div><div class="band"><i>10</i></div><div class="band"><div class="hit" id="s10-h11"></div><i>11</i></div><div class="band"><div class="hit" id="s10-h12"></div><i>12</i></div><div class="band"><i>13</i></div><div class="band"><i>14</i></div><div class="band"><i>15</i></div><div class="band"><i>16</i></div>
+    </div>
+    <div class="win2" id="s10-win" style="left:181px"></div>
+  </div>
+  {{gen wheelstand id=s10-stand part=back class=abs style="left:480px;top:250px;width:620px;height:726px"}}
+  <div class="abs" id="s10-wheels" style="left:524px;top:294px;width:532px;height:532px">
+    {{gen wheel id=s10-w1 n=8 labels=1–2,3–4,5–6,7–8,9–10,11–12,13–14,15–16 class=abs style="left:0;top:0;width:532px;height:532px"}}
+    {{gen wheel id=s10-w2 n=8 weights=0.6,0.6,1.4,0.6,0.8,2.6,0.8,0.6 labels=1–2,3–4,5–6,7–8,9–10,11–12,13–14,15–16 class=abs style="left:0;top:0;width:532px;height:532px;opacity:0"}}
+  </div>
+  {{gen wheelstand id=s10-top part=top class=abs style="left:480px;top:250px;width:620px;height:726px"}}
+  <div class="abs" id="s10-grow" style="left:1130px;top:330px"><span class="cap" style="position:static;display:block">Winning slices grow!</span></div>
+  {{gen robot id=s10-rb class=abs style="left:1400px;top:470px;width:380px;height:418px"}}
+  <div class="tis-numcard" id="s10-num"><b>#6</b></div>
+</div>
+<div class="hud">
+  <div class="tis-name" id="s10-name"><div><b>PPO</b><small>Learns the odds of each choice</small></div><i class="tis-chip neural">Neural network</i></div>
+</div>
+<sfx src="whoosh_big" at="0.02" vol="0.45"></sfx>
+<sfx src="wheel_spin" at="1.2" vol="0.5"></sfx>
+<sfx src="success" at="3.45" vol="0.35"></sfx>
+<sfx src="sparkle" at="s10_2+0.75" vol="0.4"></sfx>
+<sfx src="wheel_spin" at="s10_2+1.5" vol="0.4"></sfx>
+<sfx src="ding" at="s10_2+3.0" vol="0.3"></sfx>

@@ -1,0 +1,104 @@
+@font-face { font-family: "Montserrat"; src: url("assets/fonts/montserrat-latin-var.woff2") format("woff2"); font-weight: 100 900; font-style: normal; }
+@font-face { font-family: "Fredoka"; src: url("assets/fonts/fredoka-latin-var.woff2") format("woff2"); font-weight: 300 700; font-style: normal; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: #1D1B4F; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #1D1B4F; font-family: "Montserrat", Arial, sans-serif; color: #1F2340; }
+
+/* scene scaffolding */
+.scene { position: absolute; inset: 0; overflow: hidden; background: #1D1B4F; }
+.cam, .layer, .shot { position: absolute; inset: 0; }
+.cam { transform-origin: 50% 50%; }
+.shot { opacity: 0; }
+.shot.first { opacity: 1; }
+.bgimg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; }
+.abs { position: absolute; display: block; }
+.char { position: absolute; display: block; overflow: visible; }
+img.ico { width: 64px; height: 64px; display: block; }
+.hud { position: absolute; inset: 0; pointer-events: none; }
+
+/* TIS info tag (top-left context card) */
+.tis-tag { position: absolute; left: 72px; top: 60px; display: flex; align-items: center; gap: 18px; background: #FDFCF8; border-radius: 16px; padding: 14px 34px 14px 16px; box-shadow: 0 8px 0 rgba(20, 18, 60, 0.18), 0 20px 40px rgba(20, 18, 60, 0.28); }
+.tis-tag .lbl { display: block; font: 700 22px/1.15 "Montserrat"; letter-spacing: 2px; color: #6B7090; text-transform: uppercase; }
+.tis-tag .val { display: block; font: 800 40px/1.12 "Montserrat"; color: #1F2340; }
+
+/* speech bubble */
+.tis-bubble { position: absolute; background: #FDFCF8; border-radius: 34px; padding: 24px 38px; font: 800 50px/1.12 "Montserrat"; color: #1F2340; box-shadow: 0 8px 0 rgba(20, 18, 60, 0.2); max-width: 700px; }
+.tis-bubble::after { content: ""; position: absolute; width: 46px; height: 46px; background: #FDFCF8; bottom: -18px; left: 76px; transform: rotate(45deg); border-radius: 6px; }
+.tis-bubble.tail-right::after { left: auto; right: 76px; }
+.tis-bubble.tail-none::after { display: none; }
+.tis-bubble em { font-style: normal; color: #E63946; }
+
+/* giant number card */
+.tis-numcard { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(29, 27, 79, 0.42); opacity: 0; }
+.tis-numcard b { display: block; font: 700 380px/1 "Fredoka"; color: #FDFCF8; text-shadow: 0 18px 0 rgba(20, 18, 60, 0.38); letter-spacing: -8px; }
+
+/* method name plate */
+.tis-name { position: absolute; left: 56px; bottom: 120px; display: flex; align-items: center; gap: 24px; padding: 18px 30px 20px; border-radius: 28px; background: rgba(20, 18, 60, 0.66); }
+.tis-name b { display: block; font: 700 96px/1 "Fredoka"; color: #FDFCF8; text-shadow: 0 8px 0 rgba(20, 18, 60, 0.45); }
+.tis-name small { display: block; font: 700 28px/1.2 "Montserrat"; color: #FDFCF8; text-shadow: 0 3px 0 rgba(20, 18, 60, 0.45); margin-top: 8px; }
+.tis-chip { display: inline-block; font: 800 26px/1 "Montserrat"; letter-spacing: 2px; padding: 15px 24px; border-radius: 999px; color: #1F2340; background: #FFC43D; box-shadow: 0 6px 0 rgba(20, 18, 60, 0.28); text-transform: uppercase; }
+.tis-chip.learn { background: #2DB86B; }
+.tis-chip.neural { background: #7FB2FF; }
+
+/* full-frame statement card */
+.tis-statement { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0 170px; background: repeating-linear-gradient(135deg, #2B2A6E 0 64px, #25245F 64px 128px); opacity: 0; }
+.tis-statement p { font: 700 106px/1.08 "Fredoka"; color: #FDFCF8; text-align: center; text-transform: uppercase; }
+.tis-statement em { font-style: normal; color: #FFC43D; }
+.tis-statement.red { background: repeating-linear-gradient(135deg, #7A1F2B 0 64px, #6C1B26 64px 128px); }
+.tis-statement.green { background: repeating-linear-gradient(135deg, #17613F 0 64px, #145536 64px 128px); }
+
+/* stamp */
+.tis-stamp { position: absolute; font: 700 118px/1 "Fredoka"; color: #E63946; border: 14px solid #E63946; border-radius: 30px; padding: 12px 42px 18px; background: rgba(253, 252, 248, 0.94); box-shadow: 0 10px 0 rgba(20, 18, 60, 0.25); opacity: 0; }
+.tis-stamp.green { color: #1E8A4F; border-color: #2DB86B; }
+
+/* big arrow label */
+.tis-arrow { position: absolute; display: block; }
+.tis-arrow span { display: block; font: 800 60px/1.05 "Montserrat"; color: #FDFCF8; text-transform: uppercase; text-shadow: 0 5px 0 rgba(20, 18, 60, 0.6); white-space: nowrap; }
+.tis-arrow svg { position: absolute; overflow: visible; }
+
+/* fact source chip + logo bug */
+.tis-source { position: absolute; right: 64px; bottom: 44px; display: flex; gap: 10px; align-items: center; font: 700 24px/1 "Montserrat"; color: #FDFCF8; background: rgba(20, 18, 60, 0.78); padding: 12px 20px; border-radius: 10px; }
+.tis-source b { color: #FFC43D; letter-spacing: 1px; }
+.tis-logo { position: absolute; left: 48px; bottom: 34px; display: flex; align-items: center; gap: 14px; padding: 8px 20px 8px 8px; border-radius: 22px; background: rgba(20, 18, 60, 0.62); }
+.tis-logo i { display: block; width: 58px; height: 58px; border-radius: 16px; background: #FFC43D; box-shadow: 0 5px 0 rgba(20, 18, 60, 0.3); position: relative; overflow: hidden; }
+.tis-logo i::before { content: ""; position: absolute; left: 10px; top: 25px; width: 38px; height: 10px; border-radius: 5px; background: #1F2340; }
+.tis-logo i::after { content: ""; position: absolute; left: 22px; top: 13px; width: 14px; height: 34px; border-radius: 7px; background: #1F2340; }
+.tis-logo b { display: block; font: 700 32px/1 "Fredoka"; color: #FDFCF8; letter-spacing: 1px; text-shadow: 0 3px 0 rgba(20, 18, 60, 0.5); }
+.tis-logo small { display: block; font: 800 17px/1.2 "Montserrat"; letter-spacing: 3px; color: #FFC43D; text-shadow: 0 2px 0 rgba(20, 18, 60, 0.5); }
+
+/* 16-band strip */
+.bands { position: absolute; display: flex; gap: 10px; }
+.band { position: relative; width: 86px; height: 128px; border-radius: 16px; background: #20224A; border: 6px solid #5A62B5; }
+.band i { position: absolute; left: 0; right: 0; bottom: 10px; text-align: center; font: 800 26px/1 "Montserrat"; color: #C9CCEA; font-style: normal; }
+.band .lit { position: absolute; inset: 0; border-radius: 10px; background: #FFD166; opacity: 0; }
+.band .flash { position: absolute; inset: 0; border-radius: 10px; background: #E63946; opacity: 0; }
+.band .hit { position: absolute; inset: 0; border-radius: 10px; background: #2DB86B; opacity: 0; }
+.win2 { position: absolute; top: -16px; height: 160px; width: 204px; border: 9px solid #FFC43D; border-radius: 22px; box-shadow: 0 0 30px rgba(255, 196, 61, 0.8), inset 0 0 26px rgba(255, 196, 61, 0.45); }
+.bandrow { position: absolute; left: 197px; top: 96px; width: 1526px; height: 160px; }
+.bandrow .band { height: 112px; }
+.bandrow .win2 { height: 144px; }
+
+/* CSS 3D dice */
+.dice3d { position: absolute; width: 260px; height: 260px; perspective: 1400px; }
+.dice3d .cube { position: absolute; left: 0; top: 0; width: 260px; height: 260px; transform-style: preserve-3d; }
+.dice3d .face { position: absolute; left: 0; top: 0; width: 260px; height: 260px; border-radius: 46px; background: #FDFCF8; box-shadow: inset 0 0 0 10px #E9ECF3; backface-visibility: hidden; }
+.dice3d .face.s { background: #EEF0F6; }
+.dice3d .face.d { background: #D8DEEA; }
+.dice3d .f1 { transform: translateZ(130px); }
+.dice3d .f2 { transform: rotateY(90deg) translateZ(130px); }
+.dice3d .f3 { transform: rotateY(180deg) translateZ(130px); }
+.dice3d .f4 { transform: rotateY(-90deg) translateZ(130px); }
+.dice3d .f5 { transform: rotateX(90deg) translateZ(130px); }
+.dice3d .f6 { transform: rotateX(-90deg) translateZ(130px); }
+.dice3d .pip { position: absolute; width: 50px; height: 50px; border-radius: 50%; background: #1F2340; }
+.dice3d .pip.red { background: #E63946; width: 64px; height: 64px; left: 98px; top: 98px; }
+.dice3d .tl { left: 44px; top: 44px; } .dice3d .tr { left: 166px; top: 44px; }
+.dice3d .ml { left: 44px; top: 105px; } .dice3d .mr { left: 166px; top: 105px; }
+.dice3d .c { left: 105px; top: 105px; }
+.dice3d .bl { left: 44px; top: 166px; } .dice3d .br { left: 166px; top: 166px; }
+.dice-shadow { position: absolute; width: 300px; height: 40px; border-radius: 50%; background: rgba(20, 18, 60, 0.35); }
+
+/* generic white card and small caption */
+.card { position: absolute; background: #FDFCF8; border-radius: 24px; box-shadow: 0 10px 0 rgba(20, 18, 60, 0.25); }
+.cap { position: absolute; font: 800 34px/1.1 "Montserrat"; color: #FDFCF8; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 3px 0 rgba(20, 18, 60, 0.6); }

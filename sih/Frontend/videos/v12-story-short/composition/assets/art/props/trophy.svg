@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 460">
+  <ellipse cx="200" cy="416" rx="122" ry="12" fill="rgba(20,18,60,0.18)"/>
+  <g id="trophy-body" data-pivot="none">
+    <path d="M104 52h192v112c0 86-42 142-96 142s-96-56-96-142Z" fill="#F2B632"/>
+    <path d="M200 52h96v112c0 86-42 142-96 142Z" fill="#FFB703"/>
+    <path d="M104 82H52v44c0 50 34 86 82 88" fill="none" stroke="#F2B632" stroke-width="28" stroke-linecap="round"/>
+    <path d="M296 82h52v44c0 50-34 86-82 88" fill="none" stroke="#FFB703" stroke-width="28" stroke-linecap="round"/>
+    <path d="M172 292h56v74h-56Z" fill="#F2B632"/>
+    <rect x="120" y="358" width="160" height="54" rx="22" fill="#2D3A6B"/>
+    <path d="m200 92 20 40 44 6-32 31 8 44-40-21-40 21 8-44-32-31 44-6Z" fill="#FFF3B0"/>
+  </g>
+</svg>

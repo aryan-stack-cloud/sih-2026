@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 420">
+  <ellipse id="photo-print-shadow" cx="260" cy="374" rx="188" ry="18" fill="#14123C" fill-opacity=".18"/>
+  <g id="photo-print-paper" transform="rotate(-4 260 210)">
+    <rect x="28" y="28" width="464" height="364" rx="12" fill="#FDFCF8"/>
+    <path d="M28 348h464v32c0 7-5 12-12 12H40c-7 0-12-5-12-12Z" fill="#D8DEEA"/>
+    <rect id="photo-inner" x="40" y="48" width="440" height="300" rx="6" fill="#16204A"/>
+    <path d="M60 68h400" stroke="#3DDCFF" stroke-width="5" stroke-linecap="round" stroke-opacity=".16"/>
+  </g>
+  <g id="photo-print-tape" transform="rotate(-7 260 62)">
+    <rect x="164" y="26" width="192" height="58" rx="4" fill="#D8DEEA" fill-opacity=".66"/>
+    <path d="M164 52h192M164 76h192" stroke="#FDFCF8" stroke-width="2" stroke-opacity=".28"/>
+  </g>
+</svg>

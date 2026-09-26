@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 820">
+  <ellipse cx="350" cy="752" rx="262" ry="16" fill="rgba(20,18,60,0.18)"/>
+  <g id="wheel-pointer" data-pivot="350 50">
+    <path d="M350 50c-16 0-27 13-23 29l31 244 23-9 23 9 31-244c4-16-7-29-23-29Z" fill="#FFC43D"/>
+    <path d="M350 50c-16 0-27 13-23 29l23 88 23-88c4-16-7-29-23-29Z" fill="#FFB703"/>
+  </g>
+  <path d="M350 154 232 700h236Z" fill="#FDFCF8"/>
+  <path d="M350 154v546h118Z" fill="#D8DEEA"/>
+  <g id="wheel-hub" data-pivot="none">
+    <circle cx="350" cy="350" r="68" fill="#E0457B"/>
+    <circle cx="350" cy="350" r="34" fill="#F7F4FF"/>
+  </g>
+  <g>
+    <path d="M118 700h464l76 68H42Z" fill="#2D3A6B"/>
+    <path d="M170 514 84 700h136Z" fill="#4B519A"/>
+    <path d="M530 514 480 700h136Z" fill="#4B519A"/>
+    <rect x="92" y="696" width="516" height="30" rx="15" fill="#232E57"/>
+  </g>
+</svg>

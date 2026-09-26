@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="lake-sky-color" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1D1B4F"/>
+      <stop offset="0.56" stop-color="#2B2A6E"/>
+      <stop offset="1" stop-color="#3D3C8F"/>
+    </linearGradient>
+    <radialGradient id="lake-moon-halo">
+      <stop offset="0" stop-color="#FFF3B0" stop-opacity="0.34"/>
+      <stop offset="0.34" stop-color="#FFF3B0" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#FFF3B0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lake-lantern-halo">
+      <stop offset="0" stop-color="#FFB703" stop-opacity="0.48"/>
+      <stop offset="0.38" stop-color="#FFB703" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#FFB703" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lake-firefly-halo">
+      <stop offset="0" stop-color="#FFE066" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#FFB703" stop-opacity="0"/>
+    </radialGradient>
+    <path id="lake-star-shape" d="M0-15C2-4 4-2 15 0 4 2 2 4 0 15-2 4-4 2-15 0-4-2-2-4 0-15Z" fill="#F7F4FF"/>
+  </defs>
+
+  <g id="lake-far">
+    <rect width="1920" height="448" fill="url(#lake-sky-color)"/>
+    <g id="lake-moon-glow"><circle cx="330" cy="150" r="185" fill="url(#lake-moon-halo)"/></g>
+    <g id="lake-moon">
+      <circle cx="330" cy="150" r="60" fill="#F7F4FF"/>
+      <circle cx="359" cy="124" r="57" fill="#2B2A6E"/>
+    </g>
+    <g id="lake-sparkle-1" transform="translate(124 124)"><use href="#lake-star-shape" opacity="0.88"/></g>
+    <g id="lake-sparkle-2" transform="translate(470 255) scale(.76)"><use href="#lake-star-shape" opacity="0.8"/></g>
+    <g id="lake-sparkle-3" transform="translate(520 52) scale(.62)"><use href="#lake-star-shape" opacity="0.7"/></g>
+    <g id="lake-sparkle-4" transform="translate(1450 120) scale(.94)"><use href="#lake-star-shape" opacity="0.86"/></g>
+    <g id="lake-sparkle-5" transform="translate(1625 224) scale(.68)"><use href="#lake-star-shape" opacity="0.76"/></g>
+    <g id="lake-sparkle-6" transform="translate(1820 100) scale(.8)"><use href="#lake-star-shape" opacity="0.9"/></g>
+    <g id="lake-sparkle-7" transform="translate(1530 323) scale(.56)"><use href="#lake-star-shape" opacity="0.64"/></g>
+    <g id="lake-sparkle-8" transform="translate(103 315) scale(.7)"><use href="#lake-star-shape" opacity="0.82"/></g>
+    <g fill="#E0457B"><circle cx="196" cy="267" r="4"/><circle cx="492" cy="337" r="3"/><circle cx="1390" cy="273" r="4"/><circle cx="1754" cy="331" r="3"/></g>
+    <g fill="#2EC4B6"><circle cx="68" cy="227" r="3"/><circle cx="538" cy="311" r="4"/><circle cx="1332" cy="295" r="3"/><circle cx="1700" cy="47" r="4"/></g>
+    <path d="M0 407Q72 383 139 403q66-23 143-7 86-31 161-7 61-17 138 1 72-29 149-2 77-23 146 2 73-21 148-3 78-25 149 0 78-30 150-2 76-22 145 1 70-19 140 8 81-20 152 8v46H0Z" fill="#2C3066"/>
+    <path d="M0 435q111-19 194 3 76-16 163 5 83-18 179 1 81-17 161-1 88-23 174 0 82-21 171 1 73-18 152-2 82-20 155 0 89-21 173 0 85-15 198-3v23H0Z" fill="#20224A"/>
+    <path d="M1715 412q94-23 205-5v41h-205Z" fill="#2C3066"/>
+    <path d="M1690 442q115-17 230-5v25h-230Z" fill="#20224A"/>
+  </g>
+
+  <g id="lake-mid">
+    <rect x="0" y="448" width="1920" height="632" fill="#1D1B4F"/>
+    <path d="M0 448h1920v112q-220 12-440 0t-440 0q-220 12-440 0t-600 0Z" fill="#252456"/>
+    <path d="M0 696q230 20 480 0t480 0q240 20 480 0t480 0v188q-270-18-520 0t-510 0q-220-18-470 0T0 884Z" fill="#2B2A6E" opacity="0.45"/>
+    <path d="M0 926q310-14 630 0t650 0q330-13 640 2v152H0Z" fill="#3D3C8F" opacity="0.16"/>
+    <g id="lake-reflection" fill="#FFF3B0">
+      <rect x="301" y="465" width="57" height="4" rx="2" opacity="0.37"/>
+      <rect x="286" y="482" width="84" height="5" rx="3" opacity="0.3"/>
+      <rect x="307" y="504" width="48" height="4" rx="2" opacity="0.38"/>
+      <rect x="272" y="530" width="110" height="6" rx="3" opacity="0.26"/>
+      <rect x="296" y="561" width="63" height="5" rx="3" opacity="0.33"/>
+      <rect x="259" y="595" width="132" height="5" rx="3" opacity="0.22"/>
+      <rect x="297" y="636" width="69" height="5" rx="3" opacity="0.28"/>
+      <rect x="249" y="682" width="150" height="6" rx="3" opacity="0.18"/>
+      <rect x="290" y="734" width="78" height="5" rx="3" opacity="0.21"/>
+      <rect x="244" y="793" width="162" height="6" rx="3" opacity="0.15"/>
+      <rect x="284" y="860" width="89" height="5" rx="3" opacity="0.17"/>
+    </g>
+    <g fill="none" stroke="#3DDCFF" stroke-linecap="round" stroke-width="3" opacity="0.25">
+      <path id="lake-ripple-1" d="M60 492h75"/>
+      <path id="lake-ripple-2" d="M458 558h102"/>
+      <path id="lake-ripple-3" d="M721 479h85"/>
+      <path id="lake-ripple-4" d="M1030 544h92"/>
+      <path id="lake-ripple-5" d="M1270 635h70"/>
+      <path id="lake-ripple-6" d="M1447 506h88"/>
+      <path id="lake-ripple-7" d="M1102 929h75"/>
+      <path id="lake-ripple-8" d="M555 839h102"/>
+      <path id="lake-ripple-9" d="M916 941h115"/>
+      <path id="lake-ripple-10" d="M1195 873h76"/>
+    </g>
+  </g>
+
+  <g id="lake-near">
+    <g fill="#8C5A3C">
+      <rect x="1387" y="788" width="30" height="292" rx="10"/>
+      <rect x="1510" y="865" width="30" height="215" rx="10"/>
+      <rect x="1890" y="850" width="30" height="230" rx="10"/>
+    </g>
+    <g fill="#A86F4C"><rect x="1387" y="788" width="9" height="292" rx="4"/><rect x="1510" y="865" width="9" height="215" rx="4"/><rect x="1890" y="850" width="9" height="230" rx="4"/></g>
+    <g id="lake-lantern-glow"><circle cx="1410" cy="720" r="175" fill="url(#lake-lantern-halo)"/></g>
+    <g>
+      <path d="M1402 758h16v41h-16Z" fill="#8C5A3C"/>
+      <path d="M1385 693q25-20 50 0v54q-25 19-50 0Z" fill="#26325C"/>
+      <path d="M1395 703q15-11 30 0v34q-15 10-30 0Z" fill="#FFE066"/>
+      <path d="M1395 703q7-6 15-6v46q-8 0-15-6Z" fill="#FFF3B0" opacity="0.68"/>
+      <path d="M1388 690q22-19 44 0l-5 8h-34Z" fill="#4B519A"/>
+      <path d="M1395 685q15-18 30 0" fill="none" stroke="#4B519A" stroke-width="6" stroke-linecap="round"/>
+      <rect x="1382" y="744" width="56" height="12" rx="6" fill="#26325C"/>
+    </g>
+    <g fill="#8C5A3C">
+      <rect x="1380" y="800" width="144" height="19" rx="9"/>
+      <rect x="1380" y="826" width="144" height="14" rx="7"/>
+    </g>
+    <rect x="1382" y="800" width="139" height="6" rx="3" fill="#B98B5E"/>
+    <path d="M1375 1018h545v62h-545Z" fill="#8C5A3C"/>
+    <path d="M1375 1018h545v30h-545Z" fill="#B98B5E"/>
+    <path d="M1375 1018h545v8h-545Z" fill="#A86F4C"/>
+    <g fill="#8C5A3C" opacity="0.64"><rect x="1500" y="1026" width="4" height="22" rx="2"/><rect x="1612" y="1026" width="4" height="22" rx="2"/><rect x="1726" y="1026" width="4" height="22" rx="2"/><rect x="1840" y="1026" width="4" height="22" rx="2"/></g>
+    <path d="M1375 1048h545v7h-545Z" fill="#A86F4C"/>
+    <g id="lake-firefly-1"><circle cx="1355" cy="683" r="21" fill="url(#lake-firefly-halo)"/><circle cx="1355" cy="683" r="4" fill="#FFE066"/></g>
+    <g id="lake-firefly-2"><circle cx="1471" cy="646" r="18" fill="url(#lake-firefly-halo)"/><circle cx="1471" cy="646" r="3" fill="#FFE066"/></g>
+    <g id="lake-firefly-3"><circle cx="1511" cy="753" r="19" fill="url(#lake-firefly-halo)"/><circle cx="1511" cy="753" r="3" fill="#FFE066"/></g>
+    <g id="lake-firefly-4"><circle cx="1364" cy="859" r="18" fill="url(#lake-firefly-halo)"/><circle cx="1364" cy="859" r="3" fill="#FFE066"/></g>
+    <g id="lake-firefly-5"><circle cx="1455" cy="924" r="21" fill="url(#lake-firefly-halo)"/><circle cx="1455" cy="924" r="4" fill="#FFE066"/></g>
+    <g id="lake-firefly-6"><circle cx="1491" cy="865" r="17" fill="url(#lake-firefly-halo)"/><circle cx="1491" cy="865" r="3" fill="#FFE066"/></g>
+  </g>
+</svg>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <ellipse id="receiver-box-shadow" cx="450" cy="458" rx="350" ry="28" fill="#14123C" fill-opacity=".18"/>
+  <g id="receiver-box-shell">
+    <path d="M96 112 128 72h658l42 42v330H96Z" fill="#4B519A"/>
+    <path d="m128 72 42 40h600l58-40Z" fill="#5A62B5"/>
+    <path d="M96 112h774v318H96Z" fill="#2D3A6B"/>
+    <path d="m770 112 52-40v358h-52Z" fill="#232E57"/>
+    <path d="M112 132h674v278H112Z" fill="#3A3F7A"/>
+    <path d="M112 132h674v20H112Z" fill="#5A62B5"/>
+    <circle cx="120" cy="143" r="6" fill="#FDFCF8" fill-opacity=".7"/>
+    <circle cx="786" cy="143" r="6" fill="#1F2340" fill-opacity=".55"/>
+  </g>
+  <g id="receiver-box-handles">
+    <path d="M64 176h38v150H64c-14 0-24-10-24-24V200c0-14 10-24 24-24Z" fill="#1F2340"/>
+    <rect x="62" y="204" width="30" height="94" rx="14" fill="#5A62B5"/>
+    <path d="M836 176h-38v150h38c14 0 24-10 24-24V200c0-14-10-24-24-24Z" fill="#1F2340"/>
+    <rect x="808" y="204" width="30" height="94" rx="14" fill="#4B519A"/>
+  </g>
+  <g id="receiver-box-dial">
+    <circle cx="194" cy="267" r="92" fill="#1F2340"/>
+    <circle cx="194" cy="267" r="78" fill="#4B519A"/>
+    <circle cx="194" cy="267" r="62" fill="#2D3A6B"/>
+    <path d="M194 194a73 73 0 0 1 65 40l-9 6a63 63 0 0 0-56-34Z" fill="#5A62B5"/>
+    <g fill="#FDFCF8" fill-opacity=".75">
+      <rect x="191" y="192" width="6" height="16" rx="3"/>
+      <rect x="230" y="204" width="5" height="14" rx="2.5" transform="rotate(24 230 204)"/>
+      <rect x="258" y="238" width="5" height="14" rx="2.5" transform="rotate(49 258 238)"/>
+      <rect x="266" y="278" width="5" height="14" rx="2.5" transform="rotate(73 266 278)"/>
+      <rect x="244" y="317" width="5" height="14" rx="2.5" transform="rotate(113 244 317)"/>
+      <rect x="211" y="340" width="5" height="14" rx="2.5" transform="rotate(137 211 340)"/>
+      <rect x="174" y="341" width="5" height="14" rx="2.5" transform="rotate(159 174 341)"/>
+      <rect x="140" y="320" width="5" height="14" rx="2.5" transform="rotate(204 140 320)"/>
+      <rect x="119" y="282" width="5" height="14" rx="2.5" transform="rotate(248 119 282)"/>
+      <rect x="126" y="239" width="5" height="14" rx="2.5" transform="rotate(292 126 239)"/>
+    </g>
+    <g id="rx-dial-needle" data-pivot="194 267">
+      <path d="m190 273 4-79 9 4-4 79Z" fill="#FFC43D"/>
+      <circle cx="194" cy="267" r="16" fill="#F2B632"/>
+      <circle cx="189" cy="262" r="5" fill="#FFF3B0"/>
+    </g>
+  </g>
+  <g id="receiver-box-display-frame">
+    <rect x="276" y="145" width="444" height="196" rx="22" fill="#1F2340"/>
+    <rect id="rx-display" x="292" y="159" width="420" height="168" rx="14" fill="#16204A"/>
+    <path d="M311 173h382" stroke="#3DDCFF" stroke-width="4" stroke-linecap="round" stroke-opacity=".16"/>
+  </g>
+  <g id="receiver-box-led-row">
+    <rect x="296" y="356" width="390" height="42" rx="18" fill="#1F2340"/>
+    <circle id="rx-led-1" cx="330" cy="377" r="10" fill="#2F5D4A"/>
+    <circle id="rx-led-2" cx="376" cy="377" r="10" fill="#2F5D4A"/>
+    <circle id="rx-led-3" cx="422" cy="377" r="10" fill="#2F5D4A"/>
+    <circle id="rx-led-4" cx="468" cy="377" r="10" fill="#2F5D4A"/>
+    <circle id="rx-led-5" cx="514" cy="377" r="10" fill="#2F5D4A"/>
+    <circle id="rx-led-6" cx="560" cy="377" r="10" fill="#2F5D4A"/>
+  </g>
+  <g id="receiver-box-controls">
+    <g id="receiver-box-knob-1">
+      <circle cx="730" cy="184" r="34" fill="#1F2340"/><circle cx="730" cy="184" r="24" fill="#5A62B5"/><rect x="726" y="163" width="8" height="18" rx="4" fill="#FDFCF8"/>
+    </g>
+    <g id="receiver-box-knob-2">
+      <circle cx="730" cy="267" r="30" fill="#1F2340"/><circle cx="730" cy="267" r="21" fill="#4B519A"/><rect x="726" y="248" width="8" height="16" rx="4" fill="#FDFCF8"/>
+    </g>
+    <g id="receiver-box-knob-3">
+      <circle cx="730" cy="343" r="26" fill="#1F2340"/><circle cx="730" cy="343" r="18" fill="#5A62B5"/><rect x="726" y="327" width="8" height="14" rx="4" fill="#FDFCF8"/>
+    </g>
+    <g id="receiver-box-jacks">
+      <circle cx="654" cy="342" r="22" fill="#1F2340"/><circle cx="654" cy="342" r="11" fill="#FDFCF8"/><circle cx="654" cy="342" r="4" fill="#1F2340"/>
+      <circle cx="654" cy="392" r="22" fill="#1F2340"/><circle cx="654" cy="392" r="11" fill="#FDFCF8"/><circle cx="654" cy="392" r="4" fill="#1F2340"/>
+    </g>
+  </g>
+  <g id="receiver-box-vents" fill="#232E57">
+    <rect x="716" y="414" width="86" height="8" rx="4"/><rect x="716" y="430" width="86" height="8" rx="4"/>
+  </g>
+</svg>

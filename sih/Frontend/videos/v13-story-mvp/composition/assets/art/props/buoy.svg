@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 150">
+  <defs>
+    <clipPath id="buoy-sphere-clip"><circle cx="60" cy="87" r="35"/></clipPath>
+    <radialGradient id="buoy-light-glow"><stop offset="0" stop-color="#FFE066" stop-opacity="0.54"/><stop offset="1" stop-color="#FFB703" stop-opacity="0"/></radialGradient>
+  </defs>
+  <ellipse id="buoy-ring" cx="60" cy="112" rx="50" ry="12" fill="none" stroke="#3DDCFF" stroke-width="3" opacity="0.55"/>
+  <g id="buoy-body">
+    <rect x="55" y="27" width="10" height="35" rx="5" fill="#FDFCF8"/>
+    <rect x="61" y="29" width="4" height="30" rx="2" fill="#D8DEEA"/>
+    <circle cx="60" cy="87" r="35" fill="#FDFCF8"/>
+    <g clip-path="url(#buoy-sphere-clip)">
+      <path d="M22 84V48h76v36q-38 13-76 0Z" fill="#E63946"/>
+      <path d="M73 52h28v36q-13 4-28 5Z" fill="#7A1F2B" opacity="0.62"/>
+      <path d="M26 84q34 11 68 0v11q-34 10-68 0Z" fill="#FDFCF8"/>
+      <path d="M72 96q13-1 25-6v38H72Z" fill="#D8DEEA"/>
+      <ellipse cx="47" cy="66" rx="10" ry="5" fill="#F07B9B" opacity="0.65"/>
+    </g>
+    <ellipse cx="60" cy="113" rx="28" ry="5" fill="#3DDCFF" opacity="0.32"/>
+  </g>
+  <g id="buoy-tip">
+    <circle cx="60" cy="23" r="18" fill="url(#buoy-light-glow)"/>
+    <circle cx="60" cy="23" r="8" fill="#FFE066"/>
+    <circle cx="57" cy="20" r="3" fill="#FFF3B0"/>
+  </g>
+</svg>

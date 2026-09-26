@@ -1,0 +1,52 @@
+<div class="cam" id="s06-cam">
+  <div class="abs" style="left:0;top:0;width:1920px;height:1080px;background:radial-gradient(ellipse at 45% 55%,#3D3C8F 0%,#2B2A6E 45%,#1D1B4F 90%)"></div>
+  <img class="bgimg" src="assets/art/bg/night-sky.svg" alt="" style="opacity:0.45">
+  <div class="bandrow" id="s06-row">
+    <div class="bands">
+      <div class="band"><div class="flash" id="s06-f1"></div><i>1</i></div><div class="band"><div class="flash" id="s06-f2"></div><i>2</i></div><div class="band"><i>3</i></div><div class="band"><i>4</i></div><div class="band"><i>5</i></div><div class="band"><i>6</i></div><div class="band"><i>7</i></div><div class="band"><i>8</i></div>
+      <div class="band"><i>9</i></div><div class="band"><i>10</i></div><div class="band"><div class="hit" id="s06-h11"></div><i>11</i></div><div class="band"><div class="hit" id="s06-h12"></div><i>12</i></div><div class="band"><i>13</i></div><div class="band"><i>14</i></div><div class="band"><i>15</i></div><div class="band"><i>16</i></div>
+    </div>
+    <div class="win2" id="s06-win" style="left:373px"></div>
+  </div>
+  <!-- the to-do list clipboard -->
+  <div class="abs" id="s06-board" style="left:660px;top:292px;width:760px;height:760px">
+    <div class="abs" style="left:0;top:40px;width:760px;height:720px;border-radius:40px;background:#8C5A3C"></div>
+    <div class="abs" style="left:14px;top:40px;width:732px;height:706px;border-radius:34px;background:#A86F4C"></div>
+    <div class="abs" style="left:56px;top:92px;width:648px;height:640px;border-radius:18px;background:#FDFCF8;box-shadow:0 8px 0 rgba(20,18,60,0.18)"></div>
+    <div class="abs" style="left:250px;top:10px;width:260px;height:96px;border-radius:24px;background:#D8DEEA"></div>
+    <div class="abs" style="left:300px;top:36px;width:160px;height:40px;border-radius:14px;background:#6B7090"></div>
+    <div class="abs" style="left:90px;top:128px;width:580px;font:700 44px/1 Fredoka;color:#1F2340;text-align:center">To-do: check next</div>
+    <div class="todo" id="s06-r1" style="top:210px"><b>5–6</b><span class="m busy"><i style="width:40%"></i></span><span class="m wait"><i style="width:30%"></i></span></div>
+    <div class="todo" id="s06-r2" style="top:318px"><b>11–12</b><span class="m busy"><i id="s06-busy2" style="width:100%"></i></span><span class="m wait"><i style="width:35%"></i></span></div>
+    <div class="todo" id="s06-r3" style="top:426px"><b>7–8</b><span class="m busy"><i style="width:30%"></i></span><span class="m wait"><i style="width:20%"></i></span></div>
+    <div class="todo" id="s06-r4" style="top:534px"><b>1–2</b><span class="m busy"><i style="width:10%"></i></span><span class="m wait"><i id="s06-wait4" style="width:100%"></i></span></div>
+    <div class="todo" id="s06-r5" style="top:642px"><b>15–16</b><span class="m busy"><i style="width:15%"></i></span><span class="m wait"><i style="width:25%"></i></span></div>
+    <div class="abs" id="s06-legend" style="left:118px;top:186px;width:540px;height:24px">
+      <span class="lg" style="left:170px">busy?</span><span class="lg" style="left:390px">waiting</span>
+    </div>
+  </div>
+  {{svg src=assets/art/props/alarm-clock.svg id=s06-clock class=abs style="left:1490px;top:560px;width:320px"}}
+  <div class="tis-bubble" id="s06-bub" style="left:1450px;top:380px">Overdue!</div>
+  <div class="tis-numcard" id="s06-num"><b>#2</b></div>
+</div>
+<div class="hud">
+  <div class="tis-name" id="s06-name"><div><b>Index</b><small>A smart to-do list</small></div><i class="tis-chip">Follows rules</i></div>
+</div>
+<style>
+  #s06 .todo { position: absolute; left: 76px; width: 608px; height: 92px; border-radius: 18px; background: #F4F6FA; border: 5px solid #D8DEEA; display: flex; align-items: center; gap: 20px; padding: 0 22px; }
+  #s06 .todo b { display: block; width: 150px; font: 800 44px/1 "Montserrat"; color: #1F2340; }
+  #s06 .todo .m { position: relative; display: block; width: 190px; height: 30px; border-radius: 15px; background: #E3E6F0; overflow: hidden; }
+  #s06 .todo .m i { position: absolute; left: 0; top: 0; bottom: 0; display: block; border-radius: 15px; }
+  #s06 .todo .busy i { background: #FF9F5A; }
+  #s06 .todo .wait i { background: #3A86FF; }
+  #s06 .todo.top { border-color: #2DB86B; background: #E4F6EC; }
+  #s06 .lg { position: absolute; top: 0; font: 800 22px/1 "Montserrat"; color: #6B7090; text-transform: uppercase; letter-spacing: 2px; }
+</style>
+<sfx src="whoosh_big" at="0.02" vol="0.45"></sfx>
+<sfx src="card_slide" at="1.2" vol="0.5"></sfx>
+<sfx src="pop_soft" at="1.5" vol="0.4"></sfx>
+<sfx src="zap" at="s06_2+0.2" vol="0.35"></sfx>
+<sfx src="whoosh" at="s06_2+0.65" vol="0.45"></sfx>
+<sfx src="bell" at="s06_2+1.55" vol="0.4"></sfx>
+<sfx src="whoosh" at="s06_2+2.05" vol="0.45"></sfx>
+<sfx src="ding" at="s06_2+2.4" vol="0.3"></sfx>

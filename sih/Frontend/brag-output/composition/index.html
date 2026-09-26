@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>PUSHPAK — Brag</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --ground: #0b1020;
+        --panel: #141b2e;
+        --rule: #263054;
+        --ink: #e6eaf5;
+        --ink-muted: #8a93ad;
+        --intercepted: #0f9e73;
+        --missed: #c87a18;
+        --false-alarm: #d8425f;
+        --listened: #3a445f;
+        --idle: #161d33;
+        --brand-gold: #e8b84b;
+        --brand-gold-ink: #241a05;
+        --font-display: "Archivo Black", "League Gothic", sans-serif;
+        --font-mono: "JetBrains Mono", "IBM Plex Mono", monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--ground);
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--ground);
+        font-family: var(--font-mono);
+      }
+      .clip { position: absolute; inset: 0; overflow: hidden; background: var(--ground); }
+      .stage {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+      }
+      /* shared faint instrument-grid texture */
+      .grid-lines {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.05;
+        background-image: repeating-linear-gradient(to bottom, var(--rule) 0 1px, transparent 1px 130px),
+          repeating-linear-gradient(to right, var(--rule) 0 1px, transparent 1px 160px);
+      }
+
+      /* ---------- Scene 1 : hook ---------- */
+      #s1-glow {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 1400px;
+        height: 900px;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle, var(--brand-gold) 0%, transparent 65%);
+        opacity: 0;
+        will-change: transform, opacity;
+      }
+      #s1-ghost {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-family: var(--font-mono);
+        font-size: 210px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--ink);
+        opacity: 0.045;
+        white-space: nowrap;
+      }
+      .hook-text { position: relative; display: flex; flex-direction: column; align-items: center; gap: 26px; padding: 0 170px; }
+      #s1-l1 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 92px;
+        line-height: 1.08;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+        text-align: center;
+        max-width: 1480px;
+      }
+      #s1-l2 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 122px;
+        line-height: 1.02;
+        letter-spacing: -0.01em;
+        color: var(--brand-gold);
+        text-align: center;
+      }
+
+      /* ---------- Scene 2 : live receiver ---------- */
+      #s2-eyebrow {
+        font-family: var(--font-mono);
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        color: var(--ink-muted);
+        text-transform: uppercase;
+      }
+      .s2-swap { position: relative; width: 1200px; height: 620px; display: flex; align-items: center; justify-content: center; }
+      #s2-button-stage {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+      }
+      #s2-btn {
+        font-family: var(--font-display);
+        font-size: 34px;
+        padding: 26px 56px;
+        border-radius: 10px;
+        background: var(--brand-gold);
+        color: var(--brand-gold-ink);
+        letter-spacing: -0.01em;
+      }
+      #s2-cursor {
+        position: relative;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--ink);
+        box-shadow: 0 0 0 4px rgba(230, 234, 245, 0.18);
+      }
+      #s2-wf-stage {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 22px;
+        opacity: 0;
+      }
+      #s2-wf-axis { position: relative; height: 30px; }
+      .s2-axis-num {
+        position: absolute;
+        top: 0;
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 20px;
+        color: var(--ink-muted);
+      }
+      #s2-wf-window {
+        position: relative;
+        overflow: hidden;
+        border-top: 2px solid var(--rule);
+        border-bottom: 2px solid var(--rule);
+      }
+      #s2-wf-strip { position: relative; will-change: transform; }
+      .s2-cell { position: absolute; border-radius: 3px; }
+      #s2-wf-aperture { position: absolute; top: 0; left: 0; width: 100%; pointer-events: none; }
+      .s2-ap-line { position: absolute; top: 0; width: 2px; height: 100%; background: repeating-linear-gradient(to bottom, var(--ink) 0 5px, transparent 5px 9px); opacity: 0.4; }
+      #s2-ap-box {
+        position: absolute;
+        top: 0;
+        width: 180px;
+        height: 30px;
+        border: 2px solid var(--ink);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        font-size: 15px;
+        letter-spacing: 0.14em;
+        color: var(--ink);
+      }
+      .s2-legend { display: flex; gap: 34px; font-family: var(--font-mono); font-size: 18px; color: var(--ink-muted); }
+      .s2-legend span { display: inline-flex; align-items: center; gap: 10px; }
+      .s2-legend i { width: 16px; height: 16px; border-radius: 3px; display: inline-block; }
+
+      /* ---------- Scene 3 : the claim ---------- */
+      .s3-wash { position: absolute; inset: -20%; pointer-events: none; opacity: 0; }
+      #s3-wash-red { background: radial-gradient(circle, var(--false-alarm) 0%, transparent 60%); }
+      #s3-wash-teal { background: radial-gradient(circle, var(--intercepted) 0%, transparent 60%); }
+      .s3-stack { gap: 62px; }
+      .s3-group { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+      .s3-label { font-family: var(--font-mono); font-size: 26px; font-weight: 700; letter-spacing: 0.2em; }
+      .s3-stat { font-family: var(--font-display); font-size: 128px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+      .s3-stat-unit { font-size: 0.42em; letter-spacing: 0.06em; vertical-align: middle; }
+      .s3-caption { font-family: var(--font-mono); font-size: 21px; color: var(--ink-muted); text-align: center; max-width: 980px; }
+
+      /* ---------- Scene 4 : the fix, measured ---------- */
+      .s4-stack { gap: 26px; }
+      #s4-eyebrow { font-family: var(--font-mono); font-size: 23px; font-weight: 700; letter-spacing: 0.16em; color: var(--ink-muted); }
+      .s4-bar-row { display: flex; align-items: center; gap: 30px; width: 1240px; }
+      .s4-bar-label { font-family: var(--font-mono); font-size: 26px; color: var(--ink); width: 260px; letter-spacing: 0.02em; }
+      .s4-bar-label span { color: var(--ink-muted); font-size: 0.6em; margin-left: 8px; }
+      .s4-track { position: relative; flex: 1; height: 56px; background: var(--panel); border-radius: 6px; overflow: hidden; }
+      .s4-fill { position: absolute; inset: 0; width: 100%; height: 100%; transform-origin: left center; }
+      #s4-fill-1 { background: var(--listened); }
+      #s4-fill-2 { background: var(--intercepted); }
+      .s4-value { font-family: var(--font-mono); font-size: 40px; color: var(--ink); width: 170px; text-align: right; font-variant-numeric: tabular-nums; }
+      #s4-payoff { font-family: var(--font-display); font-size: 48px; color: var(--brand-gold); margin-top: 12px; letter-spacing: -0.01em; }
+      #s4-payoff span { color: var(--intercepted); }
+
+      /* ---------- Scene 5 : outro ---------- */
+      #s5-glow {
+        position: absolute;
+        left: 50%;
+        top: 46%;
+        width: 1300px;
+        height: 900px;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle, var(--brand-gold) 0%, transparent 62%);
+        opacity: 0;
+      }
+      .s5-brand-row { position: relative; display: flex; align-items: center; gap: 30px; }
+      .s5-badge {
+        width: 118px;
+        height: 118px;
+        border-radius: 20px;
+        background: var(--brand-gold);
+        color: var(--brand-gold-ink);
+        font-family: var(--font-display);
+        font-size: 66px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .s5-wordmark { font-family: var(--font-display); font-size: 140px; color: var(--ink); letter-spacing: -0.01em; }
+      #s5-tagline { position: relative; font-family: var(--font-mono); font-size: 34px; color: var(--ink-muted); }
+      #s5-scope { position: relative; font-family: var(--font-mono); font-size: 21px; letter-spacing: 0.12em; color: var(--ink-muted); }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="pushpak"
+      data-start="0"
+      data-width="1920"
+      data-height="1080"
+      data-duration="21.5"
+    >
+      <!-- ============ SCENE 1 — HOOK ============ -->
+      <section class="clip" id="scene-1" data-start="0" data-duration="3.82" data-track-index="1">
+        <div class="grid-lines"></div>
+        <div id="s1-glow"></div>
+        <div id="s1-ghost">00&nbsp;&nbsp;01&nbsp;&nbsp;02&nbsp;&nbsp;03&nbsp;&nbsp;04&nbsp;&nbsp;05</div>
+        <div class="stage">
+          <div class="hook-text">
+            <div id="s1-l1">A receiver that can hear two bands at a time.</div>
+            <div id="s1-l2">Learning where to listen.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SCENE 2 — LIVE RECEIVER ============ -->
+      <section class="clip" id="scene-2" data-start="3.82" data-duration="4.92" data-track-index="1">
+        <div class="grid-lines"></div>
+        <div class="stage">
+          <div id="s2-eyebrow">PUSHPAK · Live Receiver</div>
+          <div class="s2-swap">
+            <div id="s2-button-stage">
+              <div id="s2-btn">Run the demo</div>
+              <div id="s2-cursor"></div>
+            </div>
+            <div id="s2-wf-stage">
+              <div id="s2-wf-axis"></div>
+              <div id="s2-wf-window">
+                <div id="s2-wf-strip" data-layout-allow-overflow="true"></div>
+                <div id="s2-wf-aperture">
+                  <div class="s2-ap-line" id="s2-ap-l"></div>
+                  <div class="s2-ap-line" id="s2-ap-r"></div>
+                  <div id="s2-ap-box">LISTENING</div>
+                </div>
+              </div>
+              <div class="s2-legend">
+                <span><i style="background: var(--intercepted)"></i>Intercepted</span>
+                <span><i style="background: var(--missed)"></i>Missed</span>
+                <span><i style="background: var(--listened)"></i>Listened</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SCENE 3 — THE CLAIM ============ -->
+      <section class="clip" id="scene-3" data-start="8.74" data-duration="4.37" data-track-index="1">
+        <div class="s3-wash" id="s3-wash-red"></div>
+        <div class="s3-wash" id="s3-wash-teal"></div>
+        <div class="stage s3-stack">
+          <div class="s3-group" id="s3-g1">
+            <div class="s3-label" style="color: var(--false-alarm)">FIXED SWEEP</div>
+            <div class="s3-stat" style="color: var(--false-alarm)">0.000<span class="s3-stat-unit"> DETECTION</span></div>
+            <div class="s3-caption">Synchronization-trap scenario — never once looked where the signal was.</div>
+          </div>
+          <div class="s3-group" id="s3-g2">
+            <div class="s3-label" style="color: var(--intercepted)">LEARNED POLICIES</div>
+            <div class="s3-stat" style="color: var(--intercepted)">ESCAPE IT</div>
+            <div class="s3-caption">Same scenario, same seed.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SCENE 4 — THE FIX, MEASURED ============ -->
+      <section class="clip" id="scene-4" data-start="13.11" data-duration="4.36" data-track-index="1">
+        <div class="grid-lines"></div>
+        <div class="stage s4-stack">
+          <div id="s4-eyebrow">SCHEDULER EVOLUTION · SCENARIO B HOLD-OUT SEEDS</div>
+          <div class="s4-bar-row" id="s4-row1">
+            <div class="s4-bar-label">BANDIT<span>gen 1</span></div>
+            <div class="s4-track"><div class="s4-fill" id="s4-fill-1"></div></div>
+            <div class="s4-value" id="s4-value-1">0.000</div>
+          </div>
+          <div class="s4-bar-row" id="s4-row2">
+            <div class="s4-bar-label">INDEX<span>gen 2</span></div>
+            <div class="s4-track"><div class="s4-fill" id="s4-fill-2"></div></div>
+            <div class="s4-value" id="s4-value-2">0.000</div>
+          </div>
+          <div id="s4-payoff">THE FIX, MEASURED — <span>+36%</span></div>
+        </div>
+      </section>
+
+      <!-- ============ SCENE 5 — OUTRO ============ -->
+      <section class="clip" id="scene-5" data-start="17.47" data-duration="4.03" data-track-index="1">
+        <div class="grid-lines"></div>
+        <div id="s5-glow"></div>
+        <div class="stage">
+          <div class="s5-brand-row" id="s5-brand">
+            <div class="s5-badge">P</div>
+            <div class="s5-wordmark">PUSHPAK</div>
+          </div>
+          <div id="s5-tagline">Learning where to listen.</div>
+          <div id="s5-scope">SIMULATION ONLY · NO REAL RF</div>
+        </div>
+      </section>
+
+      <!-- ============ AUDIO ============ -->
+      <audio
+        id="bgm"
+        src="assets/music/happy-beats-business-moves-vol-12-by-ende-dot-app.mp3"
+        data-start="0"
+        data-duration="21.5"
+        data-track-index="10"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":1,"v":0.28},{"t":8.6,"v":0.28},{"t":8.9,"v":0.34},{"t":9.6,"v":0.28},{"t":13.0,"v":0.28},{"t":13.3,"v":0.32},{"t":14.0,"v":0.28},{"t":17.3,"v":0.28},{"t":17.6,"v":0.30},{"t":20.0,"v":0.26},{"t":21.5,"v":0}]}]}'
+      ></audio>
+      <audio id="sfx-click" src="assets/sfx/interface/click_001.ogg" data-start="4.27" data-duration="0.11" data-track-index="11" data-volume="0.55"></audio>
+      <audio id="sfx-claim" src="assets/sfx/impact/impactBell_heavy_000.ogg" data-start="8.79" data-duration="1.49" data-track-index="12" data-volume="0.7"></audio>
+      <audio id="sfx-counter" src="assets/sfx/impact/impactSoft_medium_000.ogg" data-start="10.74" data-duration="0.12" data-track-index="13" data-volume="0.55"></audio>
+      <audio id="sfx-bar2" src="assets/sfx/interface/drop_001.ogg" data-start="15.41" data-duration="0.11" data-track-index="14" data-volume="0.55"></audio>
+      <audio id="sfx-outro" src="assets/sfx/impact/impactBell_heavy_003.ogg" data-start="17.57" data-duration="0.66" data-track-index="15" data-volume="0.72"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+
+      // ---------------------------------------------------------------
+      // Scene 2: deterministic waterfall grid (12 bands x 15 rows).
+      // Row 0 = newest (top of the authored strip), row 14 = oldest.
+      // ---------------------------------------------------------------
+      var BANDS = 12, CELL_W = 90, CELL_H = 34, GAP = 4, ROWS_TOTAL = 15, WINDOW_ROWS = 9;
+      var WINDOW_H = WINDOW_ROWS * CELL_H;
+      var STRIP_H = ROWS_TOTAL * CELL_H;
+      var GRID_W = BANDS * CELL_W;
+
+      var ROW_OVERRIDES = {
+        0: { 8: "hit", 7: "listened" },
+        1: { 7: "listened", 8: "listened" },
+        2: { 9: "missed", 7: "listened", 8: "listened" },
+        3: { 7: "hit", 8: "listened" },
+        4: { 7: "listened", 8: "listened", 10: "missed" },
+        5: { 8: "hit", 7: "listened" },
+        6: { 7: "listened", 8: "listened", 4: "missed" },
+        7: { 6: "missed", 3: "listened", 4: "listened" },
+        8: { 3: "hit", 4: "listened" },
+        9: { 2: "missed", 3: "listened", 4: "listened" },
+        10: { 3: "listened", 4: "listened" },
+        11: { 5: "missed", 3: "listened", 4: "listened" },
+        12: { 4: "hit", 3: "listened" },
+        13: { 3: "listened", 4: "listened" },
+        14: { 3: "missed", 4: "listened" },
+      };
+      var FILL = {
+        hit: "var(--intercepted)",
+        missed: "var(--missed)",
+        listened: "var(--listened)",
+        idle: "var(--idle)",
+      };
+
+      var axisEl = document.getElementById("s2-wf-axis");
+      var stripEl = document.getElementById("s2-wf-strip");
+      var windowEl = document.getElementById("s2-wf-window");
+      var apertureEl = document.getElementById("s2-wf-aperture");
+
+      axisEl.style.width = GRID_W + "px";
+      windowEl.style.width = GRID_W + "px";
+      windowEl.style.height = WINDOW_H + "px";
+      stripEl.style.width = GRID_W + "px";
+      stripEl.style.height = STRIP_H + "px";
+      apertureEl.style.height = WINDOW_H + "px";
+
+      for (var b = 0; b < BANDS; b++) {
+        var num = document.createElement("div");
+        num.className = "s2-axis-num";
+        num.style.left = b * CELL_W + "px";
+        num.style.width = CELL_W + "px";
+        num.textContent = b < 10 ? "0" + b : String(b);
+        axisEl.appendChild(num);
+      }
+
+      for (var r = 0; r < ROWS_TOTAL; r++) {
+        var overrides = ROW_OVERRIDES[r] || {};
+        for (var bb = 0; bb < BANDS; bb++) {
+          var state = overrides[bb] || "idle";
+          var cell = document.createElement("div");
+          cell.className = "s2-cell";
+          cell.style.left = bb * CELL_W + GAP / 2 + "px";
+          cell.style.top = r * CELL_H + "px";
+          cell.style.width = CELL_W - GAP + "px";
+          cell.style.height = CELL_H - GAP + "px";
+          cell.style.background = FILL[state];
+          stripEl.appendChild(cell);
+        }
+      }
+
+      // Aperture starting position: bands 3-4 (2-band span).
+      var APERTURE_START_BAND = 3, APERTURE_SPAN = 2;
+      document.getElementById("s2-ap-l").style.left = APERTURE_START_BAND * CELL_W + "px";
+      document.getElementById("s2-ap-r").style.left = (APERTURE_START_BAND + APERTURE_SPAN) * CELL_W + "px";
+      var apBox = document.getElementById("s2-ap-box");
+      apBox.style.left = APERTURE_START_BAND * CELL_W + "px";
+      apBox.style.width = APERTURE_SPAN * CELL_W + "px";
+
+      // ---------------------------------------------------------------
+      // Scene timing constants (global seconds).
+      // ---------------------------------------------------------------
+      var S1 = 0;
+      var S2 = 3.82;
+      var S3 = 8.74; // beat-locked: vol-12 strong cue 8.74s (0.99) — the "0.000 DETECTION" slam
+      var S4 = 13.11; // beat-locked: vol-12 strong cue 13.11s (0.98) — the comparison chart's first bar
+      var S5 = 17.47; // beat-locked: vol-12 strong cue 17.47s (0.99) — the outro wordmark slam
+      // Sequential reveals inside each scene (waterfall scroll, stat pairs, bar pairs) use
+      // authored scene-local timing rather than the fine beat grid — each was tuned against
+      // its own reading-time floor, which the beat grid's ~0.55s spacing would have outrun.
+
+      var tl = gsap.timeline({ paused: true });
+
+      // ===== Scene 1 — hook =====
+      tl.fromTo("#s1-glow", { opacity: 0, scale: 0.85 }, { opacity: 0.14, scale: 1, duration: 1.0, ease: "power2.out" }, S1 + 0.15);
+      tl.fromTo("#s1-ghost", { x: -20 }, { x: 20, duration: 3.82, ease: "none" }, S1);
+      tl.fromTo(
+        "#s1-l1",
+        { scale: 1.3, filter: "blur(16px)", opacity: 0 },
+        { scale: 1, filter: "blur(0px)", opacity: 1, duration: 0.5, ease: "power4.out" },
+        S1 + 0.56,
+      );
+      tl.fromTo(
+        "#s1-l2",
+        { y: 70, rotation: 4, opacity: 0 },
+        { y: 0, rotation: 0, opacity: 1, duration: 0.55, ease: "circ.out" },
+        S1 + 2.19,
+      );
+
+      // ===== Scene 2 — live receiver =====
+      tl.fromTo("#s2-eyebrow", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, S2 + 0.05);
+      tl.fromTo("#s2-btn", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "power3.out" }, S2 + 0.1);
+      tl.fromTo("#s2-cursor", { opacity: 0, x: 90, y: 40 }, { opacity: 1, x: 0, y: 0, duration: 0.3, ease: "power2.out" }, S2 + 0.2);
+      tl.to("#s2-cursor", { scale: 0.82, duration: 0.09, ease: "power1.in" }, S2 + 0.45);
+      tl.to("#s2-cursor", { scale: 1, duration: 0.12, ease: "power1.out" }, S2 + 0.54);
+      tl.to("#s2-btn", { scale: 0.94, duration: 0.09, ease: "power1.in" }, S2 + 0.45);
+      tl.to("#s2-btn", { scale: 1, duration: 0.12, ease: "power1.out" }, S2 + 0.54);
+      tl.to("#s2-button-stage", { opacity: 0, duration: 0.2, ease: "power1.in" }, S2 + 0.62);
+      tl.fromTo("#s2-wf-stage", { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, S2 + 0.72);
+
+      var SCROLL_START = S2 + 0.95;
+      var SCROLL_DUR = 3.55;
+      tl.fromTo("#s2-wf-strip", { y: -(STRIP_H - WINDOW_H) }, { y: 0, duration: SCROLL_DUR, ease: "none" }, SCROLL_START);
+
+      var AP_STEP_AT = S2 + 3.9;
+      var AP_STEP_BANDS = 4; // retune from bands [3,4] to bands [7,8]
+      tl.to(["#s2-ap-l", "#s2-ap-r", "#s2-ap-box"], { x: AP_STEP_BANDS * CELL_W, duration: 0.32, ease: "expo.inOut" }, AP_STEP_AT);
+      tl.to("#s2-ap-box", { opacity: 0.35, duration: 0.1, yoyo: true, repeat: 1, ease: "none" }, AP_STEP_AT);
+
+      // ===== Scene 3 — the claim =====
+      tl.fromTo("#s3-wash-red", { opacity: 0 }, { opacity: 0.1, duration: 0.3, ease: "power1.out" }, S3);
+      tl.to("#s3-wash-red", { opacity: 0.02, duration: 0.8, ease: "power1.out", overwrite: "auto" }, S3 + 0.3);
+      tl.fromTo(
+        "#s3-g1",
+        { scale: 1.35, filter: "blur(14px)", opacity: 0 },
+        { scale: 1, filter: "blur(0px)", opacity: 1, duration: 0.5, ease: "power4.out" },
+        S3 + 0.05,
+      );
+      tl.fromTo("#s3-wash-teal", { opacity: 0 }, { opacity: 0.08, duration: 0.3, ease: "power1.out" }, S3 + 2.0);
+      tl.to("#s3-wash-teal", { opacity: 0.02, duration: 0.8, ease: "power1.out", overwrite: "auto" }, S3 + 2.3);
+      tl.fromTo("#s3-g2", { x: -260, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, S3 + 2.0);
+
+      // ===== Scene 4 — the fix, measured =====
+      tl.fromTo("#s4-eyebrow", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, S4 + 0.05);
+
+      tl.fromTo("#s4-row1", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, S4 + 0.3);
+      tl.fromTo("#s4-fill-1", { scaleX: 0 }, { scaleX: 0.71, duration: 0.9, ease: "power3.out" }, S4 + 0.35);
+      var v1 = { val: 0 };
+      var v1El = document.getElementById("s4-value-1");
+      tl.to(
+        v1,
+        { val: 0.71, duration: 0.9, ease: "power3.out", onUpdate: function () { v1El.textContent = v1.val.toFixed(3); } },
+        S4 + 0.35,
+      );
+
+      tl.fromTo("#s4-row2", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, S4 + 1.35);
+      tl.fromTo("#s4-fill-2", { scaleX: 0 }, { scaleX: 0.967, duration: 0.9, ease: "power3.out" }, S4 + 1.4);
+      var v2 = { val: 0 };
+      var v2El = document.getElementById("s4-value-2");
+      tl.to(
+        v2,
+        { val: 0.967, duration: 0.9, ease: "power3.out", onUpdate: function () { v2El.textContent = v2.val.toFixed(3); } },
+        S4 + 1.4,
+      );
+
+      tl.fromTo("#s4-payoff", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, S4 + 2.3);
+
+      // ===== Scene 5 — outro =====
+      tl.fromTo("#s5-glow", { opacity: 0, scale: 0.85 }, { opacity: 0.26, scale: 1, duration: 0.8, ease: "power2.out" }, S5 + 0.05);
+      tl.fromTo("#s5-brand", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.55, ease: "power3.out" }, S5 + 0.1);
+      tl.fromTo("#s5-tagline", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, S5 + 0.6);
+      tl.fromTo("#s5-scope", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, S5 + 1.1);
+
+      window.__timelines["pushpak"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

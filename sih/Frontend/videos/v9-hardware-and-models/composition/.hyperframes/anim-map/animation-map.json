@@ -1,0 +1,5646 @@
+{
+  "composition": "C:\\Users\\This PC\\Documents\\codex and claude\\sih\\Frontend\\videos\\v9-hardware-and-models\\composition",
+  "duration": 112,
+  "totalTweens": 34,
+  "mappedTweens": 30,
+  "skippedMicroTweens": 4,
+  "tweens": [
+    {
+      "index": 1,
+      "selector": "div.kicker.appear",
+      "driver": "target",
+      "targets": 5,
+      "props": [
+        "opacity",
+        "y"
+      ],
+      "start": 0.366,
+      "end": 1.766,
+      "duration": 1.4,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 0.483,
+          "x": 100,
+          "y": 81,
+          "w": 1720,
+          "h": 25,
+          "opacity": 0.3768,
+          "visible": true
+        },
+        {
+          "t": 0.716,
+          "x": 100,
+          "y": 70,
+          "w": 1720,
+          "h": 25,
+          "opacity": 0.822,
+          "visible": true
+        },
+        {
+          "t": 0.949,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 0.9801,
+          "visible": true
+        },
+        {
+          "t": 1.183,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 1.416,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 1.649,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "div.kicker.appear animates opacity+y over 1.40s (power2.out). moves 15px up. opacity 0.4→1.0. ends at (100, 66) 1720×25px."
+    },
+    {
+      "index": 2,
+      "selector": "#ap1",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "x"
+      ],
+      "start": 2.016,
+      "end": 6.016,
+      "duration": 4,
+      "ease": "none",
+      "bboxes": [
+        {
+          "t": 2.349,
+          "x": 448,
+          "y": 426,
+          "w": 187,
+          "h": 176,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 3.016,
+          "x": 556,
+          "y": 426,
+          "w": 187,
+          "h": 176,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 3.683,
+          "x": 665,
+          "y": 426,
+          "w": 187,
+          "h": 176,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 4.349,
+          "x": 773,
+          "y": 426,
+          "w": 187,
+          "h": 176,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 5.016,
+          "x": 881,
+          "y": 426,
+          "w": 187,
+          "h": 176,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 5.683,
+          "x": 990,
+          "y": 426,
+          "w": 187,
+          "h": 176,
+          "opacity": 1,
+          "visible": true
+        }
+      ],
+      "flags": [
+        "paced-slow"
+      ],
+      "summary": "#ap1 animates x over 4.00s (none). moves 542px right. ends at (990, 426) 187×176px. FLAGS: paced-slow."
+    },
+    {
+      "index": 3,
+      "selector": "#burst1",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "opacity"
+      ],
+      "start": 3.796,
+      "end": 4.016,
+      "duration": 0.22,
+      "ease": "function(t){return 1-Math.pow(1-t,r)}",
+      "bboxes": [
+        {
+          "t": 3.814,
+          "x": 1303,
+          "y": 427,
+          "w": 30,
+          "h": 175,
+          "opacity": 0.8264,
+          "visible": true
+        },
+        {
+          "t": 3.851,
+          "x": 1303,
+          "y": 427,
+          "w": 30,
+          "h": 175,
+          "opacity": 0.5739,
+          "visible": true
+        },
+        {
+          "t": 3.888,
+          "x": 1303,
+          "y": 427,
+          "w": 30,
+          "h": 175,
+          "opacity": 0.3673,
+          "visible": true
+        },
+        {
+          "t": 3.924,
+          "x": 1303,
+          "y": 427,
+          "w": 30,
+          "h": 175,
+          "opacity": 0.2066,
+          "visible": true
+        },
+        {
+          "t": 3.961,
+          "x": 1303,
+          "y": 427,
+          "w": 30,
+          "h": 175,
+          "opacity": 0.0918,
+          "visible": true
+        },
+        {
+          "t": 3.998,
+          "x": 1303,
+          "y": 427,
+          "w": 30,
+          "h": 175,
+          "opacity": 0.023,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "#burst1 animates opacity over 0.22s (function(t){return 1-Math.pow(1-t,r)}). fades out. ends at (1303, 427) 30×175px."
+    },
+    {
+      "index": 4,
+      "selector": "div.kicker.appear",
+      "driver": "target",
+      "targets": 9,
+      "props": [
+        "opacity",
+        "y"
+      ],
+      "start": 9.366,
+      "end": 11.366,
+      "duration": 2,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 9.533,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 9.866,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 10.199,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 10.533,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 10.866,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 11.199,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        }
+      ],
+      "flags": [],
+      "summary": "div.kicker.appear animates opacity+y over 2.00s (power2.out). ends at (100, 66) 1720×25px."
+    },
+    {
+      "index": 5,
+      "selector": "div.hwicon",
+      "driver": "target",
+      "targets": 4,
+      "props": [
+        "scale",
+        "opacity"
+      ],
+      "start": 11.016,
+      "end": 16.066,
+      "duration": 5.05,
+      "ease": "sine.inOut",
+      "bboxes": [
+        {
+          "t": 11.437,
+          "x": 582,
+          "y": 415,
+          "w": 44,
+          "h": 87,
+          "opacity": 0.8572,
+          "visible": true
+        },
+        {
+          "t": 12.278,
+          "x": 581,
+          "y": 412,
+          "w": 47,
+          "h": 93,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 13.12,
+          "x": 581,
+          "y": 412,
+          "w": 47,
+          "h": 93,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 13.962,
+          "x": 581,
+          "y": 412,
+          "w": 47,
+          "h": 93,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 14.803,
+          "x": 581,
+          "y": 412,
+          "w": 47,
+          "h": 93,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 15.645,
+          "x": 581,
+          "y": 412,
+          "w": 47,
+          "h": 93,
+          "opacity": 1,
+          "visible": true
+        }
+      ],
+      "flags": [
+        "paced-slow"
+      ],
+      "summary": "div.hwicon animates scale+opacity over 5.05s (sine.inOut). opacity 0.9→1.0. scales. height 87→93px. ends at (581, 412) 47×93px. FLAGS: paced-slow."
+    },
+    {
+      "index": 6,
+      "selector": "div.hwicon",
+      "driver": "target",
+      "targets": 4,
+      "props": [
+        "scale",
+        "opacity"
+      ],
+      "start": 16.816,
+      "end": 21.866,
+      "duration": 5.05,
+      "ease": "sine.inOut",
+      "bboxes": [
+        {
+          "t": 17.237,
+          "x": 582,
+          "y": 415,
+          "w": 44,
+          "h": 87,
+          "opacity": 0.8572,
+          "visible": true
+        },
+        {
+          "t": 18.078,
+          "x": 581,
+          "y": 412,
+          "w": 47,
+          "h": 93,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 18.92,
+          "x": 581,
+          "y": 412,
+          "w": 47,
+          "h": 93,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 19.762,
+          "x": 581,
+          "y": 412,
+          "w": 47,
+          "h": 93,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 20.604,
+          "x": 582,
+          "y": 413,
+          "w": 45,
+          "h": 89,
+          "opacity": 0.9153,
+          "visible": true
+        },
+        {
+          "t": 21.445,
+          "x": 586,
+          "y": 421,
+          "w": 38,
+          "h": 74,
+          "opacity": 0.55,
+          "visible": true
+        }
+      ],
+      "flags": [
+        "paced-slow"
+      ],
+      "summary": "div.hwicon animates scale+opacity over 5.05s (sine.inOut). moves 6px down and 4px right. opacity 0.9→0.6. scales. width 44→38px. height 87→74px. ends at (586, 421) 38×74px. FLAGS: paced-slow."
+    },
+    {
+      "index": 7,
+      "selector": "div.kicker.appear",
+      "driver": "target",
+      "targets": 5,
+      "props": [
+        "opacity",
+        "y"
+      ],
+      "start": 23.366,
+      "end": 24.766,
+      "duration": 1.4,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 23.483,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 23.716,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 23.949,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 24.183,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 24.416,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 24.649,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        }
+      ],
+      "flags": [],
+      "summary": "div.kicker.appear animates opacity+y over 1.40s (power2.out). ends at (100, 66) 1720×25px."
+    },
+    {
+      "index": 8,
+      "selector": "#scanWindow",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "x"
+      ],
+      "start": 24.016,
+      "end": 33.816,
+      "duration": 9.8,
+      "ease": "none",
+      "bboxes": [
+        {
+          "t": 24.833,
+          "x": 272,
+          "y": 433,
+          "w": 187,
+          "h": 221,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 26.466,
+          "x": 509,
+          "y": 433,
+          "w": 187,
+          "h": 221,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 28.099,
+          "x": 747,
+          "y": 433,
+          "w": 187,
+          "h": 221,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 29.733,
+          "x": 984,
+          "y": 433,
+          "w": 187,
+          "h": 221,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 31.366,
+          "x": 1222,
+          "y": 433,
+          "w": 187,
+          "h": 221,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 32.999,
+          "x": 1459,
+          "y": 433,
+          "w": 187,
+          "h": 221,
+          "opacity": 1,
+          "visible": true
+        }
+      ],
+      "flags": [
+        "paced-slow"
+      ],
+      "summary": "#scanWindow animates x over 9.80s (none). moves 1187px right. ends at (1459, 433) 187×221px. FLAGS: paced-slow."
+    },
+    {
+      "index": 9,
+      "selector": "#pulse1",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "opacity"
+      ],
+      "start": 25.546,
+      "end": 25.766,
+      "duration": 0.22,
+      "ease": "function(t){return 1-Math.pow(1-t,r)}",
+      "bboxes": [
+        {
+          "t": 25.564,
+          "x": 1217,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.9699,
+          "visible": true
+        },
+        {
+          "t": 25.601,
+          "x": 1217,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.4649,
+          "visible": true
+        },
+        {
+          "t": 25.638,
+          "x": 1217,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.2812,
+          "visible": true
+        },
+        {
+          "t": 25.674,
+          "x": 1217,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.1435,
+          "visible": true
+        },
+        {
+          "t": 25.711,
+          "x": 1217,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.0517,
+          "visible": true
+        },
+        {
+          "t": 25.748,
+          "x": 1217,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.0057,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "#pulse1 animates opacity over 0.22s (function(t){return 1-Math.pow(1-t,r)}). fades out. ends at (1217, 433) 30×221px."
+    },
+    {
+      "index": 10,
+      "selector": "#pulse2",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "opacity"
+      ],
+      "start": 28.446,
+      "end": 28.666,
+      "duration": 0.22,
+      "ease": "function(t){return 1-Math.pow(1-t,r)}",
+      "bboxes": [
+        {
+          "t": 28.464,
+          "x": 1561,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.9699,
+          "visible": true
+        },
+        {
+          "t": 28.501,
+          "x": 1561,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.4649,
+          "visible": true
+        },
+        {
+          "t": 28.538,
+          "x": 1561,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.2812,
+          "visible": true
+        },
+        {
+          "t": 28.574,
+          "x": 1561,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.1435,
+          "visible": true
+        },
+        {
+          "t": 28.611,
+          "x": 1561,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.0517,
+          "visible": true
+        },
+        {
+          "t": 28.648,
+          "x": 1561,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.0057,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "#pulse2 animates opacity over 0.22s (function(t){return 1-Math.pow(1-t,r)}). fades out. ends at (1561, 433) 30×221px."
+    },
+    {
+      "index": 11,
+      "selector": "#pulse3",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "opacity"
+      ],
+      "start": 31.146,
+      "end": 31.366,
+      "duration": 0.22,
+      "ease": "function(t){return 1-Math.pow(1-t,r)}",
+      "bboxes": [
+        {
+          "t": 31.164,
+          "x": 771,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.9699,
+          "visible": true
+        },
+        {
+          "t": 31.201,
+          "x": 771,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.4649,
+          "visible": true
+        },
+        {
+          "t": 31.238,
+          "x": 771,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.2812,
+          "visible": true
+        },
+        {
+          "t": 31.274,
+          "x": 771,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.1435,
+          "visible": true
+        },
+        {
+          "t": 31.311,
+          "x": 771,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.0517,
+          "visible": true
+        },
+        {
+          "t": 31.348,
+          "x": 771,
+          "y": 433,
+          "w": 30,
+          "h": 221,
+          "opacity": 0.0057,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "#pulse3 animates opacity over 0.22s (function(t){return 1-Math.pow(1-t,r)}). fades out. ends at (771, 433) 30×221px."
+    },
+    {
+      "index": 12,
+      "selector": "div.kicker.appear",
+      "driver": "target",
+      "targets": 5,
+      "props": [
+        "opacity",
+        "y"
+      ],
+      "start": 34.366,
+      "end": 35.766,
+      "duration": 1.4,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 34.483,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 34.716,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 34.949,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 35.183,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 35.416,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 35.649,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        }
+      ],
+      "flags": [],
+      "summary": "div.kicker.appear animates opacity+y over 1.40s (power2.out). ends at (100, 66) 1720×25px."
+    },
+    {
+      "index": 13,
+      "selector": "div.glyph",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "scale",
+        "opacity"
+      ],
+      "start": 36.216,
+      "end": 36.916,
+      "duration": 0.7,
+      "ease": "power2.inOut",
+      "bboxes": [
+        {
+          "t": 36.274,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6014,
+          "visible": true
+        },
+        {
+          "t": 36.391,
+          "x": 127,
+          "y": 412,
+          "w": 316,
+          "h": 112,
+          "opacity": 0.6216,
+          "visible": true
+        },
+        {
+          "t": 36.508,
+          "x": 124,
+          "y": 411,
+          "w": 323,
+          "h": 115,
+          "opacity": 0.7259,
+          "visible": true
+        },
+        {
+          "t": 36.624,
+          "x": 119,
+          "y": 409,
+          "w": 332,
+          "h": 118,
+          "opacity": 0.8741,
+          "visible": true
+        },
+        {
+          "t": 36.741,
+          "x": 116,
+          "y": 408,
+          "w": 339,
+          "h": 120,
+          "opacity": 0.9784,
+          "visible": true
+        },
+        {
+          "t": 36.858,
+          "x": 115,
+          "y": 408,
+          "w": 340,
+          "h": 121,
+          "opacity": 0.9986,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "div.glyph animates scale+opacity over 0.70s (power2.inOut). moves 4px up and 13px left. opacity 0.6→1.0. scales. width 315→340px. height 112→121px. ends at (115, 408) 340×121px."
+    },
+    {
+      "index": 14,
+      "selector": "div.glyph",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "scale",
+        "opacity"
+      ],
+      "start": 38.466,
+      "end": 39.166,
+      "duration": 0.7,
+      "ease": "power2.inOut",
+      "bboxes": [
+        {
+          "t": 38.524,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 38.641,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 38.758,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 38.874,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 38.991,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 39.108,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "div.glyph animates scale+opacity over 0.70s (power2.inOut). scales. ends at (128, 412) 315×112px."
+    },
+    {
+      "index": 15,
+      "selector": "div.glyph",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "scale",
+        "opacity"
+      ],
+      "start": 40.716,
+      "end": 41.416,
+      "duration": 0.7,
+      "ease": "power2.inOut",
+      "bboxes": [
+        {
+          "t": 40.774,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 40.891,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 41.008,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 41.124,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 41.241,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 41.358,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "div.glyph animates scale+opacity over 0.70s (power2.inOut). scales. ends at (128, 412) 315×112px."
+    },
+    {
+      "index": 16,
+      "selector": "div.glyph",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "scale",
+        "opacity"
+      ],
+      "start": 42.966,
+      "end": 43.666,
+      "duration": 0.7,
+      "ease": "power2.inOut",
+      "bboxes": [
+        {
+          "t": 43.024,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 43.141,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 43.258,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 43.374,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 43.491,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        },
+        {
+          "t": 43.608,
+          "x": 128,
+          "y": 412,
+          "w": 315,
+          "h": 112,
+          "opacity": 0.6,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "div.glyph animates scale+opacity over 0.70s (power2.inOut). scales. ends at (128, 412) 315×112px."
+    },
+    {
+      "index": 17,
+      "selector": "div.kicker.appear",
+      "driver": "target",
+      "targets": 6,
+      "props": [
+        "opacity",
+        "y"
+      ],
+      "start": 46.366,
+      "end": 47.916,
+      "duration": 1.55,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 46.495,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 46.754,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 47.012,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 47.27,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 47.528,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 47.787,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        }
+      ],
+      "flags": [],
+      "summary": "div.kicker.appear animates opacity+y over 1.55s (power2.out). ends at (100, 66) 1720×25px."
+    },
+    {
+      "index": 18,
+      "selector": "div.model-graphic.ctmc",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "x"
+      ],
+      "start": 47.216,
+      "end": 48.416,
+      "duration": 1.2,
+      "ease": "sine.inOut",
+      "bboxes": [
+        {
+          "t": 47.316,
+          "x": 130,
+          "y": 414,
+          "w": 760,
+          "h": 170,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 47.516,
+          "x": 134,
+          "y": 413,
+          "w": 760,
+          "h": 170,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 47.716,
+          "x": 139,
+          "y": 413,
+          "w": 760,
+          "h": 170,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 47.916,
+          "x": 145,
+          "y": 413,
+          "w": 760,
+          "h": 170,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 48.116,
+          "x": 150,
+          "y": 413,
+          "w": 760,
+          "h": 170,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 48.316,
+          "x": 154,
+          "y": 413,
+          "w": 760,
+          "h": 170,
+          "opacity": 1,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "div.model-graphic.ctmc animates x over 1.20s (sine.inOut). moves 24px right. ends at (154, 413) 760×170px."
+    },
+    {
+      "index": 19,
+      "selector": "i",
+      "driver": "target",
+      "targets": 3,
+      "props": [
+        "scaleX"
+      ],
+      "start": 49.016,
+      "end": 52.316,
+      "duration": 3.3,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 49.291,
+          "x": 127,
+          "y": 769,
+          "w": 99,
+          "h": 28,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 49.841,
+          "x": 127,
+          "y": 769,
+          "w": 99,
+          "h": 28,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 50.391,
+          "x": 127,
+          "y": 769,
+          "w": 99,
+          "h": 28,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 50.941,
+          "x": 127,
+          "y": 769,
+          "w": 99,
+          "h": 28,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 51.491,
+          "x": 127,
+          "y": 769,
+          "w": 99,
+          "h": 28,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 52.041,
+          "x": 127,
+          "y": 769,
+          "w": 99,
+          "h": 28,
+          "opacity": 1,
+          "visible": false
+        }
+      ],
+      "flags": [
+        "paced-slow"
+      ],
+      "summary": "i animates scaleX over 3.30s (power2.out). scales. ends at (127, 769) 99×28px. FLAGS: paced-slow."
+    },
+    {
+      "index": 20,
+      "selector": "div.kicker.appear",
+      "driver": "target",
+      "targets": 7,
+      "props": [
+        "opacity",
+        "y"
+      ],
+      "start": 58.366,
+      "end": 60.066,
+      "duration": 1.7,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 58.508,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 58.791,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 59.074,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 59.358,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 59.641,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 59.924,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        }
+      ],
+      "flags": [],
+      "summary": "div.kicker.appear animates opacity+y over 1.70s (power2.out). ends at (100, 66) 1720×25px."
+    },
+    {
+      "index": 21,
+      "selector": "div.mechanic",
+      "driver": "target",
+      "targets": 4,
+      "props": [
+        "opacity",
+        "scale"
+      ],
+      "start": 60.116,
+      "end": 68.316,
+      "duration": 8.2,
+      "ease": "sine.inOut",
+      "bboxes": [
+        {
+          "t": 60.799,
+          "x": 121,
+          "y": 505,
+          "w": 371,
+          "h": 59,
+          "opacity": 0.875,
+          "visible": true
+        },
+        {
+          "t": 62.166,
+          "x": 117,
+          "y": 505,
+          "w": 380,
+          "h": 61,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 63.533,
+          "x": 117,
+          "y": 505,
+          "w": 380,
+          "h": 61,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 64.899,
+          "x": 117,
+          "y": 505,
+          "w": 380,
+          "h": 61,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 66.266,
+          "x": 117,
+          "y": 505,
+          "w": 380,
+          "h": 61,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 67.633,
+          "x": 117,
+          "y": 505,
+          "w": 380,
+          "h": 61,
+          "opacity": 1,
+          "visible": true
+        }
+      ],
+      "flags": [
+        "paced-slow"
+      ],
+      "summary": "div.mechanic animates opacity+scale over 8.20s (sine.inOut). moves 4px left. opacity 0.9→1.0. scales. width 371→380px. ends at (117, 505) 380×61px. FLAGS: paced-slow."
+    },
+    {
+      "index": 22,
+      "selector": "div.kicker.appear",
+      "driver": "target",
+      "targets": 7,
+      "props": [
+        "opacity",
+        "y"
+      ],
+      "start": 72.366,
+      "end": 74.066,
+      "duration": 1.7,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 72.508,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 72.791,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 73.074,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 73.358,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 73.641,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 73.924,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        }
+      ],
+      "flags": [],
+      "summary": "div.kicker.appear animates opacity+y over 1.70s (power2.out). ends at (100, 66) 1720×25px."
+    },
+    {
+      "index": 23,
+      "selector": "div.merge-line",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "x",
+        "opacity"
+      ],
+      "start": 74.016,
+      "end": 75.216,
+      "duration": 1.2,
+      "ease": "sine.inOut",
+      "bboxes": [
+        {
+          "t": 74.116,
+          "x": 898,
+          "y": 447,
+          "w": 77,
+          "h": 77,
+          "opacity": 0.4102,
+          "visible": true
+        },
+        {
+          "t": 74.316,
+          "x": 905,
+          "y": 447,
+          "w": 77,
+          "h": 77,
+          "opacity": 0.4879,
+          "visible": true
+        },
+        {
+          "t": 74.516,
+          "x": 915,
+          "y": 447,
+          "w": 77,
+          "h": 77,
+          "opacity": 0.6224,
+          "visible": true
+        },
+        {
+          "t": 74.716,
+          "x": 928,
+          "y": 447,
+          "w": 77,
+          "h": 77,
+          "opacity": 0.7776,
+          "visible": true
+        },
+        {
+          "t": 74.916,
+          "x": 939,
+          "y": 447,
+          "w": 77,
+          "h": 77,
+          "opacity": 0.9121,
+          "visible": true
+        },
+        {
+          "t": 75.116,
+          "x": 945,
+          "y": 447,
+          "w": 77,
+          "h": 77,
+          "opacity": 0.9898,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "div.merge-line animates x+opacity over 1.20s (sine.inOut). moves 47px right. opacity 0.4→1.0. ends at (945, 447) 77×77px."
+    },
+    {
+      "index": 24,
+      "selector": "div.kicker.appear",
+      "driver": "target",
+      "targets": 8,
+      "props": [
+        "opacity",
+        "y"
+      ],
+      "start": 84.366,
+      "end": 86.216,
+      "duration": 1.85,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 84.52,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 84.828,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 85.137,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 85.445,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 85.754,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 86.062,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        }
+      ],
+      "flags": [],
+      "summary": "div.kicker.appear animates opacity+y over 1.85s (power2.out). ends at (100, 66) 1720×25px."
+    },
+    {
+      "index": 25,
+      "selector": "div.bar.base",
+      "driver": "target",
+      "targets": 2,
+      "props": [
+        "scaleX"
+      ],
+      "start": 86.216,
+      "end": 88.066,
+      "duration": 1.85,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 86.37,
+          "x": 381,
+          "y": 395,
+          "w": 218,
+          "h": 90,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 86.679,
+          "x": 381,
+          "y": 395,
+          "w": 485,
+          "h": 90,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 86.987,
+          "x": 381,
+          "y": 395,
+          "w": 626,
+          "h": 90,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 87.295,
+          "x": 381,
+          "y": 395,
+          "w": 680,
+          "h": 90,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 87.603,
+          "x": 381,
+          "y": 395,
+          "w": 690,
+          "h": 90,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 87.912,
+          "x": 381,
+          "y": 395,
+          "w": 690,
+          "h": 90,
+          "opacity": 1,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "div.bar.base animates scaleX over 1.85s (power2.out). scales. width 218→690px. ends at (381, 395) 690×90px."
+    },
+    {
+      "index": 26,
+      "selector": "div.lift.appear",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "scale"
+      ],
+      "start": 89.016,
+      "end": 89.816,
+      "duration": 0.8,
+      "ease": "sine.inOut",
+      "bboxes": [
+        {
+          "t": 89.083,
+          "x": 99,
+          "y": 658,
+          "w": 1721,
+          "h": 93,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 89.216,
+          "x": 95,
+          "y": 658,
+          "w": 1730,
+          "h": 94,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 89.349,
+          "x": 87,
+          "y": 657,
+          "w": 1745,
+          "h": 94,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 89.483,
+          "x": 78,
+          "y": 657,
+          "w": 1763,
+          "h": 95,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 89.616,
+          "x": 71,
+          "y": 656,
+          "w": 1779,
+          "h": 96,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 89.749,
+          "x": 66,
+          "y": 656,
+          "w": 1788,
+          "h": 97,
+          "opacity": 1,
+          "visible": true
+        }
+      ],
+      "flags": [],
+      "summary": "div.lift.appear animates scale over 0.80s (sine.inOut). moves 33px left. scales. width 1721→1788px. ends at (66, 656) 1788×97px."
+    },
+    {
+      "index": 27,
+      "selector": "div.kicker.appear",
+      "driver": "target",
+      "targets": 7,
+      "props": [
+        "opacity",
+        "y"
+      ],
+      "start": 96.366,
+      "end": 98.066,
+      "duration": 1.7,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 96.508,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 96.791,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 97.074,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 97.358,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 97.641,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 97.924,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        }
+      ],
+      "flags": [],
+      "summary": "div.kicker.appear animates opacity+y over 1.70s (power2.out). ends at (100, 66) 1720×25px."
+    },
+    {
+      "index": 28,
+      "selector": "div",
+      "driver": "target",
+      "targets": 2,
+      "props": [
+        "scaleX"
+      ],
+      "start": 98.116,
+      "end": 99.716,
+      "duration": 1.6,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 98.249,
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 98.516,
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 98.783,
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 99.049,
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 99.316,
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 99.583,
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1,
+          "visible": false
+        }
+      ],
+      "flags": [],
+      "summary": "div animates scaleX over 1.60s (power2.out). scales. ends at (0, 0) 1920×1080px."
+    },
+    {
+      "index": 29,
+      "selector": "div.kicker.appear",
+      "driver": "target",
+      "targets": 6,
+      "props": [
+        "opacity",
+        "y"
+      ],
+      "start": 104.366,
+      "end": 105.916,
+      "duration": 1.55,
+      "ease": "power2.out",
+      "bboxes": [
+        {
+          "t": 104.495,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 104.754,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 105.012,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 105.27,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 105.528,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        },
+        {
+          "t": 105.787,
+          "x": 100,
+          "y": 66,
+          "w": 1720,
+          "h": 25,
+          "opacity": 1,
+          "visible": false
+        }
+      ],
+      "flags": [],
+      "summary": "div.kicker.appear animates opacity+y over 1.55s (power2.out). ends at (100, 66) 1720×25px."
+    },
+    {
+      "index": 30,
+      "selector": "div.mark.appear",
+      "driver": "target",
+      "targets": 1,
+      "props": [
+        "scale"
+      ],
+      "start": 106.016,
+      "end": 108.216,
+      "duration": 2.2,
+      "ease": "sine.inOut",
+      "bboxes": [
+        {
+          "t": 106.199,
+          "x": 125,
+          "y": 572,
+          "w": 1670,
+          "h": 65,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 106.566,
+          "x": 120,
+          "y": 572,
+          "w": 1680,
+          "h": 65,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 106.933,
+          "x": 110,
+          "y": 571,
+          "w": 1699,
+          "h": 66,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 107.299,
+          "x": 99,
+          "y": 571,
+          "w": 1722,
+          "h": 67,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 107.666,
+          "x": 89,
+          "y": 571,
+          "w": 1741,
+          "h": 68,
+          "opacity": 1,
+          "visible": true
+        },
+        {
+          "t": 108.033,
+          "x": 84,
+          "y": 570,
+          "w": 1753,
+          "h": 68,
+          "opacity": 1,
+          "visible": true
+        }
+      ],
+      "flags": [
+        "paced-slow"
+      ],
+      "summary": "div.mark.appear animates scale over 2.20s (sine.inOut). moves 41px left. scales. width 1670→1753px. ends at (84, 570) 1753×68px. FLAGS: paced-slow."
+    }
+  ],
+  "choreography": "Timeline (112.0s, each char ≈ 1.87s):\n  0s                                                    112s\n  ┼───────────────────────────────────────────────────────────┤\n  █                                                             div.kicker.appear opacity+y\n   ███                                                          #ap1 x\n    █                                                           #burst1 opacity\n       ██                                                       div.kicker.appear opacity+y\n       ████                                                     div.hwicon scale+opacity\n           ███                                                  div.hwicon scale+opacity\n              ██                                                div.kicker.appear opacity+y\n              ███████                                           #scanWindow x\n               █                                                #pulse1 opacity\n                 █                                              #pulse2 opacity\n                  █                                             #pulse3 opacity\n                    ██                                          div.kicker.appear opacity+y\n                     █                                          div.glyph scale+opacity\n                      █                                         div.glyph scale+opacity\n                       ██                                       div.glyph scale+opacity\n                         █                                      div.glyph scale+opacity\n                          ██                                    div.kicker.appear opacity+y\n                           █                                    div.model-graphic.ctmc x\n                            ███                                 i scaleX\n                                 ██                             div.kicker.appear opacity+y\n                                  █████                         div.mechanic opacity+scale\n                                        ██                      div.kicker.appear opacity+y\n                                         ██                     div.merge-line x+opacity\n                                               ██               div.kicker.appear opacity+y\n                                                ██              div.bar.base scaleX\n                                                 ██             div.lift.appear scale\n                                                     ██         div.kicker.appear opacity+y\n                                                      ██        div scaleX\n                                                         ██     div.kicker.appear opacity+y\n                                                          ██    div.mark.appear scale",
+  "density": [
+    {
+      "t": 0,
+      "activeTweens": 1
+    },
+    {
+      "t": 0.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 1,
+      "activeTweens": 1
+    },
+    {
+      "t": 1.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 2,
+      "activeTweens": 1
+    },
+    {
+      "t": 2.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 3,
+      "activeTweens": 1
+    },
+    {
+      "t": 3.5,
+      "activeTweens": 2
+    },
+    {
+      "t": 4,
+      "activeTweens": 2
+    },
+    {
+      "t": 4.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 5,
+      "activeTweens": 1
+    },
+    {
+      "t": 5.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 6,
+      "activeTweens": 1
+    },
+    {
+      "t": 6.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 7,
+      "activeTweens": 0
+    },
+    {
+      "t": 7.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 8,
+      "activeTweens": 0
+    },
+    {
+      "t": 8.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 9,
+      "activeTweens": 1
+    },
+    {
+      "t": 9.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 10,
+      "activeTweens": 1
+    },
+    {
+      "t": 10.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 11,
+      "activeTweens": 2
+    },
+    {
+      "t": 11.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 12,
+      "activeTweens": 1
+    },
+    {
+      "t": 12.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 13,
+      "activeTweens": 1
+    },
+    {
+      "t": 13.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 14,
+      "activeTweens": 1
+    },
+    {
+      "t": 14.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 15,
+      "activeTweens": 1
+    },
+    {
+      "t": 15.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 16,
+      "activeTweens": 1
+    },
+    {
+      "t": 16.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 17,
+      "activeTweens": 1
+    },
+    {
+      "t": 17.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 18,
+      "activeTweens": 1
+    },
+    {
+      "t": 18.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 19,
+      "activeTweens": 1
+    },
+    {
+      "t": 19.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 20,
+      "activeTweens": 1
+    },
+    {
+      "t": 20.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 21,
+      "activeTweens": 1
+    },
+    {
+      "t": 21.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 22,
+      "activeTweens": 0
+    },
+    {
+      "t": 22.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 23,
+      "activeTweens": 1
+    },
+    {
+      "t": 23.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 24,
+      "activeTweens": 2
+    },
+    {
+      "t": 24.5,
+      "activeTweens": 2
+    },
+    {
+      "t": 25,
+      "activeTweens": 1
+    },
+    {
+      "t": 25.5,
+      "activeTweens": 2
+    },
+    {
+      "t": 26,
+      "activeTweens": 1
+    },
+    {
+      "t": 26.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 27,
+      "activeTweens": 1
+    },
+    {
+      "t": 27.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 28,
+      "activeTweens": 2
+    },
+    {
+      "t": 28.5,
+      "activeTweens": 2
+    },
+    {
+      "t": 29,
+      "activeTweens": 1
+    },
+    {
+      "t": 29.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 30,
+      "activeTweens": 1
+    },
+    {
+      "t": 30.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 31,
+      "activeTweens": 2
+    },
+    {
+      "t": 31.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 32,
+      "activeTweens": 1
+    },
+    {
+      "t": 32.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 33,
+      "activeTweens": 1
+    },
+    {
+      "t": 33.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 34,
+      "activeTweens": 1
+    },
+    {
+      "t": 34.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 35,
+      "activeTweens": 1
+    },
+    {
+      "t": 35.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 36,
+      "activeTweens": 1
+    },
+    {
+      "t": 36.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 37,
+      "activeTweens": 0
+    },
+    {
+      "t": 37.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 38,
+      "activeTweens": 1
+    },
+    {
+      "t": 38.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 39,
+      "activeTweens": 1
+    },
+    {
+      "t": 39.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 40,
+      "activeTweens": 0
+    },
+    {
+      "t": 40.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 41,
+      "activeTweens": 1
+    },
+    {
+      "t": 41.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 42,
+      "activeTweens": 0
+    },
+    {
+      "t": 42.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 43,
+      "activeTweens": 1
+    },
+    {
+      "t": 43.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 44,
+      "activeTweens": 0
+    },
+    {
+      "t": 44.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 45,
+      "activeTweens": 0
+    },
+    {
+      "t": 45.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 46,
+      "activeTweens": 1
+    },
+    {
+      "t": 46.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 47,
+      "activeTweens": 2
+    },
+    {
+      "t": 47.5,
+      "activeTweens": 2
+    },
+    {
+      "t": 48,
+      "activeTweens": 1
+    },
+    {
+      "t": 48.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 49,
+      "activeTweens": 1
+    },
+    {
+      "t": 49.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 50,
+      "activeTweens": 1
+    },
+    {
+      "t": 50.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 51,
+      "activeTweens": 1
+    },
+    {
+      "t": 51.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 52,
+      "activeTweens": 1
+    },
+    {
+      "t": 52.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 53,
+      "activeTweens": 0
+    },
+    {
+      "t": 53.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 54,
+      "activeTweens": 0
+    },
+    {
+      "t": 54.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 55,
+      "activeTweens": 0
+    },
+    {
+      "t": 55.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 56,
+      "activeTweens": 0
+    },
+    {
+      "t": 56.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 57,
+      "activeTweens": 0
+    },
+    {
+      "t": 57.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 58,
+      "activeTweens": 1
+    },
+    {
+      "t": 58.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 59,
+      "activeTweens": 1
+    },
+    {
+      "t": 59.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 60,
+      "activeTweens": 2
+    },
+    {
+      "t": 60.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 61,
+      "activeTweens": 1
+    },
+    {
+      "t": 61.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 62,
+      "activeTweens": 1
+    },
+    {
+      "t": 62.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 63,
+      "activeTweens": 1
+    },
+    {
+      "t": 63.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 64,
+      "activeTweens": 1
+    },
+    {
+      "t": 64.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 65,
+      "activeTweens": 1
+    },
+    {
+      "t": 65.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 66,
+      "activeTweens": 1
+    },
+    {
+      "t": 66.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 67,
+      "activeTweens": 1
+    },
+    {
+      "t": 67.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 68,
+      "activeTweens": 1
+    },
+    {
+      "t": 68.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 69,
+      "activeTweens": 0
+    },
+    {
+      "t": 69.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 70,
+      "activeTweens": 0
+    },
+    {
+      "t": 70.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 71,
+      "activeTweens": 0
+    },
+    {
+      "t": 71.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 72,
+      "activeTweens": 1
+    },
+    {
+      "t": 72.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 73,
+      "activeTweens": 1
+    },
+    {
+      "t": 73.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 74,
+      "activeTweens": 2
+    },
+    {
+      "t": 74.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 75,
+      "activeTweens": 1
+    },
+    {
+      "t": 75.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 76,
+      "activeTweens": 0
+    },
+    {
+      "t": 76.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 77,
+      "activeTweens": 0
+    },
+    {
+      "t": 77.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 78,
+      "activeTweens": 0
+    },
+    {
+      "t": 78.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 79,
+      "activeTweens": 0
+    },
+    {
+      "t": 79.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 80,
+      "activeTweens": 0
+    },
+    {
+      "t": 80.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 81,
+      "activeTweens": 0
+    },
+    {
+      "t": 81.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 82,
+      "activeTweens": 0
+    },
+    {
+      "t": 82.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 83,
+      "activeTweens": 0
+    },
+    {
+      "t": 83.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 84,
+      "activeTweens": 1
+    },
+    {
+      "t": 84.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 85,
+      "activeTweens": 1
+    },
+    {
+      "t": 85.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 86,
+      "activeTweens": 2
+    },
+    {
+      "t": 86.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 87,
+      "activeTweens": 1
+    },
+    {
+      "t": 87.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 88,
+      "activeTweens": 1
+    },
+    {
+      "t": 88.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 89,
+      "activeTweens": 1
+    },
+    {
+      "t": 89.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 90,
+      "activeTweens": 0
+    },
+    {
+      "t": 90.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 91,
+      "activeTweens": 0
+    },
+    {
+      "t": 91.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 92,
+      "activeTweens": 0
+    },
+    {
+      "t": 92.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 93,
+      "activeTweens": 0
+    },
+    {
+      "t": 93.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 94,
+      "activeTweens": 0
+    },
+    {
+      "t": 94.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 95,
+      "activeTweens": 0
+    },
+    {
+      "t": 95.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 96,
+      "activeTweens": 1
+    },
+    {
+      "t": 96.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 97,
+      "activeTweens": 1
+    },
+    {
+      "t": 97.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 98,
+      "activeTweens": 2
+    },
+    {
+      "t": 98.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 99,
+      "activeTweens": 1
+    },
+    {
+      "t": 99.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 100,
+      "activeTweens": 0
+    },
+    {
+      "t": 100.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 101,
+      "activeTweens": 0
+    },
+    {
+      "t": 101.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 102,
+      "activeTweens": 0
+    },
+    {
+      "t": 102.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 103,
+      "activeTweens": 0
+    },
+    {
+      "t": 103.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 104,
+      "activeTweens": 1
+    },
+    {
+      "t": 104.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 105,
+      "activeTweens": 1
+    },
+    {
+      "t": 105.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 106,
+      "activeTweens": 1
+    },
+    {
+      "t": 106.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 107,
+      "activeTweens": 1
+    },
+    {
+      "t": 107.5,
+      "activeTweens": 1
+    },
+    {
+      "t": 108,
+      "activeTweens": 1
+    },
+    {
+      "t": 108.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 109,
+      "activeTweens": 0
+    },
+    {
+      "t": 109.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 110,
+      "activeTweens": 0
+    },
+    {
+      "t": 110.5,
+      "activeTweens": 0
+    },
+    {
+      "t": 111,
+      "activeTweens": 0
+    },
+    {
+      "t": 111.5,
+      "activeTweens": 0
+    }
+  ],
+  "staggers": [],
+  "elements": {
+    "div.kicker.appear": {
+      "firstAppears": 0.366,
+      "lastAnimates": 105.916,
+      "tweenCount": 10,
+      "props": [
+        "opacity",
+        "y"
+      ],
+      "endsVisible": false,
+      "finalPosition": {
+        "x": 100,
+        "y": 66,
+        "w": 1720,
+        "h": 25
+      }
+    },
+    "#ap1": {
+      "firstAppears": 2.016,
+      "lastAnimates": 6.016,
+      "tweenCount": 1,
+      "props": [
+        "x"
+      ],
+      "endsVisible": true,
+      "finalPosition": {
+        "x": 990,
+        "y": 426,
+        "w": 187,
+        "h": 176
+      }
+    },
+    "#burst1": {
+      "firstAppears": 3.796,
+      "lastAnimates": 4.016,
+      "tweenCount": 1,
+      "props": [
+        "opacity"
+      ],
+      "endsVisible": false,
+      "finalPosition": {
+        "x": 1303,
+        "y": 427,
+        "w": 30,
+        "h": 175
+      }
+    },
+    "div.hwicon": {
+      "firstAppears": 11.016,
+      "lastAnimates": 21.866,
+      "tweenCount": 2,
+      "props": [
+        "scale",
+        "opacity"
+      ],
+      "endsVisible": true,
+      "finalPosition": {
+        "x": 586,
+        "y": 421,
+        "w": 38,
+        "h": 74
+      }
+    },
+    "#scanWindow": {
+      "firstAppears": 24.016,
+      "lastAnimates": 33.816,
+      "tweenCount": 1,
+      "props": [
+        "x"
+      ],
+      "endsVisible": true,
+      "finalPosition": {
+        "x": 1459,
+        "y": 433,
+        "w": 187,
+        "h": 221
+      }
+    },
+    "#pulse1": {
+      "firstAppears": 25.546,
+      "lastAnimates": 25.766,
+      "tweenCount": 1,
+      "props": [
+        "opacity"
+      ],
+      "endsVisible": false,
+      "finalPosition": {
+        "x": 1217,
+        "y": 433,
+        "w": 30,
+        "h": 221
+      }
+    },
+    "#pulse2": {
+      "firstAppears": 28.446,
+      "lastAnimates": 28.666,
+      "tweenCount": 1,
+      "props": [
+        "opacity"
+      ],
+      "endsVisible": false,
+      "finalPosition": {
+        "x": 1561,
+        "y": 433,
+        "w": 30,
+        "h": 221
+      }
+    },
+    "#pulse3": {
+      "firstAppears": 31.146,
+      "lastAnimates": 31.366,
+      "tweenCount": 1,
+      "props": [
+        "opacity"
+      ],
+      "endsVisible": false,
+      "finalPosition": {
+        "x": 771,
+        "y": 433,
+        "w": 30,
+        "h": 221
+      }
+    },
+    "div.glyph": {
+      "firstAppears": 36.216,
+      "lastAnimates": 43.666,
+      "tweenCount": 4,
+      "props": [
+        "scale",
+        "opacity"
+      ],
+      "endsVisible": true,
+      "finalPosition": {
+        "x": 128,
+        "y": 412,
+        "w": 315,
+        "h": 112
+      }
+    },
+    "div.model-graphic.ctmc": {
+      "firstAppears": 47.216,
+      "lastAnimates": 48.416,
+      "tweenCount": 1,
+      "props": [
+        "x"
+      ],
+      "endsVisible": true,
+      "finalPosition": {
+        "x": 154,
+        "y": 413,
+        "w": 760,
+        "h": 170
+      }
+    },
+    "i": {
+      "firstAppears": 49.016,
+      "lastAnimates": 52.316,
+      "tweenCount": 1,
+      "props": [
+        "scaleX"
+      ],
+      "endsVisible": false,
+      "finalPosition": {
+        "x": 127,
+        "y": 769,
+        "w": 99,
+        "h": 28
+      }
+    },
+    "div.mechanic": {
+      "firstAppears": 60.116,
+      "lastAnimates": 68.316,
+      "tweenCount": 1,
+      "props": [
+        "opacity",
+        "scale"
+      ],
+      "endsVisible": true,
+      "finalPosition": {
+        "x": 117,
+        "y": 505,
+        "w": 380,
+        "h": 61
+      }
+    },
+    "div.merge-line": {
+      "firstAppears": 74.016,
+      "lastAnimates": 75.216,
+      "tweenCount": 1,
+      "props": [
+        "x",
+        "opacity"
+      ],
+      "endsVisible": true,
+      "finalPosition": {
+        "x": 945,
+        "y": 447,
+        "w": 77,
+        "h": 77
+      }
+    },
+    "div.bar.base": {
+      "firstAppears": 86.216,
+      "lastAnimates": 88.066,
+      "tweenCount": 1,
+      "props": [
+        "scaleX"
+      ],
+      "endsVisible": true,
+      "finalPosition": {
+        "x": 381,
+        "y": 395,
+        "w": 690,
+        "h": 90
+      }
+    },
+    "div.lift.appear": {
+      "firstAppears": 89.016,
+      "lastAnimates": 89.816,
+      "tweenCount": 1,
+      "props": [
+        "scale"
+      ],
+      "endsVisible": true,
+      "finalPosition": {
+        "x": 66,
+        "y": 656,
+        "w": 1788,
+        "h": 97
+      }
+    },
+    "div": {
+      "firstAppears": 98.116,
+      "lastAnimates": 99.716,
+      "tweenCount": 1,
+      "props": [
+        "scaleX"
+      ],
+      "endsVisible": false,
+      "finalPosition": {
+        "x": 0,
+        "y": 0,
+        "w": 1920,
+        "h": 1080
+      }
+    },
+    "div.mark.appear": {
+      "firstAppears": 106.016,
+      "lastAnimates": 108.216,
+      "tweenCount": 1,
+      "props": [
+        "scale"
+      ],
+      "endsVisible": true,
+      "finalPosition": {
+        "x": 84,
+        "y": 570,
+        "w": 1753,
+        "h": 68
+      }
+    }
+  },
+  "deadZones": [
+    {
+      "start": 6.5,
+      "end": 9,
+      "duration": 2.5,
+      "note": "No animation for 2.5s. Intentional hold or missing entrance?"
+    },
+    {
+      "start": 22,
+      "end": 23,
+      "duration": 1,
+      "note": "No animation for 1.0s. Intentional hold or missing entrance?"
+    },
+    {
+      "start": 37,
+      "end": 38,
+      "duration": 1,
+      "note": "No animation for 1.0s. Intentional hold or missing entrance?"
+    },
+    {
+      "start": 39.5,
+      "end": 40.5,
+      "duration": 1,
+      "note": "No animation for 1.0s. Intentional hold or missing entrance?"
+    },
+    {
+      "start": 41.5,
+      "end": 42.5,
+      "duration": 1,
+      "note": "No animation for 1.0s. Intentional hold or missing entrance?"
+    },
+    {
+      "start": 44,
+      "end": 46,
+      "duration": 2,
+      "note": "No animation for 2.0s. Intentional hold or missing entrance?"
+    },
+    {
+      "start": 52.5,
+      "end": 58,
+      "duration": 5.5,
+      "note": "No animation for 5.5s. Intentional hold or missing entrance?"
+    },
+    {
+      "start": 68.5,
+      "end": 72,
+      "duration": 3.5,
+      "note": "No animation for 3.5s. Intentional hold or missing entrance?"
+    },
+    {
+      "start": 75.5,
+      "end": 84,
+      "duration": 8.5,
+      "note": "No animation for 8.5s. Intentional hold or missing entrance?"
+    },
+    {
+      "start": 90,
+      "end": 96,
+      "duration": 6,
+      "note": "No animation for 6.0s. Intentional hold or missing entrance?"
+    },
+    {
+      "start": 100,
+      "end": 104,
+      "duration": 4,
+      "note": "No animation for 4.0s. Intentional hold or missing entrance?"
+    },
+    {
+      "start": 108.5,
+      "end": 112,
+      "duration": 3.5,
+      "note": "No animation for 3.5s at end. Final hold or missing outro?"
+    }
+  ],
+  "snapshots": [
+    {
+      "t": 0,
+      "visibleElements": 55,
+      "animatingNow": [],
+      "elements": [
+        {
+          "id": "root",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-01",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s01",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "a1",
+          "x": 147,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a2",
+          "x": 249,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a3",
+          "x": 351,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a4",
+          "x": 453,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a5",
+          "x": 555,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a6",
+          "x": 657,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a7",
+          "x": 759,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a8",
+          "x": 861,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a9",
+          "x": 963,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a10",
+          "x": 1064,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a11",
+          "x": 1166,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a12",
+          "x": 1268,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a13",
+          "x": 1370,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a14",
+          "x": 1472,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a15",
+          "x": 1574,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a16",
+          "x": 1676,
+          "y": 456,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "ap1",
+          "x": 394,
+          "y": 450,
+          "w": 187,
+          "h": 176,
+          "opacity": 1
+        },
+        {
+          "id": "frame-02",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s02",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-03",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s03",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "b1",
+          "x": 146,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b2",
+          "x": 248,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b3",
+          "x": 350,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b4",
+          "x": 452,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b5",
+          "x": 554,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b6",
+          "x": 656,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b7",
+          "x": 758,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b8",
+          "x": 860,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b9",
+          "x": 963,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b10",
+          "x": 1065,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b11",
+          "x": 1167,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b12",
+          "x": 1269,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b13",
+          "x": 1371,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b14",
+          "x": 1473,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b15",
+          "x": 1575,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b16",
+          "x": 1677,
+          "y": 452,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "scanWindow",
+          "x": 155,
+          "y": 457,
+          "w": 187,
+          "h": 221,
+          "opacity": 1
+        },
+        {
+          "id": "frame-04",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s04",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-05",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s05",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-06",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s06",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-07",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s07",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-08",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s08",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-09",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s09",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-10",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s10",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        }
+      ]
+    },
+    {
+      "t": 28,
+      "visibleElements": 55,
+      "animatingNow": [
+        "#scanWindow"
+      ],
+      "elements": [
+        {
+          "id": "root",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-01",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s01",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "a1",
+          "x": 147,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a2",
+          "x": 249,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a3",
+          "x": 351,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a4",
+          "x": 453,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a5",
+          "x": 555,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a6",
+          "x": 657,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a7",
+          "x": 759,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a8",
+          "x": 861,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a9",
+          "x": 963,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a10",
+          "x": 1064,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a11",
+          "x": 1166,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a12",
+          "x": 1268,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a13",
+          "x": 1370,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a14",
+          "x": 1472,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a15",
+          "x": 1574,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a16",
+          "x": 1676,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "ap1",
+          "x": 1044,
+          "y": 426,
+          "w": 187,
+          "h": 176,
+          "opacity": 1
+        },
+        {
+          "id": "frame-02",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s02",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-03",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s03",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "b1",
+          "x": 146,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b2",
+          "x": 248,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b3",
+          "x": 350,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b4",
+          "x": 452,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b5",
+          "x": 554,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b6",
+          "x": 656,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b7",
+          "x": 758,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b8",
+          "x": 860,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b9",
+          "x": 963,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b10",
+          "x": 1065,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b11",
+          "x": 1167,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b12",
+          "x": 1269,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b13",
+          "x": 1371,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b14",
+          "x": 1473,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b15",
+          "x": 1575,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b16",
+          "x": 1677,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "scanWindow",
+          "x": 737,
+          "y": 433,
+          "w": 187,
+          "h": 221,
+          "opacity": 1
+        },
+        {
+          "id": "frame-04",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s04",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-05",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s05",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-06",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s06",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-07",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s07",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-08",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s08",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-09",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s09",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-10",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s10",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        }
+      ]
+    },
+    {
+      "t": 56,
+      "visibleElements": 55,
+      "animatingNow": [],
+      "elements": [
+        {
+          "id": "root",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-01",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s01",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "a1",
+          "x": 147,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a2",
+          "x": 249,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a3",
+          "x": 351,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a4",
+          "x": 453,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a5",
+          "x": 555,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a6",
+          "x": 657,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a7",
+          "x": 759,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a8",
+          "x": 861,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a9",
+          "x": 963,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a10",
+          "x": 1064,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a11",
+          "x": 1166,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a12",
+          "x": 1268,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a13",
+          "x": 1370,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a14",
+          "x": 1472,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a15",
+          "x": 1574,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a16",
+          "x": 1676,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "ap1",
+          "x": 1044,
+          "y": 426,
+          "w": 187,
+          "h": 176,
+          "opacity": 1
+        },
+        {
+          "id": "frame-02",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s02",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-03",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s03",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "b1",
+          "x": 146,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b2",
+          "x": 248,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b3",
+          "x": 350,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b4",
+          "x": 452,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b5",
+          "x": 554,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b6",
+          "x": 656,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b7",
+          "x": 758,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b8",
+          "x": 860,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b9",
+          "x": 963,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b10",
+          "x": 1065,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b11",
+          "x": 1167,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b12",
+          "x": 1269,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b13",
+          "x": 1371,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b14",
+          "x": 1473,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b15",
+          "x": 1575,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b16",
+          "x": 1677,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "scanWindow",
+          "x": 1580,
+          "y": 433,
+          "w": 187,
+          "h": 221,
+          "opacity": 1
+        },
+        {
+          "id": "frame-04",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s04",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-05",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s05",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-06",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s06",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-07",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s07",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-08",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s08",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-09",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s09",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-10",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s10",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        }
+      ]
+    },
+    {
+      "t": 84,
+      "visibleElements": 55,
+      "animatingNow": [],
+      "elements": [
+        {
+          "id": "root",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-01",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s01",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "a1",
+          "x": 147,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a2",
+          "x": 249,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a3",
+          "x": 351,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a4",
+          "x": 453,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a5",
+          "x": 555,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a6",
+          "x": 657,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a7",
+          "x": 759,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a8",
+          "x": 861,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a9",
+          "x": 963,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a10",
+          "x": 1064,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a11",
+          "x": 1166,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a12",
+          "x": 1268,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a13",
+          "x": 1370,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a14",
+          "x": 1472,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a15",
+          "x": 1574,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a16",
+          "x": 1676,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "ap1",
+          "x": 1044,
+          "y": 426,
+          "w": 187,
+          "h": 176,
+          "opacity": 1
+        },
+        {
+          "id": "frame-02",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s02",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-03",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s03",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "b1",
+          "x": 146,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b2",
+          "x": 248,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b3",
+          "x": 350,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b4",
+          "x": 452,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b5",
+          "x": 554,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b6",
+          "x": 656,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b7",
+          "x": 758,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b8",
+          "x": 860,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b9",
+          "x": 963,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b10",
+          "x": 1065,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b11",
+          "x": 1167,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b12",
+          "x": 1269,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b13",
+          "x": 1371,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b14",
+          "x": 1473,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b15",
+          "x": 1575,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b16",
+          "x": 1677,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "scanWindow",
+          "x": 1580,
+          "y": 433,
+          "w": 187,
+          "h": 221,
+          "opacity": 1
+        },
+        {
+          "id": "frame-04",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s04",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-05",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s05",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-06",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s06",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-07",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s07",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-08",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s08",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-09",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s09",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-10",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s10",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        }
+      ]
+    },
+    {
+      "t": 111.9,
+      "visibleElements": 55,
+      "animatingNow": [],
+      "elements": [
+        {
+          "id": "root",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-01",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s01",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "a1",
+          "x": 147,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a2",
+          "x": 249,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a3",
+          "x": 351,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a4",
+          "x": 453,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a5",
+          "x": 555,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a6",
+          "x": 657,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a7",
+          "x": 759,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a8",
+          "x": 861,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a9",
+          "x": 963,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a10",
+          "x": 1064,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a11",
+          "x": 1166,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a12",
+          "x": 1268,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a13",
+          "x": 1370,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a14",
+          "x": 1472,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a15",
+          "x": 1574,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "a16",
+          "x": 1676,
+          "y": 432,
+          "w": 97,
+          "h": 170,
+          "opacity": 1
+        },
+        {
+          "id": "ap1",
+          "x": 1044,
+          "y": 426,
+          "w": 187,
+          "h": 176,
+          "opacity": 1
+        },
+        {
+          "id": "frame-02",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s02",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-03",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s03",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "b1",
+          "x": 146,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b2",
+          "x": 248,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b3",
+          "x": 350,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b4",
+          "x": 452,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b5",
+          "x": 554,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b6",
+          "x": 656,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b7",
+          "x": 758,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b8",
+          "x": 860,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b9",
+          "x": 963,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b10",
+          "x": 1065,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b11",
+          "x": 1167,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b12",
+          "x": 1269,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b13",
+          "x": 1371,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b14",
+          "x": 1473,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b15",
+          "x": 1575,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "b16",
+          "x": 1677,
+          "y": 428,
+          "w": 97,
+          "h": 216,
+          "opacity": 1
+        },
+        {
+          "id": "scanWindow",
+          "x": 1580,
+          "y": 433,
+          "w": 187,
+          "h": 221,
+          "opacity": 1
+        },
+        {
+          "id": "frame-04",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s04",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-05",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s05",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-06",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s06",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-07",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s07",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-08",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s08",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-09",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s09",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "frame-10",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        },
+        {
+          "id": "s10",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "opacity": 1
+        }
+      ]
+    }
+  ]
+}

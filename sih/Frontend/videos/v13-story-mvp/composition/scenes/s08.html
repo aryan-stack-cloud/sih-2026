@@ -1,0 +1,91 @@
+<div class="cam" id="s08-cam">
+  <div class="abs" style="left:0;top:0;width:1920px;height:1080px;background:radial-gradient(ellipse at 50% 42%,#3D3C8F 0%,#2B2A6E 46%,#1D1B4F 90%)"></div>
+  <img class="bgimg" src="assets/art/bg/night-sky.svg" alt="" style="opacity:0.28">
+  <div class="abs" id="s08-board-wrap" style="left:510px;top:170px;width:900px;height:616px">
+    {{gen maze id=s08-maze class=abs style="left:0;top:0;width:900px;height:616px"}}
+  </div>
+  <div class="abs startlbl" id="s08-start" style="left:396px;top:679px;width:108px;text-align:right">Start</div>
+  <!-- the score of every move (path moves A1..A8, dead ends L1..L4) -->
+  <b class="qb" id="s08-a1" style="left:641px;top:629px">0</b>
+  <b class="qb" id="s08-a2" style="left:760px;top:600px">0</b>
+  <b class="qb" id="s08-a3" style="left:783px;top:487px">0</b>
+  <b class="qb" id="s08-a4" style="left:925px;top:487px">0</b>
+  <b class="qb" id="s08-a5" style="left:1044px;top:458px">0</b>
+  <b class="qb" id="s08-a6" style="left:1067px;top:345px">0</b>
+  <b class="qb" id="s08-a7" style="left:1209px;top:345px">0</b>
+  <b class="qb" id="s08-a8" style="left:1328px;top:316px">0</b>
+  <b class="qb dim" id="s08-l1" style="left:783px;top:713px">0</b>
+  <b class="qb dim" id="s08-l2" style="left:1044px;top:600px">0</b>
+  <b class="qb dim" id="s08-l3" style="left:641px;top:487px">0</b>
+  <b class="qb dim" id="s08-l4" style="left:1328px;top:458px">0</b>
+  <div class="abs" id="s08-token" style="left:565px;top:651px;width:80px;height:80px">
+    <svg viewBox="0 0 80 80" width="80" height="80"><ellipse cx="40" cy="72" rx="24" ry="6" fill="rgba(20,18,60,0.45)"/>
+      <circle cx="40" cy="44" r="26" fill="#C68A5E"/><path d="M58 40 A18 18 0 0 1 40 66 A26 26 0 0 0 64 46 Z" fill="#A9714A"/>
+      <path d="M14 38 Q16 12 40 12 Q64 12 66 38 Z" fill="#26325C"/><rect x="10" y="34" width="60" height="9" rx="4.5" fill="#232E57"/>
+      <circle cx="40" cy="24" r="5" fill="#F2B632"/>
+      <circle cx="31" cy="50" r="4.5" fill="#1F2340"/><circle cx="49" cy="50" r="4.5" fill="#1F2340"/>
+      <circle cx="32.5" cy="48.5" r="1.5" fill="#FDFCF8"/><circle cx="50.5" cy="48.5" r="1.5" fill="#FDFCF8"/>
+      <path d="M30 58 Q40 64 50 58 Q46 62 40 62 Q34 62 30 58 Z" fill="#1E1A1A"/></svg>
+  </div>
+  <div class="abs" id="s08-burst" style="left:1245px;top:195px;width:140px;height:140px">
+    <svg viewBox="0 0 140 140" width="140" height="140"><g fill="#FFE066">
+      <rect x="66" y="0" width="8" height="30" rx="4"/><rect x="66" y="110" width="8" height="30" rx="4"/>
+      <rect x="0" y="66" width="30" height="8" rx="4"/><rect x="110" y="66" width="30" height="8" rx="4"/>
+      <rect x="66" y="0" width="8" height="30" rx="4" transform="rotate(45 70 70)"/><rect x="66" y="110" width="8" height="30" rx="4" transform="rotate(45 70 70)"/>
+      <rect x="0" y="66" width="30" height="8" rx="4" transform="rotate(45 70 70)"/><rect x="110" y="66" width="30" height="8" rx="4" transform="rotate(45 70 70)"/></g></svg>
+  </div>
+  <div class="abs" id="s08-p" style="left:0;top:0;width:26px;height:26px;border-radius:50%;background:#2DB86B;box-shadow:0 0 18px 6px rgba(45,184,107,0.8)"></div>
+  <div class="card runc" id="s08-run" style="left:1480px;top:180px;width:340px;height:170px"><span>Run</span><b id="s08-runv">1</b></div>
+  <div class="abs" id="s08-e-wrap" style="left:1530px;top:450px;width:300px;height:600px">{{engineer id=s08-e tablet}}</div>
+  <div class="tis-bubble" id="s08-bub" style="left:1470px;top:368px;font-size:40px;padding:18px 30px">It led there!</div>
+  <div class="tis-numcard" id="s08-num"><b>#2</b></div>
+</div>
+<div class="hud">
+  <div class="lg" id="s08-lg1" style="top:230px"><i class="sq"></i><div><span>Square</span><b>a situation</b></div></div>
+  <div class="lg" id="s08-lg2" style="top:340px"><i class="ar"></i><div><span>Arrow</span><b>which bands to watch</b></div></div>
+  <div class="lg" id="s08-lg3" style="top:450px"><i class="st"></i><div><span>Star</span><b>a caught signal</b></div></div>
+  <div class="tis-name" id="s08-name"><div><b>Q-learning</b><small>Credit flows back along the path</small></div><i class="tis-chip learn">Learns from experience</i></div>
+</div>
+<style>
+  #s08 .qb { position: absolute; width: 70px; height: 40px; border-radius: 20px; background: #FDFCF8; font: 700 28px/40px "Fredoka"; color: #1F2340; text-align: center; box-shadow: 0 4px 0 rgba(20, 18, 60, 0.35); }
+  #s08 .qb.dim { background: #C9CCEA; color: #3D3C8F; }
+  #s08 .startlbl { font: 800 24px/1 "Montserrat"; color: #7FB2FF; text-align: center; text-transform: uppercase; letter-spacing: 3px; }
+  #s08 .runc { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  #s08 .runc span { display: block; font: 800 26px/1 "Montserrat"; color: #6B7090; letter-spacing: 4px; text-transform: uppercase; }
+  #s08 .runc b { display: block; margin-top: 6px; font: 700 104px/1 "Fredoka"; color: #1F2340; }
+  #s08 .lg { position: absolute; left: 46px; width: 452px; height: 90px; display: flex; align-items: center; gap: 18px; padding: 0 20px; border-radius: 20px; background: #FDFCF8; box-shadow: 0 8px 0 rgba(20, 18, 60, 0.25); box-sizing: border-box; }
+  #s08 .lg i { display: block; flex: none; width: 50px; height: 50px; }
+  #s08 .lg i.sq { border-radius: 12px; background: #3A3F7A; }
+  #s08 .lg i.ar { background: #1F2340; clip-path: polygon(0 36%, 55% 36%, 55% 12%, 100% 50%, 55% 88%, 55% 64%, 0 64%); }
+  #s08 .lg i.st { background: #FFC43D; clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+  #s08 .lg span { display: block; font: 800 20px/1.1 "Montserrat"; color: #6B7090; letter-spacing: 2px; text-transform: uppercase; }
+  #s08 .lg b { display: block; margin-top: 4px; font: 800 27px/1.1 "Montserrat"; color: #1F2340; white-space: nowrap; }
+</style>
+<sfx src="whoosh_big" at="0.02" vol="0.45"></sfx>
+<sfx src="card_slide" at="1.0" vol="0.45"></sfx>
+<sfx src="pop_soft" at="1.25" vol="0.4"></sfx>
+<sfx src="pop" at="1.7" vol="0.45"></sfx>
+<sfx src="card_slide" at="1.95" vol="0.35"></sfx>
+<sfx src="marker" at="s08_1+2.45" vol="0.35"></sfx>
+<sfx src="pop_soft" at="s08_1+2.7" vol="0.4"></sfx>
+<sfx src="pop" at="s08_2-0.25" vol="0.45"></sfx>
+<sfx src="tick" at="s08_2+0.1" vol="0.35"></sfx>
+<sfx src="tock" at="s08_2+0.5" vol="0.35"></sfx>
+<sfx src="tick" at="s08_2+0.9" vol="0.35"></sfx>
+<sfx src="tock" at="s08_2+1.3" vol="0.35"></sfx>
+<sfx src="success" at="s08_2+1.72" vol="0.4"></sfx>
+<sfx src="ding" at="s08_2+2.1" vol="0.4"></sfx>
+<sfx src="pop" at="s08_3-0.15" vol="0.4"></sfx>
+<sfx src="tick" at="s08_3+0.1" vol="0.3"></sfx>
+<sfx src="tock" at="s08_3+0.5" vol="0.3"></sfx>
+<sfx src="tick" at="s08_3+0.9" vol="0.3"></sfx>
+<sfx src="success" at="s08_3+1.25" vol="0.35"></sfx>
+<sfx src="whoosh" at="s08_3+1.5" vol="0.4"></sfx>
+<sfx src="ding" at="s08_3+1.95" vol="0.4"></sfx>
+<sfx src="pop" at="s08_3+2.3" vol="0.4"></sfx>
+<sfx src="riser" at="s08_4+0.0" vol="0.3"></sfx>
+<sfx src="sparkle" at="s08_4+0.7" vol="0.35"></sfx>
+<sfx src="sparkle" at="s08_4+1.4" vol="0.35"></sfx>
+<sfx src="sparkle" at="s08_4+2.1" vol="0.35"></sfx>
+<sfx src="whoosh" at="s08_4+2.7" vol="0.4"></sfx>
+<sfx src="success" at="s08_4+3.62" vol="0.4"></sfx>

@@ -1,0 +1,1 @@
+Two days of training: thirty-four training runs, and nearly two million practice steps for the neural networks.

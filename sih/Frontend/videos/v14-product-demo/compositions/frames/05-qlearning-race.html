@@ -1,0 +1,231 @@
+<template>
+<style>
+  /* v14 local-font declarations: Windows-bundled faces that render in headless Chrome */
+  @font-face { font-family: 'Arial'; src: local('Arial'); }
+  @font-face { font-family: 'Arial Narrow'; src: local('Arial Narrow'); }
+  @font-face { font-family: 'Consolas'; src: local('Consolas'); }
+#root{
+  container-type:size;
+  position:relative;
+  width:1920px;
+  height:1080px;
+  overflow:hidden;
+  font-family:"Segoe UI",system-ui,sans-serif;
+}
+.f05-bg{position:absolute; left:0; top:0; width:1920px; height:1080px; overflow:hidden;}
+.f05-bg img{position:absolute; left:0; top:0; width:1920px; height:1080px; object-fit:cover; opacity:0;}
+.f05-bg .f05-veil{position:absolute; left:0; top:0; width:1920px; height:1080px; background:rgba(11,16,32,0.62);}
+.f05-head{position:absolute; left:96px; top:44px; width:1728px;}
+.f05-bar{display:flex; align-items:center; gap:18px;
+  background:#141B2E; border:1px solid #263054; border-radius:8px;
+  padding:18px 28px;
+  font-family:Consolas,"Consolas",monospace; font-size:25px; color:#8A93AD;}
+.f05-bar .f05-url{white-space:nowrap;}
+.f05-bar .f05-against{white-space:nowrap;}
+.f05-tag{display:inline-block; min-width:14ch; color:#E8B84B; font-weight:700; white-space:nowrap;}
+.f05-status{margin-left:auto; color:#0F9E73; font-weight:700; white-space:nowrap; min-width:16ch; text-align:right;}
+.f05-cta-row{display:flex; align-items:center; gap:24px; margin-top:22px;}
+.f05-kicker{font-family:Consolas,"Consolas",monospace; font-size:22px; letter-spacing:0.18em;
+  text-transform:uppercase; color:#8A93AD;}
+.f05-kicker b{color:#E8B84B; font-weight:700;}
+.f05-run{position:absolute; left:1408px; top:150px; width:416px; height:88px;
+  background:#E8B84B; color:#241A05; border-radius:8px;
+  font-family:"Arial Narrow","Segoe UI",system-ui,sans-serif; font-weight:700; font-size:38px;
+  letter-spacing:0.02em; display:flex; align-items:center; justify-content:center; gap:12px;}
+.f05-panel{position:absolute; left:96px; top:262px; width:1728px; height:400px;
+  background:#0E1523; border:1px solid #263054; border-radius:8px;}
+.f05-panel-head{display:flex; align-items:center; gap:16px; height:64px; padding:0 28px;
+  border-bottom:1px solid #263054;
+  font-family:Consolas,"Consolas",monospace; font-size:22px; letter-spacing:0.14em; color:#8A93AD;}
+.f05-panel-head .f05-live-dot{color:#0F9E73;}
+.f05-stream{position:absolute; left:0; top:64px; width:1728px; height:336px; overflow:hidden;}
+.f05-row{position:absolute; left:0; top:0; width:1728px; height:42px;
+  display:flex; align-items:center; gap:18px; padding:0 28px;
+  font-family:Consolas,"Consolas",monospace; font-size:26px; white-space:nowrap;}
+.f05-row .f05-tick{color:#5C6580;}
+.f05-row .f05-glyphs{letter-spacing:0.08em;}
+.f05-row.g .f05-glyphs{color:#0F9E73;}
+.f05-row.a .f05-glyphs{color:#C87A18;}
+.f05-row svg{flex:0 0 auto;}
+.f05-tiles{position:absolute; left:96px; top:684px; width:1728px; height:188px;
+  display:flex; gap:24px;}
+.f05-tile{flex:1 1 0; background:#141B2E; border:1px solid #263054; border-radius:8px;
+  padding:20px 28px; position:relative; overflow:hidden;}
+.f05-tile small{display:block; font-family:Consolas,"Consolas",monospace; font-size:21px;
+  letter-spacing:0.16em; text-transform:uppercase; color:#8A93AD;}
+.f05-tile .f05-val{display:inline-block; margin-top:8px;
+  font-family:"Arial Narrow","Segoe UI",system-ui,sans-serif; font-weight:600;
+  font-size:66px; line-height:1; color:#E6EAF5;}
+.f05-tile.e .f05-val{color:#77A8FF;}
+.f05-tile.g .f05-val{color:#0F9E73;}
+.f05-tile .f05-ring{position:absolute; left:12px; top:12px; right:12px; bottom:12px;
+  border:2px solid #77A8FF; border-radius:6px; opacity:0; pointer-events:none;}
+.f05-cursor{position:absolute; left:0; top:0; width:40px; height:40px; z-index:20; pointer-events:none; opacity:0;}
+.f05-ripple{position:absolute; width:100px; height:100px; margin-left:-50px; margin-top:-50px;
+  border-radius:50%; border:3px solid #E8B84B; opacity:0; pointer-events:none; z-index:19;}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<div data-hf-id="hf-8gs4" id="root" data-composition-id="05-qlearning-race" data-width="1920" data-height="1080" data-duration="25.5">
+  <div data-hf-id="hf-mxod" class="clip f05-bg" data-start="0" data-duration="25.5" data-track-index="0">
+    <img data-hf-id="hf-5966" id="05-qlearning-race-bgimg" src="assets/scroll-100.png" alt="">
+    <div data-hf-id="hf-j00c" class="f05-veil"></div>
+  </div>
+  <div data-hf-id="hf-rrhr" class="clip f05-head" data-start="0" data-duration="25.5" data-track-index="1" id="05-qlearning-race-head">
+    <div data-hf-id="hf-v8ej" class="f05-bar">
+      <span data-hf-id="hf-q7zl" class="f05-url">localhost:5173</span>
+      <span data-hf-id="hf-18mk" class="f05-against">Compare against: <span data-hf-id="hf-i4xk" class="f05-tag" id="05-qlearning-race-tagtext"></span></span>
+      <span data-hf-id="hf-gy1j" class="f05-status" id="05-qlearning-race-status">LIVE</span>
+    </div>
+    <div data-hf-id="hf-f8d9" class="f05-cta-row">
+      <span data-hf-id="hf-nmev" class="f05-kicker"><b data-hf-id="hf-u3lo">✱</b> Race two · live comparison</span>
+    </div>
+  </div>
+  <div data-hf-id="hf-eoir" class="clip f05-run" data-start="0" data-duration="25.5" data-track-index="5" id="05-qlearning-race-run">▶ Run live comparison</div>
+  <div data-hf-id="hf-3z18" class="clip f05-panel" data-start="0" data-duration="25.5" data-track-index="2" id="05-qlearning-race-panel">
+    <div data-hf-id="hf-ioxd" class="f05-panel-head">
+      <svg data-hf-id="hf-t4dx" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <circle data-hf-id="hf-3720" cx="13" cy="13" r="10" fill="none" stroke="#263054" stroke-width="3" />
+        <path data-hf-id="hf-jwnj" id="05-qlearning-race-arc" d="M 13 3 A 10 10 0 0 1 23 13" fill="none" stroke="#E8B84B" stroke-width="3" stroke-linecap="round" />
+      </svg>
+      <span data-hf-id="hf-g26w"><span data-hf-id="hf-sg6y" class="f05-live-dot">●</span> WATERFALL · NEWEST FIRST</span>
+    </div>
+    <div data-hf-id="hf-0oek" class="f05-stream" id="05-qlearning-race-stream">
+      <div data-hf-id="hf-lvtu" class="f05-row g" id="05-qlearning-race-row1"><svg data-hf-id="hf-s4xi" width="14" height="14" viewBox="0 0 14 14"><circle data-hf-id="hf-q52g" id="05-qlearning-race-dot1" cx="7" cy="7" r="5" fill="#0F9E73" /></svg><span data-hf-id="hf-xmrw" class="f05-tick">t=0061</span><span data-hf-id="hf-77ze" class="f05-glyphs">|##......##.._..#|</span></div>
+      <div data-hf-id="hf-hxpt" class="f05-row g" id="05-qlearning-race-row2"><svg data-hf-id="hf-9qoq" width="14" height="14" viewBox="0 0 14 14"><circle data-hf-id="hf-3goj" id="05-qlearning-race-dot2" cx="7" cy="7" r="5" fill="#0F9E73" /></svg><span data-hf-id="hf-wfut" class="f05-tick">t=0062</span><span data-hf-id="hf-92pj" class="f05-glyphs">|..##..##..._##..|</span></div>
+      <div data-hf-id="hf-h620" class="f05-row g" id="05-qlearning-race-row3"><svg data-hf-id="hf-a4zr" width="14" height="14" viewBox="0 0 14 14"><circle data-hf-id="hf-aijq" id="05-qlearning-race-dot3" cx="7" cy="7" r="5" fill="#0F9E73" /></svg><span data-hf-id="hf-wu5u" class="f05-tick">t=0063</span><span data-hf-id="hf-qfjy" class="f05-glyphs">|####..###.._.##.|</span></div>
+      <div data-hf-id="hf-b0c7" class="f05-row g" id="05-qlearning-race-row4"><svg data-hf-id="hf-ajas" width="14" height="14" viewBox="0 0 14 14"><circle data-hf-id="hf-fg35" id="05-qlearning-race-dot4" cx="7" cy="7" r="5" fill="#0F9E73" /></svg><span data-hf-id="hf-ytoz" class="f05-tick">t=0064</span><span data-hf-id="hf-rtiv" class="f05-glyphs">|##..._..##...##.|</span></div>
+      <div data-hf-id="hf-7286" class="f05-row g" id="05-qlearning-race-row5"><svg data-hf-id="hf-ezkx" width="14" height="14" viewBox="0 0 14 14"><circle data-hf-id="hf-v0ek" id="05-qlearning-race-dot5" cx="7" cy="7" r="5" fill="#0F9E73" /></svg><span data-hf-id="hf-z800" class="f05-tick">t=0065</span><span data-hf-id="hf-a5oa" class="f05-glyphs">|.###..##.._####.|</span></div>
+      <div data-hf-id="hf-3445" class="f05-row g" id="05-qlearning-race-row6"><svg data-hf-id="hf-fdvy" width="14" height="14" viewBox="0 0 14 14"><circle data-hf-id="hf-8c0n" id="05-qlearning-race-dot6" cx="7" cy="7" r="5" fill="#0F9E73" /></svg><span data-hf-id="hf-y12x" class="f05-tick">t=0066</span><span data-hf-id="hf-73cp" class="f05-glyphs">|##.##.._..##.##.|</span></div>
+      <div data-hf-id="hf-e346" class="f05-row a" id="05-qlearning-race-row7"><svg data-hf-id="hf-fs6z" width="14" height="14" viewBox="0 0 14 14"><circle data-hf-id="hf-bx76" id="05-qlearning-race-dot7" cx="7" cy="7" r="5" fill="#C87A18" /></svg><span data-hf-id="hf-yfdy" class="f05-tick">t=0067</span><span data-hf-id="hf-fagg" class="f05-glyphs">|....o..##...o##.|</span></div>
+      <div data-hf-id="hf-yecb" class="f05-row g" id="05-qlearning-race-row8"><svg data-hf-id="hf-g6i0" width="14" height="14" viewBox="0 0 14 14"><circle data-hf-id="hf-mj11" id="05-qlearning-race-dot8" cx="7" cy="7" r="5" fill="#0F9E73" /></svg><span data-hf-id="hf-u20n" class="f05-tick">t=0068</span><span data-hf-id="hf-6mxl" class="f05-glyphs">|######.._..####.|</span></div>
+    </div>
+  </div>
+  <div data-hf-id="hf-73qv" class="clip f05-tiles" data-start="4" data-duration="21.5" data-track-index="3" id="05-qlearning-race-tiles">
+    <div data-hf-id="hf-08qy" class="f05-tile e" id="05-qlearning-race-tile-heard"><small data-hf-id="hf-da6w">heard</small><span data-hf-id="hf-2izr" class="f05-val" id="05-qlearning-race-heard">0.0%</span></div>
+    <div data-hf-id="hf-p3se" class="f05-tile" id="05-qlearning-race-tile-fa"><small data-hf-id="hf-txi3">false alarms</small><span data-hf-id="hf-ghj3" class="f05-val" id="05-qlearning-race-fa">0</span></div>
+    <div data-hf-id="hf-8wnb" class="f05-tile e" id="05-qlearning-race-tile-eff"><small data-hf-id="hf-dvlp">efficiency</small><span data-hf-id="hf-7j6i" class="f05-val" id="05-qlearning-race-eff">0.0%</span><div data-hf-id="hf-eqa5" class="f05-ring" id="05-qlearning-race-effring"></div></div>
+    <div data-hf-id="hf-0d6g" class="f05-tile g" id="05-qlearning-race-tile-caught"><small data-hf-id="hf-py0w">caught</small><span data-hf-id="hf-ajdy" class="f05-val" id="05-qlearning-race-caught">0</span></div>
+  </div>
+  <div data-hf-id="hf-arve" class="clip f05-cursor" data-start="0" data-duration="4" data-track-index="4" id="05-qlearning-race-cursor">
+    <svg data-hf-id="hf-snce" width="40" height="40" viewBox="0 0 40 40"><path data-hf-id="hf-bokz" d="M10 4 L10 30 L17 24 L21 32 L25 30 L21 22 L28 22 Z" fill="#E6EAF5" stroke="#0B1020" stroke-width="2" /></svg>
+  </div>
+  <div data-hf-id="hf-fla3" class="clip f05-ripple" data-start="1.18" data-duration="1" data-track-index="6" id="05-qlearning-race-rip1" style="left:1616px; top:194px;"></div>
+  <div data-hf-id="hf-hho5" class="clip f05-ripple" data-start="1.18" data-duration="1" data-track-index="7" id="05-qlearning-race-rip2" style="left:1616px; top:194px;"></div>
+  <div data-hf-id="hf-2s6v" class="clip f05-ripple" data-start="1.18" data-duration="1" data-track-index="8" id="05-qlearning-race-rip3" style="left:1616px; top:194px;"></div>
+</div>
+<script>
+(function(){
+  var gid = function(id){ return document.getElementById(id); };
+  var tl = gsap.timeline({ paused: true });
+  window.__timelines = window.__timelines || {};
+  window.__timelines["05-qlearning-race"] = tl;
+  var P = "05-qlearning-race-";
+  var ROW_H = 42;
+  var rows = [];
+  for (var k = 1; k <= 8; k++) rows[k] = gid(P + "row" + k);
+  gsap.set(rows[1], { y: 0, opacity: 0 });
+  gsap.set(rows[2], { y: ROW_H, opacity: 0 });
+  for (var m = 3; m <= 8; m++) gsap.set(rows[m], { y: 0, opacity: 0 });
+
+  /* Scene 1 (0-4s): ground, header, trigger. Hero visible by t<=0.5s. */
+  tl.fromTo(gid(P + "bgimg"), { opacity: 0 }, { opacity: 0.35, duration: 1.2, ease: "none" }, 0);
+  tl.fromTo(gid(P + "head"), { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0);
+  tl.fromTo(gid(P + "run"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.1);
+  tl.fromTo(gid(P + "panel"), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 0.1);
+  tl.to(rows[1], { opacity: 1, duration: 0.5, ease: "none" }, 0.15);
+  tl.to(rows[2], { opacity: 1, duration: 0.5, ease: "none" }, 0.3);
+
+  /* Challenger tag hard-swap Bandit -> Q-learning (discrete-text-sequence): instant state jump. */
+  var tagEl = gid(P + "tagtext");
+  var TAG_SEQ = [ { t: 0, text: "Bandit" }, { t: 0.55, text: "Q-learning" }, { t: 25, text: "Q-learning" } ];
+  function tagAt(time){
+    for (var i = TAG_SEQ.length - 1; i >= 0; i--) if (time >= TAG_SEQ[i].t) return TAG_SEQ[i].text;
+    return "Bandit";
+  }
+  var tagDriver = { t: 0 };
+  tl.to(tagDriver, { t: 25, duration: 25, ease: "none", onUpdate: function(){ tagEl.textContent = tagAt(tagDriver.t); } }, 0);
+  tl.fromTo(tagEl, { scale: 1 }, { scale: 1.07, duration: 0.12, ease: "none" }, 0.55);
+  tl.to(tagEl, { scale: 1, duration: 0.18, ease: "none" }, 0.67);
+
+  /* Status chip swaps (discrete states, seek-safe driver). */
+  var statusEl = gid(P + "status");
+  var STATUS_SEQ = [ { t: 0, text: "LIVE" }, { t: 1.15, text: "SCANNING" }, { t: 22, text: "SETTLED" } ];
+  function statusAt(time){
+    for (var i = STATUS_SEQ.length - 1; i >= 0; i--) if (time >= STATUS_SEQ[i].t) return STATUS_SEQ[i].text;
+    return "LIVE";
+  }
+  var statusDriver = { t: 0 };
+  tl.to(statusDriver, { t: 25, duration: 25, ease: "none", onUpdate: function(){ statusEl.textContent = statusAt(statusDriver.t); } }, 0);
+
+  /* Cursor re-press on Run (cursor-click-ripple): move, press, ripple burst. */
+  var cursor = gid(P + "cursor");
+  var runBtn = gid(P + "run");
+  gsap.set(cursor, { x: 1560, y: 640, opacity: 0, scale: 1, transformOrigin: "12px 6px" });
+  gsap.set(runBtn, { scale: 1, transformOrigin: "50% 50%" });
+  tl.to(cursor, { opacity: 1, duration: 0.25, ease: "none" }, 0.3);
+  tl.to(cursor, { x: 1616, y: 194, duration: 0.8, ease: "power2.inOut" }, 0.3);
+  tl.to(cursor, { scale: 0.82, duration: 0.09, ease: "power2.in" }, 1.15);
+  tl.to(runBtn, { scale: 0.94, duration: 0.09, ease: "power2.in" }, 1.15);
+  tl.to(cursor, { scale: 1, duration: 0.12, ease: "power2.out" }, 1.24);
+  tl.to(runBtn, { scale: 1, duration: 0.12, ease: "power2.out" }, 1.24);
+  var ripples = [ gid(P + "rip1"), gid(P + "rip2"), gid(P + "rip3") ];
+  gsap.set(ripples, { scale: 0, opacity: 0, transformOrigin: "50% 50%" });
+  tl.fromTo(ripples, { scale: 0, opacity: 0.85 }, { scale: 4.2, opacity: 0, duration: 0.7, ease: "power2.out", stagger: 0.09 }, 1.18);
+  tl.to(cursor, { opacity: 0, duration: 0.6, ease: "none" }, 3.0);
+
+  /* Spinner arc (finite rotation via attribute, dies at settle). */
+  var arc = gid(P + "arc");
+  var spin = { deg: 0 };
+  tl.to(spin, { deg: 540, duration: 22, ease: "none", onUpdate: function(){
+    arc.setAttribute("transform", "rotate(" + spin.deg + " 13 13)");
+  } }, 0);
+
+  /* Scenes 2-3: hotter waterfall streams newest-first; denser green rows arrive fast. */
+  var ARRIVE = { 3: 4.5, 4: 5.6, 5: 6.8, 6: 8.0, 7: 11.5, 8: 15 };
+  for (var mm = 3; mm <= 8; mm++){
+    (function(m, at){
+      for (var kk = 1; kk < m; kk++){
+        (function(r, y){ tl.to(r, { y: y, duration: 0.45, ease: "power2.out" }, at); })(rows[kk], (m - kk) * ROW_H);
+      }
+      tl.fromTo(rows[m], { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, at);
+      var dot = gid(P + "dot" + m);
+      tl.fromTo(dot, { opacity: 0.35 }, { opacity: 1, duration: 0.5, ease: "none" }, at);
+    })(mm, ARRIVE[mm]);
+  }
+
+  /* Tiles stagger in; counters climb to the sketch values across scenes 2-3. */
+  var tiles = [ gid(P + "tile-heard"), gid(P + "tile-fa"), gid(P + "tile-eff"), gid(P + "tile-caught") ];
+  tl.fromTo(tiles, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", stagger: 0.25 }, 4.6);
+  var heardEl = gid(P + "heard"), faEl = gid(P + "fa"), effEl = gid(P + "eff"), caughtEl = gid(P + "caught");
+  var heard = { v: 0 }, fa = { v: 0 }, eff = { v: 0 }, caught = { v: 0 };
+  tl.to(heard, { v: 28.1, duration: 16.4, ease: "none", onUpdate: function(){ heardEl.textContent = heard.v.toFixed(1) + "%"; } }, 4.6);
+  tl.to(fa, { v: 8, duration: 15, ease: "none", onUpdate: function(){ faEl.textContent = String(Math.round(fa.v)); } }, 5.0);
+  tl.to(eff, { v: 46.9, duration: 16, ease: "none", onUpdate: function(){ effEl.textContent = eff.v.toFixed(1) + "%"; } }, 4.8);
+  tl.to(caught, { v: 70, duration: 15.6, ease: "none", onUpdate: function(){ caughtEl.textContent = String(Math.round(caught.v)); } }, 5.2);
+
+  /* Scene 4 (22-25s): efficiency-tile glow (asr-keyword-glow, karaoke form, one linear driver). */
+  var ATTACK = 0.2, RELEASE = 0.6, REST = 0.15, MAX_BLUR = 34, MAX_BOOST = 0.18;
+  var W_START = 0.2, W_END = 1.4;
+  var ring = gid(P + "effring");
+  function envelope(time){
+    if (time < W_START) return 0;
+    if (time < W_END) return Math.min((time - W_START) / ATTACK, 1);
+    if (time < W_END + RELEASE) return 1 - ((time - W_END) / RELEASE) * (1 - REST);
+    return REST;
+  }
+  function glowColor(env){ return "rgba(119,168,255," + (0.15 + 0.75 * env).toFixed(3) + ")"; }
+  function textColor(env){
+    var r = Math.round(230 + (230 - 230) * env), g = Math.round(234 + (234 - 234) * env), b = Math.round(245 + (245 - 245) * env);
+    return "rgb(" + r + "," + g + "," + b + ")";
+  }
+  var glowDriver = { t: 0 };
+  tl.to(glowDriver, { t: 3, duration: 3, ease: "none", onUpdate: function(){
+    var env = envelope(glowDriver.t);
+    effEl.style.textShadow = "0 0 " + (MAX_BLUR * env).toFixed(1) + "px " + glowColor(env);
+    effEl.style.transform = "scale(" + (1 + MAX_BOOST * env).toFixed(4) + ")";
+    effEl.style.color = textColor(env);
+    ring.style.opacity = (env * 0.9).toFixed(3);
+  } }, 22);
+})();
+</script>
+</template>

@@ -1,0 +1,1 @@
+﻿Two use designed rules. C T M C keeps a random chance of visiting every band. Index ranks bands by likely activity and by how long they have waited.

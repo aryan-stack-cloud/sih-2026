@@ -1,0 +1,236 @@
+<template>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  /* v14 local-font declarations: Windows-bundled faces that render in headless Chrome */
+  @font-face { font-family: 'Arial'; src: local('Arial'); }
+  @font-face { font-family: 'Arial Narrow'; src: local('Arial Narrow'); }
+  @font-face { font-family: 'Consolas'; src: local('Consolas'); }
+#root {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  container-type: size;
+  overflow: hidden;
+  background: transparent;
+  color: #E6EAF5;
+}
+#root .bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #0B1020;
+}
+#root .bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  opacity: 0.55;
+}
+#root .bg .scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 16, 32, 0.45);
+}
+#root .stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 84px;
+}
+#root .hook {
+  font-family: "Arial Narrow", "Segoe UI", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 5.2cqw;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: #E6EAF5;
+  white-space: nowrap;
+}
+#root .hook .word {
+  display: inline-block;
+  will-change: transform;
+}
+#root .grid {
+  display: grid;
+  grid-template-columns: repeat(3, 420px);
+  grid-template-rows: repeat(2, 188px);
+  gap: 28px;
+  margin-top: 44px;
+}
+#root .card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 36px;
+  background: rgba(14, 21, 35, 0.94);
+  border: 1px solid rgba(230, 234, 245, 0.16);
+  border-radius: 12px;
+  text-align: left;
+  will-change: transform;
+}
+#root .card .idx {
+  font-family: Consolas, "Consolas", monospace;
+  font-size: 20px;
+  letter-spacing: 0.18em;
+  color: #8A93AD;
+}
+#root .card .name {
+  font-family: "Arial Narrow", "Segoe UI", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 1;
+  color: #E6EAF5;
+  white-space: nowrap;
+}
+#root .card.hot .name {
+  color: #E8B84B;
+}
+#root .proof {
+  margin-top: 46px;
+  font-family: Consolas, "Consolas", monospace;
+  font-size: 30px;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+#root .proof .word {
+  display: inline-block;
+  transform-origin: 50% 50%;
+  color: rgb(138, 147, 173);
+  will-change: transform;
+}
+#root .proof .sep {
+  display: inline-block;
+  color: #596075;
+}
+</style>
+<div data-hf-id="hf-cn4f" id="root" data-composition-id="07-tour" data-start="0" data-duration="15.6" data-track-index="0" data-width="1920" data-height="1080">
+  <div data-hf-id="hf-w985" class="bg clip" data-start="0" data-duration="15.6" data-track-index="0">
+    <img data-hf-id="hf-dxjn" id="07-tour-bgimg" src="assets/full-page.png" alt="">
+    <div data-hf-id="hf-7c97" class="scrim" id="07-tour-scrim"></div>
+  </div>
+  <div data-hf-id="hf-vax3" class="stage clip" data-start="0" data-duration="15.6" data-track-index="1">
+    <div data-hf-id="hf-met9" class="hook" id="07-tour-hook"><span data-hf-id="hf-g4rw" class="word" id="07-tour-w-behind">Behind</span> <span data-hf-id="hf-x3fw" class="word" id="07-tour-w-the">the</span> <span data-hf-id="hf-4j76" class="word" id="07-tour-w-button">button:</span></div>
+    <div data-hf-id="hf-vfmd" class="grid" id="07-tour-grid">
+      <div data-hf-id="hf-g3ey" class="card" id="07-tour-card-dashboard"><span data-hf-id="hf-odh2" class="idx">VIEW 01</span><span data-hf-id="hf-ic3c" class="name">Dashboard</span></div>
+      <div data-hf-id="hf-28zu" class="card" id="07-tour-card-simulations"><span data-hf-id="hf-ors3" class="idx">VIEW 02</span><span data-hf-id="hf-8cc0" class="name">Simulations</span></div>
+      <div data-hf-id="hf-jv5s" class="card" id="07-tour-card-raw"><span data-hf-id="hf-p634" class="idx">VIEW 03</span><span data-hf-id="hf-lbi6" class="name">Raw stream</span></div>
+      <div data-hf-id="hf-eomy" class="card" id="07-tour-card-experiments"><span data-hf-id="hf-mdxx" class="idx">VIEW 04</span><span data-hf-id="hf-b610" class="name">Experiments</span></div>
+      <div data-hf-id="hf-srcv" class="card hot" id="07-tour-card-models"><span data-hf-id="hf-ms8y" class="idx">VIEW 05</span><span data-hf-id="hf-fhub" class="name">Models ✓</span></div>
+      <div data-hf-id="hf-v57f" class="card hot" id="07-tour-card-health"><span data-hf-id="hf-n6jz" class="idx">VIEW 06</span><span data-hf-id="hf-h55n" class="name">Health ●</span></div>
+    </div>
+    <div data-hf-id="hf-f5h7" class="proof" id="07-tour-proof"><span data-hf-id="hf-1vwx" class="word" data-word="w8080">80/80</span> <span data-hf-id="hf-n21q" class="word" data-word="wml">ML</span> <span data-hf-id="hf-4gpg" class="word" data-word="wdecisions">decisions</span> <span data-hf-id="hf-9z7o" class="sep">·</span> <span data-hf-id="hf-4c5y" class="word" data-word="wzero">0</span> <span data-hf-id="hf-zaf8" class="word" data-word="wfallbacks">fallbacks</span> <span data-hf-id="hf-jxks" class="sep">·</span> <span data-hf-id="hf-jpas" class="word" data-word="wall">all</span> <span data-hf-id="hf-nmuc" class="word" data-word="wservices">services</span> <span data-hf-id="hf-zavy" class="word" data-word="wup">up</span></div>
+  </div>
+</div>
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+
+  /* Ground establishes first — dimmed dashboard plate under everything. */
+  var bgimg = document.getElementById("07-tour-bgimg");
+  var scrim = document.getElementById("07-tour-scrim");
+  tl.fromTo(bgimg, { opacity: 0 }, { opacity: 0.55, duration: 0.6, ease: "power1.out" }, 0);
+  tl.fromTo(scrim, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, 0);
+
+  /* Scene 1 (0-3s): "Behind the button:" assembles word by word.
+     dynamic-content-sequencing mechanics: starts pre-computed once below,
+     never in onUpdate; hero word lands well before t=0.5s. */
+  var HOOK = [
+    { el: document.getElementById("07-tour-w-behind"), start: 0.15 },
+    { el: document.getElementById("07-tour-w-the"), start: 0.75 },
+    { el: document.getElementById("07-tour-w-button"), start: 1.35 }
+  ];
+  HOOK.forEach(function (w) {
+    tl.fromTo(w.el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, w.start);
+  });
+
+  /* Scene 2 (3-9s): six view cards assemble left to right in cascade.
+     center-outward-expansion in its short-path direct-into-slot form
+     (dense wall: no shared-center burst, brief slide straight into slot). */
+  var CARDS = [
+    { el: document.getElementById("07-tour-card-dashboard"), start: 3.2 },
+    { el: document.getElementById("07-tour-card-simulations"), start: 3.85 },
+    { el: document.getElementById("07-tour-card-raw"), start: 4.5 },
+    { el: document.getElementById("07-tour-card-experiments"), start: 5.15 },
+    { el: document.getElementById("07-tour-card-models"), start: 6.0 },
+    { el: document.getElementById("07-tour-card-health"), start: 6.85 }
+  ];
+  CARDS.forEach(function (c) {
+    tl.fromTo(c.el, { opacity: 0, y: 46, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 1.1, ease: "power3.out" }, c.start);
+  });
+
+  /* Scene 3 (9-12s): Models and Health lock gold last — finite settle
+     pulses (two chained tweens, no repeat/yoyo so seeking stays exact). */
+  var models = document.getElementById("07-tour-card-models");
+  var health = document.getElementById("07-tour-card-health");
+  tl.fromTo(models, { scale: 1 }, { scale: 1.045, duration: 0.28, ease: "power2.out" }, 9.0);
+  tl.to(models, { scale: 1, duration: 0.4, ease: "power2.inOut" }, 9.28);
+  tl.fromTo(models, { borderColor: "rgba(230,234,245,0.16)" }, { borderColor: "#E8B84B", duration: 0.5, ease: "power2.out" }, 9.0);
+  tl.fromTo(health, { scale: 1 }, { scale: 1.045, duration: 0.28, ease: "power2.out" }, 9.35);
+  tl.to(health, { scale: 1, duration: 0.4, ease: "power2.inOut" }, 9.63);
+  tl.fromTo(health, { borderColor: "rgba(230,234,245,0.16)" }, { borderColor: "#E8B84B", duration: 0.5, ease: "power2.out" }, 9.35);
+
+  /* Scene 3 proof line: asr-keyword-glow, karaoke style — one linear driver
+     (ease "none"), per-word attack/sustain/release envelope, driver loops all
+     words; inactive words stay dim, the spoken word pops bright gold. */
+  var ATTACK_DUR = 0.15;
+  var RELEASE = 0.4;
+  var REST_LEVEL = 0.1;
+  var MAX_BLUR = 32;
+  var MAX_SCALE_BOOST = 0.18;
+  var REST_RGB = { r: 138, g: 147, b: 173 };
+  var ACTIVE_RGB = { r: 232, g: 184, b: 75 };
+  var TIMINGS = {
+    w8080: { start: 9.2, end: 9.6 },
+    wml: { start: 9.65, end: 9.95 },
+    wdecisions: { start: 10.0, end: 10.4 },
+    wzero: { start: 10.45, end: 10.7 },
+    wfallbacks: { start: 10.75, end: 11.1 },
+    wall: { start: 11.15, end: 11.35 },
+    wservices: { start: 11.4, end: 11.6 },
+    wup: { start: 11.65, end: 12.0 }
+  };
+  function envelope(time, start, end) {
+    if (time < start) return 0;
+    if (time < end) return Math.min((time - start) / ATTACK_DUR, 1);
+    var releaseEnd = end + RELEASE;
+    if (time < releaseEnd) return 1 - ((time - end) / RELEASE) * (1 - REST_LEVEL);
+    return REST_LEVEL;
+  }
+  function lerpChannel(a, b, t) {
+    return Math.round(a + (b - a) * t);
+  }
+  var words = document.getElementById("07-tour-proof").querySelectorAll(".word");
+  var driver = { t: 0 };
+  tl.to(driver, {
+    t: 15,
+    duration: 15,
+    ease: "none",
+    onUpdate: function () {
+      words.forEach(function (el) {
+        var timing = TIMINGS[el.getAttribute("data-word")];
+        if (!timing) return;
+        var env = envelope(driver.t, timing.start, timing.end);
+        el.style.color = "rgb(" + lerpChannel(REST_RGB.r, ACTIVE_RGB.r, env) + "," + lerpChannel(REST_RGB.g, ACTIVE_RGB.g, env) + "," + lerpChannel(REST_RGB.b, ACTIVE_RGB.b, env) + ")";
+        el.style.textShadow = "0 0 " + (MAX_BLUR * env) + "px rgba(232,184,75," + env.toFixed(3) + ")";
+        el.style.transform = "scale(" + (1 + MAX_SCALE_BOOST * env) + ")";
+      });
+    }
+  }, 0);
+
+  /* Scene 4 (12-15s): hold still — no motion, no exit (non-final frame). */
+  tl.to({}, { duration: 15 }, 0);
+  window.__timelines["07-tour"] = tl;
+})();
+</script>
+</template>

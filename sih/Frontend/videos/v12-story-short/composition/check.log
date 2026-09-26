@@ -1,0 +1,148 @@
+◆  Checking composition
+[INFO] [Compiler] Fetched 11 font face(s) for "Inter" from Google Fonts (cached to C:\Users\This PC\.cache\hyperframes\fonts\inter)
+[INFO] [Compiler] Injected deterministic @font-face rules for 1 requested font families
+
+Lint
+  ⚠ duplicate_media_discovery_risk: Detected 2 matching img entries with the same source/start/duration.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html [data-composition-id] t=0s
+    Fix: Avoid duplicated media nodes that can be discovered twice during compilation.
+  ⚠ duplicate_media_discovery_risk: Detected 5 matching img entries with the same source/start/duration.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html [data-composition-id] t=0s
+    Fix: Avoid duplicated media nodes that can be discovered twice during compilation.
+  ⚠ duplicate_media_discovery_risk: Detected 6 matching img entries with the same source/start/duration.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html [data-composition-id] t=0s
+    Fix: Avoid duplicated media nodes that can be discovered twice during compilation.
+  ⚠ composition_file_too_large: This HTML composition file has 2775 lines. Smaller sub-compositions are easier to read, iterate on, and diff.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html [data-composition-id] t=0s
+    Fix: Split coherent scenes or layers into separate .html files under compositions/, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.
+  ⚠ timeline_track_too_dense: Track 1 has 13 timed elements in this HTML file. Smaller sub-compositions keep timelines easier to read, iterate on, and diff.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html [data-composition-id] t=0s
+    Fix: Move coherent scene groups into separate .html files under compositions/ and mount them from the parent with data-composition-src so the timeline stays easier to inspect, revise, and validate.
+  ⚠ nested_structure_needs_subcomposition: <section id="s01"> is a timeline element that contains nested <div id="s01-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s01 t=0s
+    Fix: Move <section id="s01"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="s02"> is a timeline element that contains nested <div id="s02-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s02 t=0s
+    Fix: Move <section id="s02"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="s03"> is a timeline element that contains nested <div id="s03-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s03 t=0s
+    Fix: Move <section id="s03"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="s04"> is a timeline element that contains nested <div id="s04-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s04 t=0s
+    Fix: Move <section id="s04"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="s05"> is a timeline element that contains nested <div id="s05-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s05 t=0s
+    Fix: Move <section id="s05"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="s06"> is a timeline element that contains nested <div id="s06-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s06 t=0s
+    Fix: Move <section id="s06"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="s07"> is a timeline element that contains nested <div id="s07-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s07 t=0s
+    Fix: Move <section id="s07"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="s08"> is a timeline element that contains nested <div id="s08-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s08 t=0s
+    Fix: Move <section id="s08"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="s09"> is a timeline element that contains nested <div id="s09-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s09 t=0s
+    Fix: Move <section id="s09"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="s10"> is a timeline element that contains nested <div id="s10-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s10 t=0s
+    Fix: Move <section id="s10"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="s11"> is a timeline element that contains nested <div id="s11-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s11 t=0s
+    Fix: Move <section id="s11"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="s12"> is a timeline element that contains nested <div id="s12-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s12 t=0s
+    Fix: Move <section id="s12"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="s13"> is a timeline element that contains nested <div id="s13-cam">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #s13 t=0s
+    Fix: Move <section id="s13"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="logo-bug"> is a timeline element that contains nested <div id="logo-bug-inner">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    C:\Users\This PC\Documents\codex and claude\sih\Frontend\videos\v12-story-short\composition\index.html #logo-bug t=0s
+    Fix: Move <div id="logo-bug"> and its contents into a sub-composition file and mount it with data-composition-src.
+  0 error(s), 19 warning(s), 0 info(s)
+
+Runtime
+  ◇ 0 errors, 0 warnings
+
+Layout
+  ⚠ t=41.76-41.94s (2 samples) content_overlap #s06-board > div:nth-of-type(6) inside #s06-num > b:nth-of-type(1) "To-do: check next" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=41.76-41.94s (2 samples) content_overlap #s06-r1 > b:nth-of-type(1) inside #s06-num > b:nth-of-type(1) "5–6" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=41.76-41.94s (2 samples) content_overlap #s06-legend > span:nth-of-type(1) inside #s06-num > b:nth-of-type(1) "BUSY?" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=41.76-41.94s (2 samples) content_overlap #s06-legend > span:nth-of-type(2) inside #s06-num > b:nth-of-type(1) "WAITING" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=76.65-76.83s (2 samples) content_overlap #s10-w1 > text:nth-of-type(1) inside #s10-w2 > text:nth-of-type(1) "1–2" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=76.65-76.83s (2 samples) content_overlap #s10-w1 > text:nth-of-type(4) inside #s10-w2 > text:nth-of-type(5) "7–8" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=76.65-76.83s (2 samples) content_overlap #s10-w1 > text:nth-of-type(6) inside #s10-w2 > text:nth-of-type(6) "11–12" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=76.65-76.83s (2 samples) content_overlap #s10-w1 > text:nth-of-type(8) inside #s10-w2 > text:nth-of-type(7) "15–16" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ⚠ t=76.65-76.83s (2 samples) content_overlap #s10-w1 > text:nth-of-type(8) inside #s10-w2 > text:nth-of-type(8) "15–16" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=6.18s container_overflow #s01-cam inside #s01 overflowed left 86.27px, right 27.2px, top 22.07px, bottom 41.76px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=6.18s container_overflow #s01-sky-night-sky-far inside #s01-sky overflowed bottom 360.09px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=6.18s container_overflow #s01-sky-night-sky-near inside #s01-sky overflowed right 23.3px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=14.29s content_overlap #s02-tag1 > div:nth-of-type(1) > span:nth-of-type(1) inside #s02-tag2 > div:nth-of-type(1) > span:nth-of-type(1) "THE REAL WORLD:" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=14.29s content_overlap #s02-tag1 > div:nth-of-type(1) > span:nth-of-type(2) inside #s02-tag2 > div:nth-of-type(1) > span:nth-of-type(2) "An EW radio receiver" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=15.59s content_overlap #s02-two > b:nth-of-type(1) inside #s02-st > p:nth-of-type(1) > span:nth-of-type(1) "2" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=25.43s content_overlap #s03-tag1 > div:nth-of-type(1) > span:nth-of-type(2) inside #s03-tag2 > div:nth-of-type(1) > span:nth-of-type(2) "Fixed sweep, like a clock" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=33.59s content_overlap #s04-t4 > b:nth-of-type(1) inside #s04-t6 > b:nth-of-type(1) "Q-learning" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=41.94s content_overlap #s06-r2 > b:nth-of-type(1) inside #s06-num > b:nth-of-type(1) "11–12" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=41.94s content_overlap #s06-r3 > b:nth-of-type(1) inside #s06-num > b:nth-of-type(1) "7–8" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=43.23s container_overflow #s06-cam inside #s06 overflowed left 14.02px, right 22.46px, top 8.57px, bottom 11.95px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=55.58s container_overflow #s07-cam inside #s07 overflowed left 41.53px, right 27.2px, top 13.96px, bottom 24.71px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=55.58s container_overflow #s07-bg-casino-hall-near inside #s07-bg overflowed left 16.58px, right 16.57px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=67.94s container_overflow #s09-cam inside #s09 overflowed left 3.08px, right 4.22px, bottom 2.62px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=67.94s container_overflow #s09-bg-control-room-far inside #s09-bg overflowed top 50.19px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=74.42s content_overlap #s10-w1 > text:nth-of-type(1) inside #s10-num > b:nth-of-type(1) "1–2" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=74.42s content_overlap #s10-w1 > text:nth-of-type(2) inside #s10-num > b:nth-of-type(1) "3–4" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=74.42s content_overlap #s10-w1 > text:nth-of-type(3) inside #s10-num > b:nth-of-type(1) "5–6" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=74.42s content_overlap #s10-w1 > text:nth-of-type(4) inside #s10-num > b:nth-of-type(1) "7–8" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=74.42s content_overlap #s10-w1 > text:nth-of-type(5) inside #s10-num > b:nth-of-type(1) "9–10" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=74.42s content_overlap #s10-w1 > text:nth-of-type(8) inside #s10-num > b:nth-of-type(1) "15–16" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=85.74s content_overlap #s11-tag1 > div:nth-of-type(1) > span:nth-of-type(2) inside #s11-tag2 > div:nth-of-type(1) > span:nth-of-type(2) "Simulator + Turing radar dataset" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=98.36s content_overlap #s12-tag2 > div:nth-of-type(1) > span:nth-of-type(1) inside #s12-tag5 > div:nth-of-type(1) > span:nth-of-type(1) "BUSY NIGHT:" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=98.36s content_overlap #s12-tag2 > div:nth-of-type(1) > span:nth-of-type(2) inside #s12-tag5 > div:nth-of-type(1) > span:nth-of-type(2) "Scenario B, unseen runs" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=104.99s container_overflow #s12-cam inside #s12 overflowed left 28.13px, right 28.13px, top 19.73px, bottom 11.91px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  0 error(s), 9 warning(s), 25 info(s)
+
+Motion
+  ◇ 0 errors, 0 warnings
+
+Contrast
+  ◇ 79/79 text checks pass WCAG AA
+
+Snapshots
+  ◇ disabled
+
+◇  Check passed

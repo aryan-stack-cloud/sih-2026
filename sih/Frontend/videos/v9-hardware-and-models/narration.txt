@@ -1,0 +1,10 @@
+01|The signal disappeared before the receiver reached its frequency. So what can we change?
+02|The problem statement says the receiver's instantaneous view is typically at least ten times narrower than the spectrum it must monitor. Our simulator uses two of sixteen adjacent bands.
+03|A burst outside that slice is invisible at that moment. Software cannot widen the receiver. It can decide where to tune next.
+04|Every scan returns evidence. We update what we know about each band, choose the next pair, retune, and observe again. Every policy uses the same virtual receiver and timing budget.
+05|C T M C randomizes a coverage floor to avoid rigid timing. Index ranks bands using belief and revisit urgency, while reserving time for coverage.
+06|Bandit balances exploration and reward. Q-learning stores action values. D Q N predicts those values with a neural network. P P O improves a probabilistic scan policy.
+07|Synthetic emitter scenarios and Alan Turing radar pulse replay feed the same virtual receiver. These are simulation tests, not proof of field performance.
+08|On held-out Scenario B, the fixed sweep detects zero point one oh nine of active opportunities. Index reaches zero point one three three, a twenty-two percent relative gain.
+09|Index preserves emitter reach at about ninety-seven percent. Bandit gains detection, but reaches fewer emitters.
+10|Training durations weren't logged. The scheduler A P I reached six point six milliseconds at the ninety-fifth percentile.

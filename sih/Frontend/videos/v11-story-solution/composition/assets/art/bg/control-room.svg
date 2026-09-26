@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <radialGradient id="ceiling-soft-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#FDFCF8" stop-opacity="0.72"/>
+      <stop offset="0.45" stop-color="#FDFCF8" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#FDFCF8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="screen-soft-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#3DDCFF" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#3DDCFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g id="control-room-far">
+    <rect width="1920" height="1080" fill="#EFE3CF"/>
+    <rect y="780" width="1920" height="300" fill="#B98B5E"/>
+    <g fill="#D9C7AA">
+      <rect x="160" y="0" width="12" height="780"/><rect x="420" y="0" width="12" height="780"/><rect x="700" y="0" width="12" height="780"/><rect x="980" y="0" width="12" height="780"/><rect x="1260" y="0" width="12" height="780"/><rect x="1540" y="0" width="12" height="780"/><rect x="1800" y="0" width="12" height="780"/>
+      <path d="M0 780h1920v18H0Z"/>
+    </g>
+    <g id="ceiling-lights">
+      <ellipse cx="480" cy="50" rx="250" ry="100" fill="url(#ceiling-soft-glow)"/><ellipse cx="1420" cy="50" rx="250" ry="100" fill="url(#ceiling-soft-glow)"/>
+      <rect x="350" y="32" width="260" height="24" rx="12" fill="#FDFCF8"/><rect x="1290" y="32" width="260" height="24" rx="12" fill="#FDFCF8"/>
+    </g>
+    <rect x="420" y="74" width="1080" height="590" rx="34" fill="#1F2340"/>
+    <rect id="cr-screen" x="460" y="110" width="1000" height="520" rx="18" fill="#16204A"/>
+    <ellipse cx="960" cy="370" rx="620" ry="420" fill="url(#screen-soft-glow)"/>
+  </g>
+  <g id="control-room-mid">
+    <g id="side-monitor-left">
+      <rect x="120" y="190" width="250" height="170" rx="18" fill="#1F2340"/><rect x="140" y="210" width="210" height="128" rx="10" fill="#16204A"/>
+      <g fill="#3DDCFF"><rect x="164" y="278" width="24" height="38" rx="8"/><rect x="200" y="254" width="24" height="62" rx="8"/><rect x="236" y="232" width="24" height="84" rx="8"/><rect x="272" y="264" width="24" height="52" rx="8"/><rect x="308" y="246" width="24" height="70" rx="8"/></g>
+      <path fill="#2DB86B" d="M164 296h168v10H164Z"/>
+    </g>
+    <g id="side-monitor-right">
+      <rect x="1020" y="178" width="260" height="184" rx="18" fill="#1F2340"/><rect x="1040" y="198" width="220" height="144" rx="10" fill="#16204A"/>
+      <g fill="#3DDCFF"><rect x="1064" y="286" width="172" height="10" rx="5"/><rect x="1064" y="310" width="122" height="10" rx="5"/><rect x="1120" y="256" width="116" height="10" rx="5"/><rect x="1180" y="226" width="56" height="10" rx="5"/></g>
+      <circle cx="1210" cy="260" r="10" fill="#2DB86B"/><circle cx="1120" cy="320" r="8" fill="#2DB86B"/>
+    </g>
+    <g fill="#D9C7AA">
+      <rect x="184" y="360" width="122" height="24" rx="12"/><rect x="1080" y="362" width="140" height="24" rx="12"/>
+    </g>
+    <rect x="344" y="650" width="1040" height="70" rx="26" fill="#8C5A3C"/>
+    <rect x="320" y="630" width="1088" height="54" rx="24" fill="#A86F4C"/>
+    <g id="keyboard"><rect x="520" y="608" width="360" height="50" rx="16" fill="#D8DEEA"/><g fill="#1F2340"><rect x="548" y="624" width="30" height="8" rx="4"/><rect x="590" y="624" width="30" height="8" rx="4"/><rect x="632" y="624" width="30" height="8" rx="4"/><rect x="674" y="624" width="30" height="8" rx="4"/><rect x="716" y="624" width="30" height="8" rx="4"/><rect x="758" y="624" width="30" height="8" rx="4"/><rect x="800" y="624" width="30" height="8" rx="4"/></g></g>
+    <g id="monitor-backs"><rect x="560" y="500" width="270" height="130" rx="20" fill="#1F2340"/><rect x="1020" y="492" width="290" height="140" rx="20" fill="#1F2340"/><rect x="670" y="630" width="50" height="24" rx="10" fill="#1F2340"/><rect x="1140" y="632" width="50" height="24" rx="10" fill="#1F2340"/></g>
+  </g>
+  <g id="control-room-near">
+    <path fill="#8C5A3C" d="M254 690h1010v250H254Z"/>
+    <rect x="218" y="668" width="1082" height="62" rx="30" fill="#A86F4C"/>
+    <g id="office-chair">
+      <rect x="700" y="812" width="250" height="70" rx="35" fill="#232E57"/><rect x="790" y="876" width="70" height="92" rx="24" fill="#2D3A6B"/><path fill="#2D3A6B" d="M825 950v58M760 1010h130M825 1008l-58 44M825 1008l62 44"/><circle cx="760" cy="1012" r="18" fill="#1F2340"/><circle cx="890" cy="1012" r="18" fill="#1F2340"/><circle cx="825" cy="1052" r="18" fill="#1F2340"/>
+    </g>
+    <path fill="#D9C7AA" opacity="0.42" d="M0 926h1920v18H0ZM0 1016h1920v18H0Z"/>
+  </g>
+</svg>

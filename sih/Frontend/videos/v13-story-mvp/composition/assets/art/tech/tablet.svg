@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540">
+  <ellipse id="tablet-shadow" cx="380" cy="478" rx="300" ry="22" fill="#14123C" fill-opacity=".18"/>
+  <g id="tablet-shell">
+    <rect x="52" y="42" width="656" height="456" rx="46" fill="#1F2340"/>
+    <path d="M98 42h564c25 0 46 21 46 46v50H52V88c0-25 21-46 46-46Z" fill="#2D3A6B" fill-opacity=".7"/>
+    <rect id="tablet-screen" x="82" y="72" width="596" height="396" rx="24" fill="#FDFCF8"/>
+    <path d="M82 418h596v24c0 14-10 26-24 26H106c-14 0-24-12-24-26Z" fill="#D8DEEA"/>
+    <circle cx="380" cy="440" r="7" fill="#6B7090"/>
+  </g>
+</svg>

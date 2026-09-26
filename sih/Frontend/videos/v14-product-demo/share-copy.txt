@@ -1,0 +1,6 @@
+Team Pushpak — live product demo (2:00): press one button and watch a learned scheduler beat the fixed sweep, twice, on the same spectrum and seeds.
+
+Bandit: 17.3% heard vs 11.6% sweep (+48%). Q-learning: 28.1% vs 11.6% (+141%). 80/80 ML decisions, 0 fallbacks, all services up. Simulation only — no RF hardware.
+
+Full tour: Dashboard, Simulations, Raw stream, Experiments, Models, Health.
+Numbers are live 1-episode runs (Scenario B, seed 42) — illustrative, with the coverage trade-off stated on screen.

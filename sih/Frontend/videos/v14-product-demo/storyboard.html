@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>v14-product-demo storyboard v1 — press run, twice</title>
+<style>
+  :root{
+    --canvas:#0B1020; --panel:#141B2E; --raised:#1B2440; --rule:#263054;
+    --ink:#E6EAF5; --muted:#8A93AD; --faint:#5C6580;
+    --gold:#E8B84B; --electric:#77A8FF; --green:#0F9E73; --amber:#C87A18; --red:#D8425F;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--canvas); color:var(--ink);
+    font-family:"Segoe UI", system-ui, -apple-system, sans-serif; padding:32px;}
+  header{max-width:1500px; margin:0 auto 8px;}
+  header .kicker{font-family:Consolas,"Cascadia Mono",monospace; font-size:12px;
+    letter-spacing:.18em; color:var(--gold); text-transform:uppercase;}
+  header h1{font-family:"Arial Narrow","Barlow Condensed",sans-serif; font-weight:600;
+    font-size:44px; letter-spacing:.02em; margin:6px 0;}
+  header .dek{color:var(--muted); font-size:15px; max-width:900px;}
+  header .tags{margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;}
+  header .tags span{font-family:Consolas,monospace; font-size:12px; color:var(--ink);
+    border:1px solid var(--rule); border-radius:4px; padding:3px 10px; background:var(--panel);}
+  .grid{max-width:1500px; margin:24px auto; display:grid;
+    grid-template-columns:repeat(3, 1fr); gap:28px;}
+  .cell{container-type:inline-size;}
+  .frame{aspect-ratio:16/9; background:var(--panel); border:1px solid var(--rule);
+    border-radius:4px; padding:4cqw; position:relative; overflow:hidden;}
+  .label{display:flex; justify-content:space-between; margin-top:8px;
+    font-family:Consolas,monospace; font-size:12px;}
+  .label b{color:var(--ink);} .label span{color:var(--faint);}
+  .note{margin-top:4px; font-size:13px; color:var(--muted);}
+  .note b{color:var(--ink);}
+  .seam{display:inline-block; margin-top:6px; font-family:Consolas,monospace; font-size:11px;
+    color:var(--gold); border:1px solid var(--gold); border-radius:4px; padding:2px 8px;}
+  .cond{font-family:"Arial Narrow",sans-serif; font-weight:600;}
+  .mono{font-family:Consolas,"Cascadia Mono",monospace;}
+  .big{font-family:"Arial Narrow",sans-serif; font-weight:600; line-height:1;}
+  .eyebrow{font-family:Consolas,monospace; font-size:2.6cqw; letter-spacing:.22em;
+    color:var(--gold); text-transform:uppercase;}
+  .ruler{display:grid; grid-template-columns:repeat(16,1fr); gap:.6cqw; margin:2.5cqw 0 1cqw;}
+  .ruler i{display:block; aspect-ratio:1/1.4; background:var(--raised);
+    border:1px solid var(--rule); border-radius:.5cqw;}
+  .ruler i.on{background:rgba(119,168,255,.35); border-color:var(--electric);}
+  .btn{display:inline-block; background:var(--gold); color:#241A05; font-weight:700;
+    font-size:3cqw; border-radius:.8cqw; padding:1cqw 3cqw;}
+  .chip{display:inline-block; font-family:Consolas,monospace; font-size:2.2cqw;
+    border:1px solid var(--rule); border-radius:.8cqw; padding:.6cqw 1.6cqw; color:var(--muted);}
+  .wf{background:#101A31; border:1px solid var(--rule); border-radius:.8cqw;
+    padding:1.5cqw; font-family:Consolas,monospace; font-size:2.3cqw; line-height:1.7;}
+  .g{color:var(--green);} .a{color:var(--amber);} .e{color:var(--electric);}
+  .tiles{display:grid; grid-template-columns:repeat(4,1fr); gap:1.5cqw; margin-top:2cqw;}
+  .tile{background:var(--raised); border:1px solid var(--rule); border-radius:.8cqw;
+    padding:1.2cqw; text-align:center;}
+  .tile small{display:block; color:var(--muted); font-size:2cqw;}
+  .tile b{font-size:3.4cqw;}
+  .stat{display:flex; align-items:baseline; gap:2cqw; justify-content:center; margin-top:1cqw;}
+  .badge{background:var(--gold); color:#241A05; font-weight:800; border-radius:1cqw;
+    padding:.8cqw 2.4cqw; font-size:5cqw;}
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:1.5cqw; margin-top:2cqw;}
+  .card{background:var(--raised); border:1px solid var(--rule); border-radius:.8cqw;
+    padding:1.6cqw; font-size:2.6cqw; text-align:center;}
+  .card.hot{border-color:var(--gold);}
+  .browserbar{background:#0e1528; border:1px solid var(--rule); border-radius:.8cqw .8cqw 0 0;
+    font-family:Consolas,monospace; font-size:2.2cqw; color:var(--muted); padding:.8cqw 1.5cqw;}
+  .shot{border:1px solid var(--rule); border-top:none; border-radius:0 0 .8cqw .8cqw;
+    padding:1.5cqw;}
+  .swatch{display:inline-block; width:3cqw; height:3cqw; border-radius:.6cqw; vertical-align:middle;}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">v14-product-demo · storyboard v1</div>
+  <h1>Press run. Twice.</h1>
+  <p class="dek">A learned scheduler beats the fixed sweep live on the Dashboard — Bandit (+48%), then Q-learning (+141%) — then a fast full tour of all six mission views. Every number is today's live backend run.</p>
+  <div class="tags"><span>1920×1080</span><span>~120s</span><span>8 frames</span><span>Kokoro af_heart VO</span><span>show-it-as-is</span></div>
+</header>
+
+<div class="grid">
+
+  <!-- 01 -->
+  <div class="cell" id="frame-01">
+    <div class="frame">
+      <div class="eyebrow">Live receiver intelligence</div>
+      <div class="big" style="font-size:9cqw; margin-top:2cqw;">THE SPECTRUM IS WIDE.</div>
+      <div class="big" style="font-size:9cqw; color:var(--gold);">YOUR RECEIVER IS NOT.</div>
+      <div style="margin-top:2.5cqw;">
+        <span class="chip" style="color:var(--green); border-color:var(--green);">● LIVE</span>
+        <span class="chip" style="margin-left:1cqw;">proven TWICE</span>
+      </div>
+    </div>
+    <div class="label"><b>01 · THE SPECTRUM IS WIDE</b><span>hook · 0–8s</span></div>
+    <p class="note"><b>First motion: key word swaps in on the beat</b> — WIDE / NOT / LIVE / TWICE punch in sequence, then hold.</p>
+    <span class="seam">in: cut</span>
+  </div>
+
+  <!-- 02 -->
+  <div class="cell" id="frame-02">
+    <div class="frame">
+      <div class="eyebrow">The fair fight</div>
+      <div class="cond" style="font-size:4.4cqw; margin-top:1cqw;">Hears <b class="e">2</b> bands of <b>16</b>. Same spectrum. Same seeds.</div>
+      <div class="ruler"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div><span class="chip">SIMULATION ONLY · NO RF HARDWARE</span>
+        <span class="btn" style="margin-left:1.5cqw;">▶ Run live comparison</span></div>
+    </div>
+    <div class="label"><b>02 · TWO BANDS AT A TIME</b><span>intro · 8–20s</span></div>
+    <p class="note"><b>First motion: aperture highlight sweeps the ruler</b> — two slots glow, honesty chip settles, button pulses once.</p>
+    <span class="seam">in: zoom-through (section change)</span>
+  </div>
+
+  <!-- 03 -->
+  <div class="cell" id="frame-03">
+    <div class="frame">
+      <div class="browserbar">localhost:5173 · Compare against: <b style="color:var(--gold)">Bandit</b></div>
+      <div class="shot">
+        <div class="wf"><span class="g">t=0041 |....##..o..._.#|</span><br><span class="g">t=0042 |...##...o.._.##|</span><br><span class="a">t=0043 |..o.....##..o.._|</span><br><span class="g">t=0044 |.##....o..##..._|</span></div>
+        <div class="tiles">
+          <div class="tile"><small>heard</small><b class="e">17.3%</b></div>
+          <div class="tile"><small>false alarms</small><b>14</b></div>
+          <div class="tile"><small>efficiency</small><b class="e">31.9%</b></div>
+          <div class="tile"><small>caught</small><b class="g">43</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="label"><b>03 · RACE ONE: BANDIT</b><span>demo 1a · 20–45s</span></div>
+    <p class="note"><b>First motion: cursor presses Run</b> — waterfall streams newest-first, tiles tick up as catches land.</p>
+    <span class="seam">in: push-slide LEFT (race run)</span>
+  </div>
+
+  <!-- 04 -->
+  <div class="cell" id="frame-04">
+    <div class="frame" style="text-align:center;">
+      <div class="eyebrow">Bandit vs the fixed sweep</div>
+      <div class="stat"><span class="big" style="font-size:11cqw; color:var(--green);">17.3%</span>
+        <span class="mono" style="color:var(--muted); font-size:3.4cqw;">vs 11.6%</span></div>
+      <div style="margin-top:1.5cqw;"><span class="badge">+48%</span></div>
+      <div class="mono" style="color:var(--faint); font-size:2.2cqw; margin-top:1.5cqw;">6 of 10 emitters · 1-episode run, illustrative</div>
+    </div>
+    <div class="label"><b>04 · BANDIT: +48%</b><span>demo 1b · 45–60s</span></div>
+    <p class="note"><b>First motion: 17.3 counts up from zero</b> — badge snaps in, footnote fades last so the win lands before the caveat.</p>
+    <span class="seam">in: crossfade (same world)</span>
+  </div>
+
+  <!-- 05 -->
+  <div class="cell" id="frame-05">
+    <div class="frame">
+      <div class="browserbar">localhost:5173 · Compare against: <b style="color:var(--gold)">Q-learning</b></div>
+      <div class="shot">
+        <div class="wf"><span class="g">t=0061 |##......##.._..#|</span><br><span class="g">t=0062 |..##..##..._##..|</span><br><span class="a">t=0063 |....o..##...o##.|</span><br><span class="g">t=0064 |##..._..##...##.|</span></div>
+        <div class="tiles">
+          <div class="tile"><small>heard</small><b class="e">28.1%</b></div>
+          <div class="tile"><small>false alarms</small><b>8</b></div>
+          <div class="tile"><small>efficiency</small><b class="e">46.9%</b></div>
+          <div class="tile"><small>caught</small><b class="g">70</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="label"><b>05 · RACE TWO: Q-LEARNING</b><span>demo 2a · 60–85s</span></div>
+    <p class="note"><b>First motion: challenger tag swaps to Q-learning</b> — same press, same stream ritual, hotter waterfall.</p>
+    <span class="seam">in: push-slide LEFT (race run)</span>
+  </div>
+
+  <!-- 06 -->
+  <div class="cell" id="frame-06">
+    <div class="frame" style="text-align:center;">
+      <div class="eyebrow">Q-learning vs the fixed sweep</div>
+      <div class="stat"><span class="big" style="font-size:11cqw; color:var(--green);">28.1%</span>
+        <span class="mono" style="color:var(--muted); font-size:3.4cqw;">vs 11.6%</span></div>
+      <div style="margin-top:1.5cqw;"><span class="badge">+141%</span></div>
+      <div class="mono" style="color:var(--faint); font-size:2.2cqw; margin-top:1.5cqw;">Bandit +48% · Q-learning +141% · one button</div>
+    </div>
+    <div class="label"><b>06 · Q-LEARNING: +141%</b><span>demo 2b · 85–100s</span></div>
+    <p class="note"><b>First motion: 28.1 counts up</b> — recap strip wipes in under the badge: two learners, two wins, one button.</p>
+    <span class="seam">in: crossfade (same world)</span>
+  </div>
+
+  <!-- 07 -->
+  <div class="cell" id="frame-07">
+    <div class="frame">
+      <div class="eyebrow">Behind the button</div>
+      <div class="cards">
+        <div class="card">Dashboard</div><div class="card">Simulations</div><div class="card">Raw stream</div>
+        <div class="card">Experiments</div><div class="card hot">Models ✓</div><div class="card hot">Health ●</div>
+      </div>
+      <div class="mono" style="font-size:2.2cqw; color:var(--muted); margin-top:1.5cqw;">80/80 ML decisions · 0 fallbacks · all services up</div>
+    </div>
+    <div class="label"><b>07 · THE WHOLE MACHINE</b><span>trust · 100–115s</span></div>
+    <p class="note"><b>First motion: cards assemble left to right</b> — Models and Health lock in gold last as the proof line lands.</p>
+    <span class="seam">in: zoom-through (section change)</span>
+  </div>
+
+  <!-- 08 -->
+  <div class="cell" id="frame-08">
+    <div class="frame" style="text-align:center; padding-top:7cqw;">
+      <div class="cond" style="font-size:6.5cqw;">TEAM <span style="color:var(--gold);">PUSHPAK</span></div>
+      <div style="font-size:3.2cqw; color:var(--muted); margin-top:1cqw;">Intelligent spectrum — safer skies.</div>
+      <div class="mono" style="font-size:2.4cqw; color:var(--electric); margin-top:2cqw;">Run it live: localhost:5173</div>
+    </div>
+    <div class="label"><b>08 · TEAM PUSHPAK</b><span>cta · 115–120s</span></div>
+    <p class="note"><b>Held frame: near-still, nothing moves</b> — the tagline lands, then the run-it-live line. The calm is the confidence.</p>
+    <span class="seam">in: blur-crossfade (background shift)</span>
+  </div>
+
+  <!-- seam map -->
+  <div class="cell">
+    <div class="frame mono" style="font-size:2.4cqw; line-height:2;">
+      <div class="eyebrow">Seam map</div>
+      01→02 zoom-through · 02→03 push L · 03→04 crossfade<br>
+      04→05 push L · 05→06 crossfade · 06→07 zoom-through<br>
+      07→08 blur-crossfade — one direction rule: forward, leftward.
+    </div>
+    <div class="label"><b>SEAM MAP</b><span>all 7 seams</span></div>
+    <p class="note"><b>Read the strip left to right</b> — three crossfades inside sections, pushes for races, zooms at section turns.</p>
+  </div>
+
+  <!-- tokens -->
+  <div class="cell">
+    <div class="frame" style="font-size:2.4cqw; line-height:2;">
+      <div class="eyebrow">Tokens &amp; bans</div>
+      <span class="swatch" style="background:#0B1020; border:1px solid #263054;"></span> #0B1020 canvas ·
+      <span class="swatch" style="background:#E8B84B;"></span> #E8B84B gold ·
+      <span class="swatch" style="background:#77A8FF;"></span> #77A8FF electric<br>
+      <span class="swatch" style="background:#0F9E73;"></span> #0F9E73 caught ·
+      <span class="swatch" style="background:#C87A18;"></span> #C87A18 missed ·
+      <span class="swatch" style="background:#E6EAF5;"></span> #E6EAF5 ink<br>
+      <span class="mono">Barlow Cond display · Archivo body · JetBrains Mono data</span><br>
+      Bans: no fake UI · no glow · no invented numbers · simulation-only stays.
+    </div>
+    <div class="label"><b>TOKENS</b><span>from capture</span></div>
+    <p class="note"><b>Judge placement, hierarchy and copy here</b> — build dresses this layout, never redraws it.</p>
+  </div>
+
+</div>
+</body>
+</html>

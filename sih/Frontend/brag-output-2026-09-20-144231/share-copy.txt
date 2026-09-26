@@ -1,0 +1,1 @@
+PUSHPAK turns a blind fixed sweep into a closed-loop spectrum scan: see why frequency and time must coincide, watch the SCT index break synchronization lockout, then see the real dashboard run the comparison live. Simulation only — no real RF.

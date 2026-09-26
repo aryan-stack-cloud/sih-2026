@@ -1,0 +1,61 @@
+<div class="cam" id="s04-cam">
+  <!-- Shot A: the engineer draws the loop -->
+  <div class="shot first" id="s04-A">
+    <img class="bgimg" src="assets/art/bg/lab-wall.svg" alt="">
+    <img class="abs" src="assets/art/tech/whiteboard.svg" alt="" style="left:170px;top:150px;width:1200px;height:820px">
+    <svg class="abs" id="s04-loop" viewBox="0 0 1080 620" style="left:230px;top:196px;width:1080px;height:620px;overflow:visible">
+      <path id="s04-arc1" d="M430 140 C560 60 700 80 770 170" fill="none" stroke="#1F9E89" stroke-width="12" stroke-linecap="round"/>
+      <path id="s04-arc2" d="M820 330 C830 450 740 520 620 520" fill="none" stroke="#1F9E89" stroke-width="12" stroke-linecap="round"/>
+      <path id="s04-arc3" d="M300 470 C200 420 190 290 260 220" fill="none" stroke="#1F9E89" stroke-width="12" stroke-linecap="round"/>
+      <polygon id="s04-h1" points="752,138 800,196 740,196" fill="#1F9E89"/>
+      <polygon id="s04-h2" points="642,492 580,522 640,550" fill="#1F9E89"/>
+      <polygon id="s04-h3" points="232,238 286,198 290,256" fill="#1F9E89"/>
+    </svg>
+    <div class="abs node" id="s04-n1" style="left:370px;top:220px">{{icon eye}}<b>Look</b></div>
+    <div class="abs node" id="s04-n2" style="left:950px;top:420px">{{icon notebook}}<b>Learn</b></div>
+    <div class="abs node" id="s04-n3" style="left:440px;top:650px">{{icon hand-point}}<b>Pick 2 bands</b></div>
+    <div class="abs" id="s04-ms" style="left:660px;top:440px;width:250px;height:120px;border-radius:60px;background:#FFC43D;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 8px 0 rgba(20,18,60,0.25)">
+      <img class="ico" src="assets/art/icons/stopwatch.svg" alt="" style="width:62px;height:62px"><b style="display:block;font:700 54px/1 Fredoka;color:#1F2340">10 ms</b>
+    </div>
+    <div class="abs" id="s04-e-wrap" style="left:1340px;top:250px;width:440px;height:880px">{{engineer id=s04-e marker}}</div>
+  </div>
+  <!-- Shot B: six ways, three families -->
+  <div class="shot" id="s04-B">
+    <div class="abs" style="left:0;top:0;width:1920px;height:1080px;background:radial-gradient(ellipse at 50% 45%,#3D3C8F 0%,#2B2A6E 45%,#1D1B4F 88%)"></div>
+    <div class="abs fam" id="s04-f1" style="left:150px;top:250px"><i class="tis-chip">Follow rules</i></div>
+    <div class="abs fam" id="s04-f2" style="left:690px;top:250px"><i class="tis-chip learn">Learn from experience</i></div>
+    <div class="abs fam" id="s04-f3" style="left:1230px;top:250px"><i class="tis-chip neural">Neural networks</i></div>
+    <div class="abs tile" id="s04-t1" style="left:195px;top:430px"><img src="assets/art/icons/dice.svg" alt=""><b>CTMC</b></div>
+    <div class="abs tile" id="s04-t2" style="left:445px;top:430px"><img src="assets/art/icons/list.svg" alt=""><b>Index</b></div>
+    <div class="abs tile" id="s04-t3" style="left:735px;top:430px"><img src="assets/art/icons/slot.svg" alt=""><b>Bandit</b></div>
+    <div class="abs tile" id="s04-t4" style="left:985px;top:430px"><img src="assets/art/icons/notebook.svg" alt=""><b>Q-learning</b></div>
+    <div class="abs tile" id="s04-t5" style="left:1275px;top:430px"><img src="assets/art/icons/brain.svg" alt=""><b>DQN</b></div>
+    <div class="abs tile" id="s04-t6" style="left:1525px;top:430px"><img src="assets/art/icons/wheel.svg" alt=""><b>PPO</b></div>
+    <div class="abs" id="s04-six" style="left:0;top:780px;width:1920px;text-align:center;font:700 96px/1 Fredoka;color:#FDFCF8;text-shadow:0 8px 0 rgba(20,18,60,0.45)">6 ways to pick</div>
+  </div>
+</div>
+<div class="hud">
+  <div class="tis-tag" id="s04-tag">{{icon lightning}}<div><span class="lbl">The fix:</span><span class="val">A smarter pick, every 10 ms</span></div></div>
+</div>
+<style>
+  #s04 .node { display: flex; align-items: center; gap: 14px; background: #FDFCF8; border: 6px solid #1F9E89; border-radius: 26px; padding: 14px 28px 14px 18px; box-shadow: 0 8px 0 rgba(20, 18, 60, 0.22); }
+  #s04 .node .ico { width: 80px; height: 80px; }
+  #s04 .node b { font: 800 52px/1 "Montserrat"; color: #1F2340; }
+  #s04 .fam { align-items: flex-start; width: 540px; height: 500px; border-radius: 34px; background: rgba(253, 252, 248, 0.08); border: 4px solid rgba(253, 252, 248, 0.18); display: flex; justify-content: center; padding-top: 34px; }
+  #s04 .tile { width: 200px; height: 250px; border-radius: 28px; background: #FDFCF8; box-shadow: 0 10px 0 rgba(20, 18, 60, 0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  #s04 .tile img { display: block; width: 130px; height: 130px; }
+  #s04 .tile b { font: 800 34px/1 "Montserrat"; color: #1F2340; }
+</style>
+<sfx src="marker" at="s04_1+0.9" vol="0.4"></sfx>
+<sfx src="pop" at="s04_1+1.2" vol="0.45"></sfx>
+<sfx src="marker" at="s04_1+1.9" vol="0.4"></sfx>
+<sfx src="pop" at="s04_1+2.3" vol="0.45"></sfx>
+<sfx src="marker" at="s04_1+3.0" vol="0.4"></sfx>
+<sfx src="pop" at="s04_1+3.3" vol="0.45"></sfx>
+<sfx src="ding" at="s04_1+0.3" vol="0.3"></sfx>
+<sfx src="whoosh_big" at="s04_2-0.1" vol="0.45"></sfx>
+<sfx src="pop_soft" at="s04_2+0.2" vol="0.5"></sfx>
+<sfx src="card_slide" at="s04_2@end-0.45" vol="0.45"></sfx>
+<sfx src="card_slide" at="s04_2@end-0.2" vol="0.45"></sfx>
+<sfx src="card_slide" at="s04_2@end+0.05" vol="0.45"></sfx>
+<sfx src="success" at="s04_2@end+0.7" vol="0.35"></sfx>

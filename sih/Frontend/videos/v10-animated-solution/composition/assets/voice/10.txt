@@ -1,0 +1,1 @@
+﻿Both reach about ninety-seven percent of distinct emitters. In a separate test, Bandit sees more active time but fewer emitters. That is a tradeoff.

@@ -1,0 +1,2385 @@
+﻿{
+  "ok": false,
+  "strict": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 11,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "composition_file_too_large",
+        "severity": "warning",
+        "message": "This HTML composition file has 2394 lines. Smaller sub-compositions are easier to read, iterate on, and diff.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\This PC\\Documents\\codex and claude\\sih\\Frontend\\videos\\v8-solution-eg-cinematic\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Split coherent scenes or layers into separate .html files under compositions/, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"ext\"> is a timeline element that contains nested <div id=\"extInner\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#ext",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\This PC\\Documents\\codex and claude\\sih\\Frontend\\videos\\v8-solution-eg-cinematic\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"ext\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"door\"> is a timeline element that contains nested <div id=\"doorStage\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#door",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\This PC\\Documents\\codex and claude\\sih\\Frontend\\videos\\v8-solution-eg-cinematic\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"door\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"react\"> is a timeline element that contains nested <div id=\"reactStage\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#react",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\This PC\\Documents\\codex and claude\\sih\\Frontend\\videos\\v8-solution-eg-cinematic\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"react\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"ots\"> is a timeline element that contains nested <svg id=\"otsSvg\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#ots",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\This PC\\Documents\\codex and claude\\sih\\Frontend\\videos\\v8-solution-eg-cinematic\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"ots\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"room\"> is a timeline element that contains nested <div id=\"roomInner\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#room",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\This PC\\Documents\\codex and claude\\sih\\Frontend\\videos\\v8-solution-eg-cinematic\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"room\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"insert\"> is a timeline element that contains nested <div id=\"insertStage\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#insert",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\This PC\\Documents\\codex and claude\\sih\\Frontend\\videos\\v8-solution-eg-cinematic\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"insert\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"split\"> is a timeline element that contains nested <svg>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#split",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\This PC\\Documents\\codex and claude\\sih\\Frontend\\videos\\v8-solution-eg-cinematic\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"split\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"hud\"> is a timeline element that contains nested <div id=\"spotTag\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#hud",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\This PC\\Documents\\codex and claude\\sih\\Frontend\\videos\\v8-solution-eg-cinematic\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"hud\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"tech\"> is a timeline element that contains nested <div id=\"techBg\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#tech",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\This PC\\Documents\\codex and claude\\sih\\Frontend\\videos\\v8-solution-eg-cinematic\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"tech\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"fx\"> is a timeline element that contains nested <div id=\"vig\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#fx",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\This PC\\Documents\\codex and claude\\sih\\Frontend\\videos\\v8-solution-eg-cinematic\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"fx\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      }
+    ],
+    "filesScanned": 1
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": false,
+    "errorCount": 5,
+    "warningCount": 3,
+    "infoCount": 45,
+    "findings": [
+      {
+        "code": "content_overlap",
+        "severity": "error",
+        "time": 15.75,
+        "selector": "#b-dark > text:nth-of-type(1)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 689.09,
+          "top": 315.32,
+          "right": 888.14,
+          "bottom": 353.03,
+          "width": 199.05,
+          "height": 37.71
+        },
+        "containerSelector": "#b-lit > text:nth-of-type(1)",
+        "text": "BLOCK C",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 689.09,
+          "y": 315.32,
+          "width": 199.05,
+          "height": 37.71
+        },
+        "firstSeen": 15.75,
+        "lastSeen": 31.875,
+        "occurrences": 127,
+        "heldMs": 16125
+      },
+      {
+        "code": "content_overlap",
+        "severity": "error",
+        "time": 24,
+        "selector": "#b-dark > text:nth-of-type(1)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1436.47,
+          "top": 116.99,
+          "right": 1557.79,
+          "bottom": 144.56,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "containerSelector": "span.rt-item.rt-on",
+        "text": "BLOCK C",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1436.47,
+          "y": 116.99,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "firstSeen": 24,
+        "lastSeen": 24.75,
+        "occurrences": 8,
+        "heldMs": 750
+      },
+      {
+        "code": "content_overlap",
+        "severity": "error",
+        "time": 24,
+        "selector": "#b-dark > text:nth-of-type(1)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1436.47,
+          "top": 116.99,
+          "right": 1557.79,
+          "bottom": 144.56,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "containerSelector": "#route > span:nth-of-type(11)",
+        "text": "BLOCK C",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1436.47,
+          "y": 116.99,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "firstSeen": 24,
+        "lastSeen": 24.75,
+        "occurrences": 8,
+        "heldMs": 750
+      },
+      {
+        "code": "content_overlap",
+        "severity": "error",
+        "time": 24,
+        "selector": "#b-lit > text:nth-of-type(1)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1436.47,
+          "top": 116.99,
+          "right": 1557.79,
+          "bottom": 144.56,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "containerSelector": "span.rt-item.rt-on",
+        "text": "BLOCK C",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1436.47,
+          "y": 116.99,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "firstSeen": 24,
+        "lastSeen": 24.75,
+        "occurrences": 8,
+        "heldMs": 750
+      },
+      {
+        "code": "content_overlap",
+        "severity": "error",
+        "time": 24,
+        "selector": "#b-lit > text:nth-of-type(1)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1436.47,
+          "top": 116.99,
+          "right": 1557.79,
+          "bottom": 144.56,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "containerSelector": "#route > span:nth-of-type(11)",
+        "text": "BLOCK C",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1436.47,
+          "y": 116.99,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "firstSeen": 24,
+        "lastSeen": 24.75,
+        "occurrences": 8,
+        "heldMs": 750
+      },
+      {
+        "code": "escaped_container",
+        "severity": "warning",
+        "time": 15.556,
+        "selector": "#Lfg",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": -1924.45,
+          "top": -191.79,
+          "right": 1796.07,
+          "bottom": 1921.86,
+          "width": 3720.52,
+          "height": 2113.65
+        },
+        "containerSelector": "#extInner",
+        "text": "",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -1924.45,
+          "y": -191.79,
+          "width": 3720.52,
+          "height": 2113.65
+        },
+        "firstSeen": 15.556,
+        "lastSeen": 24.444,
+        "occurrences": 3,
+        "heldMs": 0
+      },
+      {
+        "code": "content_overlap",
+        "severity": "warning",
+        "time": 24,
+        "selector": "#b-dark > text:nth-of-type(1)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1436.47,
+          "top": 116.99,
+          "right": 1557.79,
+          "bottom": 144.56,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "containerSelector": "#route > span:nth-of-type(12)",
+        "text": "BLOCK C",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1436.47,
+          "y": 116.99,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "firstSeen": 24,
+        "lastSeen": 24.444,
+        "occurrences": 5,
+        "heldMs": 443.9999999999991
+      },
+      {
+        "code": "content_overlap",
+        "severity": "warning",
+        "time": 24,
+        "selector": "#b-lit > text:nth-of-type(1)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1436.47,
+          "top": 116.99,
+          "right": 1557.79,
+          "bottom": 144.56,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "containerSelector": "#route > span:nth-of-type(12)",
+        "text": "BLOCK C",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1436.47,
+          "y": 116.99,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "firstSeen": 24,
+        "lastSeen": 24.444,
+        "occurrences": 5,
+        "heldMs": 443.9999999999991
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 2.222,
+        "selector": "#ng > g:nth-of-type(1) > text:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -39.03,
+          "top": 871.28,
+          "right": 29.75,
+          "bottom": 882.05,
+          "width": 68.78,
+          "height": 10.77
+        },
+        "containerSelector": "#root",
+        "text": "SECURITY",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 39.03
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -39.03,
+          "y": 871.28,
+          "width": 68.78,
+          "height": 10.77
+        },
+        "firstSeen": 2.222,
+        "lastSeen": 2.222,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 2.222,
+        "selector": "#bb-ground",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -2896.54,
+          "top": 861.54,
+          "right": 3357.6,
+          "bottom": 1658.36,
+          "width": 6254.14,
+          "height": 796.82
+        },
+        "containerSelector": "#bldBack > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -56.04,
+          "top": 92.74,
+          "right": 1943.06,
+          "bottom": 1223.09,
+          "width": 1999.1,
+          "height": 1130.35
+        },
+        "overflow": {
+          "left": 2840.5,
+          "right": 1414.54,
+          "bottom": 435.27
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -2896.54,
+          "y": 861.54,
+          "width": 6254.14,
+          "height": 796.82
+        },
+        "firstSeen": 2.222,
+        "lastSeen": 2.222,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 2.222,
+        "selector": "#bb-shadow",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 1530,
+          "top": 904.99,
+          "right": 2137.16,
+          "bottom": 966.49,
+          "width": 607.16,
+          "height": 61.5
+        },
+        "containerSelector": "#bldBack > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -56.04,
+          "top": 92.74,
+          "right": 1943.06,
+          "bottom": 1223.09,
+          "width": 1999.1,
+          "height": 1130.35
+        },
+        "overflow": {
+          "right": 194.1
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1530,
+          "y": 904.99,
+          "width": 607.16,
+          "height": 61.5
+        },
+        "firstSeen": 2.222,
+        "lastSeen": 2.222,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 2.222,
+        "selector": "#bf-fogband",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -363.93,
+          "top": 954.34,
+          "right": 2544.86,
+          "bottom": 1073.81,
+          "width": 2908.79,
+          "height": 119.47
+        },
+        "containerSelector": "#bldFront > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -56.04,
+          "top": 92.74,
+          "right": 1943.06,
+          "bottom": 1223.09,
+          "width": 1999.1,
+          "height": 1130.35
+        },
+        "overflow": {
+          "left": 307.89,
+          "right": 601.8
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -363.93,
+          "y": 954.34,
+          "width": 2908.79,
+          "height": 119.47
+        },
+        "firstSeen": 2.222,
+        "lastSeen": 2.222,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 6.667,
+        "selector": "#ng > g:nth-of-type(1) > text:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -28.42,
+          "top": 627.7,
+          "right": 47.85,
+          "bottom": 639.77,
+          "width": 76.28,
+          "height": 12.07
+        },
+        "containerSelector": "#root",
+        "text": "SECURITY",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 28.42
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -28.42,
+          "y": 627.7,
+          "width": 76.28,
+          "height": 12.07
+        },
+        "firstSeen": 6.667,
+        "lastSeen": 6.667,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 6.667,
+        "selector": "#bb-ground",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -2701.71,
+          "top": 708.39,
+          "right": 3775.12,
+          "bottom": 1370.8,
+          "width": 6476.83,
+          "height": 662.42
+        },
+        "containerSelector": "#bldBack > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -54.79,
+          "top": -120.18,
+          "right": 2098.79,
+          "bottom": 1100.02,
+          "width": 2153.58,
+          "height": 1220.2
+        },
+        "overflow": {
+          "left": 2646.92,
+          "right": 1676.33,
+          "bottom": 270.78
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -2701.71,
+          "y": 708.39,
+          "width": 6476.83,
+          "height": 662.42
+        },
+        "firstSeen": 6.667,
+        "lastSeen": 6.667,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 6.667,
+        "selector": "#bb-shadow",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 1715.55,
+          "top": 769.43,
+          "right": 2354.54,
+          "bottom": 848.39,
+          "width": 638.98,
+          "height": 78.96
+        },
+        "containerSelector": "#bldBack > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -54.79,
+          "top": -120.18,
+          "right": 2098.79,
+          "bottom": 1100.02,
+          "width": 2153.58,
+          "height": 1220.2
+        },
+        "overflow": {
+          "right": 255.75
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1715.55,
+          "y": 769.43,
+          "width": 638.98,
+          "height": 78.96
+        },
+        "firstSeen": 6.667,
+        "lastSeen": 6.667,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 6.667,
+        "selector": "#bf-fogband",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -389.18,
+          "top": 807.88,
+          "right": 2741.57,
+          "bottom": 941.82,
+          "width": 3130.76,
+          "height": 133.93
+        },
+        "containerSelector": "#bldFront > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -54.79,
+          "top": -120.18,
+          "right": 2098.79,
+          "bottom": 1100.02,
+          "width": 2153.58,
+          "height": 1220.2
+        },
+        "overflow": {
+          "left": 334.39,
+          "right": 642.78
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -389.18,
+          "y": 807.88,
+          "width": 3130.76,
+          "height": 133.93
+        },
+        "firstSeen": 6.667,
+        "lastSeen": 6.667,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 11.111,
+        "selector": "#insertStage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -73.2,
+          "top": -32.4,
+          "right": 1962,
+          "bottom": 1112.4,
+          "width": 2035.2,
+          "height": 1144.8
+        },
+        "containerSelector": "#insert",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 73.2,
+          "right": 42,
+          "top": 32.4,
+          "bottom": 32.4
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -73.2,
+          "y": -32.4,
+          "width": 2035.2,
+          "height": 1144.8
+        },
+        "firstSeen": 11.111,
+        "lastSeen": 11.111,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 15.556,
+        "selector": "#ng > g:nth-of-type(1) > text:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -1033.25,
+          "top": 950.19,
+          "right": -929.94,
+          "bottom": 966.77,
+          "width": 103.32,
+          "height": 16.58
+        },
+        "containerSelector": "#root",
+        "text": "SECURITY",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 1033.25
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -1033.25,
+          "y": 950.19,
+          "width": 103.32,
+          "height": 16.58
+        },
+        "firstSeen": 15.556,
+        "lastSeen": 15.556,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 15.556,
+        "selector": "#ng-arm > text:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -746.57,
+          "top": 1112.6,
+          "right": -716.57,
+          "bottom": 1118.75,
+          "width": 30,
+          "height": 6.15
+        },
+        "containerSelector": "#root",
+        "text": "SECURITY",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 746.57,
+          "bottom": 38.75
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -746.57,
+          "y": 1112.6,
+          "width": 30,
+          "height": 6.15
+        },
+        "firstSeen": 15.556,
+        "lastSeen": 15.556,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 15.556,
+        "selector": "#bb-ground",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -3787.05,
+          "top": 923.39,
+          "right": 4200.01,
+          "bottom": 1668.05,
+          "width": 7987.06,
+          "height": 744.66
+        },
+        "containerSelector": "#bldBack > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -718.04,
+          "top": -126.33,
+          "right": 1989.85,
+          "bottom": 1412.04,
+          "width": 2707.89,
+          "height": 1538.37
+        },
+        "overflow": {
+          "left": 3069.01,
+          "right": 2210.16,
+          "bottom": 256.01
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -3787.05,
+          "y": 923.39,
+          "width": 7987.06,
+          "height": 744.66
+        },
+        "firstSeen": 15.556,
+        "lastSeen": 15.556,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 15.556,
+        "selector": "#bb-shadow",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 1552.4,
+          "top": 977.4,
+          "right": 2343.19,
+          "bottom": 1085.68,
+          "width": 790.79,
+          "height": 108.29
+        },
+        "containerSelector": "#bldBack > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -718.04,
+          "top": -126.33,
+          "right": 1989.85,
+          "bottom": 1412.04,
+          "width": 2707.89,
+          "height": 1538.37
+        },
+        "overflow": {
+          "right": 353.34
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1552.4,
+          "y": 977.4,
+          "width": 790.79,
+          "height": 108.29
+        },
+        "firstSeen": 15.556,
+        "lastSeen": 15.556,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 15.556,
+        "selector": "#bf-fogband",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -1129.57,
+          "top": 1034.97,
+          "right": 2802.4,
+          "bottom": 1211.95,
+          "width": 3931.98,
+          "height": 176.98
+        },
+        "containerSelector": "#bldFront > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -718.04,
+          "top": -126.33,
+          "right": 1989.85,
+          "bottom": 1412.04,
+          "width": 2707.89,
+          "height": 1538.37
+        },
+        "overflow": {
+          "left": 411.53,
+          "right": 812.55
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -1129.57,
+          "y": 1034.97,
+          "width": 3931.98,
+          "height": 176.98
+        },
+        "firstSeen": 15.556,
+        "lastSeen": 15.556,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "text.plate",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -896.93,
+          "top": 444.49,
+          "right": -852.18,
+          "bottom": 493.33,
+          "width": 44.75,
+          "height": 48.84
+        },
+        "containerSelector": "#root",
+        "text": "01",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 896.93
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -896.93,
+          "y": 444.49,
+          "width": 44.75,
+          "height": 48.84
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "text.plate",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -444.1,
+          "top": 447.33,
+          "right": -399.84,
+          "bottom": 495.89,
+          "width": 44.26,
+          "height": 48.56
+        },
+        "containerSelector": "#root",
+        "text": "02",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 444.1
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -444.1,
+          "y": 447.33,
+          "width": 44.26,
+          "height": 48.56
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "text.plate",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -896.93,
+          "top": 739.87,
+          "right": -852.18,
+          "bottom": 788.55,
+          "width": 44.75,
+          "height": 48.67
+        },
+        "containerSelector": "#root",
+        "text": "05",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 896.93
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -896.93,
+          "y": 739.87,
+          "width": 44.75,
+          "height": 48.67
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "text.plate",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -444.1,
+          "top": 741.07,
+          "right": -399.84,
+          "bottom": 789.47,
+          "width": 44.26,
+          "height": 48.4
+        },
+        "containerSelector": "#root",
+        "text": "06",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 444.1
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -444.1,
+          "y": 741.07,
+          "width": 44.26,
+          "height": 48.4
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "text.plate",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -896.93,
+          "top": 1035.21,
+          "right": -852.18,
+          "bottom": 1083.84,
+          "width": 44.75,
+          "height": 48.63
+        },
+        "containerSelector": "#root",
+        "text": "09",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 896.93,
+          "bottom": 3.84
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -896.93,
+          "y": 1035.21,
+          "width": 44.75,
+          "height": 48.63
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "text.plate",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -444.1,
+          "top": 1034.77,
+          "right": -399.84,
+          "bottom": 1083.13,
+          "width": 44.26,
+          "height": 48.36
+        },
+        "containerSelector": "#root",
+        "text": "10",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 444.1,
+          "bottom": 3.13
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -444.1,
+          "y": 1034.77,
+          "width": 44.26,
+          "height": 48.36
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "text.plate",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 3.74,
+          "top": 1034.33,
+          "right": 47.5,
+          "bottom": 1082.42,
+          "width": 43.77,
+          "height": 48.09
+        },
+        "containerSelector": "#root",
+        "text": "11",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "bottom": 2.42
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 3.74,
+          "y": 1034.33,
+          "width": 43.77,
+          "height": 48.09
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 20,
+        "selector": "#b-plates > text:nth-of-type(11)",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 3.74,
+          "top": 1034.33,
+          "right": 47.5,
+          "bottom": 1082.42,
+          "width": 43.77,
+          "height": 48.09
+        },
+        "containerSelector": "#lbBot",
+        "text": "11",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 3.74,
+          "y": 1034.33,
+          "width": 43.77,
+          "height": 48.09
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 20,
+        "selector": "#b-plates > text:nth-of-type(12)",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 446.65,
+          "top": 1033.9,
+          "right": 489.94,
+          "bottom": 1081.73,
+          "width": 43.29,
+          "height": 47.82
+        },
+        "containerSelector": "#lbBot",
+        "text": "12",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 446.65,
+          "y": 1033.9,
+          "width": 43.29,
+          "height": 47.82
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "text.plate",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -896.93,
+          "top": 1330.43,
+          "right": -852.18,
+          "bottom": 1379.22,
+          "width": 44.75,
+          "height": 48.79
+        },
+        "containerSelector": "#root",
+        "text": "13",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 896.93,
+          "bottom": 299.22
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -896.93,
+          "y": 1330.43,
+          "width": 44.75,
+          "height": 48.79
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "text.plate",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -444.1,
+          "top": 1328.35,
+          "right": -399.84,
+          "bottom": 1376.87,
+          "width": 44.26,
+          "height": 48.52
+        },
+        "containerSelector": "#root",
+        "text": "14",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 444.1,
+          "bottom": 296.87
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -444.1,
+          "y": 1328.35,
+          "width": 44.26,
+          "height": 48.52
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "text.plate",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 3.74,
+          "top": 1326.3,
+          "right": 47.5,
+          "bottom": 1374.54,
+          "width": 43.77,
+          "height": 48.25
+        },
+        "containerSelector": "#root",
+        "text": "15",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "bottom": 294.54
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 3.74,
+          "y": 1326.3,
+          "width": 43.77,
+          "height": 48.25
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "text.plate",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 446.65,
+          "top": 1324.26,
+          "right": 489.94,
+          "bottom": 1372.24,
+          "width": 43.29,
+          "height": 47.98
+        },
+        "containerSelector": "#root",
+        "text": "16",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "bottom": 292.24
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 446.65,
+          "y": 1324.26,
+          "width": 43.29,
+          "height": 47.98
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "#ng > g:nth-of-type(1) > text:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -4001.92,
+          "top": 1680.09,
+          "right": -3849.89,
+          "bottom": 1703.26,
+          "width": 152.03,
+          "height": 23.17
+        },
+        "containerSelector": "#root",
+        "text": "SECURITY",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 4001.92,
+          "bottom": 623.26
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -4001.92,
+          "y": 1680.09,
+          "width": 152.03,
+          "height": 23.17
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "#ng-arm > text:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -3581.53,
+          "top": 1917.64,
+          "right": -3537.4,
+          "bottom": 1926.33,
+          "width": 44.13,
+          "height": 8.69
+        },
+        "containerSelector": "#root",
+        "text": "SECURITY",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 3581.53,
+          "bottom": 846.33
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -3581.53,
+          "y": 1917.64,
+          "width": 44.13,
+          "height": 8.69
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "#bb-ground",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -6107.47,
+          "top": 1439.2,
+          "right": 4466.96,
+          "bottom": 2146.27,
+          "width": 10574.43,
+          "height": 707.07
+        },
+        "containerSelector": "#bldBack > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -2475.25,
+          "top": -43.55,
+          "right": 1213.84,
+          "bottom": 2031.56,
+          "width": 3689.09,
+          "height": 2075.11
+        },
+        "overflow": {
+          "left": 3632.22,
+          "right": 3253.12,
+          "bottom": 114.71
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -6107.47,
+          "y": 1439.2,
+          "width": 10574.43,
+          "height": 707.07
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "#bb-shadow",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 718.88,
+          "top": 1479.35,
+          "right": 1761.82,
+          "bottom": 1638.25,
+          "width": 1042.94,
+          "height": 158.9
+        },
+        "containerSelector": "#bldBack > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -2475.25,
+          "top": -43.55,
+          "right": 1213.84,
+          "bottom": 2031.56,
+          "width": 3689.09,
+          "height": 2075.11
+        },
+        "overflow": {
+          "right": 547.98
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 718.88,
+          "y": 1479.35,
+          "width": 1042.94,
+          "height": 158.9
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 20,
+        "selector": "#bf-fogband",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -3051.67,
+          "top": 1555.06,
+          "right": 2328.25,
+          "bottom": 1752.96,
+          "width": 5379.92,
+          "height": 197.9
+        },
+        "containerSelector": "#bldFront > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -2475.25,
+          "top": -43.55,
+          "right": 1213.84,
+          "bottom": 2031.56,
+          "width": 3689.09,
+          "height": 2075.11
+        },
+        "overflow": {
+          "left": 576.42,
+          "right": 1114.41
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -3051.67,
+          "y": 1555.06,
+          "width": 5379.92,
+          "height": 197.9
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "escaped_container",
+        "severity": "info",
+        "time": 20,
+        "selector": "#Lbld",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": -2475.25,
+          "top": -43.55,
+          "right": 1213.84,
+          "bottom": 2031.56,
+          "width": 3689.09,
+          "height": 2075.11
+        },
+        "containerSelector": "#extInner",
+        "text": "BLOCK C BLOCK C 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -2475.25,
+          "y": -43.55,
+          "width": 3689.09,
+          "height": 2075.11
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "escaped_container",
+        "severity": "info",
+        "time": 20,
+        "selector": "#Lnear",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": -4087,
+          "top": 78.92,
+          "right": 398.31,
+          "bottom": 2601.91,
+          "width": 4485.31,
+          "height": 2522.99
+        },
+        "containerSelector": "#extInner",
+        "text": "SECURITY SECURITY",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -4087,
+          "y": 78.92,
+          "width": 4485.31,
+          "height": 2522.99
+        },
+        "firstSeen": 20,
+        "lastSeen": 20,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 24.444,
+        "selector": "#b-dark > text:nth-of-type(1)",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 1436.47,
+          "top": 116.99,
+          "right": 1557.79,
+          "bottom": 144.56,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "containerSelector": "#route",
+        "text": "BLOCK C",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1436.47,
+          "y": 116.99,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "firstSeen": 24.444,
+        "lastSeen": 24.444,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 24.444,
+        "selector": "#b-lit > text:nth-of-type(1)",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 1436.47,
+          "top": 116.99,
+          "right": 1557.79,
+          "bottom": 144.56,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "containerSelector": "#route",
+        "text": "BLOCK C",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1436.47,
+          "y": 116.99,
+          "width": 121.32,
+          "height": 27.57
+        },
+        "firstSeen": 24.444,
+        "lastSeen": 24.444,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 24.444,
+        "selector": "#ng > g:nth-of-type(1) > text:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -907.71,
+          "top": 746.22,
+          "right": -817.85,
+          "bottom": 760.4,
+          "width": 89.87,
+          "height": 14.19
+        },
+        "containerSelector": "#root",
+        "text": "SECURITY",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 907.71
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -907.71,
+          "y": 746.22,
+          "width": 89.87,
+          "height": 14.19
+        },
+        "firstSeen": 24.444,
+        "lastSeen": 24.444,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 24.444,
+        "selector": "#ng-arm > text:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -660.16,
+          "top": 886.57,
+          "right": -634.07,
+          "bottom": 891.85,
+          "width": 26.09,
+          "height": 5.28
+        },
+        "containerSelector": "#root",
+        "text": "SECURITY",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 660.16
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -660.16,
+          "y": 886.57,
+          "width": 26.09,
+          "height": 5.28
+        },
+        "firstSeen": 24.444,
+        "lastSeen": 24.444,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 24.444,
+        "selector": "#bb-ground",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -3604.03,
+          "top": 796.9,
+          "right": 3699.21,
+          "bottom": 1535.74,
+          "width": 7303.23,
+          "height": 738.84
+        },
+        "containerSelector": "#bldBack > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -628.8,
+          "top": -140.14,
+          "right": 1801.6,
+          "bottom": 1236.18,
+          "width": 2430.4,
+          "height": 1376.32
+        },
+        "overflow": {
+          "left": 2975.23,
+          "right": 1897.61,
+          "bottom": 299.56
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -3604.03,
+          "y": 796.9,
+          "width": 7303.23,
+          "height": 738.84
+        },
+        "firstSeen": 24.444,
+        "lastSeen": 24.444,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 24.444,
+        "selector": "#bb-shadow",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 1371.48,
+          "top": 863.33,
+          "right": 2092.24,
+          "bottom": 952.51,
+          "width": 720.76,
+          "height": 89.19
+        },
+        "containerSelector": "#bldBack > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -628.8,
+          "top": -140.14,
+          "right": 1801.6,
+          "bottom": 1236.18,
+          "width": 2430.4,
+          "height": 1376.32
+        },
+        "overflow": {
+          "right": 290.64
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1371.48,
+          "y": 863.33,
+          "width": 720.76,
+          "height": 89.19
+        },
+        "firstSeen": 24.444,
+        "lastSeen": 24.444,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 24.444,
+        "selector": "#bf-fogband",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -1006.34,
+          "top": 907.63,
+          "right": 2527.65,
+          "bottom": 1057.28,
+          "width": 3533.99,
+          "height": 149.65
+        },
+        "containerSelector": "#bldFront > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -628.8,
+          "top": -140.14,
+          "right": 1801.6,
+          "bottom": 1236.18,
+          "width": 2430.4,
+          "height": 1376.32
+        },
+        "overflow": {
+          "left": 377.54,
+          "right": 726.05
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -1006.34,
+          "y": 907.63,
+          "width": 3533.99,
+          "height": 149.65
+        },
+        "firstSeen": 24.444,
+        "lastSeen": 24.444,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 28.889,
+        "selector": "#ng > g:nth-of-type(1) > text:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": -65.48,
+          "top": 673.07,
+          "right": -0.55,
+          "bottom": 684.17,
+          "width": 64.92,
+          "height": 11.1
+        },
+        "containerSelector": "#root",
+        "text": "SECURITY",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 65.48
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -65.48,
+          "y": 673.07,
+          "width": 64.92,
+          "height": 11.1
+        },
+        "firstSeen": 28.889,
+        "lastSeen": 28.889,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 28.889,
+        "selector": "#bb-ground",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -2559.12,
+          "top": 686.25,
+          "right": 3302.89,
+          "bottom": 1414.28,
+          "width": 5862,
+          "height": 728.02
+        },
+        "containerSelector": "#bldBack > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -82.33,
+          "top": -35.34,
+          "right": 1851.02,
+          "bottom": 1076.99,
+          "width": 1933.35,
+          "height": 1112.32
+        },
+        "overflow": {
+          "left": 2476.79,
+          "right": 1451.87,
+          "bottom": 337.29
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -2559.12,
+          "y": 686.25,
+          "width": 5862,
+          "height": 728.02
+        },
+        "firstSeen": 28.889,
+        "lastSeen": 28.889,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 28.889,
+        "selector": "#bb-shadow",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 1487.67,
+          "top": 742.56,
+          "right": 2063.34,
+          "bottom": 816.53,
+          "width": 575.68,
+          "height": 73.97
+        },
+        "containerSelector": "#bldBack > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -82.33,
+          "top": -35.34,
+          "right": 1851.02,
+          "bottom": 1076.99,
+          "width": 1933.35,
+          "height": 1112.32
+        },
+        "overflow": {
+          "right": 212.32
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1487.67,
+          "y": 742.56,
+          "width": 575.68,
+          "height": 73.97
+        },
+        "firstSeen": 28.889,
+        "lastSeen": 28.889,
+        "occurrences": 1,
+        "heldMs": 0
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 28.889,
+        "selector": "#bf-fogband",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -365.5,
+          "top": 782.64,
+          "right": 2426.15,
+          "bottom": 938.19,
+          "width": 2791.65,
+          "height": 155.55
+        },
+        "containerSelector": "#bldFront > svg:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": -82.33,
+          "top": -35.34,
+          "right": 1851.02,
+          "bottom": 1076.99,
+          "width": 1933.35,
+          "height": 1112.32
+        },
+        "overflow": {
+          "left": 283.17,
+          "right": 575.13
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": -365.5,
+          "y": 782.64,
+          "width": 2791.65,
+          "height": 155.55
+        },
+        "firstSeen": 28.889,
+        "lastSeen": 28.889,
+        "occurrences": 1,
+        "heldMs": 0
+      }
+    ],
+    "duration": 40,
+    "samples": [
+      2.222,
+      6.667,
+      11.111,
+      15.556,
+      20,
+      24.444,
+      28.889,
+      33.333,
+      37.778
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 53,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": false,
+    "errorCount": 3,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "contrast_aa_failure",
+        "severity": "error",
+        "message": "Contrast is 2.03:1; WCAG AA requires 4.5:1.",
+        "text": "BLOCK C",
+        "fg": "rgb(86,98,127)",
+        "bg": "rgb(42,52,77)",
+        "ratio": 2.03,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(149,156,175)",
+        "large": false,
+        "selector": "div > div:nth-of-type(1) > div > div:nth-of-type(3) > div:nth-of-type(2) > svg > g:nth-of-type(1) > text",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1623.349853515625,
+          "y": 302.0654602050781,
+          "width": 93.033935546875,
+          "height": 22.885284423828125
+        },
+        "time": 2.222
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "error",
+        "message": "Contrast is 1.91:1; WCAG AA requires 4.5:1.",
+        "text": "BLOCK C",
+        "fg": "rgb(86,98,127)",
+        "bg": "rgb(46,56,82)",
+        "ratio": 1.91,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(154,161,179)",
+        "large": false,
+        "selector": "div > div:nth-of-type(1) > div > div:nth-of-type(3) > div:nth-of-type(2) > svg > g:nth-of-type(1) > text",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 689.092529296875,
+          "y": 315.3241882324219,
+          "width": 199.0439453125,
+          "height": 37.707977294921875
+        },
+        "time": 20
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "error",
+        "message": "Contrast is 2.16:1; WCAG AA requires 4.5:1.",
+        "text": "BLOCK C",
+        "fg": "rgb(86,98,127)",
+        "bg": "rgb(38,48,72)",
+        "ratio": 2.16,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(144,152,171)",
+        "large": false,
+        "selector": "div > div:nth-of-type(1) > div > div:nth-of-type(3) > div:nth-of-type(2) > svg > g:nth-of-type(1) > text",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1541.592041015625,
+          "y": 166.34689331054688,
+          "width": 93.6834716796875,
+          "height": 19.903884887695312
+        },
+        "time": 28.889
+      }
+    ],
+    "enabled": true,
+    "samples": [
+      2.222,
+      11.111,
+      20,
+      28.889,
+      37.778
+    ],
+    "checked": 88,
+    "passed": 85
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  },
+  "_meta": {
+    "version": "0.8.73",
+    "latestVersion": "0.8.73",
+    "updateAvailable": false
+  }
+}

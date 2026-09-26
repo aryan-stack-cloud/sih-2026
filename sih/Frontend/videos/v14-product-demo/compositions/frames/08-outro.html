@@ -1,0 +1,134 @@
+<template>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  /* v14 local-font declarations: Windows-bundled faces that render in headless Chrome */
+  @font-face { font-family: 'Arial'; src: local('Arial'); }
+  @font-face { font-family: 'Arial Narrow'; src: local('Arial Narrow'); }
+  @font-face { font-family: 'Consolas'; src: local('Consolas'); }
+#root {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  container-type: size;
+  overflow: hidden;
+  background: transparent;
+  color: #E6EAF5;
+}
+#root .bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #101A31;
+}
+#root .bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+  opacity: 0.45;
+}
+#root .bg .scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 26, 49, 0.55);
+}
+#root .stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 7cqw;
+}
+#root .wordmark {
+  font-family: "Arial Narrow", "Arial Narrow", sans-serif;
+  font-weight: 600;
+  font-size: 6.5cqw;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #E6EAF5;
+  white-space: nowrap;
+  will-change: transform;
+}
+#root .wordmark .gold {
+  color: #E8B84B;
+}
+#root .tagline {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 3.2cqw;
+  line-height: 1.3;
+  color: #8A93AD;
+  margin-top: 1cqw;
+  white-space: nowrap;
+}
+#root .rule {
+  width: 120px;
+  height: 1px;
+  background: rgba(230, 234, 245, 0.2);
+  margin-top: 2cqw;
+}
+#root .runlive {
+  font-family: Consolas, "Consolas", monospace;
+  font-size: 2.4cqw;
+  line-height: 1.4;
+  color: #77A8FF;
+  margin-top: 2cqw;
+  white-space: nowrap;
+  will-change: transform;
+}
+#root .lockup-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform;
+}
+</style>
+<div data-hf-id="hf-5ocm" id="root" data-composition-id="08-outro" data-start="0" data-duration="5" data-track-index="0" data-width="1920" data-height="1080">
+  <div data-hf-id="hf-bwfg" class="bg clip" data-start="0" data-duration="5" data-track-index="0">
+    <img data-hf-id="hf-x8yu" id="08-outro-bgimg" src="assets/scroll-000.png" alt="">
+    <div data-hf-id="hf-60mj" class="scrim" id="08-outro-scrim"></div>
+  </div>
+  <div data-hf-id="hf-uh6g" class="stage clip" data-start="0" data-duration="5" data-track-index="1">
+    <div data-hf-id="hf-3n86" id="08-outro-lockup">
+      <div data-hf-id="hf-4tk7" class="lockup-inner" id="08-outro-lockup-inner">
+        <div data-hf-id="hf-zk9m" class="wordmark">TEAM <span data-hf-id="hf-fvi9" class="gold">PUSHPAK</span></div>
+        <div data-hf-id="hf-196f" class="tagline" id="08-outro-tagline">Intelligent spectrum — safer skies.</div>
+        <div data-hf-id="hf-a46i" class="rule"></div>
+        <div data-hf-id="hf-xqh6" class="runlive" id="08-outro-runlive">Run it live: localhost:5173</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+
+  var bgimg = document.getElementById("08-outro-bgimg");
+  var scrim = document.getElementById("08-outro-scrim");
+  var lockup = document.getElementById("08-outro-lockup");
+  var inner = document.getElementById("08-outro-lockup-inner");
+  var tagline = document.getElementById("08-outro-tagline");
+  var runlive = document.getElementById("08-outro-runlive");
+
+  /* Ground establishes first — masthead still dimmed ~55%. */
+  tl.fromTo(bgimg, { opacity: 0 }, { opacity: 0.45, duration: 0.6, ease: "power1.out" }, 0);
+  tl.fromTo(scrim, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, 0);
+
+  /* Scene 1 (0-1.5s): the ONE move — lockup rises via a single slide-up crossfade. */
+  tl.fromTo(lockup, { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, 0.1);
+  tl.fromTo(tagline, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0.55);
+  tl.fromTo(runlive, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.95);
+
+  /* Scene 2 (1.5-5s): still hold — one low-amplitude sine jitter on the inner
+     lockup (yoyo form, finite), settled well before the final frame. No exit. */
+  tl.to(inner, { y: -2, duration: 1.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 1.7);
+
+  tl.to({}, { duration: 5 }, 0);
+  window.__timelines["08-outro"] = tl;
+})();
+</script>
+</template>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <ellipse cx="200" cy="356" rx="142" ry="12" fill="rgba(20,18,60,0.18)"/>
+  <rect x="250" y="250" width="112" height="42" rx="21" fill="#E0457B" transform="rotate(45 306 271)"/>
+  <g id="mag-lens" data-pivot="none">
+    <circle cx="176" cy="160" r="120" fill="#2D3A6B"/>
+    <circle cx="176" cy="160" r="96" fill="#3DDCFF"/>
+    <circle cx="176" cy="160" r="74" fill="#F7F4FF"/>
+  </g>
+  <path d="M111 100c34-28 80-31 118-10" fill="none" stroke="#F7F4FF" stroke-width="16" stroke-linecap="round" opacity="0.7"/>
+</svg>
