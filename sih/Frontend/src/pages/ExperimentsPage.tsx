@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as api from "../services/api/client";
 import { useStore } from "../store/useStore";
 import { policyLabel } from "../lib/policyLabels";
+import { randomSeed } from "../lib/randomSeed";
 import { StatusDot } from "../components/StatusDot";
 import { PolicyRunDetails } from "../components/PolicyRunDetails";
 import { POLICY_TYPES, SCENARIO_IDS } from "../types/contract";
@@ -46,6 +47,7 @@ export function ExperimentsPage() {
   const [policies, setPolicies] = useState<PolicyType[]>(["random", "baseline", "bandit"]);
   const [episodes, setEpisodes] = useState(3);
   const [durationSteps, setDurationSteps] = useState(400);
+  const [seed, setSeed] = useState<number | "">(randomSeed);
   const [busy, setBusy] = useState(false);
   const [loadingResultsId, setLoadingResultsId] = useState<string | null>(null);
 
@@ -114,10 +116,25 @@ export function ExperimentsPage() {
               onChange={(e) => setDurationSteps(Number(e.target.value))}
             />
           </label>
+          <div className="seed-field">
+            <label htmlFor="experiment-seed">Base seed (optional)</label>
+            <div className="seed-input-wrap">
+              <input
+                id="experiment-seed"
+                type="number"
+                step={1}
+                value={seed}
+                onChange={(e) => setSeed(e.target.value === "" ? "" : Number(e.target.value))}
+              />
+              <button type="button" aria-label="Roll a new experiment seed" title="Roll a new seed"
+                onClick={() => setSeed(randomSeed(typeof seed === "number" ? seed : undefined))}>🎲</button>
+            </div>
+          </div>
           <button
             className="primary"
-            disabled={busy || policies.length === 0 || !Number.isInteger(episodes) || episodes < 1}
-            onClick={() => void act(() => api.createExperiment({ scenario, policies, episodes }))}
+            disabled={busy || policies.length === 0 || !Number.isInteger(episodes) || episodes < 1 ||
+              (seed !== "" && !Number.isSafeInteger(seed))}
+            onClick={() => void act(() => api.createExperiment({ scenario, policies, episodes, seed: seed === "" ? undefined : seed }))}
           >
             Create
           </button>

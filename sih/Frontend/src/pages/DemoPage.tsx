@@ -6,6 +6,7 @@ import { ComparisonTable, LiftChart } from "../components/LiftChart";
 import { fellBackToSweep, PolicyRunDetails } from "../components/PolicyRunDetails";
 import type { LiftRow } from "../components/LiftChart";
 import { POLICY_LABELS as CHALLENGER_LABELS } from "../lib/policyLabels";
+import { randomSeed } from "../lib/randomSeed";
 import { POLICY_TYPES } from "../types/contract";
 import type { ExperimentResults, MetricsSummary, ModelMetadata, PolicyType, ScenarioId } from "../types/contract";
 
@@ -75,6 +76,7 @@ const TABLE_METRICS = [
 ];
 
 type MetricCount = { success: number; total: number };
+type DemoWorlds = { seed: number; scenario: ScenarioId; challenger: PolicyType };
 
 function countWithTotal(success: unknown, total: unknown): MetricCount | null {
   return typeof success === "number" && typeof total === "number" &&
@@ -107,6 +109,8 @@ export function DemoPage() {
   const [stage, setStage] = useState<string>("");
   const [running, setRunning] = useState(false);
   const [results, setResults] = useState<ExperimentResults | null>(null);
+  const [completedWorlds, setCompletedWorlds] = useState<DemoWorlds | null>(null);
+  const [resultWasReplay, setResultWasReplay] = useState(false);
   const [bands, setBands] = useState(16);
   // Deep policies cannot make a valid decision from an empty session. Keep their Dashboard
   // option unavailable unless some registered checkpoint has the selected scenario's band count -
@@ -127,6 +131,7 @@ export function DemoPage() {
   // Read inside the async runDemo loop, which a state variable closed over at call time can't do -
   // cancelDemo needs to flip a flag the in-flight run notices on its very next check.
   const cancelledRef = useRef(false);
+  const lastSeedRef = useRef<number | null>(null);
   const activeRunRef = useRef<{ simulationId?: string; experimentId?: string }>({});
   const requestAbortRef = useRef<AbortController | null>(null);
 
@@ -179,7 +184,15 @@ export function DemoPage() {
     if (cancelledRef.current) throw new DemoCancelled();
   };
 
-  const runDemo = async () => {
+  const runDemo = async (replay?: DemoWorlds) => {
+    const runScenario = replay?.scenario ?? scenario;
+    const runChallenger = replay?.challenger ?? challenger;
+    const baseSeed = replay?.seed ?? randomSeed(lastSeedRef.current ?? undefined);
+    lastSeedRef.current = baseSeed;
+    if (replay) {
+      setScenario(runScenario);
+      setChallenger(runChallenger);
+    }
     cancelledRef.current = false;
     activeRunRef.current = {};
     requestAbortRef.current = new AbortController();
@@ -192,23 +205,23 @@ export function DemoPage() {
     try {
       setStage("Building the spectrum…");
       const all = await api.scenarios();
-      const chosen = all.find((s) => s.id === scenario);
+      const chosen = all.find((s) => s.id === runScenario);
       setBands(chosen?.bands ?? 16);
       throwIfCancelled();
 
       const sim = await api.createSimulation({
-        name: `Demo ${scenario}`,
+        name: `Demo ${runScenario}`,
         bands: chosen?.bands ?? 16,
         durationSteps: DEMO_LIVE_STEPS,
-        seed: 42,
-        scenario,
-        policy: challenger,
+        seed: baseSeed,
+        scenario: runScenario,
+        policy: runChallenger,
       });
       activeRunRef.current.simulationId = sim.id;
       throwIfCancelled();
 
       setStepIndex(1);
-      setStage(`Running ${CHALLENGER_LABELS[challenger]}…`);
+      setStage(`Running ${CHALLENGER_LABELS[runChallenger]}…`);
       watch(sim.id);
       await api.startSimulation(sim.id);
       if (speedMs > 0) {
@@ -221,9 +234,10 @@ export function DemoPage() {
       setStepIndex(2);
       setStage("Racing it against the fixed sweep…");
       const exp = await api.createExperiment({
-        scenario,
-        policies: ["baseline", challenger],
+        scenario: runScenario,
+        policies: ["baseline", runChallenger],
         episodes: DEMO_COMPARISON_EPISODES,
+        seed: baseSeed,
       });
       activeRunRef.current.experimentId = exp.id;
       throwIfCancelled();
@@ -260,6 +274,8 @@ export function DemoPage() {
       }
       setStage("Done.");
       setStepIndex(DEMO_STEPS.length);
+      setCompletedWorlds({ seed: baseSeed, scenario: runScenario, challenger: runChallenger });
+      setResultWasReplay(Boolean(replay));
     } catch (e) {
       if (e instanceof DemoCancelled || cancelledRef.current) {
         setStage("Cancelled.");
@@ -343,9 +359,14 @@ export function DemoPage() {
     ? results.policies[results.comparison.reference] : results?.policies.baseline;
   const highPriorityCount = countForMetric("hpdr", referencePolicy);
   const burstCount = countForMetric("run_intercept_rate", referencePolicy);
+  const seedCaption = results?.seeds?.length
+    ? `seeds ${results.seeds[0].toLocaleString()}–${results.seeds[results.seeds.length - 1].toLocaleString()}`
+    : null;
   const sampleCaption = results ? [
     `${results.episodes} episode${results.episodes === 1 ? "" : "s"}`,
     `${results.duration_steps} steps${results.episodes === 1 ? "" : " per episode"}`,
+    seedCaption,
+    resultWasReplay ? "replayed worlds" : "new worlds this run",
     highPriorityCount && `${highPriorityCount.total} high-priority moments`,
     burstCount && `${burstCount.total} bursts`,
   ].filter(Boolean).join(" · ") +
@@ -452,6 +473,11 @@ export function DemoPage() {
             ) : (
               <button className="primary" onClick={() => void runDemo()}>
                 <span className="button-mark">▶</span> Run live comparison
+              </button>
+            )}
+            {!running && results && completedWorlds && (
+              <button type="button" className="replay-button" onClick={() => void runDemo(completedWorlds)}>
+                Replay these worlds
               </button>
             )}
           </div>

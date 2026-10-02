@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as api from "../services/api/client";
 import { useStore } from "../store/useStore";
 import { policyLabel } from "../lib/policyLabels";
+import { randomSeed } from "../lib/randomSeed";
 import { POLICY_TYPES, SCENARIO_IDS } from "../types/contract";
 import type { PolicyType, ScenarioId } from "../types/contract";
 
@@ -14,7 +15,7 @@ export function SimulationsPage({ onWatch }: { onWatch: () => void }) {
   const [scenario, setScenario] = useState<ScenarioId>("B");
   const [policy, setPolicy] = useState<PolicyType>("bandit");
   const [durationSteps, setDurationSteps] = useState(400);
-  const [seed, setSeed] = useState(42);
+  const [seed, setSeed] = useState<number | "">(randomSeed);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -84,25 +85,31 @@ export function SimulationsPage({ onWatch }: { onWatch: () => void }) {
                 onChange={(e) => setDurationSteps(Number(e.target.value))}
               />
             </label>
-            <label className="field">
-              <span>Seed</span>
-              <input
-                type="number"
-                value={seed}
-                onChange={(e) => setSeed(Number(e.target.value))}
-              />
-            </label>
+            <div className="field seed-field">
+              <label htmlFor="simulation-seed">Seed</label>
+              <div className="seed-input-wrap">
+                <input
+                  id="simulation-seed"
+                  type="number"
+                  step={1}
+                  value={seed}
+                  onChange={(e) => setSeed(e.target.value === "" ? "" : Number(e.target.value))}
+                />
+                <button type="button" aria-label="Roll a new simulation seed" title="Roll a new seed"
+                  onClick={() => setSeed(randomSeed(typeof seed === "number" ? seed : undefined))}>🎲</button>
+              </div>
+            </div>
             <button
               className="primary"
               type="button"
-              disabled={busy}
+              disabled={busy || (seed !== "" && !Number.isSafeInteger(seed))}
               onClick={() =>
                 void act(() =>
                   api.createSimulation({
                     name,
                     bands: selected?.bands ?? 16,
                     durationSteps,
-                    seed,
+                    seed: seed === "" ? undefined : seed,
                     scenario,
                     policy,
                   }),

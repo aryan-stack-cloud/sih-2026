@@ -307,6 +307,11 @@ label.field {
   flex-wrap: wrap;
 }
 
+.seed-field { display: inline-flex; align-items: center; gap: 7px; min-width: 0; max-width: 100%; color: var(--ink-muted); font-size: 0.8rem; }
+.seed-input-wrap { display: flex; align-items: stretch; gap: 5px; min-width: 0; max-width: 100%; }
+.seed-input-wrap input { width: 94px; min-width: 0; flex: 1; }
+.seed-input-wrap button { width: 34px; min-width: 34px; padding: 0; line-height: 1; }
+
 /* A second controls row directly under the first - a policy checklist under a scenario/episode
    row, say - reads as one continuous form rather than two unrelated ones. */
 .controls-secondary {
@@ -910,7 +915,8 @@ input:focus-visible {
   min-width: 0;
 }
 
-.simulation-form .field > span {
+.simulation-form .field > span,
+.simulation-form .seed-field > label {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 0.7rem;
@@ -1314,6 +1320,7 @@ table.data.simulation-table {
   box-shadow: inset 3px 0 var(--brand-gold);
   padding: 12px 14px;
 }
+.mission-controls .replay-button { border-color: var(--brand-gold); white-space: normal; }
 .button-mark { font-size: 0.7rem; margin-right: 5px; }
 .spectrum-panel {
   background: linear-gradient(180deg, rgba(20, 27, 46, 0.95), rgba(11, 16, 32, 0.92));
