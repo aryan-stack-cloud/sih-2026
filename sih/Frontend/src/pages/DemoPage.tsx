@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as api from "../services/api/client";
 import { useStore } from "../store/useStore";
 import { Waterfall } from "../components/Waterfall";
+import { RacePanel } from "../components/RacePanel";
 import { AttentionActivity } from "../components/AttentionActivity";
 import { WhyThisBand } from "../components/WhyThisBand";
 import { decisionForStep } from "../lib/frameWindow";
@@ -127,6 +128,11 @@ export function DemoPage() {
   // -1 = no run started yet; DEMO_STEPS.length once the whole sequence finished cleanly.
   const [stepIndex, setStepIndex] = useState(-1);
   const [stepFailed, setStepFailed] = useState(false);
+  // The fixed-sweep run the live scheduler races against (same seed, same spectrum), and the
+  // reason the race view is unavailable when that run never materialised. The demo never fails
+  // because of the reference run: a note replaces the race, and the run carries on as today.
+  const [referenceSimulationId, setReferenceSimulationId] = useState<string | null>(null);
+  const [raceNote, setRaceNote] = useState<string | null>(null);
   // Determinate fraction for the "Compare vs sweep" phase, reported by the experiment
   // itself. Null everywhere else, where there is no meaningful total to measure against.
   const [raceFraction, setRaceFraction] = useState<number | null>(null);
@@ -135,7 +141,7 @@ export function DemoPage() {
   // cancelDemo needs to flip a flag the in-flight run notices on its very next check.
   const cancelledRef = useRef(false);
   const lastSeedRef = useRef<number | null>(null);
-  const activeRunRef = useRef<{ simulationId?: string; experimentId?: string }>({});
+  const activeRunRef = useRef<{ simulationId?: string; referenceSimulationId?: string; experimentId?: string }>({});
   const requestAbortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
@@ -204,6 +210,8 @@ export function DemoPage() {
     setResults(null);
     setStepFailed(false);
     setRaceFraction(null);
+    setReferenceSimulationId(null);
+    setRaceNote(null);
     setStepIndex(0);
     try {
       setStage("Building the spectrum…");
@@ -231,6 +239,32 @@ export function DemoPage() {
         // Best-effort: a slow/degraded speed endpoint should not derail the demo over a cosmetic
         // pacing setting, so a failure here is swallowed rather than surfaced as a run error.
         void api.setSimulationSpeed(sim.id, speedMs).catch(() => {});
+      }
+
+      // The race: the same spectrum (same seed, bands, duration, scenario) under the fixed
+      // sweep. Any failure here degrades to a note; the demo itself carries on as today.
+      try {
+        const ref = await api.createSimulation({
+          name: `Demo ${runScenario} reference`,
+          bands: chosen?.bands ?? 16,
+          durationSteps: DEMO_LIVE_STEPS,
+          seed: baseSeed,
+          scenario: runScenario,
+          policy: "baseline",
+        });
+        activeRunRef.current.referenceSimulationId = ref.id;
+        throwIfCancelled();
+        await api.startSimulation(ref.id);
+        throwIfCancelled();
+        // Both runs share one step delay, floored at the Backend's frame-gate interval so a
+        // faster preset cannot outrun the browser: every step of both runs reaches the UI.
+        const raceSpeedMs = Math.max(speedMs, 100);
+        void api.setSimulationSpeed(sim.id, raceSpeedMs).catch(() => {});
+        void api.setSimulationSpeed(ref.id, raceSpeedMs).catch(() => {});
+        setReferenceSimulationId(ref.id);
+      } catch (e) {
+        if (e instanceof DemoCancelled || cancelledRef.current) throw e;
+        setRaceNote(`Race view unavailable: ${e instanceof Error ? e.message : String(e)}`);
       }
       throwIfCancelled();
 
@@ -297,9 +331,16 @@ export function DemoPage() {
     setSpeedMs(stepDelayMs);
     // Live update: the backend re-reads this every step, so a viewer can slow down or speed up
     // a run that's already in flight instead of only choosing a pace before pressing start.
-    const simId = activeRunRef.current.simulationId;
-    if (simId && running) {
-      void api.setSimulationSpeed(simId, stepDelayMs).catch(() => {});
+    // While a race runs both simulations take the new pace (floored at the frame-gate
+    // interval, as at race start, so the two runs stay in step).
+    if (!running) return;
+    const { simulationId, referenceSimulationId } = activeRunRef.current;
+    const paced = referenceSimulationId ? Math.max(stepDelayMs, 100) : stepDelayMs;
+    if (simulationId) {
+      void api.setSimulationSpeed(simulationId, paced).catch(() => {});
+    }
+    if (referenceSimulationId) {
+      void api.setSimulationSpeed(referenceSimulationId, paced).catch(() => {});
     }
   };
 
@@ -307,12 +348,13 @@ export function DemoPage() {
     cancelledRef.current = true;
     requestAbortRef.current?.abort();
     setStage("Cancelling…");
-    const { simulationId, experimentId } = activeRunRef.current;
+    const { simulationId, referenceSimulationId, experimentId } = activeRunRef.current;
     unwatch();
     // Best-effort: the server-side run stops regardless of whether these land, since the
     // frontend has already stopped watching it either way.
     if (experimentId) await api.stopExperiment(experimentId).catch(() => {});
     if (simulationId) await api.stopSimulation(simulationId).catch(() => {});
+    if (referenceSimulationId) await api.stopSimulation(referenceSimulationId).catch(() => {});
   };
 
   const liftRows: LiftRow[] = useMemo(() => {
@@ -477,6 +519,9 @@ export function DemoPage() {
                 ))}
               </select>
             </label>
+            {running && referenceSimulationId && (
+              <span className="race-pacing-note">Race pacing: 100 ms per step so both runs stay in step.</span>
+            )}
             {running ? (
               <button className="primary" onClick={() => void cancelDemo()}>
                 Cancel
@@ -502,13 +547,24 @@ export function DemoPage() {
         )}
 
         <div className="panel spectrum-panel">
-          <Waterfall frames={waterfallFrames} bands={bands} />
-          {frames.length === 0 && waterfallFrames.length > 0 &&
-            <p className="note">Latest REST snapshot only; no live spectrum frames were captured.</p>}
-          {live?.unavailable_reason &&
-            <p className="note" role="status">
-              Running the fixed sweep instead: {live.unavailable_reason}
-            </p>}
+          {referenceSimulationId || raceNote ? (
+            <RacePanel
+              bands={bands}
+              reference={{ label: CHALLENGER_LABELS.baseline, simulationId: referenceSimulationId }}
+              challenger={{ label: CHALLENGER_LABELS[challenger], frames, live }}
+              note={raceNote ?? undefined}
+            />
+          ) : (
+            <>
+              <Waterfall frames={waterfallFrames} bands={bands} />
+              {frames.length === 0 && waterfallFrames.length > 0 &&
+                <p className="note">Latest REST snapshot only; no live spectrum frames were captured.</p>}
+              {live?.unavailable_reason &&
+                <p className="note" role="status">
+                  Running the fixed sweep instead: {live.unavailable_reason}
+                </p>}
+            </>
+          )}
         </div>
 
         <div className="judge-grid">
