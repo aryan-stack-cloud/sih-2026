@@ -82,6 +82,21 @@ DUTY_HYPOTHESES = (0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5)
 PERIODICITY_CLAIM_CONFIDENCE = 0.5
 
 
+def _finite_term(value: float) -> float:
+    """One breakdown term as a finite float rounded to 6 decimals.
+
+    Mirrors the API boundary's clamp (``ml/inference/inference.py``) so the stored
+    breakdown is already render-safe; the boundary re-applies it defensively. Module level,
+    above the class, so it can never split the class body.
+    """
+    number = float(value)
+    if math.isnan(number):
+        return 0.0
+    if math.isinf(number):
+        return 1e6 if number > 0 else -1e6
+    return round(number, 6)
+
+
 class IndexAgent(Agent):
     """Whittle-style index scheduling under hard revisit deadlines."""
 
@@ -569,20 +584,6 @@ class IndexAgent(Agent):
         # dashboard nor the decision log can render +inf. Clamping here cannot move the
         # action -- the breakdown is computed after the band is chosen, purely for audit.
         return {name: _finite_term(values[band]) for name, values in terms.items()}
-
-
-def _finite_term(value: float) -> float:
-    """One breakdown term as a finite float rounded to 6 decimals.
-
-    Mirrors the API boundary's clamp (``ml/inference/inference.py``) so the stored
-    breakdown is already render-safe; the boundary re-applies it defensively.
-    """
-    number = float(value)
-    if math.isnan(number):
-        return 0.0
-    if math.isinf(number):
-        return 1e6 if number > 0 else -1e6
-    return round(number, 6)
 
     def describe(self) -> dict:
         return {
