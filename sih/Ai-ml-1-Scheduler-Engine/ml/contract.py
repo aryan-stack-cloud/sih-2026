@@ -145,8 +145,14 @@ class DecideResponse(BaseModel):
     decision_id: str
     index_breakdown: Optional[dict[str, float]] = None
     """The index's named terms for this decision: value, information, novelty, deadline,
-    elapsed_s. Populated by the ``index`` policy, absent for every other policy. This is what the
-    dashboard's decomposition panel renders and what the decision log stores for audit."""
+    elapsed_s. Populated by the ``index`` policy, absent for every other policy. Values are
+    finite floats rounded to 6 decimals; ``deadline`` diverges past a band's deadline, so it
+    is clamped to 1e6 when a band is overdue. This is what the dashboard's decomposition
+    panel renders and what the decision log stores for audit."""
+    decision_source: Optional[Literal["floor", "index", "deadline"]] = None
+    """Which half of the index policy drove this decision: the randomised floor, the index,
+    or the deadline override. Populated by the ``index`` policy only, absent for every other
+    policy."""
 
 
 class LearnRequest(BaseModel):
