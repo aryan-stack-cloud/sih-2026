@@ -18,8 +18,8 @@ import type { SpectrumFrame } from "./frameWindow";
 export const RACE_WINDOW = 40;
 
 /**
- * Restricts both frame lists to the `t` values present in BOTH, preserving each list's own
- * order and keeping at most the last `RACE_WINDOW` shared steps per side.
+ * Restricts both frame lists to the newest `RACE_WINDOW` `t` values present in BOTH,
+ * preserving each list's own arrival order.
  */
 export function alignFrames(
   challengerFrames: SpectrumFrame[],
@@ -29,7 +29,16 @@ export function alignFrames(
   const sharedChallenger = challengerFrames.filter((frame) => referenceSteps.has(frame.t));
   // No overlap yet: each column keeps its own frames (including two empty lists).
   if (sharedChallenger.length === 0) return [challengerFrames, referenceFrames];
-  const sharedSteps = new Set(sharedChallenger.map((frame) => frame.t));
-  const sharedReference = referenceFrames.filter((frame) => sharedSteps.has(frame.t));
-  return [sharedChallenger.slice(-RACE_WINDOW), sharedReference.slice(-RACE_WINDOW)];
+  // The window is chosen first, by numerically largest shared `t`, so both sides cover
+  // the same steps even when the two streams arrive in different orders; slicing each
+  // side afterwards would keep different steps per side.
+  const windowSteps = new Set(
+    [...new Set(sharedChallenger.map((frame) => frame.t))]
+      .sort((a, b) => a - b)
+      .slice(-RACE_WINDOW),
+  );
+  return [
+    challengerFrames.filter((frame) => windowSteps.has(frame.t)),
+    referenceFrames.filter((frame) => windowSteps.has(frame.t)),
+  ];
 }

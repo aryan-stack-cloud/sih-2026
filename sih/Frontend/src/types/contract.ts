@@ -89,11 +89,15 @@ export interface Paged<T> {
   total: number;
 }
 
-/** Per-band outcome counters over the buffered window. */
+/**
+ * Per-band outcome counters, cumulative over the whole run so far (every step, not a
+ * buffered window). `useful` is present on newer Backends; older ones omit it.
+ */
 export interface PerBandCounters {
   looks: number[];
   active: number[];
   heard: number[];
+  useful?: number[];
 }
 
 /** Shared by `GET /metrics/live` and the WebSocket reconnect replay - deliberately one shape. */

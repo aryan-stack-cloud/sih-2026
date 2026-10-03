@@ -69,4 +69,14 @@ describe("alignFrames", () => {
   it("returns empty arrays for empty inputs", () => {
     assert.deepEqual(alignFrames([], []), [[], []]);
   });
+
+  it("covers the same steps on both sides when arrivals are ordered differently", () => {
+    const ascending = Array.from({ length: 50 }, (_, i) => i);
+    const descending = [...ascending].reverse();
+    const [challenger, reference] = alignFrames(frames(...ascending), frames(...descending));
+    // Both sides cover the 40 largest shared steps, each in its own arrival order.
+    assert.deepEqual(challenger.map((f) => f.t), ascending.slice(-40));
+    assert.deepEqual(reference.map((f) => f.t), descending.slice(0, 40));
+    assert.deepEqual(new Set(challenger.map((f) => f.t)), new Set(reference.map((f) => f.t)));
+  });
 });

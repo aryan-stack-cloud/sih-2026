@@ -1,5 +1,6 @@
 import { Waterfall } from "./Waterfall";
 import { useRunWatcher } from "../hooks/useRunWatcher";
+import { liveReadouts } from "../lib/liveReadouts";
 import { alignFrames } from "../lib/raceAlign";
 import type { SpectrumFrame } from "../lib/frameWindow";
 import type { LiveSnapshot } from "../types/contract";
@@ -17,10 +18,13 @@ import type { LiveSnapshot } from "../types/contract";
 const pct = (v: number) => `${(v * 100).toFixed(1)}%`;
 
 function Readouts({ live }: { live: LiveSnapshot | null }) {
+  // Final metrics once the run ends, otherwise derived from the cumulative per-band
+  // counters so the columns read live instead of showing "—" for most of the run.
+  const readouts = liveReadouts(live);
   return (
     <div className="race-readouts">
       <span className="race-readout">
-        <b>{live?.metrics ? pct(live.metrics.pd) : "—"}</b>
+        <b>{readouts.pd !== null ? pct(readouts.pd) : "—"}</b>
         <small>spectrum heard</small>
       </span>
       <span className="race-readout">
@@ -28,7 +32,7 @@ function Readouts({ live }: { live: LiveSnapshot | null }) {
         <small>interceptions</small>
       </span>
       <span className="race-readout">
-        <b>{live?.metrics ? pct(live.metrics.scan_efficiency) : "—"}</b>
+        <b>{readouts.scanEfficiency !== null ? pct(readouts.scanEfficiency) : "—"}</b>
         <small>listening efficiency</small>
       </span>
     </div>
