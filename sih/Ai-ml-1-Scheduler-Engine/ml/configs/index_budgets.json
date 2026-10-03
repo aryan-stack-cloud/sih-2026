@@ -1,4 +1,433 @@
 {
-  "_comment": "Written by scripts/tune_index_budget.py. Scenarios not listed here keep the 0.5 COVERAGE_BUDGET default.",
-  "budgets": {}
+  "_comment": "Per-scenario Index coverage budgets: the highest-Pd budget whose distinct-burst rate stays within margin of the fixed round-robin sweep (spec decision D2).",
+  "rule": "highest Pd among budgets whose distinct-burst rate is at least the sweep's minus 0.0; ties within 0.001 go to the larger budget; none feasible keeps 0.5",
+  "tuning_seeds": [
+    2000,
+    2001,
+    2002,
+    2003,
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2009
+  ],
+  "budgets": {
+    "A": 0.15,
+    "B": 0.1,
+    "C": 0.15,
+    "D": 0.1,
+    "E": 0.2184,
+    "F": 0.1,
+    "G": 0.35
+  },
+  "table": {
+    "A": {
+      "sweep": {
+        "pd": 0.10392623263735941,
+        "run_intercept_rate": 0.6091731266149871,
+        "ait_censored": 783.877519379845,
+        "scan_efficiency": 0.4201,
+        "detected_runs": 4715,
+        "total_runs": 7740
+      },
+      "0.5": {
+        "pd": 0.12992247379085542,
+        "run_intercept_rate": 0.6591731266149871,
+        "ait_censored": 683.7390180878552,
+        "scan_efficiency": 0.523075,
+        "detected_runs": 5102,
+        "total_runs": 7740
+      },
+      "0.35": {
+        "pd": 0.14961971045135525,
+        "run_intercept_rate": 0.6776485788113695,
+        "ait_censored": 646.7390180878552,
+        "scan_efficiency": 0.59865,
+        "detected_runs": 5245,
+        "total_runs": 7740
+      },
+      "0.25": {
+        "pd": 0.16361994537926175,
+        "run_intercept_rate": 0.6711886304909561,
+        "ait_censored": 659.6302325581395,
+        "scan_efficiency": 0.648425,
+        "detected_runs": 5195,
+        "total_runs": 7740
+      },
+      "0.2184": {
+        "pd": 0.16926555663230847,
+        "run_intercept_rate": 0.662015503875969,
+        "ait_censored": 677.9790697674418,
+        "scan_efficiency": 0.668725,
+        "detected_runs": 5124,
+        "total_runs": 7740
+      },
+      "0.15": {
+        "pd": 0.18277391125598333,
+        "run_intercept_rate": 0.6231266149870801,
+        "ait_censored": 755.771834625323,
+        "scan_efficiency": 0.71375,
+        "detected_runs": 4823,
+        "total_runs": 7740
+      },
+      "0.1": {
+        "pd": 0.19160573224091856,
+        "run_intercept_rate": 0.5916020671834625,
+        "ait_censored": 818.737984496124,
+        "scan_efficiency": 0.743975,
+        "detected_runs": 4579,
+        "total_runs": 7740
+      }
+    },
+    "B": {
+      "sweep": {
+        "pd": 0.10082086588110685,
+        "run_intercept_rate": 0.399447847467863,
+        "ait_censored": 1202.1102579587612,
+        "scan_efficiency": 0.179075,
+        "detected_runs": 4630,
+        "total_runs": 11591
+      },
+      "0.5": {
+        "pd": 0.15103270223752152,
+        "run_intercept_rate": 0.4827883702872919,
+        "ait_censored": 1035.2606332499354,
+        "scan_efficiency": 0.270275,
+        "detected_runs": 5596,
+        "total_runs": 11591
+      },
+      "0.35": {
+        "pd": 0.19126506024096385,
+        "run_intercept_rate": 0.5158312483823656,
+        "ait_censored": 969.1127598999224,
+        "scan_efficiency": 0.33885,
+        "detected_runs": 5979,
+        "total_runs": 11591
+      },
+      "0.25": {
+        "pd": 0.21923407917383822,
+        "run_intercept_rate": 0.5040980070744543,
+        "ait_censored": 992.5029764472436,
+        "scan_efficiency": 0.3857,
+        "detected_runs": 5843,
+        "total_runs": 11591
+      },
+      "0.2184": {
+        "pd": 0.2352376539123527,
+        "run_intercept_rate": 0.5158312483823656,
+        "ait_censored": 969.0383918557502,
+        "scan_efficiency": 0.410125,
+        "detected_runs": 5979,
+        "total_runs": 11591
+      },
+      "0.15": {
+        "pd": 0.25815900966503375,
+        "run_intercept_rate": 0.49555689759296007,
+        "ait_censored": 1009.5497368648089,
+        "scan_efficiency": 0.45005,
+        "detected_runs": 5744,
+        "total_runs": 11591
+      },
+      "0.1": {
+        "pd": 0.26676486164437974,
+        "run_intercept_rate": 0.48994909843844364,
+        "ait_censored": 1020.7454921922181,
+        "scan_efficiency": 0.462725,
+        "detected_runs": 5679,
+        "total_runs": 11591
+      }
+    },
+    "C": {
+      "sweep": {
+        "pd": 0.06965658671751222,
+        "run_intercept_rate": 0.3319025100036377,
+        "ait_censored": 1337.2175700254638,
+        "scan_efficiency": 0.299775,
+        "detected_runs": 9124,
+        "total_runs": 27490
+      },
+      "0.5": {
+        "pd": 0.08888142056638844,
+        "run_intercept_rate": 0.37515460167333575,
+        "ait_censored": 1250.6062931975264,
+        "scan_efficiency": 0.383975,
+        "detected_runs": 10313,
+        "total_runs": 27490
+      },
+      "0.35": {
+        "pd": 0.10532849568932998,
+        "run_intercept_rate": 0.3786467806475082,
+        "ait_censored": 1243.560167333576,
+        "scan_efficiency": 0.4496,
+        "detected_runs": 10409,
+        "total_runs": 27490
+      },
+      "0.25": {
+        "pd": 0.11835309771537918,
+        "run_intercept_rate": 0.3662422699163332,
+        "ait_censored": 1268.3456165878501,
+        "scan_efficiency": 0.5004,
+        "detected_runs": 10068,
+        "total_runs": 27490
+      },
+      "0.2184": {
+        "pd": 0.12097310718033484,
+        "run_intercept_rate": 0.3634776282284467,
+        "ait_censored": 1273.8652964714443,
+        "scan_efficiency": 0.511575,
+        "detected_runs": 9992,
+        "total_runs": 27490
+      },
+      "0.15": {
+        "pd": 0.13066439873526245,
+        "run_intercept_rate": 0.3487086213168425,
+        "ait_censored": 1303.3576209530738,
+        "scan_efficiency": 0.54675,
+        "detected_runs": 9586,
+        "total_runs": 27490
+      },
+      "0.1": {
+        "pd": 0.1343269250553837,
+        "run_intercept_rate": 0.3040742088032012,
+        "ait_censored": 1392.5501636958895,
+        "scan_efficiency": 0.558275,
+        "detected_runs": 8359,
+        "total_runs": 27490
+      }
+    },
+    "D": {
+      "sweep": {
+        "pd": 0.07171590697178784,
+        "run_intercept_rate": 0.3059680669663618,
+        "ait_censored": 2083.125313904821,
+        "scan_efficiency": 0.26698333333333335,
+        "detected_runs": 9869,
+        "total_runs": 32255
+      },
+      "0.5": {
+        "pd": 0.09697631670085516,
+        "run_intercept_rate": 0.35817702681754765,
+        "ait_censored": 1926.3517284141994,
+        "scan_efficiency": 0.35911666666666664,
+        "detected_runs": 11553,
+        "total_runs": 32255
+      },
+      "0.35": {
+        "pd": 0.12016943282627807,
+        "run_intercept_rate": 0.383599441946985,
+        "ait_censored": 1850.0608587815843,
+        "scan_efficiency": 0.4394,
+        "detected_runs": 12373,
+        "total_runs": 32255
+      },
+      "0.25": {
+        "pd": 0.1373364946586035,
+        "run_intercept_rate": 0.3794450472794916,
+        "ait_censored": 1862.474128042164,
+        "scan_efficiency": 0.49733333333333335,
+        "detected_runs": 12239,
+        "total_runs": 32255
+      },
+      "0.2184": {
+        "pd": 0.14000586088392786,
+        "run_intercept_rate": 0.3742365524724849,
+        "ait_censored": 1878.1121996589677,
+        "scan_efficiency": 0.5067,
+        "detected_runs": 12071,
+        "total_runs": 32255
+      },
+      "0.15": {
+        "pd": 0.15452486879612115,
+        "run_intercept_rate": 0.35978917997209736,
+        "ait_censored": 1921.4212370175167,
+        "scan_efficiency": 0.5542666666666667,
+        "detected_runs": 11605,
+        "total_runs": 32255
+      },
+      "0.1": {
+        "pd": 0.15865412792711192,
+        "run_intercept_rate": 0.352658502557743,
+        "ait_censored": 1942.7843125096883,
+        "scan_efficiency": 0.5680833333333334,
+        "detected_runs": 11375,
+        "total_runs": 32255
+      }
+    },
+    "E": {
+      "sweep": {
+        "pd": 0.05249863328614082,
+        "run_intercept_rate": 0.25070559260790626,
+        "ait_censored": 2248.9534758300824,
+        "scan_efficiency": 0.37023333333333336,
+        "detected_runs": 13946,
+        "total_runs": 55627
+      },
+      "0.5": {
+        "pd": 0.06326413322306172,
+        "run_intercept_rate": 0.2813561759577184,
+        "ait_censored": 2156.950114153199,
+        "scan_efficiency": 0.44593333333333335,
+        "detected_runs": 15651,
+        "total_runs": 55627
+      },
+      "0.35": {
+        "pd": 0.07449221323539719,
+        "run_intercept_rate": 0.2881154834882341,
+        "ait_censored": 2136.6384309777627,
+        "scan_efficiency": 0.5207166666666667,
+        "detected_runs": 16027,
+        "total_runs": 55627
+      },
+      "0.25": {
+        "pd": 0.08219066709653906,
+        "run_intercept_rate": 0.27711363186941596,
+        "ait_censored": 2169.6198428820535,
+        "scan_efficiency": 0.57025,
+        "detected_runs": 15415,
+        "total_runs": 55627
+      },
+      "0.2184": {
+        "pd": 0.0855492787956097,
+        "run_intercept_rate": 0.2734643248782066,
+        "ait_censored": 2180.5738939723515,
+        "scan_efficiency": 0.59045,
+        "detected_runs": 15212,
+        "total_runs": 55627
+      },
+      "0.15": {
+        "pd": 0.09187401000855072,
+        "run_intercept_rate": 0.24703830873496682,
+        "ait_censored": 2259.8327071386198,
+        "scan_efficiency": 0.6273333333333333,
+        "detected_runs": 13742,
+        "total_runs": 55627
+      },
+      "0.1": {
+        "pd": 0.09538961858170146,
+        "run_intercept_rate": 0.23851726679490176,
+        "ait_censored": 2285.3531738184693,
+        "scan_efficiency": 0.64715,
+        "detected_runs": 13268,
+        "total_runs": 55627
+      }
+    },
+    "F": {
+      "sweep": {
+        "pd": 0.05370027456739672,
+        "run_intercept_rate": 0.22262462718363868,
+        "ait_censored": 1555.4922241158927,
+        "scan_efficiency": 0.075175,
+        "detected_runs": 2090,
+        "total_runs": 9388
+      },
+      "0.5": {
+        "pd": 0.08328544367111508,
+        "run_intercept_rate": 0.2807839795483596,
+        "ait_censored": 1439.145504899872,
+        "scan_efficiency": 0.114925,
+        "detected_runs": 2636,
+        "total_runs": 9388
+      },
+      "0.35": {
+        "pd": 0.12234212374688717,
+        "run_intercept_rate": 0.3291435875585854,
+        "ait_censored": 1342.3915636983384,
+        "scan_efficiency": 0.168275,
+        "detected_runs": 3090,
+        "total_runs": 9388
+      },
+      "0.25": {
+        "pd": 0.16433603643871186,
+        "run_intercept_rate": 0.34693225394120153,
+        "ait_censored": 1306.7607584149978,
+        "scan_efficiency": 0.2249,
+        "detected_runs": 3257,
+        "total_runs": 9388
+      },
+      "0.2184": {
+        "pd": 0.1696145414298789,
+        "run_intercept_rate": 0.342032381763954,
+        "ait_censored": 1316.5432466979123,
+        "scan_efficiency": 0.23205,
+        "detected_runs": 3211,
+        "total_runs": 9388
+      },
+      "0.15": {
+        "pd": 0.206755635016921,
+        "run_intercept_rate": 0.3436301661695782,
+        "ait_censored": 1313.2966553046442,
+        "scan_efficiency": 0.2804,
+        "detected_runs": 3226,
+        "total_runs": 9388
+      },
+      "0.1": {
+        "pd": 0.21575889151395186,
+        "run_intercept_rate": 0.3393694077545803,
+        "ait_censored": 1321.7965487856839,
+        "scan_efficiency": 0.294275,
+        "detected_runs": 3186,
+        "total_runs": 9388
+      }
+    },
+    "G": {
+      "sweep": {
+        "pd": 0.06986200035711553,
+        "run_intercept_rate": 0.24076093260642617,
+        "ait_censored": 2278.3502841897694,
+        "scan_efficiency": 0.27086666666666664,
+        "detected_runs": 10378,
+        "total_runs": 43105
+      },
+      "0.5": {
+        "pd": 0.08102951304747086,
+        "run_intercept_rate": 0.24776708038510614,
+        "ait_censored": 2257.2995940146156,
+        "scan_efficiency": 0.31333333333333335,
+        "detected_runs": 10680,
+        "total_runs": 43105
+      },
+      "0.35": {
+        "pd": 0.09302349310001785,
+        "run_intercept_rate": 0.2418976916830994,
+        "ait_censored": 2274.8875536480687,
+        "scan_efficiency": 0.35668333333333335,
+        "detected_runs": 10427,
+        "total_runs": 43105
+      },
+      "0.25": {
+        "pd": 0.10561946789786496,
+        "run_intercept_rate": 0.2401345551560144,
+        "ait_censored": 2280.159192669064,
+        "scan_efficiency": 0.4010666666666667,
+        "detected_runs": 10351,
+        "total_runs": 43105
+      },
+      "0.2184": {
+        "pd": 0.10775705940871871,
+        "run_intercept_rate": 0.23192205080617098,
+        "ait_censored": 2304.7973088968797,
+        "scan_efficiency": 0.40855,
+        "detected_runs": 9997,
+        "total_runs": 43105
+      },
+      "0.15": {
+        "pd": 0.11770017600693825,
+        "run_intercept_rate": 0.2310868808722886,
+        "ait_censored": 2307.2637281057882,
+        "scan_efficiency": 0.44356666666666666,
+        "detected_runs": 9961,
+        "total_runs": 43105
+      },
+      "0.1": {
+        "pd": 0.12531183837971585,
+        "run_intercept_rate": 0.223152766500406,
+        "ait_censored": 2331.0755596798517,
+        "scan_efficiency": 0.4684,
+        "detected_runs": 9619,
+        "total_runs": 43105
+      }
+    }
+  }
 }
