@@ -76,7 +76,7 @@ const TABLE_METRICS = [
 ];
 
 type MetricCount = { success: number; total: number };
-type DemoWorlds = { seed: number; scenario: ScenarioId; challenger: PolicyType };
+type DemoWorlds = { seed: number; scenario: ScenarioId; challenger: PolicyType; threatAware: boolean };
 
 function countWithTotal(success: unknown, total: unknown): MetricCount | null {
   return typeof success === "number" && typeof total === "number" &&
@@ -106,6 +106,8 @@ export function DemoPage() {
 
   const [scenario, setScenario] = useState<ScenarioId>("B");
   const [challenger, setChallenger] = useState<PolicyType>("bandit");
+  // Off by default: only the Index policy responds to it, so it must stay an explicit choice.
+  const [threatAware, setThreatAware] = useState(false);
   const [stage, setStage] = useState<string>("");
   const [running, setRunning] = useState(false);
   const [results, setResults] = useState<ExperimentResults | null>(null);
@@ -187,11 +189,14 @@ export function DemoPage() {
   const runDemo = async (replay?: DemoWorlds) => {
     const runScenario = replay?.scenario ?? scenario;
     const runChallenger = replay?.challenger ?? challenger;
+    // A replay reruns the same worlds, so it reuses the flag that run chose.
+    const runThreatAware = replay?.threatAware ?? threatAware;
     const baseSeed = replay?.seed ?? randomSeed(lastSeedRef.current ?? undefined);
     lastSeedRef.current = baseSeed;
     if (replay) {
       setScenario(runScenario);
       setChallenger(runChallenger);
+      setThreatAware(runThreatAware);
     }
     cancelledRef.current = false;
     activeRunRef.current = {};
@@ -216,6 +221,7 @@ export function DemoPage() {
         seed: baseSeed,
         scenario: runScenario,
         policy: runChallenger,
+        threatAware: runThreatAware,
       });
       activeRunRef.current.simulationId = sim.id;
       throwIfCancelled();
@@ -238,6 +244,7 @@ export function DemoPage() {
         policies: ["baseline", runChallenger],
         episodes: DEMO_COMPARISON_EPISODES,
         seed: baseSeed,
+        threatAware: runThreatAware,
       });
       activeRunRef.current.experimentId = exp.id;
       throwIfCancelled();
@@ -274,7 +281,7 @@ export function DemoPage() {
       }
       setStage("Done.");
       setStepIndex(DEMO_STEPS.length);
-      setCompletedWorlds({ seed: baseSeed, scenario: runScenario, challenger: runChallenger });
+      setCompletedWorlds({ seed: baseSeed, scenario: runScenario, challenger: runChallenger, threatAware: runThreatAware });
       setResultWasReplay(Boolean(replay));
     } catch (e) {
       if (e instanceof DemoCancelled || cancelledRef.current) {
@@ -367,6 +374,7 @@ export function DemoPage() {
     `${results.duration_steps} steps${results.episodes === 1 ? "" : " per episode"}`,
     seedCaption,
     resultWasReplay ? "replayed worlds" : "new worlds this run",
+    completedWorlds?.threatAware && "threat-aware",
     highPriorityCount && `${highPriorityCount.total} high-priority moments`,
     burstCount && `${burstCount.total} bursts`,
   ].filter(Boolean).join(" · ") +
@@ -466,6 +474,17 @@ export function DemoPage() {
                 ))}
               </select>
             </label>
+            <label className="field" htmlFor="demo-threat-aware">
+              <input
+                id="demo-threat-aware"
+                type="checkbox"
+                checked={threatAware}
+                disabled={running}
+                onChange={(e) => setThreatAware(e.target.checked)}
+                aria-describedby="demo-threat-aware-hint"
+              />
+              Threat-aware
+            </label>
             {running ? (
               <button className="primary" onClick={() => void cancelDemo()}>
                 Cancel
@@ -481,6 +500,9 @@ export function DemoPage() {
               </button>
             )}
           </div>
+          <p className="note" id="demo-threat-aware-hint">
+            Use the threat level of emitters already intercepted. Only the Index policy responds.
+          </p>
         </div>
 
         {selectedScenario && (
@@ -540,7 +562,8 @@ export function DemoPage() {
               <span className={`demo-status-dot${stepFailed ? " is-error" : stage === "Done." ? " is-done" : ""}`} aria-hidden="true" />
               <span>{stage === "Done." ? "Done" : stage === "Cancelled." ? "Cancelled" : stage === "Stopped." ? "Stopped" : stage}
                 {activeSimulationId && ` — live run ${activeSimulationId}`}
-                {activeSimulationId && connection !== "open" && ` · connection ${connection}`}</span>
+                {activeSimulationId && connection !== "open" && ` · connection ${connection}`}
+                {(running ? threatAware : completedWorlds?.threatAware) && " · threat-aware"}</span>
             </p>
           </div>
         )}

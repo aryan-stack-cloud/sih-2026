@@ -71,6 +71,7 @@ export interface Simulation {
   scenario_id: ScenarioId | null;
   created_at: string;
   live?: LiveSnapshot;
+  threat_aware?: boolean;
 }
 
 export interface CreateSimulationRequest {
@@ -80,6 +81,7 @@ export interface CreateSimulationRequest {
   seed?: number;
   scenario?: ScenarioId;
   policy?: PolicyType;
+  threatAware?: boolean;
 }
 
 export interface Paged<T> {
@@ -167,6 +169,7 @@ export interface Experiment {
   expected_outcome: string;
   created_at: string;
   progress?: ExperimentProgress;
+  threat_aware?: boolean;
 }
 
 export interface ExperimentProgress {
