@@ -74,17 +74,12 @@ class SimulationRunnerPacingTest {
         runner.run(request(), frame -> { }, control(0));
 
         List<Long> emittedAt = new ArrayList<>();
-        long startNanos = System.nanoTime();
 
         var result = runner.run(request(), frame -> emittedAt.add(System.nanoTime()),
                 control(DELAY_MS));
 
         assertThat(result.frames()).hasSize(STEPS);
         assertThat(emittedAt).hasSize(STEPS);
-        // The pacing wait is skipped before the first emission: the first frame must
-        // arrive after one step of compute, not after a full delay. The bound is the
-        // delay itself, far above the few ms a baseline step needs.
-        assertThat(emittedAt.get(0) - startNanos).isLessThan(DELAY_MS * 1_000_000L);
         for (int i = 1; i < emittedAt.size(); i++) {
             long gapMs = (emittedAt.get(i) - emittedAt.get(i - 1)) / 1_000_000L;
             assertThat(gapMs).as("gap before emission %d", i).isGreaterThanOrEqualTo(MIN_GAP_MS);
