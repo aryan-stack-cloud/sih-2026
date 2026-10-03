@@ -15,6 +15,8 @@ import { create } from "zustand";
 import * as api from "../services/api/client";
 import { SimulationConnection } from "../services/websocket/connection";
 import type { ConnectionState } from "../services/websocket/connection";
+import { appendDecision, appendSpectrumFrame, applyFalseAlarms } from "../lib/frameWindow";
+import type { SpectrumFrame } from "../lib/frameWindow";
 import type {
   Experiment,
   ExperimentResults,
@@ -27,8 +29,8 @@ import type {
   WsFrame,
 } from "../types/contract";
 
-/** Rolling window of recent frames; the harness shows the tail, not the whole run. */
-const FRAME_WINDOW = 40;
+/** Re-exported so existing imports (`Waterfall`) keep working after the move to lib. */
+export type { SpectrumFrame };
 
 export interface TrainingJob {
   id: string;
@@ -37,15 +39,6 @@ export interface TrainingJob {
   phase: string;
   algorithm: string;
   scenario: ScenarioId;
-}
-
-export interface SpectrumFrame {
-  t: number;
-  activeBands: number[];
-  scannedBands: number[];
-  detectedBands: number[];
-  /** Filled in by the detection_event frame, which is never coalesced away. */
-  falseAlarmBands: number[];
 }
 
 interface StoreState {
@@ -73,6 +66,7 @@ interface StoreState {
   live: LiveSnapshot | null;
   frames: SpectrumFrame[];
   lastDecision: WsFrame | null;
+  decisions: WsFrame[];
 
   // results
   results: Record<string, ExperimentResults>;
@@ -120,6 +114,7 @@ export const useStore = create<StoreState>((set, get) => ({
   live: null,
   frames: [],
   lastDecision: null,
+  decisions: [],
   results: {},
   error: null,
 
@@ -238,6 +233,7 @@ export const useStore = create<StoreState>((set, get) => ({
       frames: [],
       live: null,
       lastDecision: null,
+      decisions: [],
       wsEventCount: 0,
     });
 
@@ -265,7 +261,7 @@ export const useStore = create<StoreState>((set, get) => ({
   unwatch: () => {
     connection?.close();
     connection = null;
-    set({ connection: "idle", activeSimulationId: null, activeBandsCount: null, live: null, frames: [], lastDecision: null });
+    set({ connection: "idle", activeSimulationId: null, activeBandsCount: null, live: null, frames: [], lastDecision: null, decisions: [] });
   },
 
   pollLive: async (simulationId) => {
@@ -275,6 +271,9 @@ export const useStore = create<StoreState>((set, get) => ({
       const live = await api.liveMetrics(simulationId);
       if (get().activeSimulationId === simulationId) set({ live, error: null });
     } catch (e) {
+      // A stopped run answers polling with SIM_NOT_RUNNING; that is the expected idle state,
+      // not an error worth surfacing or clearing good state over.
+      if (e instanceof api.ApiRequestError && e.code === "SIM_NOT_RUNNING") return;
       if (get().activeSimulationId === simulationId) set({ error: describe(e) });
     }
   },
@@ -311,22 +310,11 @@ function applyFrame(
       break;
 
     case "spectrum_update":
-      set((s) => ({
-        frames: [
-          ...s.frames,
-          {
-            t: frame.t ?? 0,
-            activeBands: frame.active_bands ?? [],
-            scannedBands: frame.scanned_bands ?? [],
-            detectedBands: frame.detected_bands ?? [],
-            falseAlarmBands: [],
-          },
-        ].slice(-FRAME_WINDOW),
-      }));
+      set((s) => ({ frames: appendSpectrumFrame(s.frames, frame) }));
       break;
 
     case "scan_decision":
-      set({ lastDecision: frame });
+      set((s) => ({ lastDecision: frame, decisions: appendDecision(s.decisions, frame) }));
       break;
 
     case "detection_event":
@@ -334,13 +322,7 @@ function applyFrame(
       // reconnect cannot leave the UI showing a total nobody can reproduce. What this frame
       // does carry is false alarms, which spectrum_update omits and the waterfall needs -
       // detection_event is never coalesced, so nothing is lost by reading them only here.
-      if (frame.false_alarm_bands?.length) {
-        set((s) => ({
-          frames: s.frames.map((f) =>
-            f.t === frame.t ? { ...f, falseAlarmBands: frame.false_alarm_bands ?? [] } : f,
-          ),
-        }));
-      }
+      set((s) => ({ frames: applyFalseAlarms(s.frames, frame) }));
       break;
 
     case "metrics_update":

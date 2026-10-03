@@ -89,6 +89,13 @@ export interface Paged<T> {
   total: number;
 }
 
+/** Per-band outcome counters over the buffered window. */
+export interface PerBandCounters {
+  looks: number[];
+  active: number[];
+  heard: number[];
+}
+
 /** Shared by `GET /metrics/live` and the WebSocket reconnect replay - deliberately one shape. */
 export interface LiveSnapshot {
   simulation_id: string;
@@ -102,6 +109,7 @@ export interface LiveSnapshot {
   model_id?: string;
   metrics?: MetricsSummary;
   error?: string;
+  per_band?: PerBandCounters;
   /** Set when the chosen policy has no trained model for this scenario and the run is sweeping. */
   unavailable_reason?: string | null;
 }
@@ -257,6 +265,8 @@ export interface WsFrame {
   model_id?: string;
   reward?: number;
   reward_terms?: Record<string, number>;
+  decision_source?: "floor" | "index" | "deadline";
+  index_breakdown?: Record<string, number>;
   valid_observation?: boolean;
   metrics?: MetricsSummary;
   status?: string;
