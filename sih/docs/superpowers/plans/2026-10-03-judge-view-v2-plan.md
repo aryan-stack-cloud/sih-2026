@@ -266,8 +266,8 @@ expected score computed by hand (put the arithmetic in a comment); `matchScore` 
 
 ## Task 7: Race on the identical spectrum
 
-**Files (under `Frontend/`).** Create `src/components/RacePanel.tsx`. Modify `src/pages/DemoPage.tsx`,
-`src/styles.css`. Tasks 5 and 6 must be complete first.
+**Files (under `Frontend/`).** Create `src/components/RacePanel.tsx`, `src/lib/raceAlign.ts` and
+`tests/raceAlign.test.ts`. Modify `src/pages/DemoPage.tsx`, `src/styles.css`. Tasks 5 and 6 must be complete first.
 
 **Requirements.**
 1. `RacePanel` props:
@@ -276,13 +276,19 @@ expected score computed by hand (put the arithmetic in a comment); `matchScore` 
    `race-grid`, stacked below 900 px). Each column: the label, "step N" (from `live.t`), three small
    readouts (spectrum heard `live.metrics.pd` as a percentage, interceptions `live.counters.detections`,
    listening efficiency `live.metrics.scan_efficiency`; "—" until available), and a `Waterfall`
-   (`frames`, `bands`). A caption states that both columns show the same transmissions (same seed).
+   (`frames`, `bands`). Rows are aligned: `alignFrames(challengerFrames, referenceFrames)` from the new pure
+   module `lib/raceAlign.ts` returns the two frame lists restricted to the `t` values present in BOTH (order
+   preserved, at most the last 40); until the two runs share a `t`, each column shows its own frames. The run
+   that is ahead is simply trimmed to the slower one's progress. A caption states that both columns show the
+   same transmissions (same seed) and that rows are matched by step.
    When `note` is set show it as a status line and render only the challenger column.
 2. `DemoPage.runDemo`: after the challenger simulation is created and started, create the reference
    simulation with the same `name` prefix, `bands`, `durationSteps`, `seed`, `scenario` and
    `policy: "baseline"`, start it, and set `referenceSimulationId` state. Pace both runs with the same
-   step delay: `raceSpeedMs = speedMs === 0 ? 25 : speedMs`, applied with `api.setSimulationSpeed` to both
-   (best-effort, as the existing code does). `changeSpeed` updates both while running. Any failure
+   step delay: `raceSpeedMs = Math.max(speedMs, 100)` (a faster preset is raised to 100 ms, the Backend's
+   frame-gate interval, so every step of both runs reaches the browser), applied with
+   `api.setSimulationSpeed` to both (best-effort, as the existing code does). Show a one-line note
+   next to the speed control while a race runs: "Race pacing: 100 ms per step so both runs stay in step." `changeSpeed` updates both while running. Any failure
    creating or starting the reference run is caught: set `raceNote` to "Race view unavailable: <reason>"
    and carry on exactly as today (the demo must never fail because of the reference run). `cancelDemo`
    stops the reference run too (best-effort). Clear `referenceSimulationId`/`raceNote` at the start of a
@@ -295,5 +301,9 @@ expected score computed by hand (put the arithmetic in a comment); `matchScore` 
 5. Accessibility: the two columns are labelled regions (`role="group"` with `aria-label`), counters are
    text, and the existing waterfall alternatives are reused as they are.
 
-**Verification.** `npm run build` clean and `npm run test` still green. Describe in your report how the
+**Tests** (`tests/raceAlign.test.ts`, at least 5 cases): only common `t` values survive in both outputs; order is
+preserved; the window caps at 40 newest; disjoint inputs return the inputs unchanged (so each column keeps
+its own frames); empty inputs return empty arrays.
+
+**Verification.** `npm run build` clean and `npm run test` green. Describe in your report how the
 race degrades when the reference simulation fails and where in `runDemo` that is handled.
