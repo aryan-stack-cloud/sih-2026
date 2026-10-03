@@ -176,7 +176,7 @@ snapshots); `snapshot()` before any step has all-zero arrays of length `numBands
 ## Task 5: Frontend plumbing: types, store, 409 fix, run watcher, tested helpers
 
 **Files (under `Frontend/`).** Modify `src/types/contract.ts`, `src/store/useStore.ts`, `package.json`
-(add only the script `"test": "node --test tests/"`). Create `src/lib/frameWindow.ts`,
+(add only the script `"test": "node --test"`; the form with a directory argument does not run on this Node). Create `src/lib/frameWindow.ts`,
 `src/hooks/useRunWatcher.ts`, `tests/frameWindow.test.ts`.
 
 **Background.** Node 24 runs TypeScript test files directly (type stripping, no dependency). Tests live in
