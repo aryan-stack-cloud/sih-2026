@@ -54,6 +54,10 @@ def train(
     merged.pop("algorithm", None)
     if algorithm in ("dqn", "ppo"):
         merged = _scale_for_band_count(algorithm, merged, cfg["bands"])
+    if algorithm == "bandit" and "bandwidth_k" not in merged:
+        # The bandit scores K-band windows, so it must train with the receiver's width.
+        # Recorded in merged, hence persisted in the registry's hyperparameters.
+        merged["bandwidth_k"] = int((cfg.get("receiver") or {}).get("bandwidth_k", 1))
 
     episodes = int(
         episode_count if episode_count is not None else merged.pop("train_episodes", 20)
