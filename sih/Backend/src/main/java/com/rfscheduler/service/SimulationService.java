@@ -10,13 +10,16 @@ import com.rfscheduler.repository.SimulationRepository;
 import com.rfscheduler.simulation.Scenario;
 import com.rfscheduler.simulation.ScenarioLibrary;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.task.TaskExecutor;
@@ -171,7 +174,7 @@ public class SimulationService {
         sim.setUpdatedAt(Instant.now());
         repository.save(sim);
 
-        LiveSimulation state = new LiveSimulation(id);
+        LiveSimulation state = new LiveSimulation(id, sim.getBands());
         live.put(id, state);
         activeWorkers.add(id);
         running.incrementAndGet();
@@ -329,9 +332,28 @@ public class SimulationService {
         private volatile long stepDelayMs;
         private final AtomicInteger step = new AtomicInteger();
         private final Map<String, Object> counters = new ConcurrentHashMap<>();
+        /** -1 when the band count is unknown; then the per-band arrays stay null. */
+        private final int numBands;
+        private final AtomicIntegerArray looks;
+        private final AtomicIntegerArray active;
+        private final AtomicIntegerArray heard;
 
         LiveSimulation(String simulationId) {
+            this(simulationId, -1);
+        }
+
+        LiveSimulation(String simulationId, int numBands) {
             this.simulationId = simulationId;
+            this.numBands = numBands;
+            if (numBands >= 0) {
+                looks = new AtomicIntegerArray(numBands);
+                active = new AtomicIntegerArray(numBands);
+                heard = new AtomicIntegerArray(numBands);
+            } else {
+                looks = null;
+                active = null;
+                heard = null;
+            }
             counters.put("detections", 0);
             counters.put("false_alarms", 0);
             counters.put("reward", 0.0);
@@ -346,6 +368,29 @@ public class SimulationService {
                     (a, b) -> ((Number) a).intValue() + ((Number) b).intValue());
             counters.merge("reward", frame.reward(),
                     (a, b) -> ((Number) a).doubleValue() + ((Number) b).doubleValue());
+            // Per-band attention is tallied for every step, never gated: the judge view's
+            // attention-vs-activity panel needs totals even for steps the publisher skips.
+            if (looks != null) {
+                countInto(looks, frame.scannedBands());
+                countInto(active, frame.activeBands());
+                countInto(heard, frame.detectedBands());
+            }
+        }
+
+        private void countInto(AtomicIntegerArray target, List<Integer> bands) {
+            for (int b : bands) {
+                if (b >= 0 && b < numBands) {
+                    target.incrementAndGet(b);
+                }
+            }
+        }
+
+        private static List<Integer> copyOf(AtomicIntegerArray counts) {
+            List<Integer> out = new ArrayList<>(counts.length());
+            for (int i = 0; i < counts.length(); i++) {
+                out.add(counts.get(i));
+            }
+            return out;
         }
 
         void complete(MetricsSummary summary) {
@@ -401,6 +446,13 @@ public class SimulationService {
             out.put("simulation_id", simulationId);
             out.put("t", step.get());
             out.put("counters", new HashMap<>(counters));
+            if (looks != null) {
+                Map<String, Object> perBand = new LinkedHashMap<>();
+                perBand.put("looks", copyOf(looks));
+                perBand.put("active", copyOf(active));
+                perBand.put("heard", copyOf(heard));
+                out.put("per_band", perBand);
+            }
             out.put("step_delay_ms", stepDelayMs);
             out.put("unavailable_reason", unavailableReason);
             if (latest != null) {
