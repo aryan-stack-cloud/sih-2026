@@ -182,7 +182,7 @@ yielded a detection reveal their priority, so nothing is leaked.
 
 **Requirements.**
 1. In `ml/tuning/index_budget.py` add
-   `choose_budget(candidates: dict[float, dict[str, float]], sweep: dict[str, float], margin: float = 0.01, default: float = 0.5) -> float`
+   `choose_budget(candidates: dict[float, dict[str, float]], sweep: dict[str, float], margin: float = 0.0, default: float = 0.5) -> float`
    where each metrics dict has `pd` and `run_intercept_rate` (fractions in [0, 1]). Rule: feasible
    budgets are those whose `run_intercept_rate >= sweep["run_intercept_rate"] - margin`; among them take
    the highest `pd`; budgets whose `pd` is within 0.001 of the best count as tied and the LARGER budget
