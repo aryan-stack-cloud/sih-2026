@@ -1,0 +1,4 @@
+{
+  "_comment": "Written by scripts/tune_index_budget.py. Scenarios not listed here keep the 0.5 COVERAGE_BUDGET default.",
+  "budgets": {}
+}
