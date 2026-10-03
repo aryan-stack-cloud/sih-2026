@@ -53,10 +53,10 @@ Base path: `/api/v1`
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| POST | `/simulations` | Create simulation (`name`, `bands`, `duration_steps`, `seed`) → `201 { id, status: "draft" }` |
+| POST | `/simulations` | Create simulation (`name`, `bands`, `duration_steps`, `seed`, optional `threatAware`: boolean, default false, see Threat-aware mode below) → `201 { id, status: "draft" }` |
 | GET | `/simulations` | Paginated list, filter by `status` |
 | GET | `/simulations/{id}` | Detail |
-| PUT | `/simulations/{id}` | Update config (only while `status=draft`) |
+| PUT | `/simulations/{id}` | Update config (only while `status=draft`; optional `threatAware`) |
 | DELETE | `/simulations/{id}` | Delete, cascades scan/detection events |
 | POST | `/simulations/{id}/start` | Enqueue simulation worker job |
 | POST | `/simulations/{id}/stop` | Persist partial state |
@@ -76,7 +76,7 @@ Base path: `/api/v1`
 | GET | `/models/{id}` | Detail + metrics |
 | POST | `/models/{id}/activate` | Promote to active scheduler model |
 | POST | `/models/{id}/evaluate` | Run evaluation episodes → metrics summary |
-| POST | `/experiments` | Define experiment (scenario A–G + policy list) |
+| POST | `/experiments` | Define experiment (scenario A–G + policy list, optional `threatAware`) |
 | GET | `/experiments` | List |
 | GET | `/experiments/{id}` | Detail |
 | POST | `/experiments/{id}/run` | Execute baseline + ML runs (async, WS progress) |
@@ -86,6 +86,14 @@ Base path: `/api/v1`
 | GET | `/metrics/{experimentId}` | Stored metrics for an experiment |
 | GET | `/metrics/compare?ids[]=` | Compare ≥2 experiments |
 | GET | `/health` / `/ready` / `/metrics` | No auth required; Prometheus format on `/metrics` |
+
+**Threat-aware mode.** Simulations and experiments accept an optional boolean `threatAware` (default
+`false`) and report it as `threat_aware`. When true, the Backend feeds back what the receiver has learned
+about emitter threat: after each scan every band's `band_priority_weight` decays toward 1.0 by a factor
+of 0.998 per step, and a band that yielded a detection takes the priority of the emitter detected there
+(1.0 normal, 2.0 high). When false the weight stays 1.0 for every band, exactly as before. Only the
+`index` policy uses the weight; the learned policies treat it as one more feature. Ai-ml-1's training
+environment implements the same rule (`threat_aware`, `priority_decay`).
 
 Auth (V1+): Bearer JWT on all routes except `/health`, `/ready`. MVP demo runs unauthenticated on
 a trusted local network (see `Backend/README.md` Level 9).
@@ -160,7 +168,7 @@ Backend that has not adopted them yet keeps working unchanged:
 |---|---|---|---|
 | `revisit_deadline` | int, steps | `0` = no deadline | Longest revisit interval that still meets this band's worst-case intercept requirement. Derived from intercept-time theory, not tuned. |
 | `staleness_ratio` | float, 0-1+ | `0.0` | `time_since_last_scan / revisit_deadline`. At or above 1 the band is overdue and the scheduler must include it. |
-| `threat_score` | float, 0-1 | `0.5` | Learned emitter-character threat weight. Distinct from `band_priority_weight`, which stays the operator-set value. |
+| `threat_score` | float, 0-1 | `0.5` | Learned emitter-character threat weight. Distinct from `band_priority_weight`, which is 1.0 unless the run is threat-aware (see Section 2). |
 | `occupancy_belief` | float, 0-1 | `0.5` | Posterior probability the band is active now, from the two-state occupancy chain. |
 | `sync_risk` | float, 0-1 | `0.0` | Posterior weight on period hypotheses this revisit interval can never intercept. Non-zero means the current schedule is locked out. |
 `periodicity_phase` and `periodicity_confidence` are populated by the Backend from Ai-ml-2's

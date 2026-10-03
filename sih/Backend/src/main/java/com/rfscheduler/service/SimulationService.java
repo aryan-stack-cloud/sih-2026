@@ -72,6 +72,12 @@ public class SimulationService {
     @Transactional
     public SimulationEntity create(String name, int bands, int durationSteps, Long seed,
                                    String scenarioId, String policyType) {
+        return create(name, bands, durationSteps, seed, scenarioId, policyType, null);
+    }
+
+    @Transactional
+    public SimulationEntity create(String name, int bands, int durationSteps, Long seed,
+                                   String scenarioId, String policyType, Boolean threatAware) {
         SimulationEntity sim = new SimulationEntity();
         sim.setId("sim_" + UUID.randomUUID().toString().replace("-", "").substring(0, 8));
         sim.setName(name);
@@ -80,6 +86,7 @@ public class SimulationService {
         sim.setSeed(seed == null ? 42L : seed);
         sim.setScenarioId(scenarioId);
         sim.setPolicyType(policyType == null ? "baseline" : policyType);
+        sim.setThreatAware(threatAware != null && threatAware);
         sim.setStatus("draft");
         sim.setCurrentStep(0);
         sim.setCreatedAt(Instant.now());
@@ -100,6 +107,12 @@ public class SimulationService {
     @Transactional
     public SimulationEntity update(String id, String name, Integer bands, Integer durationSteps,
                                    Long seed, String policyType) {
+        return update(id, name, bands, durationSteps, seed, policyType, null);
+    }
+
+    @Transactional
+    public SimulationEntity update(String id, String name, Integer bands, Integer durationSteps,
+                                   Long seed, String policyType, Boolean threatAware) {
         SimulationEntity sim = get(id);
         if (!"draft".equals(sim.getStatus())) {
             // Contract: "Update config (only while status=draft)".
@@ -121,6 +134,9 @@ public class SimulationService {
         if (policyType != null) {
             sim.setPolicyType(policyType);
             sim.setModelId(null);
+        }
+        if (threatAware != null) {
+            sim.setThreatAware(threatAware);
         }
         sim.setUpdatedAt(Instant.now());
         return repository.save(sim);
@@ -164,7 +180,7 @@ public class SimulationService {
         Scenario scenario = resolveScenario(sim);
         var request = new SimulationRunner.RunRequest(
                 id, scenario, sim.getPolicyType(), sim.getSeed(), sim.getDurationSteps(),
-                sim.getModelId(), null);
+                sim.getModelId(), null, true, sim.isThreatAware());
 
         sim.setStatus("running");
         sim.setCurrentStep(0);

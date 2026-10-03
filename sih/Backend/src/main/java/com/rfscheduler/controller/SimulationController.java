@@ -40,7 +40,7 @@ public class SimulationController {
     public ResponseEntity<ApiResponse<Map<String, Object>>> create(
             @Valid @RequestBody Requests.CreateSimulation body) {
         SimulationEntity sim = simulations.create(body.name(), body.bands(), body.durationSteps(),
-                body.seed(), body.scenario(), body.policy());
+                body.seed(), body.scenario(), body.policy(), body.threatAware());
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok(summary(sim)));
     }
 
@@ -68,7 +68,7 @@ public class SimulationController {
     public ApiResponse<Map<String, Object>> update(
             @PathVariable String id, @Valid @RequestBody Requests.UpdateSimulation body) {
         return ApiResponse.ok(summary(simulations.update(id, body.name(), body.bands(),
-                body.durationSteps(), body.seed(), body.policy())));
+                body.durationSteps(), body.seed(), body.policy(), body.threatAware())));
     }
 
     @DeleteMapping("/{id}")
@@ -113,6 +113,7 @@ public class SimulationController {
         m.put("policy_type", sim.getPolicyType());
         m.put("model_id", sim.getModelId());
         m.put("scenario_id", sim.getScenarioId());
+        m.put("threat_aware", sim.isThreatAware());
         m.put("created_at", sim.getCreatedAt());
         return m;
     }

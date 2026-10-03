@@ -165,6 +165,9 @@ class IndexAgent(Agent):
             raise ValueError(f"rho_min {rho_min} exceeds rho_max {rho_max}")
         self.rho_min = float(rho_min)
         self.rho_max = float(rho_max)
+        # The budget that set this instance's deadline, filled in by from_scenario; None
+        # means the deadline was stated outright rather than derived from any budget.
+        self.coverage_budget = None
         self.floor = CTMCFloorAgent(
             num_bands, mean_dwell_slots=floor_mean_dwell_slots, rng=self.rng
         )
@@ -227,11 +230,25 @@ class IndexAgent(Agent):
             detect_p_fa=float(norm.sf(threshold / sigma)),
             detect_p_d=float(norm.sf((threshold - snr_mean * snr_gain) / sigma)),
         )
+        # A tuned per-scenario budget narrows or widens the derived deadline; a stated
+        # deadline is a requirement, not a derivation, so it always wins and leaves no
+        # budget to report.
+        coverage_budget = overrides.pop("coverage_budget", None)
+        if coverage_budget is not None and not 0.0 < coverage_budget <= 1.0:
+            raise ValueError(f"coverage_budget must lie in (0, 1], got {coverage_budget}")
         if "deadline_s" not in overrides:
+            budget = COVERAGE_BUDGET if coverage_budget is None else float(coverage_budget)
             cycle = math.ceil(num_bands / bandwidth_k) * (slot_s + retune_s)
-            derived["deadline_s"] = cycle / COVERAGE_BUDGET
+            derived["deadline_s"] = cycle / budget
         derived.update(overrides)
-        return cls(num_bands, **derived)
+        agent = cls(num_bands, **derived)
+        if "deadline_s" in overrides:
+            agent.coverage_budget = None
+        elif coverage_budget is None:
+            agent.coverage_budget = COVERAGE_BUDGET
+        else:
+            agent.coverage_budget = float(coverage_budget)
+        return agent
 
     @property
     def deadline_slots(self) -> np.ndarray:
@@ -577,6 +594,7 @@ class IndexAgent(Agent):
             "kernel_refresh_steps": self.kernel_refresh_steps,
             "rho_min": self.rho_min,
             "rho_max": self.rho_max,
+            "coverage_budget": self.coverage_budget,
             "floor_confidence_threshold": self.floor_confidence_threshold,
             **{
                 name: getattr(self.weights, name)

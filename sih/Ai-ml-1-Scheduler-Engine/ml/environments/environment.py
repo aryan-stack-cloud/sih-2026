@@ -62,8 +62,16 @@ class EWEnvironment(gym.Env):
         emitter_params: dict[str, dict] | None = None,
         band_priority_weights: np.ndarray | None = None,
         scenario_id: str | None = None,
+        threat_aware: bool = False,
+        priority_decay: float = 0.998,
     ) -> None:
         super().__init__()
+
+        self.threat_aware = bool(threat_aware)
+        decay = float(priority_decay)
+        if not 0.0 < decay <= 1.0:
+            raise ValueError(f"priority_decay must satisfy 0 < decay <= 1, got {priority_decay!r}")
+        self.priority_decay = decay
 
         self.num_bands = num_bands
         self.duration_steps = duration_steps
@@ -100,6 +108,9 @@ class EWEnvironment(gym.Env):
             num_bands, band_priority_weights=self.spectrum.priority_weights
         )
         self.receiver = Receiver(self.receiver_config, num_bands)
+        # Lazily captured in reset() from the pristine constructor inputs; the
+        # threat-aware decay relaxes weights back toward this baseline.
+        self._base_priority: np.ndarray | None = None
 
         self.ground_truth: GroundTruth | None = None
         self.t = 0
@@ -141,6 +152,13 @@ class EWEnvironment(gym.Env):
         self.detection_engine = DetectionEngine(self.receiver_config.threshold)
         self.state_builder.reset()
         self.periodicity.reset(self.num_bands)
+        if self._base_priority is None:
+            # First reset only: StateBuilder.reset() leaves the priority weights
+            # untouched, so capturing later would freeze in mutated values.
+            self._base_priority = self.state_builder.band_priority_weight.copy()
+        if self.threat_aware:
+            # Every episode starts unthreatened.
+            self.state_builder.band_priority_weight[:] = self._base_priority
         self.t = 0
         self.history = []
         self._detected_runs: set[tuple[int, int]] = set()
@@ -209,6 +227,9 @@ class EWEnvironment(gym.Env):
         phase, confidence = self.periodicity.features(t + 1)
         self.state_builder.set_periodicity(phase, confidence)
 
+        if self.threat_aware:
+            self._observe_priority(t, outcome.detected_bands)
+
         self.history.append(
             {
                 "t": t,
@@ -239,6 +260,21 @@ class EWEnvironment(gym.Env):
 
     # -- contract + introspection ----------------------------------------------------------
 
+    def _observe_priority(self, t: int, detected_bands) -> None:
+        """Fold one step of detections into the per-band priority weights.
+
+        Every weight decays toward its base value first; then each detected band
+        snaps to the priority of the emitter seen there. Only detected bands
+        reveal anything, so undetected emitters never leak through the state.
+        """
+        assert self._base_priority is not None
+        w = self.state_builder.band_priority_weight
+        base = self._base_priority
+        w[:] = base + (w - base) * self.priority_decay
+        priority_row = self.ground_truth.priority[t]
+        for b in detected_bands:
+            w[int(b)] = float(priority_row[int(b)])
+
     def state_vector(self) -> dict:
         """The current state as the API_CONTRACT.md Section 4 StateVector."""
         return self.state_builder.to_contract()
@@ -267,6 +303,10 @@ def make_env(config: dict, seed: int | None = None, **overrides) -> EWEnvironmen
         "high_priority_fraction": config.get("high_priority_fraction", 0.25),
         "emitter_params": config.get("emitter_params"),
     }
+    if "threat_aware" not in overrides:
+        kwargs["threat_aware"] = config.get("threat_aware", False)
+    if "priority_decay" not in overrides:
+        kwargs["priority_decay"] = config.get("priority_decay", 0.998)
     kwargs.update(overrides)
     return EWEnvironment(**kwargs)
 
