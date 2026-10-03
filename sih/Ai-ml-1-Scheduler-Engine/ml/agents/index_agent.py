@@ -279,6 +279,7 @@ class IndexAgent(Agent):
             "rho_max": self.rho_max,
             "floor_mean_dwell_slots": self.floor.mean_dwell_slots,
             "floor_confidence_threshold": self.floor_confidence_threshold,
+            "coverage_budget": self.coverage_budget,
             "weights": {
                 "w_value": self.weights.w_value,
                 "w_info": self.weights.w_info,
@@ -292,8 +293,12 @@ class IndexAgent(Agent):
     def load(cls, path: str | Path, **kwargs) -> "IndexAgent":
         config = json.loads(Path(path).read_text(encoding="utf-8"))
         weights = IndexWeights(**config.pop("weights"))
+        # Not a constructor argument; checkpoints written before it existed have no key.
+        coverage_budget = config.pop("coverage_budget", None)
         config.update(kwargs)
-        return cls(weights=weights, **config)
+        agent = cls(weights=weights, **config)
+        agent.coverage_budget = coverage_budget
+        return agent
 
     def describe(self) -> dict:
         return {
