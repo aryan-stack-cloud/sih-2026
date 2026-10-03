@@ -37,7 +37,7 @@ public class ExperimentController {
     public ResponseEntity<ApiResponse<Map<String, Object>>> create(
             @Valid @RequestBody Requests.CreateExperiment body) {
         ExperimentEntity exp = experiments.create(body.name(), body.scenario(), body.policies(),
-                body.episodes(), body.seed());
+                body.episodes(), body.seed(), body.threatAware());
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok(summary(exp)));
     }
 
@@ -97,6 +97,7 @@ public class ExperimentController {
         m.put("episodes", exp.getEpisodes());
         m.put("seed", exp.getSeed());
         m.put("status", exp.getStatus());
+        m.put("threat_aware", exp.isThreatAware());
         m.put("expected_outcome", exp.getExpectedOutcome());
         m.put("created_at", exp.getCreatedAt());
         return m;

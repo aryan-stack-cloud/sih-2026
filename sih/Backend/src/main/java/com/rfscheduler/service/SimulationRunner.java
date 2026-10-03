@@ -219,6 +219,12 @@ public class SimulationRunner {
             // prediction did not previously translate into a measurable scheduling benefit.
             // 6. Advance state, then merge t+1 periodicity before posting /learn.
             stateBuilder.update(scanned, outcome.detectedBands());
+            if (request.threatAware()) {
+                stateBuilder.decayPriorityWeights(StateBuilder.PRIORITY_DECAY);
+                for (int band : outcome.detectedBands()) {
+                    stateBuilder.observePriority(band, truth.priorityAt(t, band));
+                }
+            }
             boolean needsNextPrediction = usesMl && request.periodicityEnabled()
                     && t + 1 < duration && (control == null || !control.stopRequested());
             List<BandPeriodicity> nextPeriodicity = periodicityClient.step(
@@ -307,7 +313,16 @@ public class SimulationRunner {
             int durationSteps,
             String modelId,
             RewardWeights rewardWeights,
-            boolean periodicityEnabled) {
+            boolean periodicityEnabled,
+            boolean threatAware) {
+
+        /** Default: Ai-ml-2's features are merged into the state. */
+        public RunRequest(String simulationId, Scenario scenario, String policy, long seed,
+                          int durationSteps, String modelId, RewardWeights rewardWeights,
+                          boolean periodicityEnabled) {
+            this(simulationId, scenario, policy, seed, durationSteps, modelId, rewardWeights,
+                    periodicityEnabled, false);
+        }
 
         /** Default: Ai-ml-2's features are merged into the state. */
         public RunRequest(String simulationId, Scenario scenario, String policy, long seed,
@@ -324,7 +339,7 @@ public class SimulationRunner {
          */
         public RunRequest withoutPeriodicity() {
             return new RunRequest(simulationId, scenario, policy, seed, durationSteps, modelId,
-                    rewardWeights, false);
+                    rewardWeights, false, threatAware);
         }
     }
 

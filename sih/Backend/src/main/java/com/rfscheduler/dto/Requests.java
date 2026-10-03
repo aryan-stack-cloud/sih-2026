@@ -32,7 +32,14 @@ public final class Requests {
             String scenario,
             @Pattern(regexp = "^(baseline|random|bandit|q_learning|dqn|ppo|index|ctmc)$",
                     message = "policy must be one of baseline|random|bandit|q_learning|dqn|ppo|index|ctmc")
-            String policy) {
+            String policy,
+            Boolean threatAware) {
+
+        /** Callers that predate the threat-aware toggle. */
+        public CreateSimulation(String name, int bands, int durationSteps, Long seed,
+                                String scenario, String policy) {
+            this(name, bands, durationSteps, seed, scenario, policy, null);
+        }
     }
 
     /** PUT /simulations/{id} - every field optional; only draft simulations may be updated. */
@@ -42,7 +49,14 @@ public final class Requests {
             @Min(1) @Max(100000) Integer durationSteps,
             Long seed,
             @Pattern(regexp = "^(baseline|random|bandit|q_learning|dqn|ppo|index|ctmc)$")
-            String policy) {
+            String policy,
+            Boolean threatAware) {
+
+        /** Callers that predate the threat-aware toggle. */
+        public UpdateSimulation(String name, Integer bands, Integer durationSteps, Long seed,
+                                String policy) {
+            this(name, bands, durationSteps, seed, policy, null);
+        }
     }
 
     /** PUT /simulations/{id}/speed - 0 (or omitted) means uncapped, today's default pace. */
@@ -79,7 +93,14 @@ public final class Requests {
             String scenario,
             @NotEmpty(message = "at least one policy is required") List<String> policies,
             @Min(value = 1, message = "episodes must be at least 1") Integer episodes,
-            Long seed) {
+            Long seed,
+            Boolean threatAware) {
+
+        /** Callers that predate the threat-aware toggle. */
+        public CreateExperiment(String name, String scenario, List<String> policies,
+                                Integer episodes, Long seed) {
+            this(name, scenario, policies, episodes, seed, null);
+        }
     }
 
     /** POST /experiments/{id}/run */

@@ -32,6 +32,9 @@ public class SimulationEntity {
     @Column(name = "scenario_id")
     private String scenarioId;
 
+    @Column(name = "threat_aware", nullable = false)
+    private boolean threatAware;
+
     @Column(name = "current_step")
     private int currentStep;
 
@@ -111,6 +114,14 @@ public class SimulationEntity {
 
     public void setScenarioId(String scenarioId) {
         this.scenarioId = scenarioId;
+    }
+
+    public boolean isThreatAware() {
+        return threatAware;
+    }
+
+    public void setThreatAware(boolean threatAware) {
+        this.threatAware = threatAware;
     }
 
     public int getCurrentStep() {
