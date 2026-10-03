@@ -223,15 +223,18 @@ class InferenceEngine:
         # would make the Backend's metrics non-reproducible for the same seed (NFR-006).
         action_index = agent.select_action(vector, explore=False)
 
-        # Read immediately: the next decide on this session overwrites both.
+        # Read immediately: the next decide on this session overwrites both. The source is
+        # validated, not trusted: an agent that reports a breakdown with no (or an unknown)
+        # source gets no explanation rather than a misleading one.
         breakdown = getattr(agent, "last_breakdown", None)
+        source = getattr(agent, "last_source", None)
         explanation: dict[str, Any] = {}
-        if breakdown:
+        if breakdown and source in ("floor", "index", "deadline"):
             explanation = {
                 "index_breakdown": {
                     name: _finite_float(value) for name, value in breakdown.items()
                 },
-                "decision_source": agent.last_source,
+                "decision_source": source,
             }
 
         spec = ActionSpaceSpec(num_bands=num_bands)

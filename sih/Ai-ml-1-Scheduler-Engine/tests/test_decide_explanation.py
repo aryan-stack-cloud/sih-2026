@@ -65,6 +65,42 @@ def neutral_observation(num_bands: int = 16) -> np.ndarray:
     return sb.to_vector()
 
 
+# -- golden action-identity loop ------------------------------------------------------
+#
+# The exact loop the golden values below were recorded with, on the PRE-CHANGE code
+# (commit f3bd414). The recording script imports this helper, so the test loop and the
+# recording loop cannot drift apart. A middle stretch forces staleness far past every
+# deadline so the golden values cover the deadline-override path too.
+
+GOLDEN_SEED = 7
+GOLDEN_STEPS = 50
+GOLDEN_STALE_START = 20
+GOLDEN_STALE_STEPS = 10
+GOLDEN_TSL = 10_000
+
+
+def drive_golden_loop(agent, obs) -> list[int]:  # noqa: ANN001
+    """Run the golden loop on an agent built exactly like the test builds it."""
+    actions = []
+    for step in range(GOLDEN_STEPS):
+        if GOLDEN_STALE_START <= step < GOLDEN_STALE_START + GOLDEN_STALE_STEPS:
+            agent.time_since_last_scan[:] = GOLDEN_TSL
+        actions.append(int(agent.select_action(obs)))
+        agent.observe({"scanned_bands": agent.last_bands, "detected_bands": []})
+    return actions
+
+
+# Recorded from the pre-change commit f3bd414 (scenario B, rng seed 7): the new code must
+# reproduce these exactly -- the bookkeeping may observe the decision, never move it.
+GOLDEN_ACTIONS_B_SEED7: tuple = (
+    10, 14, 13, 0, 6, 4, 8, 15, 12, 2,
+    15, 6, 5, 10, 11, 5, 1, 14, 4, 8,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    2, 4, 6, 8, 10, 12, 14, 13, 0, 1,
+    2, 10, 0, 9, 4, 5, 7, 6, 12, 9,
+)
+
+
 # -- API contract ------------------------------------------------------------------
 
 
@@ -146,34 +182,17 @@ def test_index_agent_reports_deadline_source_when_overdue():
     assert all(math.isfinite(float(v)) for v in agent.last_breakdown.values())
 
 
-def test_action_selection_is_identical_over_50_steps(monkeypatch):
-    """The new bookkeeping must not move the chosen action.
+def test_action_selection_matches_pre_change_golden_values():
+    """The binding constraint: identical actions to the code BEFORE this change.
 
-    One agent runs the untouched override path, the other the same path through a
-    recording wrapper; both start from the same seed and see the same steps.
+    The golden list was recorded from commit f3bd414 with this exact loop
+    (``drive_golden_loop``); the new bookkeeping must reproduce it verbatim.
     """
-    import ml.agents.index_agent as index_module
-
-    real_override = index_module.apply_deadline_override
-    wrapped_calls: list = []
-
-    def counting_wrapper(chosen, overdue, bandwidth_k):
-        wrapped_calls.append((list(chosen), list(overdue)))
-        return real_override(chosen, overdue, bandwidth_k)
-
-    monkeypatch.setattr(index_module, "apply_deadline_override", counting_wrapper)
-    obs = neutral_observation()
-    first = IndexAgent(rng=np.random.default_rng(7), num_bands=16, bandwidth_k=1)
-    second = IndexAgent(rng=np.random.default_rng(7), num_bands=16, bandwidth_k=1)
-    first.start_episode(0)
-    second.start_episode(0)
-    for _ in range(50):
-        assert first.select_action(obs) == second.select_action(obs)
-        assert first.last_source == second.last_source
-        info = {"scanned_bands": first.last_bands, "detected_bands": []}
-        first.observe(info)
-        second.observe(dict(info))
-    assert len(wrapped_calls) == 100
+    agent = IndexAgent.from_scenario(load_scenario("B"), rng=np.random.default_rng(GOLDEN_SEED))
+    agent.start_episode(0)
+    assert drive_golden_loop(agent, neutral_observation(agent.num_bands)) == list(
+        GOLDEN_ACTIONS_B_SEED7
+    )
 
 
 def test_nonfinite_breakdown_values_are_clamped_to_finite(state_vector):
@@ -200,3 +219,28 @@ def test_nonfinite_breakdown_values_are_clamped_to_finite(state_vector):
     assert explanation["index_breakdown"]["deadline"] == pytest.approx(1e6)
     assert explanation["index_breakdown"]["value"] == 0.0
     assert explanation["index_breakdown"]["information"] == pytest.approx(-1e6)
+
+
+def test_explanation_is_empty_when_the_source_is_unknown(state_vector):
+    """A breakdown with no (or an unknown) source must not produce an explanation."""
+    engine = InferenceEngine()
+    simulation_id = "sim_nosrc001"
+    engine.decide_explained(simulation_id, state_vector, "index", scenario_id="D")
+    agent, _ = engine._session(simulation_id, "index", len(state_vector.bands), None, "D")
+
+    def stubbed_select_action(vector, explore=False):  # noqa: ANN001, ANN202
+        agent.last_breakdown = {
+            "value": 0.5,
+            "information": 0.1,
+            "novelty": 0.0,
+            "deadline": 0.2,
+            "elapsed_s": 0.013,
+        }
+        del agent.last_source
+        return 0
+
+    agent.select_action = stubbed_select_action
+    _, _, _, explanation = engine.decide_explained(
+        simulation_id, state_vector, "index", scenario_id="D"
+    )
+    assert explanation == {}
