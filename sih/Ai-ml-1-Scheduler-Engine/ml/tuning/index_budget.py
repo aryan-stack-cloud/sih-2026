@@ -33,3 +33,26 @@ def load_budgets(path: str | Path | None = None) -> dict[str, float]:
 def budget_for(scenario_id: str, budgets: dict[str, float]) -> float | None:
     """The scenario's tuned budget, or ``None`` when it has no entry."""
     return budgets.get(scenario_id)
+
+
+def choose_budget(
+    candidates: dict[float, dict[str, float]],
+    sweep: dict[str, float],
+    margin: float = 0.0,
+    default: float = 0.5,
+) -> float:
+    """Pick the Index coverage budget that keeps sweep coverage at the best Pd.
+
+    A budget is feasible when its ``run_intercept_rate`` is at least the fixed
+    sweep's minus ``margin`` (default 0: never below the sweep); among the
+    feasible ones the highest ``pd`` wins, with ``pd`` values within 0.001
+    counted as tied and the larger budget winning. With nothing feasible the
+    sweep's own budget (``default``) is kept.
+    """
+    floor = sweep["run_intercept_rate"] - margin
+    feasible = {b: m for b, m in candidates.items() if m["run_intercept_rate"] >= floor}
+    if not feasible:
+        return default
+    best_pd = max(m["pd"] for m in feasible.values())
+    tied = [b for b, m in feasible.items() if best_pd - m["pd"] <= 0.001]
+    return max(tied)
