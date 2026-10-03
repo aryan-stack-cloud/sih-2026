@@ -1361,3 +1361,186 @@ table.data.simulation-table {
   .receiver-stage + .section .tiles .tile { min-width: 0; min-height: 0; padding: 12px; }
   .receiver-stage + .section .tile .tile-value { font-size: clamp(1.2rem, 5vw, 1.75rem); }
 }
+
+/* -- judge view: why-this-band + attention panels -------------------------------------------
+   Same panel look as the wireframe's cards, built only from the tokens above. Activity bars
+   use --electric because the --missed amber is reserved for missed transmissions - reusing it
+   here would read as a miss on bands nobody failed to hear. Body copy stays on --ink and
+   --ink-muted, both of which clear 4.5:1 on the panel surface. No transitions or animations,
+   so there is nothing for prefers-reduced-motion to disable. */
+
+.judge-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .judge-grid { grid-template-columns: 1fr; }
+}
+
+.judge-panel { min-width: 0; }
+
+.judge-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.judge-title {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+
+.judge-policy {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+}
+
+.judge-window {
+  margin: 8px 0 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.judge-note {
+  margin: 8px 0 0;
+  color: var(--ink-muted);
+  font-size: 0.88rem;
+}
+
+.judge-match {
+  margin: 10px 0 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.judge-match strong {
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin-right: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.judge-chip {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--panel-raised);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 4px 8px;
+}
+
+.judge-diverge {
+  display: flex;
+  gap: 3px;
+  margin-top: 12px;
+}
+
+.judge-band {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.judge-track {
+  display: flex;
+  width: 100%;
+  height: 44px;
+}
+
+.judge-track-up { align-items: flex-end; }
+.judge-track-down { align-items: flex-start; }
+
+.judge-track i {
+  display: block;
+  width: 100%;
+}
+
+.judge-activity { background: var(--electric); }
+.judge-looks { background: var(--listened); }
+
+.judge-axis {
+  height: 1px;
+  background: var(--rule);
+}
+
+.judge-band-label {
+  margin-top: 4px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--ink-muted);
+}
+
+.judge-terms {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.judge-term {
+  display: grid;
+  grid-template-columns: minmax(110px, 140px) minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.judge-term-label {
+  color: var(--ink);
+  font-size: 0.82rem;
+}
+
+.judge-term-bar {
+  display: block;
+  height: 10px;
+  background: var(--panel-raised);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.judge-term-bar i {
+  display: block;
+  height: 100%;
+  background: var(--electric);
+}
+
+.judge-term-value {
+  font-size: 0.78rem;
+  color: var(--ink);
+}
+
+.judge-reward {
+  margin: 10px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* Text alternative for the diverging chart: the same counts in a table for screen readers. */
+.judge-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

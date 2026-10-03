@@ -2,6 +2,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as api from "../services/api/client";
 import { useStore } from "../store/useStore";
 import { Waterfall } from "../components/Waterfall";
+import { AttentionActivity } from "../components/AttentionActivity";
+import { WhyThisBand } from "../components/WhyThisBand";
+import { decisionForStep } from "../lib/frameWindow";
 import { ComparisonTable, LiftChart } from "../components/LiftChart";
 import { fellBackToSweep, PolicyRunDetails } from "../components/PolicyRunDetails";
 import type { LiftRow } from "../components/LiftChart";
@@ -101,7 +104,7 @@ function countForMetric(key: string, metrics: MetricsSummary | undefined): Metri
 export function DemoPage() {
   const {
     ready, frames, live, activeSimulationId, connection, watch, unwatch,
-    scenarios, refreshScenarios, pollLive, setError,
+    scenarios, refreshScenarios, pollLive, setError, decisions, lastDecision,
   } = useStore();
 
   const [scenario, setScenario] = useState<ScenarioId>("B");
@@ -384,6 +387,14 @@ export function DemoPage() {
       }] : [];
   const spotlight = POLICY_STORY[challenger];
   const apertureStart = live?.scanned_bands?.[0] ?? Math.max(0, Math.floor(bands / 2) - 1);
+  // The decision behind the newest visible frame; the server coalesces steps, so an exact
+  // hit is not guaranteed and the latest decision stands in when none matches.
+  const newestStep = waterfallFrames.length > 0
+    ? waterfallFrames[waterfallFrames.length - 1].t
+    : undefined;
+  const judgeDecision = (newestStep !== undefined
+    ? decisionForStep(decisions, newestStep)
+    : null) ?? lastDecision;
 
   return (
     <>
@@ -498,6 +509,19 @@ export function DemoPage() {
             <p className="note" role="status">
               Running the fixed sweep instead: {live.unavailable_reason}
             </p>}
+        </div>
+
+        <div className="judge-grid">
+          <WhyThisBand
+            decision={judgeDecision}
+            bands={bands}
+            policyLabel={CHALLENGER_LABELS[challenger]}
+          />
+          <AttentionActivity
+            perBand={live?.per_band}
+            bands={bands}
+            policyLabel={CHALLENGER_LABELS[challenger]}
+          />
         </div>
 
         {stepIndex >= 0 && (
