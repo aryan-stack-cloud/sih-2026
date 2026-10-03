@@ -22,7 +22,7 @@ export function AttentionActivity({
   bands: number;
   policyLabel: string;
 }) {
-  const heard = perBand?.heard.reduce((sum, count) => sum + count, 0) ?? 0;
+  const heard = perBand?.heard?.reduce((sum, count) => sum + count, 0) ?? 0;
   const shares = perBand ? attentionShares(perBand) : null;
   const empty =
     !perBand ||
@@ -74,29 +74,31 @@ export function AttentionActivity({
           );
         })}
       </div>
-      <table className="judge-visually-hidden">
-        <caption>
-          Per-band listening and transmission counts for {policyLabel}
-        </caption>
-        <thead>
-          <tr>
-            <th scope="col">Band</th>
-            <th scope="col">Looks</th>
-            <th scope="col">Active</th>
-            <th scope="col">Heard</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array.from({ length: bands }, (_, band) => (
-            <tr key={band}>
-              <th scope="row">{pad2(band)}</th>
-              <td>{perBand.looks[band] ?? 0}</td>
-              <td>{perBand.active[band] ?? 0}</td>
-              <td>{perBand.heard[band] ?? 0}</td>
+      <div className="judge-visually-hidden">
+        <table>
+          <caption>
+            Per-band listening and transmission counts for {policyLabel}
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Band</th>
+              <th scope="col">Looks</th>
+              <th scope="col">Active</th>
+              <th scope="col">Heard</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {Array.from({ length: bands }, (_, band) => (
+              <tr key={band}>
+                <th scope="row">{pad2(band)}</th>
+                <td>{perBand.looks?.[band] ?? 0}</td>
+                <td>{perBand.active?.[band] ?? 0}</td>
+                <td>{perBand.heard?.[band] ?? 0}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }

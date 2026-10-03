@@ -72,4 +72,12 @@ describe("liveReadouts", () => {
     assert.equal(readouts.pd, 0.6);
     assert.equal(readouts.scanEfficiency, 0.4);
   });
+
+  it("keeps a legitimate zero instead of turning it into null", () => {
+    const readouts = liveReadouts({
+      per_band: { looks: [5], active: [3, 4], heard: [0, 0], useful: [0] },
+    });
+    assert.equal(readouts.pd, 0);
+    assert.equal(readouts.scanEfficiency, 0);
+  });
 });

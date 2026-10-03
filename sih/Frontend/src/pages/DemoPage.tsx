@@ -7,6 +7,7 @@ import { AttentionActivity } from "../components/AttentionActivity";
 import { WhyThisBand } from "../components/WhyThisBand";
 import { decisionForStep } from "../lib/frameWindow";
 import { liveReadouts } from "../lib/liveReadouts";
+import { waitForRunsToFinish } from "../lib/raceFinish";
 import { ComparisonTable, LiftChart } from "../components/LiftChart";
 import { fellBackToSweep, PolicyRunDetails } from "../components/PolicyRunDetails";
 import type { LiftRow } from "../components/LiftChart";
@@ -324,23 +325,12 @@ export function DemoPage() {
       // when the comparison lands: hold "Done." until both runs leave "running" so the demo
       // does not declare itself finished mid-race.
       setStage("Comparison ready. The live race is still finishing…");
-      const finishBy = Date.now() + 90_000;
-      let raceRunning = true;
-      while (raceRunning) {
-        throwIfCancelled();
-        raceRunning = false;
-        for (const id of [sim.id, activeRunRef.current.referenceSimulationId]) {
-          if (!id) continue;
-          try {
-            if ((await api.getSimulation(id)).status === "running") raceRunning = true;
-          } catch {
-            // Best-effort: a failed poll counts that run as finished rather than aborting.
-          }
-        }
-        if (raceRunning && Date.now() < finishBy) {
-          await new Promise((r) => setTimeout(r, 500));
-        }
-      }
+      await waitForRunsToFinish([sim.id, activeRunRef.current.referenceSimulationId], {
+        isRunning: async (id) => (await api.getSimulation(id)).status === "running",
+        beforePoll: throwIfCancelled,
+        sleep: (ms) => new Promise((r) => setTimeout(r, ms)),
+        now: Date.now,
+      });
       setStage("Done.");
       setStepIndex(DEMO_STEPS.length);
       setCompletedWorlds({ seed: baseSeed, scenario: runScenario, challenger: runChallenger, threatAware: runThreatAware });
