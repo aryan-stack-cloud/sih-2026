@@ -53,15 +53,8 @@ class BanditAgent(Agent):
         optimistic_init: float = 0.5,
         epsilon: EpsilonSchedule | None = None,
         rng: np.random.Generator | None = None,
-        bandwidth_k: int = 1,
     ) -> None:
         super().__init__(num_bands, rng)
-        bandwidth_k = int(bandwidth_k)
-        if not 1 <= bandwidth_k <= num_bands:
-            raise ValueError(f"bandwidth_k must lie in [1, {num_bands}], got {bandwidth_k}")
-        self.bandwidth_k = bandwidth_k
-        # Window each start band covers: K adjacent bands, wrapping around the edge.
-        self._windows = (np.arange(num_bands)[:, None] + np.arange(bandwidth_k)[None, :]) % num_bands
         self.learning_rate = float(learning_rate)
         self.bias_learning_rate = float(bias_learning_rate)
         self.reward_scale = float(reward_scale)
@@ -91,9 +84,7 @@ class BanditAgent(Agent):
         return np.hstack([bands, np.ones((n, 1), dtype=np.float64)])
 
     def q_values(self, observation: np.ndarray) -> np.ndarray:
-        """Mean window value per start band: ``mean over the K covered bands``."""
-        band_q = self._band_features(observation) @ self.weights + self.band_bias
-        return band_q[self._windows].mean(axis=1)
+        return self._band_features(observation) @ self.weights + self.band_bias
 
     # -- Agent API ------------------------------------------------------------------------
 
@@ -126,21 +117,19 @@ class BanditAgent(Agent):
         next_observation: np.ndarray,
         done: bool = False,
     ) -> None:
-        """Online least-squares update on the chosen window.
+        """Online least-squares update on the chosen arm only.
 
-        Bandit semantics, widened to the receiver: we observed the payoff of pulling start
-        band ``action`` and covering its whole K-band window, so every covered band's bias
-        moves and the shared ``w`` moves along the window-mean features. With K = 1 this is
-        exactly the old single-arm update.
+        Bandit semantics: we observed the payoff of the arm we pulled and know nothing new about
+        the others, so only ``band_bias[action]`` moves. The shared ``w`` still moves on every
+        step, which is where the cross-band generalisation comes from.
         """
-        window = self._windows[int(action) % self.num_bands]
-        phi = self._band_features(observation)[window].mean(axis=0)
+        phi = self._band_features(observation)[action]
         target = float(reward) / self.reward_scale
-        error = target - float(phi @ self.weights + self.band_bias[window].mean())
+        error = target - float(phi @ self.weights + self.band_bias[action])
 
         self.weights += self.learning_rate * error * phi
-        self.band_bias[window] += self.bias_learning_rate * error
-        self.visit_counts[window] += 1
+        self.band_bias[action] += self.bias_learning_rate * error
+        self.visit_counts[action] += 1
         self.updates += 1
 
     # -- interpretability -----------------------------------------------------------------
@@ -188,7 +177,6 @@ class BanditAgent(Agent):
             "bias_learning_rate": self.bias_learning_rate,
             "reward_scale": self.reward_scale,
             "optimistic_init": self.optimistic_init,
-            "bandwidth_k": self.bandwidth_k,
             "epsilon": {
                 "start": self.epsilon_schedule.start,
                 "end": self.epsilon_schedule.end,

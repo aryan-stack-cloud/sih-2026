@@ -316,13 +316,6 @@ def _cold_agent(policy: str, num_bands: int, scenario_id: str | None) -> Agent:
     scenario A-G shares one receiver, and a custom simulation reuses it too, so a non-synthetic
     scenario id borrows D's receiver with the request's band count.
     """
-    if policy == "bandit":
-        from ml.model_registry import SYNTHETIC_SCENARIOS  # noqa: PLC0415
-        from ml.utils.config import load_scenario  # noqa: PLC0415
-
-        cfg = load_scenario(scenario_id if scenario_id in SYNTHETIC_SCENARIOS else "D")
-        k = int((cfg.get("receiver") or {}).get("bandwidth_k", 1))
-        return build_agent("bandit", num_bands, None, bandwidth_k=k)
     if policy == "index":
         from ml.agents.index_agent import IndexAgent  # noqa: PLC0415
         from ml.model_registry import SYNTHETIC_SCENARIOS  # noqa: PLC0415
