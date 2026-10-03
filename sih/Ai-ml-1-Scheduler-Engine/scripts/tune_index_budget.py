@@ -17,7 +17,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+import tempfile
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
@@ -74,9 +76,6 @@ def _eval_job(job: tuple[str, str, list[int]]) -> tuple[str, str, dict]:
     Module level so a ``ProcessPoolExecutor`` can pickle it on Windows; every
     import it needs happens inside, after the fresh interpreter starts.
     """
-    import warnings
-
-    warnings.filterwarnings("ignore")
     scenario_id, spec, seeds = job
 
     from ml.agents.factory import build_agent
@@ -166,10 +165,29 @@ def main() -> int:
     if args.dry_run:
         print(f"\ndry run: not writing {args.out}", flush=True)
     else:
-        args.out.parent.mkdir(parents=True, exist_ok=True)
-        args.out.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        _write_json_atomic(args.out, payload)
         print(f"\nwrote {args.out}", flush=True)
     return 0
+
+
+def _write_json_atomic(path: Path, payload: dict) -> None:
+    """Write JSON so a reader never sees a half-written file.
+
+    The temp file lives in the same directory so ``os.replace`` is an atomic
+    rename on the same filesystem; a failed write removes the temp file.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp_name = tempfile.mkstemp(dir=str(path.parent), suffix=".json.tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2)
+        os.replace(tmp_name, path)
+    except BaseException:
+        try:
+            os.unlink(tmp_name)
+        except OSError:
+            pass
+        raise
 
 
 if __name__ == "__main__":

@@ -15,6 +15,10 @@ from ml.utils.config import SCENARIO_IDS
 
 BUDGETS_PATH: Path = Path(__file__).resolve().parents[1] / "configs" / "index_budgets.json"
 
+# Slack on the Pd tie window: 0.701 - 0.700 is 0.001000000000000011 in binary
+# floating point, so a decimal-exact 0.001 gap would otherwise miss the tie.
+PD_TIE_EPSILON = 1e-9
+
 
 def load_budgets(path: str | Path | None = None) -> dict[str, float]:
     """Read the ``{"budgets": {scenario: budget}}`` mapping, or ``{}`` when missing."""
@@ -54,5 +58,5 @@ def choose_budget(
     if not feasible:
         return default
     best_pd = max(m["pd"] for m in feasible.values())
-    tied = [b for b, m in feasible.items() if best_pd - m["pd"] <= 0.001]
+    tied = [b for b, m in feasible.items() if best_pd - m["pd"] <= 0.001 + PD_TIE_EPSILON]
     return max(tied)
