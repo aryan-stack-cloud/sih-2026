@@ -141,9 +141,9 @@ public class SimulationRunner {
         Set<String> servedModelIds = new HashSet<>();
         boolean stoppedEarly = false;
         Map<String, Object> previousState = null;
+        long lastEmitNanos = 0L;
 
         for (int t = 0; t < duration; t++) {
-            long stepStartNanos = System.nanoTime();
             if (control != null && control.stopRequested()) {
                 stoppedEarly = true;
                 break;
@@ -254,19 +254,15 @@ public class SimulationRunner {
             if (onStep != null || control == null) {
                 frames.add(frame);
             }
-            if (onStep != null) {
-                onStep.accept(frame);
-            }
-            previousState = nextState;
-
             // Pacing, for a human actually watching this run rather than a batch experiment
-            // racing to a result. The delay is the step PERIOD, not a post-step sleep: the
-            // step's own compute counts toward it, so two paced runs on one seed stay in
-            // step for the race view instead of the heavier policy drifting behind.
-            if (control != null) {
+            // racing to a result. The delay is the spacing between EMITTED frames, measured from
+            // the previous emission, so compute time inside a step is absorbed (two paced runs
+            // on one seed stay in step for the race view) and consecutive frames are never
+            // closer together than the delay (the publisher's frame gate then passes all of them).
+            if (control != null && lastEmitNanos != 0L) {
                 long delayMs = control.stepDelayMs();
                 if (delayMs > 0) {
-                    long remainingMs = remainingPaceMs(delayMs, System.nanoTime() - stepStartNanos);
+                    long remainingMs = remainingPaceMs(delayMs, System.nanoTime() - lastEmitNanos);
                     if (remainingMs > 0) {
                         try {
                             Thread.sleep(remainingMs);
@@ -278,6 +274,11 @@ public class SimulationRunner {
                     }
                 }
             }
+            if (onStep != null) {
+                onStep.accept(frame);
+            }
+            lastEmitNanos = System.nanoTime();
+            previousState = nextState;
         }
 
         MetricsSummary summary = metrics.summary();
@@ -291,14 +292,16 @@ public class SimulationRunner {
     }
 
     /**
-     * Milliseconds left to sleep so a step lasts the full pacing period.
+     * Milliseconds left to sleep so frames are emitted at least the pacing delay apart.
      * Pure and side-effect free - the loop still owns the sleeping and the interrupt handling.
+     *
+     * @param elapsedSinceLastEmitNanos time since the previous frame was emitted
      */
-    static long remainingPaceMs(long delayMs, long elapsedNanos) {
+    static long remainingPaceMs(long delayMs, long elapsedSinceLastEmitNanos) {
         if (delayMs <= 0) {
             return 0;
         }
-        return Math.max(0, delayMs - elapsedNanos / 1_000_000);
+        return Math.max(0, delayMs - elapsedSinceLastEmitNanos / 1_000_000);
     }
 
     /**
