@@ -241,7 +241,8 @@ public class SimulationRunner {
             StepFrame frame = new StepFrame(
                     t, decision.nextBand(), scanned, truth.activeBands(t),
                     outcome.detectedBands(), outcome.falseAlarmBands(),
-                    reward.reward(), reward.terms(), decision.modelId(), observation.valid());
+                    reward.reward(), reward.terms(), decision.modelId(), observation.valid(),
+                    decision.decisionSource(), decision.indexBreakdown());
             // Batch experiments need aggregate results, not thousands of retained step frames.
             if (onStep != null || control == null) {
                 frames.add(frame);
@@ -339,7 +340,25 @@ public class SimulationRunner {
             double reward,
             Map<String, Double> rewardTerms,
             String modelId,
-            boolean validObservation) {
+            boolean validObservation,
+            String decisionSource,
+            Map<String, Double> indexBreakdown) {
+
+        /** The pre-explanation shape; both new values are null. */
+        public StepFrame(
+                int t,
+                int action,
+                List<Integer> scannedBands,
+                List<Integer> activeBands,
+                List<Integer> detectedBands,
+                List<Integer> falseAlarmBands,
+                double reward,
+                Map<String, Double> rewardTerms,
+                String modelId,
+                boolean validObservation) {
+            this(t, action, scannedBands, activeBands, detectedBands, falseAlarmBands, reward,
+                    rewardTerms, modelId, validObservation, null, null);
+        }
     }
 
     public record RunResult(

@@ -98,6 +98,12 @@ public class SchedulerController {
         decision.put("reward_terms", frame.rewardTerms());
         decision.put("scanned_bands", frame.scannedBands());
         decision.put("detected_bands", frame.detectedBands());
+        if (frame.decisionSource() != null) {
+            decision.put("decision_source", frame.decisionSource());
+        }
+        if (frame.indexBreakdown() != null) {
+            decision.put("index_breakdown", frame.indexBreakdown());
+        }
         body.put("decision", decision);
         return ApiResponse.ok(body);
     }

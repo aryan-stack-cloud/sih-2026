@@ -91,6 +91,12 @@ public class SimulationEventPublisher implements SimulationService.StepListener 
             payload.put("reward", frame.reward());
             payload.put("reward_terms", frame.rewardTerms());
             payload.put("valid_observation", frame.validObservation());
+            if (frame.decisionSource() != null) {
+                payload.put("decision_source", frame.decisionSource());
+            }
+            if (frame.indexBreakdown() != null) {
+                payload.put("index_breakdown", frame.indexBreakdown());
+            }
             hub.broadcast(simulationId, "scheduler",
                     frame("scan_decision", simulationId, payload));
         }
