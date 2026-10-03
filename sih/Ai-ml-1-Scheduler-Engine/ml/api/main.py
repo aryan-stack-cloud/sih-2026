@@ -146,7 +146,7 @@ def health() -> JSONResponse:
 def decide(body: DecideRequest, x_request_id: str | None = Header(default=None)) -> JSONResponse:
     """Return the next band to scan for one simulation step."""
     try:
-        action, model_id, decision_id = engine.decide(
+        action, model_id, decision_id, explanation = engine.decide_explained(
             body.simulation_id, body.state, body.policy, body.model_id, body.scenario_id
         )
     except NoCompatibleModelError as exc:
@@ -160,10 +160,12 @@ def decide(body: DecideRequest, x_request_id: str | None = Header(default=None))
     except ValueError as exc:
         return fail(422, "VALIDATION_ERROR", str(exc))
 
-    payload = DecideResponse(action=action, model_id=model_id, decision_id=decision_id)
-    # exclude_none keeps `index_breakdown` out of the response entirely for policies that do not
-    # produce one, so the contract addition stays additive: a Frontend that has not adopted it
-    # sees byte-identical responses to before.
+    payload = DecideResponse(
+        action=action, model_id=model_id, decision_id=decision_id, **explanation
+    )
+    # exclude_none keeps `index_breakdown` and `decision_source` out of the response entirely
+    # for policies that do not produce them, so the contract addition stays additive: a
+    # Frontend that has not adopted it sees byte-identical responses to before.
     return ok(payload.model_dump(mode="json", exclude_none=True), x_request_id)
 
 

@@ -88,7 +88,9 @@ public class MlSchedulerClient {
                     dwell instanceof Number n ? n.intValue() : null,
                     (String) data.get("model_id"),
                     (String) data.get("decision_id"),
-                    true);
+                    true,
+                    indexBreakdown(data.get("index_breakdown")),
+                    data.get("decision_source") instanceof String s ? s : null);
         } catch (HttpClientErrorException e) {
             String unavailableMessage = unavailableMessage(e);
             if (unavailableMessage != null) {
@@ -100,6 +102,23 @@ public class MlSchedulerClient {
             markDegraded("decide", simulationId, e);
             return null;
         }
+    }
+
+    /**
+     * The per-component contributions of the index policy, for the judge view. Absent or null
+     * means null; entries whose value is not a number are skipped rather than failing the step.
+     */
+    private static Map<String, Double> indexBreakdown(Object raw) {
+        if (!(raw instanceof Map<?, ?> breakdown)) {
+            return null;
+        }
+        Map<String, Double> out = new LinkedHashMap<>();
+        for (Map.Entry<?, ?> entry : breakdown.entrySet()) {
+            if (entry.getValue() instanceof Number n) {
+                out.put(String.valueOf(entry.getKey()), n.doubleValue());
+            }
+        }
+        return out;
     }
 
     /** Only the structured 409 code disables further decisions for this run. */

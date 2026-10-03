@@ -16,6 +16,7 @@ into the StateVector by the Backend's StateBuilder (API_CONTRACT.md Section 0).
 
 from __future__ import annotations
 
+import math
 import threading
 from collections import OrderedDict
 from typing import Any
@@ -192,6 +193,25 @@ class InferenceEngine:
         scenario_id: str | None = None,
     ) -> tuple[Action, str, str]:
         """``POST /internal/decide`` -> ``(action, model_id, decision_id)``."""
+        action, resolved_model, decision_id, _ = self.decide_explained(
+            simulation_id, state, policy, model_id, scenario_id
+        )
+        return action, resolved_model, decision_id
+
+    def decide_explained(
+        self,
+        simulation_id: str,
+        state: StateVector,
+        policy: str,
+        model_id: str | None = None,
+        scenario_id: str | None = None,
+    ) -> tuple[Action, str, str, dict[str, Any]]:
+        """``POST /internal/decide`` -> ``(action, model_id, decision_id, explanation)``.
+
+        ``explanation`` carries the index policy's decision decomposition for the
+        judge view: ``{"index_breakdown": {...}, "decision_source": ...}``. It is
+        empty for every other policy, so their responses stay byte-identical.
+        """
         contract_state = state.model_dump()
         num_bands = len(contract_state["bands"])
         agent, resolved_model = self._session(
@@ -202,6 +222,20 @@ class InferenceEngine:
         # explore=False: a live simulation is not a training run. Exploration during deployment
         # would make the Backend's metrics non-reproducible for the same seed (NFR-006).
         action_index = agent.select_action(vector, explore=False)
+
+        # Read immediately: the next decide on this session overwrites both. The source is
+        # validated, not trusted: an agent that reports a breakdown with no (or an unknown)
+        # source gets no explanation rather than a misleading one.
+        breakdown = getattr(agent, "last_breakdown", None)
+        source = getattr(agent, "last_source", None)
+        explanation: dict[str, Any] = {}
+        if breakdown and source in ("floor", "index", "deadline"):
+            explanation = {
+                "index_breakdown": {
+                    name: _finite_float(value) for name, value in breakdown.items()
+                },
+                "decision_source": source,
+            }
 
         spec = ActionSpaceSpec(num_bands=num_bands)
         action = Action(**spec.to_contract(action_index))
@@ -219,7 +253,7 @@ class InferenceEngine:
                 for stale in list(self._decisions)[: len(self._decisions) // 2]:
                     del self._decisions[stale]
 
-        return action, resolved_model, decision_id
+        return action, resolved_model, decision_id, explanation
 
     def learn(
         self,
@@ -305,6 +339,21 @@ class InferenceEngine:
     def describe_session(self, simulation_id: str, policy: str) -> dict | None:
         entry = self._sessions.get((simulation_id, policy))
         return entry[0].describe() if entry else None
+
+
+def _finite_float(value: float) -> float:
+    """Clamp a breakdown term to a finite float rounded to 6 decimals.
+
+    The deadline term diverges past a band's deadline (``+inf``), so the raw
+    breakdown is not JSON-safe. Clamp infinities to ``+/-1e6`` and NaN to 0.0;
+    everything else keeps its value to 6 decimals.
+    """
+    number = float(value)
+    if math.isnan(number):
+        return 0.0
+    if math.isinf(number):
+        return 1e6 if number > 0 else -1e6
+    return round(number, 6)
 
 
 def _cold_agent(policy: str, num_bands: int, scenario_id: str | None) -> Agent:

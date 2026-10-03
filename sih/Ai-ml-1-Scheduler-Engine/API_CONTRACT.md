@@ -69,7 +69,7 @@ Base path: `/api/v1`
 | GET | `/scheduler/status` | Current policy + step count |
 | PUT | `/scheduler/config` | Select policy (`baseline`\|`random`\|`ctmc`\|`index`\|`bandit`\|`q_learning`\|`dqn`\|`ppo`) and optionally pin `modelId` for a draft simulation; the pin is stored on the simulation and sent to Ai-ml-1 as `model_id` |
 | POST | `/scheduler/start` / `/scheduler/stop` | Start/stop scheduling loop |
-| GET | `/scheduler/decision` | Latest decision + state vector (debug) |
+| GET | `/scheduler/decision` | Latest decision + state vector (debug). `decision` also carries `decision_source` and `index_breakdown` when the policy supplied them (see `scan_decision` in Section 3) |
 | GET | `/scheduler/history` | Paginated decision log |
 | POST | `/models/train` | Launch training job (async) → `job_id` |
 | GET | `/models` | List, filter by `algorithm`/`active` |
@@ -82,7 +82,7 @@ Base path: `/api/v1`
 | POST | `/experiments/{id}/run` | Execute baseline + ML runs (async, WS progress) |
 | POST | `/experiments/{id}/stop` | Cancel a running experiment |
 | GET | `/experiments/{id}/results` | Comparison results: Pd/Pfa/latency per policy. Each `policies[<policy>]` entry also carries its provenance — `ml_decisions`, `fallback_decisions`, `degraded_episodes`, `model_ids` (the Ai-ml-1 models that actually served it), `unavailable_reason` (set when Ai-ml-1 answered `NO_COMPATIBLE_MODEL`) — so a run that fell back to the local sweep is never presented as an ML result; and `tp_high_priority`/`fn_high_priority`, the counts behind HPDR. In `comparison`, a policy that made no ML decisions carries `{ "status": "fell_back_to_sweep", "reason" }` instead of metric deltas |
-| GET | `/metrics/live?simulationId=` | Live metrics (polling fallback for WS) |
+| GET | `/metrics/live?simulationId=` | Live metrics (polling fallback for WS). The snapshot, which is also the WS `connection_ack` snapshot, carries `per_band: { "looks": int[bands], "active": int[bands], "heard": int[bands], "useful": int[bands] }`: cumulative counts since the run began of the steps each band was scanned, was transmitting, was detected, and was scanned while transmitting. They are counted on every step and never gated; when a run ends, `sum(heard)/sum(active)` equals `metrics.pd` and `sum(useful)/sum(looks)` equals `metrics.scan_efficiency`, so a client can show both live (the `metrics` object itself only arrives at the end of a run) |
 | GET | `/metrics/{experimentId}` | Stored metrics for an experiment |
 | GET | `/metrics/compare?ids[]=` | Compare ≥2 experiments |
 | GET | `/health` / `/ready` / `/metrics` | No auth required; Prometheus format on `/metrics` |
@@ -110,6 +110,8 @@ a trusted local network (see `Backend/README.md` Level 9).
 | Heartbeat | Server ping every 15s; client must pong within 10s or connection closes |
 | Reconnection | Client exponential backoff 1s→30s cap; server replays last known state snapshot |
 | Backpressure | `spectrum_update` coalesced to ≤10/s per connection; drops intermediate frames, never the latest |
+| `scan_decision` payload | `{ t, action, model_id, reward, reward_terms, valid_observation }` plus, when the policy supplied them, `decision_source` (`"floor"` random search floor, `"index"` highest score, `"deadline"` forced by a revisit deadline; `index` policy only) and `index_breakdown` (`{ value, information, novelty, deadline, elapsed_s }` for the chosen start band; finite numbers) |
+| `scan_decision` emission | Has its own 100 ms gate, independent of the spectrum gate but opened on the same steps, so every `spectrum_update` has a `scan_decision` with the same `t`. A step with a detection or a false alarm always emits one; that bypass does not move the gate |
 | Error frame | `{"type":"error","code":"SIM_NOT_RUNNING","message":"..."}` |
 
 Frontend clients MUST implement reconnect + coalescing tolerance from day one, even in the
@@ -123,7 +125,7 @@ Base path: `/internal` on the Ai-ml-1 service (default port `8500`).
 
 | Method | Endpoint | Request | Response |
 |---|---|---|---|
-| POST | `/internal/decide` | `{ "simulation_id", "state": StateVector, "policy": "index"\|"ctmc"\|"bandit"\|"q_learning"\|"dqn"\|"ppo", "model_id"?, "scenario_id"? }` | `{ "action": { "next_band": int, "dwell_time"?: int }, "model_id", "decision_id", "index_breakdown"? }` — `409 NO_COMPATIBLE_MODEL` when `dqn`/`ppo` has no registered model for the state's band count |
+| POST | `/internal/decide` | `{ "simulation_id", "state": StateVector, "policy": "index"\|"ctmc"\|"bandit"\|"q_learning"\|"dqn"\|"ppo", "model_id"?, "scenario_id"? }` | `{ "action": { "next_band": int, "dwell_time"?: int }, "model_id", "decision_id", "index_breakdown"?, "decision_source"? }` — `index_breakdown` (index policy only) holds `value`, `information`, `novelty`, `deadline`, `elapsed_s` for the chosen start band, all finite (an overdue band's `deadline` is clamped to 1e6); `decision_source` (index policy only) is `"floor"`, `"index"` or `"deadline"`; both are absent for every other policy. `409 NO_COMPATIBLE_MODEL` when `dqn`/`ppo` has no registered model for the state's band count |
 | POST | `/internal/learn` | `{ "simulation_id", "decision_id", "state", "action", "reward": float, "next_state", "scanned_bands"?: [int], "detected_bands"?: [int] }` | `{ "acknowledged": true }` (no-op for baseline, called by Backend after every step) |
 | POST | `/internal/train` | `{ "algorithm", "scenario", "hyperparams": {}, "episode_count", "seed_range": [start,end] }` | `{ "job_id" }` (async) |
 | GET | `/internal/train/{job_id}/status` | — | `{ "status": "running"\|"done"\|"failed", "progress": 0-1 }` |
