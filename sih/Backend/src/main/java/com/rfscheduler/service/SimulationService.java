@@ -337,6 +337,7 @@ public class SimulationService {
         private final AtomicIntegerArray looks;
         private final AtomicIntegerArray active;
         private final AtomicIntegerArray heard;
+        private final AtomicIntegerArray useful;
 
         LiveSimulation(String simulationId) {
             this(simulationId, -1);
@@ -349,10 +350,12 @@ public class SimulationService {
                 looks = new AtomicIntegerArray(numBands);
                 active = new AtomicIntegerArray(numBands);
                 heard = new AtomicIntegerArray(numBands);
+                useful = new AtomicIntegerArray(numBands);
             } else {
                 looks = null;
                 active = null;
                 heard = null;
+                useful = null;
             }
             counters.put("detections", 0);
             counters.put("false_alarms", 0);
@@ -374,6 +377,18 @@ public class SimulationService {
                 countInto(looks, frame.scannedBands());
                 countInto(active, frame.activeBands());
                 countInto(heard, frame.detectedBands());
+                countUseful(frame.scannedBands(), frame.activeBands());
+            }
+        }
+
+        // A look is useful exactly when the scanned band was transmitting - the
+        // per-band form of MetricsEngine's TP-or-FN rule, so sum(useful)/sum(looks)
+        // equals scan_efficiency at the end of a run.
+        private void countUseful(List<Integer> scanned, List<Integer> activeBands) {
+            for (int b : scanned) {
+                if (b >= 0 && b < numBands && activeBands.contains(b)) {
+                    useful.incrementAndGet(b);
+                }
             }
         }
 
@@ -451,6 +466,7 @@ public class SimulationService {
                 perBand.put("looks", copyOf(looks));
                 perBand.put("active", copyOf(active));
                 perBand.put("heard", copyOf(heard));
+                perBand.put("useful", copyOf(useful));
                 out.put("per_band", perBand);
             }
             out.put("step_delay_ms", stepDelayMs);

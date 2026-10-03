@@ -75,4 +75,48 @@ class LiveSimulationPerBandTest {
 
         assertThat(live.snapshot()).doesNotContainKey("per_band");
     }
+
+    @Test
+    void usefulCountsOnlyScannedAndActiveBands() {
+        var live = new SimulationService.LiveSimulation("sim_test", 6);
+        live.record(frame(0, List.of(1, 2), List.of(2, 5), List.of(1)));
+
+        // Only band 2 was both scanned and transmitting; band 1 was heard but not
+        // active, band 5 was active but never looked at.
+        assertThat(perBandList(live, "useful")).containsExactly(0, 0, 1, 0, 0, 0);
+    }
+
+    @Test
+    void usefulAccumulatesAndIgnoresOutOfRange() {
+        var live = new SimulationService.LiveSimulation("sim_test", 3);
+        live.record(frame(0, List.of(-1, 0, 3, 99), List.of(-5, 0, 2, 3), List.of(0)));
+        live.record(frame(1, List.of(0, 1), List.of(1, 2), List.of(1)));
+
+        // Step 0: only band 0 is in range on both sides. Step 1: only band 1.
+        assertThat(perBandList(live, "useful")).containsExactly(1, 1, 0);
+    }
+
+    @Test
+    void usefulSnapshotIsCopyAfterHeard() {
+        var live = new SimulationService.LiveSimulation("sim_test", 2);
+        live.record(frame(0, List.of(0), List.of(0), List.of(0)));
+
+        Map<String, Object> perBand =
+                (Map<String, Object>) live.snapshot().get("per_band");
+        assertThat(perBand.keySet()).containsExactly("looks", "active", "heard", "useful");
+
+        perBandList(live, "useful").set(0, 999);
+        perBandList(live, "useful").add(999);
+
+        // Mutating the returned list must not leak into later snapshots.
+        assertThat(perBandList(live, "useful")).containsExactly(1, 0);
+    }
+
+    @Test
+    void oneArgConstructorStillOmitsPerBandWithUseful() {
+        var live = new SimulationService.LiveSimulation("sim_test");
+        live.record(frame(0, List.of(0, 1), List.of(0, 1), List.of(0)));
+
+        assertThat(live.snapshot()).doesNotContainKey("per_band");
+    }
 }

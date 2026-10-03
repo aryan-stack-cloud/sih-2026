@@ -143,6 +143,7 @@ public class SimulationRunner {
         Map<String, Object> previousState = null;
 
         for (int t = 0; t < duration; t++) {
+            long stepStartNanos = System.nanoTime();
             if (control != null && control.stopRequested()) {
                 stoppedEarly = true;
                 break;
@@ -253,17 +254,21 @@ public class SimulationRunner {
             previousState = nextState;
 
             // Pacing, for a human actually watching this run rather than a batch experiment
-            // racing to a result. Sleeping AFTER the frame is emitted, not before, so the delay
-            // is "how long this step stays on screen" rather than added latency before it appears.
+            // racing to a result. The delay is the step PERIOD, not a post-step sleep: the
+            // step's own compute counts toward it, so two paced runs on one seed stay in
+            // step for the race view instead of the heavier policy drifting behind.
             if (control != null) {
                 long delayMs = control.stepDelayMs();
                 if (delayMs > 0) {
-                    try {
-                        Thread.sleep(delayMs);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        stoppedEarly = true;
-                        break;
+                    long remainingMs = remainingPaceMs(delayMs, System.nanoTime() - stepStartNanos);
+                    if (remainingMs > 0) {
+                        try {
+                            Thread.sleep(remainingMs);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            stoppedEarly = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -277,6 +282,17 @@ public class SimulationRunner {
         return new RunResult(request.simulationId(), policy, seed, duration, summary, frames,
                 truth, mlDecisions, fallbackDecisions, stoppedEarly, Set.copyOf(servedModelIds),
                 unavailableReason);
+    }
+
+    /**
+     * Milliseconds left to sleep so a step lasts the full pacing period.
+     * Pure and side-effect free - the loop still owns the sleeping and the interrupt handling.
+     */
+    static long remainingPaceMs(long delayMs, long elapsedNanos) {
+        if (delayMs <= 0) {
+            return 0;
+        }
+        return Math.max(0, delayMs - elapsedNanos / 1_000_000);
     }
 
     /**
