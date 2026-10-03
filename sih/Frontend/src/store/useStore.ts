@@ -322,7 +322,9 @@ function applyFrame(
       // reconnect cannot leave the UI showing a total nobody can reproduce. What this frame
       // does carry is false alarms, which spectrum_update omits and the waterfall needs -
       // detection_event is never coalesced, so nothing is lost by reading them only here.
-      set((s) => ({ frames: applyFalseAlarms(s.frames, frame) }));
+      if (frame.false_alarm_bands?.length) {
+        set((s) => ({ frames: applyFalseAlarms(s.frames, frame) }));
+      }
       break;
 
     case "metrics_update":
