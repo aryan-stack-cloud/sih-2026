@@ -47,6 +47,11 @@ def train(
 
     Mirrors the ``/internal/train`` request body (API_CONTRACT.md Section 4):
     ``{algorithm, scenario, hyperparams, episode_count, seed_range}``.
+
+    ``train_horizons`` (a hyperparameter holding a list of ints, 0 = the scenario's full
+    length) trains the tabular agents on mixed-length episodes for short-run efficiency;
+    it is popped before the agent is built so it never reaches a constructor, and it is
+    ignored by the deep path (DQN/PPO train on their own rollout budget instead).
     """
     cfg = load_scenario(scenario) if isinstance(scenario, str) else dict(scenario)
     defaults = {k: v for k, v in load_hyperparams(algorithm).items() if not k.startswith("_")}
@@ -59,6 +64,7 @@ def train(
         episode_count if episode_count is not None else merged.pop("train_episodes", 20)
     )
     merged.pop("train_episodes", None)
+    horizons = _validate_horizons(merged.pop("train_horizons", None))
 
     if seed_range is not None:
         train_seeds = list(range(int(seed_range[0]), int(seed_range[1])))
@@ -86,7 +92,7 @@ def train(
             agent, cfg, train_seeds, merged, train_progress, explicit_seeds=seed_range is not None
         )
     else:
-        train_curve = _train_tabular(agent, cfg, train_seeds, train_progress)
+        train_curve = _train_tabular(agent, cfg, train_seeds, train_progress, horizons=horizons)
 
     train_seconds = time.perf_counter() - started
 
@@ -112,7 +118,11 @@ def train(
             "train_seeds": [train_seeds[0], train_seeds[-1]] if train_seeds else [],
             "train_seconds": round(train_seconds, 3),
             # Persisted into the registry record through hyperparams, next to what it explains.
-            "hyperparams": {**merged, "periodicity_source": source},
+            "hyperparams": {
+                **merged,
+                "periodicity_source": source,
+                **({"train_horizons": horizons} if horizons else {}),
+            },
             "periodicity_source": source,
             "reward_weights": cfg.get("reward_weights", {}),
         }
@@ -147,6 +157,22 @@ def _scale_for_band_count(algorithm: str, hyperparams: dict, num_bands: int) -> 
     return scaled
 
 
+def _validate_horizons(value: Any) -> list[int] | None:
+    """Check a ``train_horizons`` list; absent or empty means today's behaviour (None)."""
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, (list, tuple)):
+        raise ValueError(f"train_horizons must be a list of ints, got {value!r}")
+    out: list[int] = []
+    for entry in value:
+        if isinstance(entry, bool) or not isinstance(entry, int):
+            raise ValueError(f"train_horizons entries must be ints >= 0, got {entry!r}")
+        if entry < 0:
+            raise ValueError(f"train_horizons entries must be ints >= 0, got {entry!r}")
+        out.append(int(entry))
+    return out or None
+
+
 def _serving_env(cfg: dict, seed: int):
     """An environment whose periodicity features are the ones a served model will receive.
 
@@ -157,11 +183,26 @@ def _serving_env(cfg: dict, seed: int):
 
 
 def _train_tabular(
-    agent: Agent, cfg: dict, seeds: list[int], progress: ProgressCallback | None
+    agent: Agent,
+    cfg: dict,
+    seeds: list[int],
+    progress: ProgressCallback | None,
+    horizons: list[int] | None = None,
 ) -> list[float]:
+    """Tabular path: one fresh serving environment per training seed.
+
+    With ``horizons``, episode ``i`` runs ``horizons[i % len(horizons)]`` steps (0 keeps the
+    scenario's full length); seeds, learning flags and progress reporting are unchanged.
+    """
     curve: list[float] = []
     for i, seed in enumerate(seeds):
-        env = _serving_env(cfg, seed)
+        env_cfg = cfg
+        if horizons:
+            horizon = horizons[i % len(horizons)]
+            if horizon > 0:
+                env_cfg = dict(cfg)
+                env_cfg["duration_steps"] = int(horizon)
+        env = _serving_env(env_cfg, seed)
         m = run_episode(env, agent, seed=seed, learn=True, episode=i)
         curve.append(m.cumulative_reward)
         if progress:
@@ -219,7 +260,11 @@ def _train_deep(
     progress: ProgressCallback | None,
     explicit_seeds: bool = False,
 ) -> list[float]:
-    """SB3 path: one environment whose every episode is a different seed's spectrum."""
+    """SB3 path: one environment whose every episode is a different seed's spectrum.
+
+    ``train_horizons`` is ignored here: SB3 rolls out its own fixed budget, so mixed
+    episode lengths do not apply to the deep path.
+    """
     from stable_baselines3.common.callbacks import BaseCallback
 
     total = int(merged.get("total_timesteps", 50_000))

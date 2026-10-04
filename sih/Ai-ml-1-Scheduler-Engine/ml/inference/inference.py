@@ -131,8 +131,6 @@ class InferenceEngine:
         the baseline -- presented as a real DQN measurement. ``ModelRegistry.resolve`` now picks a
         band-compatible model per request, preferring one trained on the requested scenario.
         """
-        import copy
-
         if model_id is not None:
             pinned = self.registry.get(model_id)          # KeyError -> 404 at the API
             if pinned.algorithm != policy:
@@ -148,13 +146,13 @@ class InferenceEngine:
                     f"but this simulation has {num_bands}"
                 )
             # Serve a copy so two simulations sharing a model do not learn into each other.
-            return copy.deepcopy(agent), model_id
+            return _fresh_session_copy(agent), model_id
 
         chosen = self.registry.resolve(policy, num_bands, scenario_id)
         if chosen is not None:
             agent = self._load(chosen.model_id)
             if agent.num_bands == num_bands:
-                return copy.deepcopy(agent), chosen.model_id
+                return _fresh_session_copy(agent), chosen.model_id
             log.warning(
                 "registry band count disagrees with the checkpoint; not serving it",
                 extra={"model_id": chosen.model_id, "model_num_bands": agent.num_bands,
@@ -354,6 +352,25 @@ def _finite_float(value: float) -> float:
     if math.isinf(number):
         return 1e6 if number > 0 else -1e6
     return round(number, 6)
+
+
+def _fresh_session_copy(agent: Agent) -> Agent:
+    """A copy of a loaded model for ONE simulation, started the way ml/evaluation/runner.py starts an episode.
+
+    ``start_episode`` is what clears the per-world state a learner carries between worlds. The contextual bandit's per-band
+    biases are exactly that: a checkpoint stores the ones from the LAST TRAINING EPISODE, and "band 7 pays well" is a fact
+    about that world, not about the simulation about to run (``BanditAgent.start_episode`` explains it). Serving the loaded
+    agent as it came off disk made the live bandit start every run camped on the last training world's busy bands, while
+    every offline evaluation (which calls ``start_episode``) started from the optimistic sweep -- so served bandit results did
+    not match the harness decision for decision. The cold-learner path below has always called it; this makes a registered
+    model's session begin the same way. A no-op for DQN/PPO; for Q-learning it only resets epsilon, which decide ignores
+    (it never explores).
+    """
+    import copy
+
+    served = copy.deepcopy(agent)
+    served.start_episode(0)
+    return served
 
 
 def _cold_agent(policy: str, num_bands: int, scenario_id: str | None) -> Agent:

@@ -67,6 +67,7 @@ def build_agent(
 
     if policy in ("bandit", "q_learning"):
         cfg.pop("train_episodes", None)
+        cfg.pop("train_horizons", None)
         eps = EpsilonSchedule(**cfg.pop("epsilon", {}))
         cls = BanditAgent if policy == "bandit" else QLearningAgent
         return cls(num_bands, epsilon=eps, rng=rng, **cfg)
@@ -79,6 +80,7 @@ def build_agent(
     # "unexpected keyword argument 'reference_bands'" for every DQN/PPO training run.
     cfg.pop("reference_bands", None)
     cfg.pop("train_episodes", None)
+    cfg.pop("train_horizons", None)
     return DeepRLAgent(num_bands, algorithm=policy, rng=rng, **cfg)
 
 

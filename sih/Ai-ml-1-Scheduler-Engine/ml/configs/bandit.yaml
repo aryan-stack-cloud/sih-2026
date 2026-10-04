@@ -1,6 +1,14 @@
 algorithm: bandit
 _comment: Contextual multi-armed bandit - MVP (PRD Section 10.1). Trains in minutes
-  on CPU.
+  on CPU. This file is the ORIGINAL recipe. The agent also has opt-in options (poly_degree 2
+  with poly_features 7, neighbor_features [0, 1, 2] with poly_neighbor, align_window, eff_beta,
+  cov_beta; see ml/agents/bandit_agent.py). The recipe built from them (all seven features
+  squared and multiplied, the next band's features, align_window, eff_beta 4, cov_beta 2, 30
+  episodes) lifted listening efficiency 1.67x / 1.49x / 1.20x at 80 / 160 / 400 steps on fresh
+  worlds but did NOT pass the pre-registered gate of 4 Oct 2026 (400-step lower bound 1.15,
+  high-priority detection down 5.5 pp at full length, Scenario C down 21% at 160 steps,
+  distinct bursts down 12 to 17 pp), so it is not the default; see
+  docs/superpowers/specs/2026-10-04-efficiency-uplift-gate.md.
 learning_rate: 0.05
 bias_learning_rate: 0.05
 reward_scale: 10.0

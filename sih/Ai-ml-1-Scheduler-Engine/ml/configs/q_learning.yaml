@@ -1,6 +1,15 @@
 algorithm: q_learning
 _comment: Tabular Q-Learning - V1 (Ai-ml-1 Level 7). State is discretised per band;
-  keep the bin counts small or the table stops being visitable.
+  keep the bin counts small or the table stops being visitable. 4 Oct 2026 efficiency
+  recipe (docs/superpowers/specs/2026-10-04-efficiency-uplift-gate.md) - six EWMA bins
+  instead of three, the next band's EWMA in the key (a K=2 window covers band a+1), the
+  window alignment rule (take window a-1 when its extra band looks busier), the two
+  shaping terms (eff_beta pays per detected window band, cov_beta pays for visiting stale
+  bands) and training on episodes of mixed length (80/160/400 steps and full), because the
+  served runs are short. Set bin_edges/neighbor_features/align_window/eff_beta/cov_beta
+  back to their defaults (empty, empty, false, 0, 0) and train_horizons to [] for the
+  original agent; eff_beta up and cov_beta down trade distinct-burst coverage for
+  efficiency.
 learning_rate: 0.15
 discount: 0.9
 reward_scale: 10.0
@@ -10,10 +19,19 @@ bins:
   time_since_last_scan: 3
   periodicity_phase: 3
   periodicity_confidence: 2
+bin_edges:
+  recent_detection_rate_ewma: [0.05, 0.15, 0.3, 0.5, 0.75]
+neighbor_features: [recent_detection_rate_ewma]
+neighbor_bin_edges:
+  recent_detection_rate_ewma: [0.15, 0.4]
+align_window: true
+eff_beta: 4.0
+cov_beta: 2.0
 epsilon:
   start: 1.0
   end: 0.05
   decay: 0.9
   decay_episodes: 40
   mode: exponential
-train_episodes: 40
+train_episodes: 80
+train_horizons: [80, 160, 400, 0]
