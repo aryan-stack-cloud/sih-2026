@@ -84,7 +84,7 @@ WebSocket probe.
 | # | Acceptance item | Result |
 |---|---|---|
 | 1 | A full run shows no red banner at any time | Pass: the alert region was polled every ~150 ms through full runs (Index, Q-learning, Bandit); 0 alerts, 0 page errors. The browser console still logs the swallowed 409 of the pre-start poll. |
-| 2 | "Why this band?" shows a decision type and terms that change over the run | Pass: Search, Coverage and Priority all appear (Index is mostly Search and Coverage for its first ~200 steps); 151 to 119 distinct `value` terms per 160-step run; policies without a breakdown say so and still show the reward terms. |
+| 2 | "Why this band?" shows a decision type and terms that change over the run | Pass: Search, Coverage and Priority all appear (Index is mostly Search and Coverage for its first ~200 steps); 80 to 151 distinct `value` terms per 160-step run; policies without a breakdown say so and still show the reward terms. |
 | 3 | Both race waterfalls advance together and show the same transmissions | Pass after two fixes found by this check: lock-step runs (Index and sweep at 31/31, 61/61, 91/92, 122/122, 152/152, 160/160 steps after 3/6/9/12/15 s) and 160 of 160 frames at 100 ms. |
 | 4 | Attention-vs-activity bars populated, score plausible | Pass: 51 to 62% for Index and 52% for the Bandit; the uniform-listening overlap computed by hand from the same counters is about 49%. |
 | 5 | Backend quick suite, Ai-ml-1 tests and `npm run build` green | Pass: Backend 91/91, Frontend 39/39 with a clean build, Python suite green. |
