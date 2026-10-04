@@ -110,3 +110,30 @@ Screening, selection and confirmation are offline harness runs on this clone's c
 merged to `master`, no model is registered in the live registry and the live stack is not touched until the owner has seen the
 report and said which models to register.
 
+## Outcome (confirmation seeds C1 = 21000-21019, looked at once)
+
+Efficiency ratio new / today, mean over the seven scenarios (95% paired interval). Full gate outputs and every table are in
+`2026-10-04-efficiency-uplift-results/`.
+
+| Model | 80 steps | 160 | 400 | full length | Pd (pp, 80 / 400 / full) | HPDR (pp, 80 / 400 / full) | distinct bursts (pp, 80 / 400 / full) | Verdict |
+|---|---|---|---|---|---|---|---|---|
+| Bandit | 1.67 [1.57, 1.78] | 1.49 [1.40, 1.59] | **1.20 [1.15, 1.25]** | 1.04 [1.00, 1.09] | +6.6 / +4.3 / +2.3 | +5.7 / **-0.3 [-2.9, +2.4]** / **-5.5 [-8.4, -2.8]** | -11.6 / -12.8 / -16.8 | **FAIL** (E1 at 400, E2 HPDR at 400 and full, E4 Scenario C at 160 steps: ratio 0.79 [0.67, 0.90]) |
+| Q-learning | 1.38 [1.32, 1.46] | 1.32 [1.26, 1.39] | 1.30 [1.26, 1.35] | 1.28 [1.24, 1.32] | +4.5 / +4.1 / +3.9 | +2.7 / +3.2 / +4.1 | -6.1 / -6.2 / -5.3 (reported, not gated) | PASS |
+| DQN | 1.35 [1.24, 1.57] | 1.38 [1.26, 1.65] | 1.40 [1.27, 1.70] | 1.43 [1.30, 1.76] | +3.9 / +4.7 / +5.2 | +2.7 / +3.4 / +4.8 | +5.9 / +7.7 / +11.1 (gated) | PASS |
+| PPO | 1.61 [1.51, 1.73] | 1.60 [1.52, 1.71] | 1.62 [1.54, 1.72] | 1.66 [1.60, 1.74] | +5.0 / +5.7 / +6.3 | +4.7 / +5.4 / +6.6 | +0.8 / +1.2 / +4.4 (gated) | PASS |
+
+The Bandit recipe was the winner of its selection on the tuning seeds with a weakest-horizon ratio of 1.28 and Pd/HPDR guards of at least
++0.2 pp; on the fresh worlds the 400-step ratio is 1.20 (lower end 1.15) and its full-length HPDR fell significantly. Under the rule it does
+not ship. A second Bandit attempt needs the owner's approval and uses C2.
+
+Integrity checks run alongside: the engine options reproduce the screening prototypes parameter for parameter and decision for decision
+(5 recipes); a DQN and a PPO trained through `scripts/train_all.py` on Scenario B equal the screened artifacts to the digit (training is
+deterministic); the HTTP decide/learn path reproduces the in-process harness decision for decision for all four new models once the
+engine's per-simulation start is fixed (below; torch pinned to one thread, otherwise near-tied scores in 32-band scenarios flip by float
+summation order); the engine test suite passes in three chunks.
+
+Found on the way: the engine served a registered model without `start_episode`, so a served Bandit began every run with the per-band
+biases of its last TRAINING world instead of the optimistic sweep that every offline evaluation starts from. Today's registered Bandit
+over HTTP differed from the harness in 20 of 20 runs (mean efficiency 34.6% served against 35.5% harness on A, B, D, F at 160 steps).
+Q-learning, DQN and PPO were unaffected. Fixed in `17cb1f5` (a registered model's session now starts like a harness episode), with a
+regression test.
