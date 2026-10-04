@@ -133,7 +133,6 @@ def test_yaml_default_horizons_never_reach_constructors(policy, monkeypatch):
     from ml.agents.factory import build_agent
 
     agent = build_agent(policy, 8, {})
-    assert agent.align_window is False
     if policy in ("dqn", "ppo"):
         assert "train_horizons" not in agent.sb3_kwargs
 

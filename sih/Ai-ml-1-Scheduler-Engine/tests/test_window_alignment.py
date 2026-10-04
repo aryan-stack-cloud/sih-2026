@@ -301,5 +301,7 @@ def test_build_agent_with_align_window_true(policy):
 
 
 @pytest.mark.parametrize("policy", ["bandit", "q_learning", "dqn", "ppo"])
-def test_build_agent_defaults_to_flag_off(policy):
-    assert build_agent(policy, N, {}).align_window is False
+def test_build_agent_follows_the_yaml_default_and_can_switch_the_flag_off(policy):
+    # The 4 Oct 2026 efficiency recipes turn the alignment on in ml/configs/<policy>.yaml; the classes themselves default to off.
+    assert build_agent(policy, N, {}).align_window is True
+    assert build_agent(policy, N, {"align_window": False}).align_window is False
