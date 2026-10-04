@@ -22,6 +22,9 @@ import java.util.Map;
  */
 public class StateBuilder {
 
+    /** Equals the Python environment's {@code priority_decay} default. */
+    public static final double PRIORITY_DECAY = 0.998;
+
     private final int numBands;
     private final double ewmaAlpha;
 
@@ -54,6 +57,7 @@ public class StateBuilder {
         Arrays.fill(consecutiveMisses, 0);
         Arrays.fill(periodicityPhase, 0.0);
         Arrays.fill(periodicityConfidence, 0.0);
+        resetPriorityWeights();
     }
 
     /** Snapshot of band ages taken BEFORE the update - C(t) asks how recently we were last here. */
@@ -103,6 +107,29 @@ public class StateBuilder {
 
     public void setBandPriorityWeight(int band, double weight) {
         bandPriorityWeight[band] = weight;
+    }
+
+    /** All bands back to neutral: no threat belief survives a fresh start. */
+    public void resetPriorityWeights() {
+        Arrays.fill(bandPriorityWeight, 1.0);
+    }
+
+    /** Decays every weight toward 1.0, so stale threat beliefs fade without new detections. */
+    public void decayPriorityWeights(double decay) {
+        for (int b = 0; b < numBands; b++) {
+            bandPriorityWeight[b] = 1.0 + (bandPriorityWeight[b] - 1.0) * decay;
+        }
+    }
+
+    /**
+     * Records the priority of the emitter active on a detected band. Quiet bands stay at 1.0,
+     * so a sub-neutral priority carries no information and is ignored.
+     */
+    public void observePriority(int band, double priority) {
+        if (priority < 1.0) {
+            return;
+        }
+        bandPriorityWeight[band] = priority;
     }
 
     /** The StateVector JSON exactly as API_CONTRACT.md Section 4 defines it. */

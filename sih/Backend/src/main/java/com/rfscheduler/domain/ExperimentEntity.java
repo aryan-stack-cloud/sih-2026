@@ -32,6 +32,9 @@ public class ExperimentEntity {
     @Column(name = "results_json", columnDefinition = "TEXT")
     private String resultsJson;
 
+    @Column(name = "threat_aware", nullable = false)
+    private boolean threatAware;
+
     @Column(name = "created_at")
     private Instant createdAt;
 
@@ -108,6 +111,14 @@ public class ExperimentEntity {
 
     public void setResultsJson(String resultsJson) {
         this.resultsJson = resultsJson;
+    }
+
+    public boolean isThreatAware() {
+        return threatAware;
+    }
+
+    public void setThreatAware(boolean threatAware) {
+        this.threatAware = threatAware;
     }
 
     public Instant getCreatedAt() {

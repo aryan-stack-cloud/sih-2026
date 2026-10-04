@@ -16,6 +16,8 @@ export function SimulationsPage({ onWatch }: { onWatch: () => void }) {
   const [policy, setPolicy] = useState<PolicyType>("bandit");
   const [durationSteps, setDurationSteps] = useState(400);
   const [seed, setSeed] = useState<number | "">(randomSeed);
+  // Off by default: only the Index policy responds to it, so it must stay an explicit choice.
+  const [threatAware, setThreatAware] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -99,6 +101,16 @@ export function SimulationsPage({ onWatch }: { onWatch: () => void }) {
                   onClick={() => setSeed(randomSeed(typeof seed === "number" ? seed : undefined))}>🎲</button>
               </div>
             </div>
+            <label className="field" htmlFor="simulation-threat-aware">
+              <input
+                id="simulation-threat-aware"
+                type="checkbox"
+                checked={threatAware}
+                onChange={(e) => setThreatAware(e.target.checked)}
+                aria-describedby="simulation-threat-aware-hint"
+              />
+              <span>Threat-aware</span>
+            </label>
             <button
               className="primary"
               type="button"
@@ -112,6 +124,7 @@ export function SimulationsPage({ onWatch }: { onWatch: () => void }) {
                     seed: seed === "" ? undefined : seed,
                     scenario,
                     policy,
+                    threatAware,
                   }),
                 )
               }
@@ -127,6 +140,9 @@ export function SimulationsPage({ onWatch }: { onWatch: () => void }) {
               <em>{selected.expected_outcome}</em>
             </p>
           )}
+          <p className="note" id="simulation-threat-aware-hint">
+            Use the threat level of emitters already intercepted. Only the Index policy responds.
+          </p>
         </div>
       </section>
 
@@ -171,7 +187,7 @@ export function SimulationsPage({ onWatch }: { onWatch: () => void }) {
                 )}
                 {simulations.map((simulation) => (
                   <tr key={simulation.id}>
-                    <td className="simulation-name">{simulation.name}</td>
+                    <td className="simulation-name">{simulation.name}{simulation.threat_aware ? <> <small>threat-aware</small></> : null}</td>
                     <td>{simulation.status}</td>
                     <td>{simulation.scenario_id ?? "—"}</td>
                     <td>{policyLabel(simulation.policy_type)}</td>

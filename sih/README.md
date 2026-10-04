@@ -95,7 +95,7 @@ Every scenario's best detector beats the sweep: Q-learning reaches 35% on B and 
 ## What can be improved
 
 - **Burst coverage:** give learned policies a revisit deadline or a reward for each *new* burst, so they stop trading distinct bursts for detection density.
-- **Index configuration:** `scripts/train_all.py` drops the tuned `coverage_budget`, so Index is served with a 21-step deadline instead of the validated ~48.
+- **Index configuration:** each scenario now has its own tuned `coverage_budget` (`ml/configs/index_budgets.json`, applied by `scripts/train_all.py`). Re-register Index with `python scripts/train_all.py --algos index` to serve it; the results above were measured before this change.
 - **Periodicity on shared bands:** a confident period claim on a band with several emitters slightly hurts Index on D and F.
 - **Unused pulse features:** pulse width and angle of arrival in the real data could drive a threat classifier. Only timing, frequency and amplitude are used today.
 - **Deployment:**

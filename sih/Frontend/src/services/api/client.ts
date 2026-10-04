@@ -223,6 +223,7 @@ export const createExperiment = (body: {
   policies: PolicyType[];
   episodes?: number;
   seed?: number;
+  threatAware?: boolean;
 }) => request<Experiment>("/api/v1/experiments", json(body));
 
 export const listExperiments = (status?: string, page = 0, size = 20) =>

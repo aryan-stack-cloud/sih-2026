@@ -82,6 +82,21 @@ DUTY_HYPOTHESES = (0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5)
 PERIODICITY_CLAIM_CONFIDENCE = 0.5
 
 
+def _finite_term(value: float) -> float:
+    """One breakdown term as a finite float rounded to 6 decimals.
+
+    Mirrors the API boundary's clamp (``ml/inference/inference.py``) so the stored
+    breakdown is already render-safe; the boundary re-applies it defensively. Module level,
+    above the class, so it can never split the class body.
+    """
+    number = float(value)
+    if math.isnan(number):
+        return 0.0
+    if math.isinf(number):
+        return 1e6 if number > 0 else -1e6
+    return round(number, 6)
+
+
 class IndexAgent(Agent):
     """Whittle-style index scheduling under hard revisit deadlines."""
 
@@ -165,6 +180,9 @@ class IndexAgent(Agent):
             raise ValueError(f"rho_min {rho_min} exceeds rho_max {rho_max}")
         self.rho_min = float(rho_min)
         self.rho_max = float(rho_max)
+        # The budget that set this instance's deadline, filled in by from_scenario; None
+        # means the deadline was stated outright rather than derived from any budget.
+        self.coverage_budget = None
         self.floor = CTMCFloorAgent(
             num_bands, mean_dwell_slots=floor_mean_dwell_slots, rng=self.rng
         )
@@ -227,11 +245,25 @@ class IndexAgent(Agent):
             detect_p_fa=float(norm.sf(threshold / sigma)),
             detect_p_d=float(norm.sf((threshold - snr_mean * snr_gain) / sigma)),
         )
+        # A tuned per-scenario budget narrows or widens the derived deadline; a stated
+        # deadline is a requirement, not a derivation, so it always wins and leaves no
+        # budget to report.
+        coverage_budget = overrides.pop("coverage_budget", None)
+        if coverage_budget is not None and not 0.0 < coverage_budget <= 1.0:
+            raise ValueError(f"coverage_budget must lie in (0, 1], got {coverage_budget}")
         if "deadline_s" not in overrides:
+            budget = COVERAGE_BUDGET if coverage_budget is None else float(coverage_budget)
             cycle = math.ceil(num_bands / bandwidth_k) * (slot_s + retune_s)
-            derived["deadline_s"] = cycle / COVERAGE_BUDGET
+            derived["deadline_s"] = cycle / budget
         derived.update(overrides)
-        return cls(num_bands, **derived)
+        agent = cls(num_bands, **derived)
+        if "deadline_s" in overrides:
+            agent.coverage_budget = None
+        elif coverage_budget is None:
+            agent.coverage_budget = COVERAGE_BUDGET
+        else:
+            agent.coverage_budget = float(coverage_budget)
+        return agent
 
     @property
     def deadline_slots(self) -> np.ndarray:
@@ -262,6 +294,7 @@ class IndexAgent(Agent):
             "rho_max": self.rho_max,
             "floor_mean_dwell_slots": self.floor.mean_dwell_slots,
             "floor_confidence_threshold": self.floor_confidence_threshold,
+            "coverage_budget": self.coverage_budget,
             "weights": {
                 "w_value": self.weights.w_value,
                 "w_info": self.weights.w_info,
@@ -275,8 +308,12 @@ class IndexAgent(Agent):
     def load(cls, path: str | Path, **kwargs) -> "IndexAgent":
         config = json.loads(Path(path).read_text(encoding="utf-8"))
         weights = IndexWeights(**config.pop("weights"))
+        # Not a constructor argument; checkpoints written before it existed have no key.
+        coverage_budget = config.pop("coverage_budget", None)
         config.update(kwargs)
-        return cls(weights=weights, **config)
+        agent = cls(weights=weights, **config)
+        agent.coverage_budget = coverage_budget
+        return agent
 
     def describe(self) -> dict:
         return {
@@ -417,6 +454,7 @@ class IndexAgent(Agent):
             self.last_source = "index"
             start, bands = select_window(index, self.bandwidth_k, self.mode)
 
+        selected = list(bands)
         bands = apply_deadline_override(
             bands,
             self.deadlines.overdue(
@@ -426,6 +464,11 @@ class IndexAgent(Agent):
             ),
             self.bandwidth_k,
         )
+        # The override only ever replaces bands; when it does, the decision was
+        # coverage-driven rather than floor- or index-driven, and the dashboard
+        # and decision log must say so.
+        if list(bands) != selected:
+            self.last_source = "deadline"
         # The contract's action is a single band; the receiver covers K from there. When the
         # override changes the set, the first forced band leads.
         start = bands[0]
@@ -559,7 +602,10 @@ class IndexAgent(Agent):
 
     def _breakdown_for(self, inputs: IndexInputs, band: int) -> dict[str, float]:
         terms = compute_index(inputs, self.weights, breakdown=True)
-        return {name: float(values[band]) for name, values in terms.items()}
+        # Stored finite: the deadline term diverges past a band's deadline, and neither the
+        # dashboard nor the decision log can render +inf. Clamping here cannot move the
+        # action -- the breakdown is computed after the band is chosen, purely for audit.
+        return {name: _finite_term(values[band]) for name, values in terms.items()}
 
     def describe(self) -> dict:
         return {
@@ -577,6 +623,7 @@ class IndexAgent(Agent):
             "kernel_refresh_steps": self.kernel_refresh_steps,
             "rho_min": self.rho_min,
             "rho_max": self.rho_max,
+            "coverage_budget": self.coverage_budget,
             "floor_confidence_threshold": self.floor_confidence_threshold,
             **{
                 name: getattr(self.weights, name)

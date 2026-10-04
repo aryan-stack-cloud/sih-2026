@@ -92,6 +92,12 @@ public class ExperimentService {
     @Transactional
     public ExperimentEntity create(String name, String scenarioId, List<String> policies,
                                    Integer episodes, Long seed) {
+        return create(name, scenarioId, policies, episodes, seed, null);
+    }
+
+    @Transactional
+    public ExperimentEntity create(String name, String scenarioId, List<String> policies,
+                                   Integer episodes, Long seed, Boolean threatAware) {
         Scenario scenario = ScenarioLibrary.byId(scenarioId);
         ExperimentEntity exp = new ExperimentEntity();
         exp.setId("exp_" + UUID.randomUUID().toString().replace("-", "").substring(0, 8));
@@ -100,6 +106,7 @@ public class ExperimentService {
         exp.setPoliciesCsv(String.join(",", policies));
         exp.setEpisodes(episodes == null ? scenario.episodes() : episodes);
         exp.setSeed(seed == null ? scenario.seed() : seed);
+        exp.setThreatAware(threatAware != null && threatAware);
         exp.setStatus("draft");
         exp.setExpectedOutcome(scenario.expectedOutcome());
         exp.setCreatedAt(Instant.now());
@@ -136,6 +143,7 @@ public class ExperimentService {
         int episodes = exp.getEpisodes();
         long baseSeed = exp.getSeed();
         int duration = durationOverride == null ? scenario.durationSteps() : durationOverride;
+        boolean threatAware = exp.isThreatAware();
 
         Progress state = new Progress(policies.size() * episodes);
         String invocationId = UUID.randomUUID().toString();
@@ -146,7 +154,7 @@ public class ExperimentService {
             try {
                 Map<String, Object> results = execute(
                         id, invocationId, scenario, policies, episodes, baseSeed, duration,
-                        state, onProgress);
+                        threatAware, state, onProgress);
                 if (!state.cancelled()) {
                     persistResults(id, invocationId, "completed", results);
                 }
@@ -165,7 +173,7 @@ public class ExperimentService {
     private Map<String, Object> execute(String experimentId, String invocationId,
                                         Scenario scenario,
                                         List<String> policies, int episodes, long baseSeed,
-                                        int duration, Progress state,
+                                        int duration, boolean threatAware, Progress state,
                                         BiConsumer<String, Progress> onProgress) {
 
         // The shared seed list - the whole point of the class. Built once, used by every policy.
@@ -192,7 +200,7 @@ public class ExperimentService {
                 var request = new SimulationRunner.RunRequest(
                         experimentId + "_" + invocationId + "_" + policy + "_" + i,
                         scenario, policy, seed, duration,
-                        null, null);
+                        null, null, true, threatAware);
                 futures.add(CompletableFuture.supplyAsync(() -> {
                     SimulationRunner.RunResult result = runner.run(request, null, new SimulationRunner.LiveControl() {
                         @Override
@@ -239,6 +247,7 @@ public class ExperimentService {
         results.put("scenario_name", scenario.name());
         results.put("episodes", episodes);
         results.put("duration_steps", duration);
+        results.put("threat_aware", threatAware);
         results.put("seeds", seeds);
         results.put("expected_outcome", scenario.expectedOutcome());
         results.put("policies", byPolicy);

@@ -141,6 +141,7 @@ public class SimulationRunner {
         Set<String> servedModelIds = new HashSet<>();
         boolean stoppedEarly = false;
         Map<String, Object> previousState = null;
+        long lastEmitNanos = 0L;
 
         for (int t = 0; t < duration; t++) {
             if (control != null && control.stopRequested()) {
@@ -219,6 +220,12 @@ public class SimulationRunner {
             // prediction did not previously translate into a measurable scheduling benefit.
             // 6. Advance state, then merge t+1 periodicity before posting /learn.
             stateBuilder.update(scanned, outcome.detectedBands());
+            if (request.threatAware()) {
+                stateBuilder.decayPriorityWeights(StateBuilder.PRIORITY_DECAY);
+                for (int band : outcome.detectedBands()) {
+                    stateBuilder.observePriority(band, truth.priorityAt(t, band));
+                }
+            }
             boolean needsNextPrediction = usesMl && request.periodicityEnabled()
                     && t + 1 < duration && (control == null || !control.stopRequested());
             List<BandPeriodicity> nextPeriodicity = periodicityClient.step(
@@ -241,31 +248,37 @@ public class SimulationRunner {
             StepFrame frame = new StepFrame(
                     t, decision.nextBand(), scanned, truth.activeBands(t),
                     outcome.detectedBands(), outcome.falseAlarmBands(),
-                    reward.reward(), reward.terms(), decision.modelId(), observation.valid());
+                    reward.reward(), reward.terms(), decision.modelId(), observation.valid(),
+                    decision.decisionSource(), decision.indexBreakdown());
             // Batch experiments need aggregate results, not thousands of retained step frames.
             if (onStep != null || control == null) {
                 frames.add(frame);
             }
-            if (onStep != null) {
-                onStep.accept(frame);
-            }
-            previousState = nextState;
-
             // Pacing, for a human actually watching this run rather than a batch experiment
-            // racing to a result. Sleeping AFTER the frame is emitted, not before, so the delay
-            // is "how long this step stays on screen" rather than added latency before it appears.
-            if (control != null) {
+            // racing to a result. The delay is the spacing between EMITTED frames, measured from
+            // the previous emission, so compute time inside a step is absorbed (two paced runs
+            // on one seed stay in step for the race view) and consecutive frames are never
+            // closer together than the delay (the publisher's frame gate then passes all of them).
+            if (control != null && lastEmitNanos != 0L) {
                 long delayMs = control.stepDelayMs();
                 if (delayMs > 0) {
-                    try {
-                        Thread.sleep(delayMs);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        stoppedEarly = true;
-                        break;
+                    long remainingMs = remainingPaceMs(delayMs, System.nanoTime() - lastEmitNanos);
+                    if (remainingMs > 0) {
+                        try {
+                            Thread.sleep(remainingMs);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            stoppedEarly = true;
+                            break;
+                        }
                     }
                 }
             }
+            if (onStep != null) {
+                onStep.accept(frame);
+            }
+            lastEmitNanos = System.nanoTime();
+            previousState = nextState;
         }
 
         MetricsSummary summary = metrics.summary();
@@ -276,6 +289,19 @@ public class SimulationRunner {
         return new RunResult(request.simulationId(), policy, seed, duration, summary, frames,
                 truth, mlDecisions, fallbackDecisions, stoppedEarly, Set.copyOf(servedModelIds),
                 unavailableReason);
+    }
+
+    /**
+     * Milliseconds left to sleep so frames are emitted at least the pacing delay apart.
+     * Pure and side-effect free - the loop still owns the sleeping and the interrupt handling.
+     *
+     * @param elapsedSinceLastEmitNanos time since the previous frame was emitted
+     */
+    static long remainingPaceMs(long delayMs, long elapsedSinceLastEmitNanos) {
+        if (delayMs <= 0) {
+            return 0;
+        }
+        return Math.max(0, delayMs - elapsedSinceLastEmitNanos / 1_000_000);
     }
 
     /**
@@ -307,7 +333,16 @@ public class SimulationRunner {
             int durationSteps,
             String modelId,
             RewardWeights rewardWeights,
-            boolean periodicityEnabled) {
+            boolean periodicityEnabled,
+            boolean threatAware) {
+
+        /** Default: Ai-ml-2's features are merged into the state. */
+        public RunRequest(String simulationId, Scenario scenario, String policy, long seed,
+                          int durationSteps, String modelId, RewardWeights rewardWeights,
+                          boolean periodicityEnabled) {
+            this(simulationId, scenario, policy, seed, durationSteps, modelId, rewardWeights,
+                    periodicityEnabled, false);
+        }
 
         /** Default: Ai-ml-2's features are merged into the state. */
         public RunRequest(String simulationId, Scenario scenario, String policy, long seed,
@@ -324,7 +359,7 @@ public class SimulationRunner {
          */
         public RunRequest withoutPeriodicity() {
             return new RunRequest(simulationId, scenario, policy, seed, durationSteps, modelId,
-                    rewardWeights, false);
+                    rewardWeights, false, threatAware);
         }
     }
 
@@ -339,7 +374,25 @@ public class SimulationRunner {
             double reward,
             Map<String, Double> rewardTerms,
             String modelId,
-            boolean validObservation) {
+            boolean validObservation,
+            String decisionSource,
+            Map<String, Double> indexBreakdown) {
+
+        /** The pre-explanation shape; both new values are null. */
+        public StepFrame(
+                int t,
+                int action,
+                List<Integer> scannedBands,
+                List<Integer> activeBands,
+                List<Integer> detectedBands,
+                List<Integer> falseAlarmBands,
+                double reward,
+                Map<String, Double> rewardTerms,
+                String modelId,
+                boolean validObservation) {
+            this(t, action, scannedBands, activeBands, detectedBands, falseAlarmBands, reward,
+                    rewardTerms, modelId, validObservation, null, null);
+        }
     }
 
     public record RunResult(

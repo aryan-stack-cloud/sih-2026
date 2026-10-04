@@ -56,16 +56,21 @@ def train_one(algo: str, scenario_id: str, timesteps: int, eval_episodes: int) -
 
     cfg = load_scenario(scenario_id)
     if algo == "index":
-        from ml.agents.index_agent import IndexAgent
+        from ml.agents.index_agent import COVERAGE_BUDGET, IndexAgent
         from ml.scheduling.index_policy import IndexWeights
+        from ml.tuning.index_budget import budget_for, load_budgets
 
         tuned = json.loads((ENGINE / "ml/configs/index_tuned_B.json").read_text())["params"]
         weights = IndexWeights(w_value=tuned["w_value"], w_info=tuned["w_info"],
                                w_novelty=tuned["w_novelty"], w_deadline=tuned["w_deadline"])
-        agent = IndexAgent.from_scenario(cfg, weights=weights, rho_min=tuned["rho_min"])
+        budget = budget_for(scenario_id, load_budgets())
+        extra = {"coverage_budget": budget} if budget is not None else {}
+        agent = IndexAgent.from_scenario(cfg, weights=weights, rho_min=tuned["rho_min"],
+                                         **extra)
         summary = evaluate(agent, cfg, episodes=eval_episodes)
         summary["hyperparams"] = {k: tuned[k] for k in
                                   ("w_value", "w_info", "w_novelty", "w_deadline", "rho_min")}
+        summary["hyperparams"]["coverage_budget"] = budget if budget is not None else COVERAGE_BUDGET
     elif algo == "ctmc":
         from ml.agents.ctmc_floor import CTMCFloorAgent
 

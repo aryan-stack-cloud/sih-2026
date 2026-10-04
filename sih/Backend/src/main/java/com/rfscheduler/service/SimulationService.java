@@ -10,13 +10,16 @@ import com.rfscheduler.repository.SimulationRepository;
 import com.rfscheduler.simulation.Scenario;
 import com.rfscheduler.simulation.ScenarioLibrary;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.task.TaskExecutor;
@@ -72,6 +75,12 @@ public class SimulationService {
     @Transactional
     public SimulationEntity create(String name, int bands, int durationSteps, Long seed,
                                    String scenarioId, String policyType) {
+        return create(name, bands, durationSteps, seed, scenarioId, policyType, null);
+    }
+
+    @Transactional
+    public SimulationEntity create(String name, int bands, int durationSteps, Long seed,
+                                   String scenarioId, String policyType, Boolean threatAware) {
         SimulationEntity sim = new SimulationEntity();
         sim.setId("sim_" + UUID.randomUUID().toString().replace("-", "").substring(0, 8));
         sim.setName(name);
@@ -80,6 +89,7 @@ public class SimulationService {
         sim.setSeed(seed == null ? 42L : seed);
         sim.setScenarioId(scenarioId);
         sim.setPolicyType(policyType == null ? "baseline" : policyType);
+        sim.setThreatAware(threatAware != null && threatAware);
         sim.setStatus("draft");
         sim.setCurrentStep(0);
         sim.setCreatedAt(Instant.now());
@@ -100,6 +110,12 @@ public class SimulationService {
     @Transactional
     public SimulationEntity update(String id, String name, Integer bands, Integer durationSteps,
                                    Long seed, String policyType) {
+        return update(id, name, bands, durationSteps, seed, policyType, null);
+    }
+
+    @Transactional
+    public SimulationEntity update(String id, String name, Integer bands, Integer durationSteps,
+                                   Long seed, String policyType, Boolean threatAware) {
         SimulationEntity sim = get(id);
         if (!"draft".equals(sim.getStatus())) {
             // Contract: "Update config (only while status=draft)".
@@ -121,6 +137,9 @@ public class SimulationService {
         if (policyType != null) {
             sim.setPolicyType(policyType);
             sim.setModelId(null);
+        }
+        if (threatAware != null) {
+            sim.setThreatAware(threatAware);
         }
         sim.setUpdatedAt(Instant.now());
         return repository.save(sim);
@@ -164,14 +183,14 @@ public class SimulationService {
         Scenario scenario = resolveScenario(sim);
         var request = new SimulationRunner.RunRequest(
                 id, scenario, sim.getPolicyType(), sim.getSeed(), sim.getDurationSteps(),
-                sim.getModelId(), null);
+                sim.getModelId(), null, true, sim.isThreatAware());
 
         sim.setStatus("running");
         sim.setCurrentStep(0);
         sim.setUpdatedAt(Instant.now());
         repository.save(sim);
 
-        LiveSimulation state = new LiveSimulation(id);
+        LiveSimulation state = new LiveSimulation(id, sim.getBands());
         live.put(id, state);
         activeWorkers.add(id);
         running.incrementAndGet();
@@ -329,9 +348,31 @@ public class SimulationService {
         private volatile long stepDelayMs;
         private final AtomicInteger step = new AtomicInteger();
         private final Map<String, Object> counters = new ConcurrentHashMap<>();
+        /** -1 when the band count is unknown; then the per-band arrays stay null. */
+        private final int numBands;
+        private final AtomicIntegerArray looks;
+        private final AtomicIntegerArray active;
+        private final AtomicIntegerArray heard;
+        private final AtomicIntegerArray useful;
 
         LiveSimulation(String simulationId) {
+            this(simulationId, -1);
+        }
+
+        LiveSimulation(String simulationId, int numBands) {
             this.simulationId = simulationId;
+            this.numBands = numBands;
+            if (numBands >= 0) {
+                looks = new AtomicIntegerArray(numBands);
+                active = new AtomicIntegerArray(numBands);
+                heard = new AtomicIntegerArray(numBands);
+                useful = new AtomicIntegerArray(numBands);
+            } else {
+                looks = null;
+                active = null;
+                heard = null;
+                useful = null;
+            }
             counters.put("detections", 0);
             counters.put("false_alarms", 0);
             counters.put("reward", 0.0);
@@ -346,6 +387,41 @@ public class SimulationService {
                     (a, b) -> ((Number) a).intValue() + ((Number) b).intValue());
             counters.merge("reward", frame.reward(),
                     (a, b) -> ((Number) a).doubleValue() + ((Number) b).doubleValue());
+            // Per-band attention is tallied for every step, never gated: the judge view's
+            // attention-vs-activity panel needs totals even for steps the publisher skips.
+            if (looks != null) {
+                countInto(looks, frame.scannedBands());
+                countInto(active, frame.activeBands());
+                countInto(heard, frame.detectedBands());
+                countUseful(frame.scannedBands(), frame.activeBands());
+            }
+        }
+
+        // A look is useful exactly when the scanned band was transmitting - the
+        // per-band form of MetricsEngine's TP-or-FN rule, so sum(useful)/sum(looks)
+        // equals scan_efficiency at the end of a run.
+        private void countUseful(List<Integer> scanned, List<Integer> activeBands) {
+            for (int b : scanned) {
+                if (b >= 0 && b < numBands && activeBands.contains(b)) {
+                    useful.incrementAndGet(b);
+                }
+            }
+        }
+
+        private void countInto(AtomicIntegerArray target, List<Integer> bands) {
+            for (int b : bands) {
+                if (b >= 0 && b < numBands) {
+                    target.incrementAndGet(b);
+                }
+            }
+        }
+
+        private static List<Integer> copyOf(AtomicIntegerArray counts) {
+            List<Integer> out = new ArrayList<>(counts.length());
+            for (int i = 0; i < counts.length(); i++) {
+                out.add(counts.get(i));
+            }
+            return out;
         }
 
         void complete(MetricsSummary summary) {
@@ -401,6 +477,14 @@ public class SimulationService {
             out.put("simulation_id", simulationId);
             out.put("t", step.get());
             out.put("counters", new HashMap<>(counters));
+            if (looks != null) {
+                Map<String, Object> perBand = new LinkedHashMap<>();
+                perBand.put("looks", copyOf(looks));
+                perBand.put("active", copyOf(active));
+                perBand.put("heard", copyOf(heard));
+                perBand.put("useful", copyOf(useful));
+                out.put("per_band", perBand);
+            }
             out.put("step_delay_ms", stepDelayMs);
             out.put("unavailable_reason", unavailableReason);
             if (latest != null) {

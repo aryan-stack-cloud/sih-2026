@@ -71,6 +71,7 @@ export interface Simulation {
   scenario_id: ScenarioId | null;
   created_at: string;
   live?: LiveSnapshot;
+  threat_aware?: boolean;
 }
 
 export interface CreateSimulationRequest {
@@ -80,6 +81,7 @@ export interface CreateSimulationRequest {
   seed?: number;
   scenario?: ScenarioId;
   policy?: PolicyType;
+  threatAware?: boolean;
 }
 
 export interface Paged<T> {
@@ -87,6 +89,17 @@ export interface Paged<T> {
   page: number;
   size: number;
   total: number;
+}
+
+/**
+ * Per-band outcome counters, cumulative over the whole run so far (every step, not a
+ * buffered window). `useful` is present on newer Backends; older ones omit it.
+ */
+export interface PerBandCounters {
+  looks: number[];
+  active: number[];
+  heard: number[];
+  useful?: number[];
 }
 
 /** Shared by `GET /metrics/live` and the WebSocket reconnect replay - deliberately one shape. */
@@ -102,6 +115,7 @@ export interface LiveSnapshot {
   model_id?: string;
   metrics?: MetricsSummary;
   error?: string;
+  per_band?: PerBandCounters;
   /** Set when the chosen policy has no trained model for this scenario and the run is sweeping. */
   unavailable_reason?: string | null;
 }
@@ -167,6 +181,7 @@ export interface Experiment {
   expected_outcome: string;
   created_at: string;
   progress?: ExperimentProgress;
+  threat_aware?: boolean;
 }
 
 export interface ExperimentProgress {
@@ -257,6 +272,8 @@ export interface WsFrame {
   model_id?: string;
   reward?: number;
   reward_terms?: Record<string, number>;
+  decision_source?: "floor" | "index" | "deadline";
+  index_breakdown?: Record<string, number>;
   valid_observation?: boolean;
   metrics?: MetricsSummary;
   status?: string;
