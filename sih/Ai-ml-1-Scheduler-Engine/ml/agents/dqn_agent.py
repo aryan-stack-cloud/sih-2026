@@ -30,6 +30,7 @@ import numpy as np
 import gymnasium as gym
 
 from ml.agents.base import Agent, align_window_start
+from ml.agents.shaping import hit_share, staleness_from_ages
 
 SUPPORTED = ("dqn", "ppo")
 
@@ -43,6 +44,35 @@ class RewardScaleWrapper(gym.RewardWrapper):
 
     def reward(self, reward: float) -> float:
         return float(reward) * self.reward_scale
+
+
+class ShapedRewardWrapper(gym.Wrapper):
+    """Add the shaping terms at training time: ``r + eff_beta*hits + cov_beta*stale``.
+
+    DQN/PPO learn offline inside ``model.learn()``, so unlike the tabular agents (which
+    shape in ``learn()``) they need the terms applied to the environment's rewards. Ages
+    are read BEFORE the step -- staleness pays for looking at a band that was stale when
+    the decision was taken, not after the visit already reset its age.
+    """
+
+    def __init__(
+        self, env: gym.Env, eff_beta: float = 0.0, cov_beta: float = 0.0
+    ) -> None:
+        super().__init__(env)
+        self.eff_beta = float(eff_beta)
+        self.cov_beta = float(cov_beta)
+
+    def step(self, action):
+        ages = self.unwrapped.state_builder.time_since_last_scan.copy()
+        obs, reward, terminated, truncated, info = self.env.step(action)
+        shaped = float(reward)
+        if self.eff_beta:
+            shaped += self.eff_beta * hit_share(info)
+        if self.cov_beta:
+            shaped += self.cov_beta * staleness_from_ages(
+                ages, info.get("scanned_bands") or []
+            )
+        return obs, shaped, terminated, truncated, info
 
 
 def _patch_torch_load_for_zip_members() -> None:
@@ -87,12 +117,18 @@ class DeepRLAgent(Agent):
         policy_hidden: int = 64,
         reward_scale: float = 1.0,
         align_window: bool = False,
+        eff_beta: float = 0.0,
+        cov_beta: float = 0.0,
         **sb3_kwargs: Any,
     ) -> None:
         super().__init__(num_bands, rng)
         algorithm = str(algorithm).lower()
         if algorithm not in SUPPORTED:
             raise ValueError(f"algorithm must be one of {SUPPORTED}, got {algorithm!r}")
+        if float(eff_beta) < 0.0 or float(cov_beta) < 0.0:
+            raise ValueError(
+                f"eff_beta and cov_beta must be >= 0, got {eff_beta!r}, {cov_beta!r}"
+            )
         self.policy_type = algorithm
         self.sb3_policy = policy
         self.net_arch = list(net_arch) if net_arch else [128, 128]
@@ -100,6 +136,8 @@ class DeepRLAgent(Agent):
         self.policy_hidden = int(policy_hidden)
         self.reward_scale = float(reward_scale)
         self.align_window = bool(align_window)
+        self.eff_beta = float(eff_beta)
+        self.cov_beta = float(cov_beta)
         # total_timesteps belongs to the training call, not the model constructor.
         self.total_timesteps = int(sb3_kwargs.pop("total_timesteps", 50_000))
         self.sb3_kwargs = sb3_kwargs
@@ -114,8 +152,12 @@ class DeepRLAgent(Agent):
         cls = DQN if self.policy_type == "dqn" else PPO
         kwargs = dict(self.sb3_kwargs)
         train_env = env
+        if self.eff_beta != 0.0 or self.cov_beta != 0.0:
+            train_env = ShapedRewardWrapper(
+                train_env, eff_beta=self.eff_beta, cov_beta=self.cov_beta
+            )
         if float(self.reward_scale) != 1.0:
-            train_env = RewardScaleWrapper(env, reward_scale=self.reward_scale)
+            train_env = RewardScaleWrapper(train_env, reward_scale=self.reward_scale)
         if self.sb3_policy == "equivariant":
             from ml.agents.equivariant_policy import (  # noqa: PLC0415 - heavy SB3/torch import, only for V2
                 EquivariantDQNPolicy,
@@ -178,6 +220,10 @@ class DeepRLAgent(Agent):
         }
         if self.align_window:
             sidecar["align_window"] = True
+        if self.eff_beta != 0.0:
+            sidecar["eff_beta"] = self.eff_beta
+        if self.cov_beta != 0.0:
+            sidecar["cov_beta"] = self.cov_beta
         path.with_suffix(".meta.json").write_text(
             json.dumps(sidecar, indent=2),
             encoding="utf-8",
@@ -201,6 +247,8 @@ class DeepRLAgent(Agent):
             policy_hidden=int(meta.get("policy_hidden", kwargs.pop("policy_hidden", 64))),
             reward_scale=float(meta.get("reward_scale", kwargs.pop("reward_scale", 1.0))),
             align_window=bool(meta.get("align_window", kwargs.pop("align_window", False))),
+            eff_beta=float(meta.get("eff_beta", kwargs.pop("eff_beta", 0.0))),
+            cov_beta=float(meta.get("cov_beta", kwargs.pop("cov_beta", 0.0))),
             **kwargs,
         )
         sb3_cls = DQN if algorithm == "dqn" else PPO
@@ -221,6 +269,10 @@ class DeepRLAgent(Agent):
             hp["reward_scale"] = self.reward_scale
         if self.align_window:
             hp["align_window"] = True
+        if self.eff_beta != 0.0:
+            hp["eff_beta"] = self.eff_beta
+        if self.cov_beta != 0.0:
+            hp["cov_beta"] = self.cov_beta
         return hp
 
     def describe(self) -> dict:
