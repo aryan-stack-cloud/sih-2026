@@ -19,10 +19,33 @@ import numpy as np
 POLICY_TYPES = ("baseline", "ctmc", "index", "bandit", "q_learning", "dqn", "ppo")
 
 
+def align_window_start(
+    action: int, observation: np.ndarray | list, num_bands: int
+) -> int:
+    """Shift a chosen window start so the stronger EWMA neighbour rides along.
+
+    The receiver observes K contiguous bands from the named start; for K = 2 the window
+    ``(a-1, a)`` holds the target band ``a`` just as ``(a, a+1)`` does. K is read off the
+    tuned one-hot block, and anything but K = 2 leaves the action alone -- this keeps the
+    rule a no-op on receivers it was not designed for.
+    """
+    n = int(num_bands)
+    a = int(action) % n
+    obs = np.asarray(observation, dtype=np.float64)
+    tuned_sum = float(obs[7 * n:8 * n].sum())
+    if int(round(tuned_sum)) != 2:
+        return int(action)
+    ewma = obs[:7 * n].reshape(n, 7)[:, 1]
+    if float(ewma[(a - 1) % n]) > float(ewma[(a + 1) % n]):
+        return (a - 1) % n
+    return a
+
+
 class Agent(abc.ABC):
     """Base class for scan-decision policies."""
 
     policy_type: str = "baseline"
+    align_window: bool = False
 
     def __init__(self, num_bands: int, rng: np.random.Generator | None = None) -> None:
         self.num_bands = num_bands

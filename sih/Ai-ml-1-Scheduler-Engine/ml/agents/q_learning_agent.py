@@ -27,7 +27,7 @@ from pathlib import Path
 
 import numpy as np
 
-from ml.agents.base import Agent
+from ml.agents.base import Agent, align_window_start
 from ml.algorithms.exploration import EpsilonSchedule, epsilon_greedy
 from ml.environments.state import BAND_FEATURES, NUM_BAND_FEATURES
 
@@ -54,6 +54,7 @@ class QLearningAgent(Agent):
         bins: dict[str, int] | None = None,
         epsilon: EpsilonSchedule | None = None,
         rng: np.random.Generator | None = None,
+        align_window: bool = False,
     ) -> None:
         super().__init__(num_bands, rng)
         self.learning_rate = float(learning_rate)
@@ -62,6 +63,7 @@ class QLearningAgent(Agent):
         self.optimistic_init = float(optimistic_init)
         self.bins = dict(bins or DEFAULT_BINS)
         self.epsilon_schedule = epsilon or EpsilonSchedule()
+        self.align_window = bool(align_window)
 
         self._feature_index = {name: i for i, name in enumerate(BAND_FEATURES)}
         missing = set(self.bins) - set(self._feature_index)
@@ -109,7 +111,10 @@ class QLearningAgent(Agent):
         self.epsilon = self.epsilon_schedule.value(episode)
 
     def select_action(self, observation: np.ndarray, explore: bool = True) -> int:
-        return epsilon_greedy(self.q_values(observation), self.epsilon, self.rng, explore)
+        chosen = epsilon_greedy(self.q_values(observation), self.epsilon, self.rng, explore)
+        if self.align_window:
+            return align_window_start(chosen, observation, self.num_bands)
+        return chosen
 
     def learn(
         self,
@@ -161,7 +166,7 @@ class QLearningAgent(Agent):
         return agent
 
     def hyperparams(self) -> dict:
-        return {
+        hp: dict = {
             "learning_rate": self.learning_rate,
             "discount": self.discount,
             "reward_scale": self.reward_scale,
@@ -175,9 +180,12 @@ class QLearningAgent(Agent):
                 "mode": self.epsilon_schedule.mode,
             },
         }
+        if self.align_window:
+            hp["align_window"] = True
+        return hp
 
     def describe(self) -> dict:
-        return {
+        out: dict = {
             "policy_type": self.policy_type,
             "num_bands": self.num_bands,
             "hyperparams": self.hyperparams(),
@@ -186,3 +194,6 @@ class QLearningAgent(Agent):
             "table_size": len(self.q_table),
             "table_capacity": int(np.prod([self.bins[k] for k in sorted(self.bins)])),
         }
+        if self.align_window:
+            out["align_window"] = True
+        return out

@@ -29,7 +29,7 @@ import numpy as np
 
 import gymnasium as gym
 
-from ml.agents.base import Agent
+from ml.agents.base import Agent, align_window_start
 
 SUPPORTED = ("dqn", "ppo")
 
@@ -86,6 +86,7 @@ class DeepRLAgent(Agent):
         rng: np.random.Generator | None = None,
         policy_hidden: int = 64,
         reward_scale: float = 1.0,
+        align_window: bool = False,
         **sb3_kwargs: Any,
     ) -> None:
         super().__init__(num_bands, rng)
@@ -98,6 +99,7 @@ class DeepRLAgent(Agent):
         self.device = device
         self.policy_hidden = int(policy_hidden)
         self.reward_scale = float(reward_scale)
+        self.align_window = bool(align_window)
         # total_timesteps belongs to the training call, not the model constructor.
         self.total_timesteps = int(sb3_kwargs.pop("total_timesteps", 50_000))
         self.sb3_kwargs = sb3_kwargs
@@ -147,7 +149,10 @@ class DeepRLAgent(Agent):
                 f"{self.policy_type} agent has no trained model; call fit() or load() first"
             )
         action, _ = self.model.predict(np.asarray(observation), deterministic=not explore)
-        return int(np.asarray(action).reshape(-1)[0]) % self.num_bands
+        chosen = int(np.asarray(action).reshape(-1)[0]) % self.num_bands
+        if self.align_window:
+            return align_window_start(chosen, observation, self.num_bands)
+        return chosen
 
     def learn(self, observation, action, reward, next_observation, done: bool = False) -> None:
         """No-op. SB3 owns its own replay/rollout buffer; see the module docstring."""
@@ -162,19 +167,19 @@ class DeepRLAgent(Agent):
         path.parent.mkdir(parents=True, exist_ok=True)
         # SB3 appends .zip itself; keep the sidecar next to it under the same stem.
         self.model.save(str(path.with_suffix("")))
+        sidecar: dict[str, Any] = {
+            "algorithm": self.policy_type,
+            "num_bands": self.num_bands,
+            "sb3_policy": self.sb3_policy,
+            "net_arch": self.net_arch,
+            "total_timesteps": self.total_timesteps,
+            "policy_hidden": self.policy_hidden,
+            "reward_scale": self.reward_scale,
+        }
+        if self.align_window:
+            sidecar["align_window"] = True
         path.with_suffix(".meta.json").write_text(
-            json.dumps(
-                {
-                    "algorithm": self.policy_type,
-                    "num_bands": self.num_bands,
-                    "sb3_policy": self.sb3_policy,
-                    "net_arch": self.net_arch,
-                    "total_timesteps": self.total_timesteps,
-                    "policy_hidden": self.policy_hidden,
-                    "reward_scale": self.reward_scale,
-                },
-                indent=2,
-            ),
+            json.dumps(sidecar, indent=2),
             encoding="utf-8",
         )
 
@@ -195,6 +200,7 @@ class DeepRLAgent(Agent):
             net_arch=meta.get("net_arch"),
             policy_hidden=int(meta.get("policy_hidden", kwargs.pop("policy_hidden", 64))),
             reward_scale=float(meta.get("reward_scale", kwargs.pop("reward_scale", 1.0))),
+            align_window=bool(meta.get("align_window", kwargs.pop("align_window", False))),
             **kwargs,
         )
         sb3_cls = DQN if algorithm == "dqn" else PPO
@@ -213,6 +219,8 @@ class DeepRLAgent(Agent):
             hp["policy_hidden"] = self.policy_hidden
         if float(self.reward_scale) != 1.0:
             hp["reward_scale"] = self.reward_scale
+        if self.align_window:
+            hp["align_window"] = True
         return hp
 
     def describe(self) -> dict:

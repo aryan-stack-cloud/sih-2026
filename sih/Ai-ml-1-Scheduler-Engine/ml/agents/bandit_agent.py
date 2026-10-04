@@ -31,7 +31,7 @@ from pathlib import Path
 
 import numpy as np
 
-from ml.agents.base import Agent
+from ml.agents.base import Agent, align_window_start
 from ml.algorithms.exploration import EpsilonSchedule, epsilon_greedy
 from ml.environments.state import NUM_BAND_FEATURES
 
@@ -53,6 +53,7 @@ class BanditAgent(Agent):
         optimistic_init: float = 0.5,
         epsilon: EpsilonSchedule | None = None,
         rng: np.random.Generator | None = None,
+        align_window: bool = False,
     ) -> None:
         super().__init__(num_bands, rng)
         self.learning_rate = float(learning_rate)
@@ -60,6 +61,7 @@ class BanditAgent(Agent):
         self.reward_scale = float(reward_scale)
         self.optimistic_init = float(optimistic_init)
         self.epsilon_schedule = epsilon or EpsilonSchedule()
+        self.align_window = bool(align_window)
 
         self.weights = np.zeros(FEATURE_DIM, dtype=np.float64)
         # Optimistic start: every band looks good until visited, so early episodes sweep the
@@ -107,7 +109,10 @@ class BanditAgent(Agent):
         self.visit_counts = np.zeros(self.num_bands, dtype=np.int64)
 
     def select_action(self, observation: np.ndarray, explore: bool = True) -> int:
-        return epsilon_greedy(self.q_values(observation), self.epsilon, self.rng, explore)
+        chosen = epsilon_greedy(self.q_values(observation), self.epsilon, self.rng, explore)
+        if self.align_window:
+            return align_window_start(chosen, observation, self.num_bands)
+        return chosen
 
     def learn(
         self,
@@ -172,7 +177,7 @@ class BanditAgent(Agent):
         return agent
 
     def hyperparams(self) -> dict:
-        return {
+        hp: dict = {
             "learning_rate": self.learning_rate,
             "bias_learning_rate": self.bias_learning_rate,
             "reward_scale": self.reward_scale,
@@ -185,9 +190,12 @@ class BanditAgent(Agent):
                 "mode": self.epsilon_schedule.mode,
             },
         }
+        if self.align_window:
+            hp["align_window"] = True
+        return hp
 
     def describe(self) -> dict:
-        return {
+        out: dict = {
             "policy_type": self.policy_type,
             "num_bands": self.num_bands,
             "hyperparams": self.hyperparams(),
@@ -197,3 +205,6 @@ class BanditAgent(Agent):
             "band_values": self.band_bias.round(4).tolist(),
             "visit_counts": self.visit_counts.tolist(),
         }
+        if self.align_window:
+            out["align_window"] = True
+        return out
