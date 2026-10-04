@@ -135,6 +135,6 @@ harness) selected the same values.
 
 What the numbers mean for the claims: the tuned budget raises Pd, scan efficiency and high-priority detection on
 every scenario and never leaves Index significantly below the sweep on distinct bursts, but against Index as
-served today it gives back some coverage (distinct bursts down 2.6 to 4.1 pp and intercept time up 24 to 104 steps
-on A, C, D and E; it improves both on F). Threat-aware mode raises high-priority detection by 4 to 16 pp at a cost
+served today it gives back some coverage (distinct bursts down 2.6 to 4.1 pp and intercept time up 53 to 104 steps
+on A, C and D; on E the cost is 0.8 pp of bursts and 24 steps; it improves both on F). Threat-aware mode raises high-priority detection by 4 to 16 pp at a cost
 of up to 8.1 pp of distinct bursts (Scenario A) and up to 163 steps of intercept time.

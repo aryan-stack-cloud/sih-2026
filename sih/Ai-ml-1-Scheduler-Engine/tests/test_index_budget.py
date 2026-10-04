@@ -124,3 +124,49 @@ def test_train_one_records_the_budget_in_hyperparams(monkeypatch):
 
     meta = ModelRegistry().get(result["model_id"])
     assert meta.hyperparams["coverage_budget"] == 0.25
+
+
+# -- save/load round-trip ----------------------------------------------------------------------
+#
+# A registered Index model is served through ModelRegistry.load_agent -> IndexAgent.load, so
+# the budget has to survive the checkpoint file, not just the training call. The deadline
+# itself always persisted; only the introspection went blank.
+
+
+def test_a_tuned_budget_survives_save_and_load(tmp_path):
+    a = IndexAgent.from_scenario(load_scenario("B"), coverage_budget=0.15)
+    path = tmp_path / "index.json"
+    a.save(path)
+    b = IndexAgent.load(path)
+    assert b.describe()["coverage_budget"] == 0.15
+    assert int(b.deadline_slots.max()) == int(a.deadline_slots.max())
+
+
+def test_the_default_budget_survives_save_and_load(tmp_path):
+    a = IndexAgent.from_scenario(load_scenario("B"))
+    path = tmp_path / "index.json"
+    a.save(path)
+    b = IndexAgent.load(path)
+    assert b.describe()["coverage_budget"] == 0.5
+    assert int(b.deadline_slots.max()) == int(a.deadline_slots.max())
+
+
+def test_an_explicit_deadline_round_trips_as_no_budget(tmp_path):
+    a = IndexAgent.from_scenario(load_scenario("B"), deadline_s=0.5)
+    path = tmp_path / "index.json"
+    a.save(path)
+    b = IndexAgent.load(path)
+    assert b.describe()["coverage_budget"] is None
+    assert int(b.deadline_slots.max()) == int(a.deadline_slots.max()) == 50
+
+
+def test_a_checkpoint_written_without_the_key_loads_as_before(tmp_path):
+    a = IndexAgent.from_scenario(load_scenario("B"), coverage_budget=0.15)
+    path = tmp_path / "index.json"
+    a.save(path)
+    config = json.loads(path.read_text(encoding="utf-8"))
+    del config["coverage_budget"]
+    path.write_text(json.dumps(config, indent=2), encoding="utf-8")
+    b = IndexAgent.load(path)
+    assert b.describe()["coverage_budget"] is None
+    assert int(b.deadline_slots.max()) == int(a.deadline_slots.max())
