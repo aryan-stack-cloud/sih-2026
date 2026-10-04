@@ -1,14 +1,29 @@
 algorithm: bandit
 _comment: Contextual multi-armed bandit - MVP (PRD Section 10.1). Trains in minutes
-  on CPU.
+  on CPU. 4 Oct 2026 efficiency recipe (docs/superpowers/specs/2026-10-04-efficiency-uplift-gate.md) -
+  pairwise products of all seven band features (poly_degree 2), the next band's time-since-scan,
+  detection EWMA and consecutive misses as extra features that also enter the products (a K=2
+  window covers band a+1), the window alignment rule (take window a-1 when its extra band looks
+  busier), and the two shaping terms (eff_beta pays per detected window band, cov_beta pays for
+  visiting stale bands). The recipe lifts listening efficiency by 20 to 90 percent at 80 to 400
+  steps and costs distinct-burst coverage; set poly_degree 1, poly_features 5, neighbor_features
+  empty, poly_neighbor false, align_window false, eff_beta 0, cov_beta 0 and train_episodes 20
+  for the original agent. More eff_beta and less cov_beta trade coverage for efficiency.
 learning_rate: 0.05
 bias_learning_rate: 0.05
 reward_scale: 10.0
 optimistic_init: 0.5
+poly_degree: 2
+poly_features: 7
+neighbor_features: [0, 1, 2]
+poly_neighbor: true
+align_window: true
+eff_beta: 4.0
+cov_beta: 2.0
 epsilon:
   start: 1.0
   end: 0.05
   decay: 0.85
   decay_episodes: 30
   mode: exponential
-train_episodes: 20
+train_episodes: 30

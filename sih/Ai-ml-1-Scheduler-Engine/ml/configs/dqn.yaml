@@ -5,18 +5,28 @@ _comment: Deep Q-Network - V2 STRETCH ONLY (Ai-ml-1 Level 9). Gated behind the b
   ml/training/trainer.py::_scale_for_band_count scales both up for scenarios with more
   bands, since a fixed exploration budget starves per-action coverage as the action space
   grows (32-band scenarios were observed collapsing onto 1-2 bands at these base values).
-policy: MlpPolicy
+  4 Oct 2026 efficiency recipe (docs/superpowers/specs/2026-10-04-efficiency-uplift-gate.md) -
+  the permutation-equivariant policy (one small scorer shared by every band, so it learns
+  "a busy band is worth tuning to" once instead of once per band), rewards scaled by 0.1,
+  the coverage bonus cov_beta (pays for visiting stale bands; DQN camps without it), and
+  the serving-time window alignment. policy MlpPolicy with reward_scale 1, cov_beta 0 and
+  align_window false is the original agent.
+policy: equivariant
+policy_hidden: 64
 reference_bands: 16
-total_timesteps: 50000
-learning_rate: 0.0005
-buffer_size: 50000
-learning_starts: 1000
-batch_size: 64
+total_timesteps: 100000
+learning_rate: 0.001
+buffer_size: 100000
+learning_starts: 2000
+batch_size: 128
 gamma: 0.95
 train_freq: 4
-target_update_interval: 500
+target_update_interval: 1000
 exploration_fraction: 0.3
 exploration_final_eps: 0.05
+reward_scale: 0.1
+cov_beta: 3.0
+align_window: true
 net_arch:
 - 128
 - 128

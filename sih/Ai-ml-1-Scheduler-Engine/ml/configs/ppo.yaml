@@ -6,12 +6,23 @@ _comment: Proximal Policy Optimization - V2 STRETCH ONLY (Ai-ml-1 Level 9), same
   sharpens onto 1-2 bands even faster than DQN's on 32-band scenarios. total_timesteps and
   ent_coef below are tuned for reference_bands; ml/training/trainer.py::_scale_for_band_count
   scales both up for scenarios with more bands.
-policy: MlpPolicy
+  4 Oct 2026 efficiency recipe (docs/superpowers/specs/2026-10-04-efficiency-uplift-gate.md) -
+  the permutation-equivariant policy (see dqn.yaml), rewards scaled by 0.1, the coverage
+  bonus cov_beta and the serving-time window alignment. policy MlpPolicy with reward_scale 1,
+  cov_beta 0 and align_window false is the original agent.
+policy: equivariant
+policy_hidden: 64
 reference_bands: 16
-total_timesteps: 50000
-learning_rate: 0.0003
+total_timesteps: 100000
+learning_rate: 0.0005
 gamma: 0.95
 ent_coef: 0.01
+n_steps: 1024
+batch_size: 256
+n_epochs: 10
+reward_scale: 0.1
+cov_beta: 10.0
+align_window: true
 net_arch:
 - 128
 - 128
