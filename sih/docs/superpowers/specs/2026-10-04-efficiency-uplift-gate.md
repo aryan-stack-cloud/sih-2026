@@ -124,7 +124,8 @@ Efficiency ratio new / today, mean over the seven scenarios (95% paired interval
 
 The Bandit recipe was the winner of its selection on the tuning seeds with a weakest-horizon ratio of 1.28 and Pd/HPDR guards of at least
 +0.2 pp; on the fresh worlds the 400-step ratio is 1.20 (lower end 1.15) and its full-length HPDR fell significantly. Under the rule it does
-not ship. A second Bandit attempt needs the owner's approval and uses C2.
+not ship: `ml/configs/bandit.yaml` is back to the original recipe (the options stay in `BanditAgent`). A second Bandit attempt needs the
+owner's approval and uses C2.
 
 Integrity checks run alongside: the engine options reproduce the screening prototypes parameter for parameter and decision for decision
 (5 recipes); a DQN and a PPO trained through `scripts/train_all.py` on Scenario B equal the screened artifacts to the digit (training is
