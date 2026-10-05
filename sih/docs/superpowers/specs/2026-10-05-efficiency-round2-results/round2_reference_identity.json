@@ -1,0 +1,30 @@
+{
+  "A": {
+    "model_id": "model_bandit_8065a3ca",
+    "checkpoint_sha256": "43a0780f1fc3b2269a38b959eb84e62321b714518d5ad412f75ba4e8953926a1"
+  },
+  "B": {
+    "model_id": "model_bandit_0496bb32",
+    "checkpoint_sha256": "1f75227bf0f9310fdd7979bfbb9f03a1156bb4e15b014fe11dff035668f0166d"
+  },
+  "C": {
+    "model_id": "model_bandit_0e217ceb",
+    "checkpoint_sha256": "8376f44a14bbd0cb4b6785d2c8e35b5f52e1ea77a602590dacf5a7e6f58494a4"
+  },
+  "D": {
+    "model_id": "model_bandit_fe860f0e",
+    "checkpoint_sha256": "1c46f197e008e0c5dd5a31c007d25c7b207100ea785f28ed43bc92d5f787ed0e"
+  },
+  "E": {
+    "model_id": "model_bandit_be0c162b",
+    "checkpoint_sha256": "9e9064eb7624a73ce8db4200fe7ffda5649691f6b0023067d454fc3926caba31"
+  },
+  "F": {
+    "model_id": "model_bandit_6192b7c2",
+    "checkpoint_sha256": "fc392df56a1a9a97ce11db183b279e63a3c870aec2fa53dbba24f6d3539e41a4"
+  },
+  "G": {
+    "model_id": "model_bandit_7e42b1bf",
+    "checkpoint_sha256": "004aee45a611e4898f7dd6e5f88d01b277b0926fd5d5f7b51f07795c5b6ffce3"
+  }
+}

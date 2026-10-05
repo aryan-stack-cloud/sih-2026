@@ -117,3 +117,16 @@ This is a negative screening result, not evidence that all possible Q-learning m
 Round-2 tolerances are Pd -1 pp, HPDR -2 pp, distinct bursts -3 pp, and full efficiency ratio 0.97 at the lower confidence bound.
 These allow small losses; they do not establish exact equality or universal absence of regression. The rationale in S4 was a design
 choice informed by round-1 intervals, not a measured power calculation. The original round-1 stricter gate remains a separate result.
+
+## Outcome: validation complete, no reserve confirmation
+
+All three frozen finalists failed V. `r2a_f` passed the efficiency and coverage checks, including Scenario B ratios 1.521 / 1.463
+at 80 / 160 steps, but full-length mean high-priority detection changed -2.13 pp [95%: -3.80, -0.64], failing G3.
+`b_poly2` failed G1, G1b and G3; `b_blr40_al` failed G1 and G3. Therefore no Bandit model was selected and no C2 run was made.
+Q-learning had already failed its tuning prerequisite. Reserve seeds 22000-22019 remain unused by round 2.
+
+The new opt-in Bandit options are committed as `b9525e3` on `feat/efficiency-round2`; the default recipe is unchanged.
+Relevant tests: 82 option/alignment checks plus 28 existing agent/served-session checks, all passed. The validated 140 V files contain
+2,800 correctly paired episodes, and frozen candidate checkpoint hashes are unchanged. Details and full gate reports are in
+`2026-10-05-efficiency-round2-results/round2_result.md`. Raw evidence and reproducible harness/checkpoints are saved in the local
+Traycer artifact `efficiency-round2-2026-10-05`. No merge, push, live registry change, activation or service restart was performed.

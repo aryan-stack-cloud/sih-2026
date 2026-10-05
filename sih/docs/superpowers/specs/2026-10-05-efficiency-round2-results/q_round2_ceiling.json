@@ -1,0 +1,34 @@
+[
+  {
+    "scenario": "B",
+    "horizon": 80,
+    "original_eff_percent": 39.3125,
+    "target_percent": 47.175,
+    "hindsight_fixed_percent": 57.15625,
+    "clairvoyant_percent": 69.03125
+  },
+  {
+    "scenario": "B",
+    "horizon": 160,
+    "original_eff_percent": 46.359375,
+    "target_percent": 55.63125,
+    "hindsight_fixed_percent": 57.546875,
+    "clairvoyant_percent": 69.21875
+  },
+  {
+    "scenario": "F",
+    "horizon": 80,
+    "original_eff_percent": 30.78125,
+    "target_percent": 36.9375,
+    "hindsight_fixed_percent": 49.40624999999999,
+    "clairvoyant_percent": 53.37499999999999
+  },
+  {
+    "scenario": "F",
+    "horizon": 160,
+    "original_eff_percent": 38.28125,
+    "target_percent": 45.9375,
+    "hindsight_fixed_percent": 49.765625,
+    "clairvoyant_percent": 53.82812500000001
+  }
+]
