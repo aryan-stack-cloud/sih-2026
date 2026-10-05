@@ -33,12 +33,17 @@ from pathlib import Path
 import numpy as np
 
 from ml.agents.base import Agent, align_window_start
-from ml.agents.shaping import RewardShaping
+from ml.agents.shaping import AGE_FEATURE, RewardShaping
 from ml.algorithms.exploration import EpsilonSchedule, epsilon_greedy
-from ml.environments.state import NUM_BAND_FEATURES
+from ml.environments.state import BAND_FEATURES, NUM_BAND_FEATURES
 
 # phi_a is the band's features plus a bias term.
 FEATURE_DIM = NUM_BAND_FEATURES + 1
+
+PHASE_FEATURE = BAND_FEATURES.index("periodicity_phase")
+CONF_FEATURE = BAND_FEATURES.index("periodicity_confidence")
+# conf * cos(2 pi phase), conf * sin(2 pi phase), for the band and for the next band.
+PHASE_FOURIER_COLUMNS = 4
 
 
 class BanditAgent(Agent):
@@ -62,6 +67,8 @@ class BanditAgent(Agent):
         poly_neighbor: bool = False,
         eff_beta: float = 0.0,
         cov_beta: float = 0.0,
+        age_bonus: float = 0.0,
+        phase_fourier: bool = False,
     ) -> None:
         super().__init__(num_bands, rng)
         if poly_degree not in (1, 2):
@@ -85,6 +92,8 @@ class BanditAgent(Agent):
             raise ValueError(f"eff_beta must be >= 0, got {eff_beta!r}")
         if float(cov_beta) < 0:
             raise ValueError(f"cov_beta must be >= 0, got {cov_beta!r}")
+        if float(age_bonus) < 0:
+            raise ValueError(f"age_bonus must be >= 0, got {age_bonus!r}")
         self.learning_rate = float(learning_rate)
         self.bias_learning_rate = float(bias_learning_rate)
         self.reward_scale = float(reward_scale)
@@ -98,6 +107,10 @@ class BanditAgent(Agent):
         self.eff_beta = float(eff_beta)
         self.cov_beta = float(cov_beta)
         self.shaping = RewardShaping(self.eff_beta, self.cov_beta)
+        # Round 2. ``age_bonus`` is added to the action score at decision time and is NOT learned (the estimate that
+        # ``learn`` regresses on excludes it); ``phase_fourier`` widens phi by PHASE_FOURIER_COLUMNS.
+        self.age_bonus = float(age_bonus)
+        self.phase_fourier = bool(phase_fourier)
 
         self.weights = np.zeros(self._feature_dim(), dtype=np.float64)
         # Optimistic start: every band looks good until visited, so early episodes sweep the
@@ -117,6 +130,8 @@ class BanditAgent(Agent):
             if self.poly_neighbor and self.neighbor_features:
                 m += len(self.neighbor_features)
             dim += m * (m + 1) // 2
+        if self.phase_fourier:
+            dim += PHASE_FOURIER_COLUMNS
         return dim
 
     def _band_features(self, observation: np.ndarray) -> np.ndarray:
@@ -155,10 +170,31 @@ class BanditAgent(Agent):
                     axis=1,
                 )
             )
+        if self.phase_fourier:
+            # A periodic emitter is on for phase in [0, duty) and about to wake up near 1; a cosine and a sine of the phase
+            # (gated by the estimator's confidence) let a linear score express any smooth bump of that shape. The window
+            # also covers the next band, so its harmonics follow.
+            phase, conf = bands[:, PHASE_FEATURE], bands[:, CONF_FEATURE]
+            harmonics = np.stack(
+                [conf * np.cos(2.0 * np.pi * phase), conf * np.sin(2.0 * np.pi * phase)], axis=1
+            )
+            parts.append(harmonics)
+            parts.append(np.roll(harmonics, -1, axis=0))
         return np.hstack(parts)
 
+    def _window_staleness(self, observation: np.ndarray) -> np.ndarray:
+        """Mean normalised age of the K bands of the window that starts at each band (K from the tuned-bands block)."""
+        n = self.num_bands
+        obs = np.asarray(observation, dtype=np.float64)
+        k = max(1, int(round(float(obs[NUM_BAND_FEATURES * n : (NUM_BAND_FEATURES + 1) * n].sum()))))
+        ages = obs[: NUM_BAND_FEATURES * n].reshape(n, NUM_BAND_FEATURES)[:, AGE_FEATURE]
+        return sum(np.roll(ages, -j) for j in range(k)) / k
+
     def q_values(self, observation: np.ndarray) -> np.ndarray:
-        return self._band_features(observation) @ self.weights + self.band_bias
+        scores = self._band_features(observation) @ self.weights + self.band_bias
+        if self.age_bonus:
+            scores = scores + self.age_bonus * self._window_staleness(observation)
+        return scores
 
     # -- Agent API ------------------------------------------------------------------------
 
@@ -237,6 +273,8 @@ class BanditAgent(Agent):
             names.extend(
                 f"{a}*{b}" for i, a in enumerate(src_names) for b in src_names[i:]
             )
+        if self.phase_fourier:
+            names.extend(["phase_cos", "phase_sin", "next_phase_cos", "next_phase_sin"])
         return {name: float(w) for name, w in zip(names, self.weights)}
 
     def band_values(self) -> np.ndarray:
@@ -271,7 +309,8 @@ class BanditAgent(Agent):
                 f"options (poly_degree={agent.poly_degree}, "
                 f"poly_features={agent.poly_features}, "
                 f"neighbor_features={list(agent.neighbor_features)}, "
-                f"poly_neighbor={agent.poly_neighbor}): "
+                f"poly_neighbor={agent.poly_neighbor}, "
+                f"phase_fourier={agent.phase_fourier}): "
                 f"expected {agent._feature_dim()}"
             )
         # A loaded model is for inference: stop exploring unless a caller re-enables it.
@@ -308,6 +347,10 @@ class BanditAgent(Agent):
             hp["eff_beta"] = self.eff_beta
         if self.cov_beta != 0.0:
             hp["cov_beta"] = self.cov_beta
+        if self.age_bonus != 0.0:
+            hp["age_bonus"] = self.age_bonus
+        if self.phase_fourier:
+            hp["phase_fourier"] = True
         return hp
 
     def describe(self) -> dict:
