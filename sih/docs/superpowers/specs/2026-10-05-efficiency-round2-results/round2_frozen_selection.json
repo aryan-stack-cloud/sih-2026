@@ -1,0 +1,223 @@
+{
+  "tuning_seeds": [
+    20000,
+    20001,
+    20002,
+    20003,
+    20004,
+    20005,
+    20006,
+    20007,
+    20008,
+    20009,
+    20010,
+    20011,
+    20012,
+    20013,
+    20014,
+    20015,
+    20016,
+    20017,
+    20018,
+    20019
+  ],
+  "validation_seeds": [
+    23000,
+    23001,
+    23002,
+    23003,
+    23004,
+    23005,
+    23006,
+    23007,
+    23008,
+    23009,
+    23010,
+    23011,
+    23012,
+    23013,
+    23014,
+    23015,
+    23016,
+    23017,
+    23018,
+    23019
+  ],
+  "confirmation_seeds": [
+    22000,
+    22001,
+    22002,
+    22003,
+    22004,
+    22005,
+    22006,
+    22007,
+    22008,
+    22009,
+    22010,
+    22011,
+    22012,
+    22013,
+    22014,
+    22015,
+    22016,
+    22017,
+    22018,
+    22019
+  ],
+  "pool": [
+    "b2_p2_b4",
+    "b2_p2_blr15",
+    "b2_p2_ep60",
+    "b2_p2_lr15",
+    "b2_p2_mix",
+    "b2_p2a",
+    "b2_p2f7",
+    "b2_p2n",
+    "b2_p2n_al",
+    "b3_c10",
+    "b3_c2",
+    "b3_c5",
+    "b3_c5_b4",
+    "b3_c5_mix",
+    "b3_c5_n2",
+    "b4_f7n",
+    "b4_f7n_all",
+    "b4_f7n_b4",
+    "b4_f7n_ep40",
+    "b4_f7n_lr10",
+    "b5_b4_c2",
+    "b5_b4_ep40",
+    "b5_b4_mix",
+    "b5_b6_c2_ep40",
+    "b5_b8",
+    "b5_b8_ep40",
+    "b6_e4c1",
+    "b6_e4c2_blr10",
+    "b6_e4c3",
+    "b6_e5c1",
+    "b6_e6c2",
+    "b_blr15",
+    "b_blr15_win2",
+    "b_blr40",
+    "b_blr40_al",
+    "b_ctl_proto",
+    "b_ctl_ship",
+    "b_ctl_ship_al",
+    "b_lr15",
+    "b_lr15_al",
+    "b_opt0",
+    "b_opt1",
+    "b_poly2",
+    "b_poly2_al",
+    "b_win2",
+    "b_win2_al",
+    "r2a_f",
+    "r2a_f_k06",
+    "r2a_f_k12",
+    "r2a_k03",
+    "r2a_k06",
+    "r2a_k12",
+    "r2a_k25",
+    "r2a_mix_f_k12",
+    "r2a_mix_k12",
+    "r2n_f_k12",
+    "r2n_k06",
+    "r2n_k12",
+    "r2n_k25",
+    "r2n_mix_k12"
+  ],
+  "finalists": {
+    "r2a_f": {
+      "source": "cand:bandit:cand/r2a_f",
+      "train": {
+        "hp": {
+          "poly": 2,
+          "align": true,
+          "phase_fourier": true
+        },
+        "mix": [],
+        "episodes": 20,
+        "seeds": [
+          1042,
+          1061
+        ],
+        "train_seconds": 62.1,
+        "curve_tail": [
+          10563.1875,
+          8553.041666666577,
+          9826.270833333343
+        ]
+      },
+      "checkpoint_sha256": {
+        "A": "8a5c3f3d257bb84b2a9b576f4c4e8f6689c58ea3fdcb29ec58998163de4eaed8",
+        "B": "b8c6aca488b866a18622e439d62e378130fae0691f2f1ab1a65b66669d967b5e",
+        "C": "5164a4afdc6a7f5e7d509b79ca21ab3b06028cd2e7f79140e431c7fa30a5cd36",
+        "D": "70d9df683fa1945a9220c293fd38728e27485e0ef67524ded4855cd7ea493daa",
+        "E": "d7b08280b3a7f0c313e3fe479f0a159d5576276d0800160da8b9acf884f56683",
+        "F": "7b89e5a856b0318a9aa18194883945c050613fa42e3459c2b81818fe71cb79c2",
+        "G": "a23e89f67177ed7ffb13f59eeb7735a8291ed95e03884a05be53ef8c9b2ec99a"
+      }
+    },
+    "b_poly2": {
+      "source": "cand:bandit:cand/b_poly2",
+      "train": {
+        "hp": {
+          "poly": 2
+        },
+        "mix": [],
+        "episodes": 20,
+        "seeds": [
+          1042,
+          1061
+        ],
+        "train_seconds": 47.9,
+        "curve_tail": [
+          10971.625,
+          8618.31249999991,
+          9843.604166666728
+        ]
+      },
+      "checkpoint_sha256": {
+        "A": "a513f2d5abbcd0522402b733f3c281991241601859226178b3562d4049c63257",
+        "B": "8057dbac3bee9d28c7c7f84f662ba7708d1d5ee3f0e978e658e9e8e5af29d783",
+        "C": "f7dee856d6cbbb86309068d83c0df5f08c7b030ca4fac11c4732a7cc8ecec2df",
+        "D": "994e551d74159f33ea57465fb9544a2bf8a2327eef4de3e7e81d59fb4ddd2411",
+        "E": "f281e6c0f611137baf809ed989c04c9e97f8ea55260a5b5d21e451a6232ce973",
+        "F": "e6c890437d702af2ad515fe06430e6abf4fa89b6ef4c16ce640ff4382a2bc7f6",
+        "G": "669105b633007195c3f5b35873f9fbdc3a4910d76747a6a6ce4192b0365d0112"
+      }
+    },
+    "b_blr40_al": {
+      "source": "align:0.3:0:obs|cand:bandit:cand/b_blr40",
+      "train": {
+        "hp": {
+          "bias_learning_rate": 0.4
+        },
+        "mix": [],
+        "episodes": 20,
+        "seeds": [
+          1042,
+          1061
+        ],
+        "train_seconds": 37.7,
+        "curve_tail": [
+          10342.875,
+          7381.666666666554,
+          8526.85416666656
+        ]
+      },
+      "checkpoint_sha256": {
+        "A": "1c66e37bd1cfc849a3265dddf7108b5890add37943a756296d203ca00ec11271",
+        "B": "d92720c6c3c3cb5b39390f5fac6b998c748579d99f6b5590cb4b5b47a8f6c396",
+        "C": "7f104d6e8e5fb513064e4dd4997edcf4effac74a3295574d41704fb0e0ea4a5b",
+        "D": "ec049d31188686150928c05e5783159c2978862a6313b6b4ed9da38c7cb67034",
+        "E": "cb7106257f799e0f6a5d034dffbc48bbbbe5c7c7285f6dabc6222533de594a96",
+        "F": "b06a6705647dcb549adb5ae1e839d9b317dcec9bd7d9373a2c245d54958aab0c",
+        "G": "c7b3b26f50a8ea11c278326ec26c752808a753a2a00380cb558deac27cfd7936"
+      }
+    }
+  },
+  "selection_rule": "r2_rank.py: lowest normalized shortfall, ties rounded to 0.001 then larger min(R80,R160)",
+  "no_validation_or_confirmation_observed": true
+}

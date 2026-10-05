@@ -1,0 +1,194 @@
+{
+ "r2a_k03": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "align": true,
+   "age_bonus": 0.03
+  },
+  "episodes": 0
+ },
+ "r2a_k06": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "align": true,
+   "age_bonus": 0.06
+  },
+  "episodes": 0
+ },
+ "r2a_k12": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "align": true,
+   "age_bonus": 0.12
+  },
+  "episodes": 0
+ },
+ "r2a_k25": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "align": true,
+   "age_bonus": 0.25
+  },
+  "episodes": 0
+ },
+ "r2a_f": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "align": true,
+   "phase_fourier": true
+  },
+  "episodes": 0
+ },
+ "r2a_f_k06": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "align": true,
+   "phase_fourier": true,
+   "age_bonus": 0.06
+  },
+  "episodes": 0
+ },
+ "r2a_f_k12": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "align": true,
+   "phase_fourier": true,
+   "age_bonus": 0.12
+  },
+  "episodes": 0
+ },
+ "r2n_k06": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "nbr_idx": [
+    0,
+    1,
+    2
+   ],
+   "poly_nbr": true,
+   "align": true,
+   "age_bonus": 0.06
+  },
+  "episodes": 0
+ },
+ "r2n_k12": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "nbr_idx": [
+    0,
+    1,
+    2
+   ],
+   "poly_nbr": true,
+   "align": true,
+   "age_bonus": 0.12
+  },
+  "episodes": 0
+ },
+ "r2n_k25": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "nbr_idx": [
+    0,
+    1,
+    2
+   ],
+   "poly_nbr": true,
+   "align": true,
+   "age_bonus": 0.25
+  },
+  "episodes": 0
+ },
+ "r2n_f_k12": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "nbr_idx": [
+    0,
+    1,
+    2
+   ],
+   "poly_nbr": true,
+   "align": true,
+   "phase_fourier": true,
+   "age_bonus": 0.12
+  },
+  "episodes": 0
+ },
+ "r2a_mix_k12": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "align": true,
+   "age_bonus": 0.12
+  },
+  "episodes": 80,
+  "mix": [
+   80,
+   160,
+   400,
+   0
+  ]
+ },
+ "r2n_mix_k12": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "nbr_idx": [
+    0,
+    1,
+    2
+   ],
+   "poly_nbr": true,
+   "align": true,
+   "age_bonus": 0.12
+  },
+  "episodes": 80,
+  "mix": [
+   80,
+   160,
+   400,
+   0
+  ]
+ },
+ "r2a_mix_f_k12": {
+  "algo": "bandit",
+  "proto": "bandit",
+  "hp": {
+   "poly": 2,
+   "align": true,
+   "phase_fourier": true,
+   "age_bonus": 0.12
+  },
+  "episodes": 80,
+  "mix": [
+   80,
+   160,
+   400,
+   0
+  ]
+ }
+}
