@@ -53,3 +53,14 @@ through a sandbox engine (:8501) + sandbox Backend (:8081, separate H2) on B and
 only then propose live activation — each live step (backup, import, activate B,
 restart :8500, verify) announced before running. On FAIL: no sandbox, no live steps,
 report stands, C2 stays spent-for-this-study (no re-confirmation).
+
+## Outcome: FAIL on C2 (6 October 2026)
+
+V2 selected draw4 (B80 1.173). Single C2 confirmation: G1 FAIL (R80 lower 1.033 <
+1.05; B80 1.255 [1.120, 1.405] passes alone), G2 FAIL (R160 lower 0.999 < 1.00;
+B160 1.267 [1.178, 1.367] passes alone), G3 FAIL (R400 lower 0.991 < 1.00), G4/G5
+PASS. Verdict FAIL — means miss by 0.001–0.02 while Scenario B confirms at +25%.
+No sandbox run, no live activation, per the owner's "activate nothing without a pass".
+C2 is spent for this study. Details in
+`2026-10-06-bandit-retrain-results/retrain_table.md`. Draw weights kept unregistered
+at `C:\w\r3\agents\draw4\`.
