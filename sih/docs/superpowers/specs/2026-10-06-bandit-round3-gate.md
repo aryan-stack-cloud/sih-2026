@@ -103,6 +103,23 @@ sandbox engine over HTTP on paired V2 worlds (Scenario B + one 32-band scenario,
 80/160 steps, serving path, 0 fallbacks required). If none passes, no C2 run is made
 and the report says so.
 
+## Outcome: stopped at screening, no V2/C2 run (6 October 2026)
+
+Screening on T vs the live reference (pooled counts, fresh-copy-per-world harness):
+best violation 4.05 (`r3_p6_c1_k06`), next 4.10 (`r3_p7_c1`). The pre-registered stop
+rule requires a finalist within 1.0 of zero violation — no candidate qualifies, so no
+finalist advances, no V2 run was made, and no C2 run was made. V2 (24000–24019) and C2
+(22000–22019) remain pristine. No sandbox engine/backend was started, nothing was
+merged to master, the live registry and live services are untouched. Details in
+`2026-10-06-bandit-round3-results/round3_screening_table.md`.
+
+What the screen did show: priority-expressiveness (poly_features 6/7) with small
+coverage protectors lifts mean efficiency to 1.37–1.46× / 1.22–1.28× at 80/160 steps
+vs live (B: 1.22–1.42× / 1.12–1.36× points), improves short-horizon detection, but
+full-length pooled HPDR points sit at −1.0 to −2.8 pp with wide intervals — the gate's
+G1b (B160 lower ≥ 1.20) and G3 (HPDR-full lower ≥ −2.0) would fail with high
+probability. The efficiency/coverage trade-off, not the feature set, is the blocker.
+
 ## Live activation (only after a C2 + sandbox PASS)
 
 Each step announced before running: (1) backup live registry; (2) merge round-3
