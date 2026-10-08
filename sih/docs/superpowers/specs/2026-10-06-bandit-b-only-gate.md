@@ -51,6 +51,15 @@ Bootstrap: 4000 resamples, 95%, seed 20261003, worlds resampled (single scenario
 | B3 | B detection | lower ends Pd ≥ −1.0 pp, HPDR ≥ −2.0 pp at 80/160/400/full |
 | B4 | B coverage | lower ends distinct bursts ≥ −3.0 pp at all horizons |
 
+## Outcome: FAIL on V3 (6 October 2026)
+
+V3 (25000–25019): B80 1.178 [1.088, 1.284], B160 1.143 [1.039, 1.255] → B1 FAIL;
+B2 PASS; B3 FAIL (HPDR-full −2.34 [−8.11, +2.42]); B4 FAIL (bursts −3.0 to −3.6,
+lowers −5.0 to −5.8). Per the single-confirmation rule there is NO C3 run — C3
+(26000–26019) stays pristine. No sandbox, no live steps. Details in
+`2026-10-06-bandit-b-only-results/b_v3_gate.md`. The B-effect replicated in direction
+a third time but not at gate strength, and B-local burst losses are a genuine cost.
+
 PASS = every check. V3 PASS → one C3 confirmation. C3 PASS → sandbox serving check
 (register frozen weights into sandbox registry, parity-hash vs frozen SHA, paired
 B experiments at 80/160 through sandbox engine :8501 + sandbox Backend :8081 with 0
